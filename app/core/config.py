@@ -39,6 +39,25 @@ class Settings(BaseSettings):
     count_temp_dir: Path = Path(".runtime/count-jobs")
     ffprobe_executable: str = "ffprobe"
     ffmpeg_executable: str = "ffmpeg"
+    attribute_model_weights_path: Path | None = None
+    attribute_model_manifest_path: Path | None = None
+    plate_model_weights_path: Path | None = None
+    paddle_ocr_lang: str = "en"
+    enrichment_result_ttl_seconds: int = Field(default=900, gt=0)
+    enrichment_job_db_path: Path = Path(".runtime/enrichment-jobs.sqlite3")
+    enrichment_temp_dir: Path = Path(".runtime/enrichment")
+    max_concurrent_enrichment_jobs: int = Field(default=1, gt=0)
+    max_queued_enrichment_jobs: int = Field(default=20, gt=0)
+    max_concurrent_attribute_inferences: int = Field(default=1, gt=0)
+    max_concurrent_plate_inferences: int = Field(default=1, gt=0)
+    vehicle_classes: str = "car,truck,bus,van,pickup,suv,sedan,hatchback,mpv,estate"
+    max_evidence_frames_per_track: int = Field(default=3, ge=1, le=20)
+    plate_localizer_threshold: float = Field(default=0.25, ge=0, le=1)
+    plate_ocr_retry_threshold: float = Field(default=0.70, ge=0, le=1)
+    plate_ocr_accept_threshold: float = Field(default=0.80, ge=0, le=1)
+
+    def vehicle_class_set(self) -> set[str]:
+        return {item.strip().lower() for item in self.vehicle_classes.split(",") if item.strip()}
 
     @field_validator("api_key")
     @classmethod

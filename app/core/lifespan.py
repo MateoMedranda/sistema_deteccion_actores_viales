@@ -22,6 +22,15 @@ from app.services.count_job_service import CountJobService
 from app.services.count_job_store import CountJobStore
 from app.services.count_processing import CountProcessor
 from app.services.count_worker import CountWorker
+from app.services.source_artifacts import SourceArtifactStore
+from app.services.image_detection_store import ImageDetectionStore
+from app.services.enrichment_job_store import EnrichmentJobStore
+from app.services.enrichment_job_service import EnrichmentJobService
+from app.services.enrichment_processing import EnrichmentProcessor
+from app.services.enrichment_worker import EnrichmentWorker
+from app.adapters.efficientnet_attribute_extractor import EfficientNetAttributeExtractor
+from app.adapters.yolov8_plate_localizer import YOLOv8PlateLocalizer
+from app.adapters.paddle_plate_reader import PaddlePlateReader
 
 
 def build_lifespan(settings: Settings, injected_detector: Detector | None = None):
@@ -33,6 +42,9 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         count_artifacts = VideoArtifactStore(settings.count_temp_dir)
         video_jobs = VideoJobStore(settings.video_job_db_path, settings.video_result_ttl_seconds, settings.max_queued_video_jobs)
         count_jobs = CountJobStore(settings.count_job_db_path, settings.count_result_ttl_seconds, settings.max_queued_count_jobs)
+        enrichment_artifacts = SourceArtifactStore(settings.enrichment_temp_dir)
+        image_sources = ImageDetectionStore(enrichment_artifacts, settings.artifact_ttl_seconds)
+        enrichment_jobs = EnrichmentJobStore(settings.enrichment_job_db_path, settings.enrichment_result_ttl_seconds, settings.max_queued_enrichment_jobs)
         detector = injected_detector
         if detector is None and not settings.runtime_errors():
             try:
@@ -46,7 +58,7 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
                 logger.exception("model_initialization_failed")
         app.state.settings = settings
         app.state.service = DetectionService(
-            detector, artifacts, logger, settings.max_concurrent_inferences
+            detector, artifacts, logger, settings.max_concurrent_inferences, image_sources
         )
         app.state.ready = detector is not None
         app.state.video_probe = FFprobeAdapter(settings.ffprobe_executable)
@@ -56,6 +68,23 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         app.state.count_jobs = count_jobs
         app.state.count_job_service = CountJobService(settings, count_jobs, video_jobs, count_artifacts, logger)
         app.state.video_tools_ready = _video_tools_available(settings)
+        app.state.image_sources = image_sources
+        app.state.enrichment_jobs = enrichment_jobs
+        app.state.enrichment_job_service = EnrichmentJobService(settings, enrichment_jobs, image_sources, video_jobs)
+        attributes = localizer = reader = None
+        try:
+            if settings.attribute_model_weights_path and settings.attribute_model_manifest_path:
+                attributes = EfficientNetAttributeExtractor(settings.attribute_model_weights_path, settings.attribute_model_manifest_path, settings.inference_device)
+        except Exception:
+            logger.exception("attribute_model_initialization_failed")
+        try:
+            if settings.plate_model_weights_path:
+                localizer = YOLOv8PlateLocalizer(settings.plate_model_weights_path, settings.plate_localizer_threshold)
+                reader = PaddlePlateReader(settings.paddle_ocr_lang)
+        except Exception:
+            logger.exception("plate_model_initialization_failed")
+        enrichment_worker = EnrichmentWorker(enrichment_jobs, app.state.enrichment_job_service, EnrichmentProcessor(attributes, localizer, reader, settings.plate_ocr_retry_threshold, settings.plate_ocr_accept_threshold), logger)
+        enrichment_worker.start(); app.state.enrichment_worker = enrichment_worker
         video_worker = None
         if detector is not None:
             video_worker = VideoWorker(
@@ -82,11 +111,14 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         yield
         for count_worker in count_workers:
             count_worker.close()
+        enrichment_worker.close()
         if video_worker is not None:
             video_worker.close()
         artifacts.close()
         video_jobs.close()
         count_jobs.close()
+        enrichment_jobs.close()
+        enrichment_artifacts.close()
         video_artifacts.close()
         count_artifacts.close()
 

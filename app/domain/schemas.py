@@ -154,3 +154,78 @@ class CountEventPage(BaseModel):
     page: int = Field(ge=1)
     page_size: int = Field(ge=1, le=100)
     total: int = Field(ge=0)
+
+
+class SourceReference(BaseModel):
+    kind: Literal["image", "video"]
+    source_id: str
+
+
+class EnrichmentJobCreateRequest(BaseModel):
+    source: SourceReference
+
+
+class EnrichmentJobAccepted(BaseModel):
+    enrichment_job_id: str
+    status: Literal["queued"]
+    created_at: datetime
+    expires_at: datetime
+
+
+class EnrichmentJobResponse(BaseModel):
+    enrichment_job_id: str
+    source: SourceReference
+    status: Literal["queued", "processing", "completed", "failed", "cancelled"]
+    processed_units: int = Field(ge=0)
+    total_units: int = Field(ge=0)
+    progress_percent: int = Field(ge=0, le=100)
+    results_ready: int = Field(ge=0)
+    created_at: datetime
+    updated_at: datetime
+    expires_at: datetime
+    error: ErrorResponse | None = None
+
+
+class RelativeBoundingBox(BaseModel):
+    x_min: float = Field(ge=0, le=1)
+    y_min: float = Field(ge=0, le=1)
+    x_max: float = Field(ge=0, le=1)
+    y_max: float = Field(ge=0, le=1)
+
+
+class EnrichmentAttribute(BaseModel):
+    name: str
+    label: str
+    confidence: float = Field(ge=0, le=1)
+    evidence_frame_index: int | None = Field(default=None, ge=0)
+
+
+class EnrichmentPlate(BaseModel):
+    status: Literal["read", "unreadable", "not_detected", "failed"]
+    bbox_relative: RelativeBoundingBox | None = None
+    localizer_confidence: float | None = Field(default=None, ge=0, le=1)
+    ocr_confidence: float | None = Field(default=None, ge=0, le=1)
+    text: str | None = None
+    used_enhancement: bool = False
+    evidence_frame_indexes: list[int] = []
+
+
+class EnrichedVehicleResult(BaseModel):
+    vehicle_key: str
+    detection_id: int = Field(ge=1)
+    track_id: int | None = Field(default=None, ge=1)
+    class_id: int = Field(ge=0)
+    class_name: str
+    evidence_frame_indexes: list[int] = []
+    attributes_status: Literal["completed", "failed"]
+    plate_status: Literal["read", "unreadable", "not_detected", "failed"]
+    attributes: list[EnrichmentAttribute] = []
+    plate: EnrichmentPlate
+    error_code: str | None = None
+
+
+class EnrichedVehiclePage(BaseModel):
+    items: list[EnrichedVehicleResult]
+    page: int = Field(ge=1)
+    page_size: int = Field(ge=1, le=100)
+    total: int = Field(ge=0)

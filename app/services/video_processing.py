@@ -149,7 +149,8 @@ class VideoProcessor:
         self._encode_h264(temporary, output)
         temporary.unlink(missing_ok=True)
         self.store.finish(job.job_id, output, detections)
-        self.artifacts.remove(job.staged_path)
+        # Keep the original input private until the video TTL expires: enrichment uses its
+        # already computed detections and this source, never the road-actor detector again.
 
     def _encode_h264(self, source: Path, destination: Path) -> None:
         try:

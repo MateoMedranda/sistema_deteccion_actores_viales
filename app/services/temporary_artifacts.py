@@ -17,13 +17,13 @@ class TemporaryArtifactStore:
         self._lock = Lock()
         self.root.mkdir(parents=True, exist_ok=True)
 
-    def save(self, request_id: str, image_bytes: bytes) -> TemporaryArtifact:
+    def save(self, request_id: str, image_bytes: bytes, owner_key_id: str | None = None) -> TemporaryArtifact:
         with self._lock:
             self._cleanup_unlocked()
             artifact = TemporaryArtifact(
                 request_id=request_id,
                 path=self.root / f"{uuid4().hex}.jpg",
-                expires_at=datetime.now(UTC) + self.ttl,
+                expires_at=datetime.now(UTC) + self.ttl, owner_key_id=owner_key_id,
             )
             artifact.path.write_bytes(image_bytes)
             self._artifacts[request_id] = artifact

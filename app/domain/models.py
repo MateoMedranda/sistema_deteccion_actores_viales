@@ -31,6 +31,24 @@ class CountJobStatus(StrEnum):
     CANCELLED = "cancelled"
 
 
+class EnrichmentJobStatus(StrEnum):
+    QUEUED = "queued"
+    PROCESSING = "processing"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+
+
+ENRICHMENT_TERMINAL_STATES = {
+    EnrichmentJobStatus.COMPLETED, EnrichmentJobStatus.FAILED, EnrichmentJobStatus.CANCELLED,
+}
+ENRICHMENT_TRANSITIONS = {
+    EnrichmentJobStatus.QUEUED: {EnrichmentJobStatus.PROCESSING, EnrichmentJobStatus.FAILED, EnrichmentJobStatus.CANCELLED},
+    EnrichmentJobStatus.PROCESSING: {EnrichmentJobStatus.COMPLETED, EnrichmentJobStatus.FAILED, EnrichmentJobStatus.CANCELLED},
+    EnrichmentJobStatus.COMPLETED: set(), EnrichmentJobStatus.FAILED: set(), EnrichmentJobStatus.CANCELLED: set(),
+}
+
+
 COUNT_TERMINAL_STATES = {CountJobStatus.COMPLETED, CountJobStatus.FAILED, CountJobStatus.CANCELLED}
 COUNT_TRANSITIONS = {
     CountJobStatus.QUEUED: {CountJobStatus.PROCESSING, CountJobStatus.CANCELLED, CountJobStatus.FAILED},
@@ -227,3 +245,19 @@ class TemporaryArtifact:
     request_id: str
     path: Path
     expires_at: datetime
+    owner_key_id: str | None = None
+
+
+@dataclass(frozen=True)
+class EnrichmentJob:
+    enrichment_job_id: str
+    source_kind: str
+    source_id: str
+    owner_key_id: str
+    status: EnrichmentJobStatus
+    total_units: int
+    processed_units: int
+    created_at: datetime
+    updated_at: datetime
+    expires_at: datetime
+    error_code: str | None = None

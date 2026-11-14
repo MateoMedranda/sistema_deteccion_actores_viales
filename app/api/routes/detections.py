@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, File, Path, Request, UploadFile
 from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import FileResponse
 
-from app.api.dependencies import require_api_key
+from app.api.dependencies import Principal, require_api_key
 from app.api.error_handlers import ApiError
 from app.domain.schemas import DetectionResponse, ErrorResponse
 from app.services.image_validation import ImageValidator
@@ -30,7 +30,7 @@ router = APIRouter(prefix="/v1/detections", tags=["detections"])
 async def analyze_image(
     request: Request,
     image: UploadFile = File(...),
-    _: None = Depends(require_api_key),
+    principal: Principal = Depends(require_api_key),
 ) -> DetectionResponse:
     started = perf_counter()
     validator = ImageValidator(request.app.state.settings)
@@ -51,6 +51,7 @@ async def analyze_image(
             request.state.request_id,
             validated,
             validation_ms,
+            principal.key_id,
         )
     finally:
         await image.close()
@@ -63,11 +64,13 @@ async def analyze_image(
 def get_annotated_image(
     request_id: Annotated[str, Path(alias="requestId")],
     request: Request,
-    _: None = Depends(require_api_key),
+    principal: Principal = Depends(require_api_key),
 ) -> FileResponse:
     artifact, expired = request.app.state.service.artifacts.get(request_id)
     if artifact is None:
         if expired:
             raise ApiError(410, "artifact_expired", "The annotated image has expired.")
+        raise ApiError(404, "artifact_not_found", "No annotated image was found for this request.")
+    if artifact.owner_key_id != principal.key_id:
         raise ApiError(404, "artifact_not_found", "No annotated image was found for this request.")
     return FileResponse(artifact.path, media_type="image/jpeg", filename="annotated-image.jpg")

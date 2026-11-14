@@ -13,6 +13,7 @@ weights/
 *.pth
 .pytest_cache/
 .pytest-tmp/
+.pytest-tmp-*/
 .uv-cache/
 .coverage
 htmlcov/

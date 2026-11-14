@@ -1,0 +1,16 @@
+component: attribute_extractor
+version: efficientnet-b1-veri-multitask-v1
+architecture: MultiTaskEfficientNet
+weights_checksum: replace-with-sha256
+input:
+  width: 240
+  height: 240
+  color_space: RGB
+normalization:
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+labels:
+  color: [yellow, orange, green, gray, red, blue, white, golden, brown, black]
+  type: [sedan, suv, van, hatchback, mpv, pickup, bus, truck, estate]
+thresholds:
+  minimum_confidence: 0.0

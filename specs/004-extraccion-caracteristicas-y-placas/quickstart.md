@@ -10,12 +10,12 @@
 ## Configuración local
 
 1. Copiar `.env.example` a `.env` fuera del control de versiones.
-2. Configurar las rutas externas de pesos y manifiestos, por ejemplo `ATTRIBUTE_MODEL_PATH`, `ATTRIBUTE_MODEL_MANIFEST_PATH`, `PLATE_DETECTOR_WEIGHTS_PATH`, `PADDLEOCR_MODEL_DIR`, además de dispositivo, umbrales, TTL, directorios, concurrencia y clases vehiculares. No fijar rutas personales dentro del código.
+2. Configurar las rutas externas de pesos y manifiestos: `ATTRIBUTE_MODEL_WEIGHTS_PATH`, `ATTRIBUTE_MODEL_MANIFEST_PATH`, `PLATE_MODEL_WEIGHTS_PATH` y `PADDLE_OCR_LANG`; además de dispositivo, umbrales, TTL, directorios, concurrencia y clases vehiculares. No fijar rutas personales dentro del código.
 3. Instalar dependencias y ejecutar la suite:
 
    ```powershell
    uv sync --extra dev
-   uv run pytest --basetemp .pytest-tmp-enrichment --cov=app --cov-report=term-missing
+   uv run pytest --basetemp .pytest-tmp-enrichment-unique --cov=app --cov-report=term-missing
    ```
 
 4. Iniciar el servicio y verificar salud:
@@ -56,3 +56,9 @@
 - Comparar OCR original, reintento conservador y consenso por track. Ninguna lectura debe publicarse por corrección automática de formato.
 - Registrar modelo/manifiesto, dispositivo, configuración no secreta, p50/p95 por rama y por track, memoria, errores y número de reintentos; excluir textos de placas y rutas privadas de logs e informes.
 - Validar los contratos de [openapi.yaml](contracts/openapi.yaml) y las entidades de [data-model.md](data-model.md).
+
+## Estado de validación de esta implementación
+
+- La ruta de imagen, creación/consulta de trabajo y aislamiento entre API keys están cubiertos con adaptadores sin pesos reales.
+- Antes de un smoke real debe resolverse la carga de PyTorch del equipo y ejecutar `uv run pytest tests/e2e/test_enrichment_model_smoke.py` con los pesos autorizados configurados.
+- Una ejecución completa debe usar un directorio `--basetemp` nuevo, pues Windows puede bloquear bases SQLite de una ejecución anterior.

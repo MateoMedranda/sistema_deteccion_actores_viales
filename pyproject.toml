@@ -18,6 +18,10 @@ dependencies = [
   "psutil>=6,<8",
   "scipy>=1.14,<2",
   "ultralytics>=8.3,<9",
+  "torch>=2.5,<3",
+  "torchvision>=0.20,<1",
+  "paddlepaddle>=3,<4",
+  "paddleocr>=3,<4",
 ]
 
 [project.optional-dependencies]

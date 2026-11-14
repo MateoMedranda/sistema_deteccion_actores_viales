@@ -15,7 +15,7 @@ from app.api.error_handlers import (
     request_validation_error_handler,
 )
 from app.api.upload_auth import reject_unauthorized_video_upload
-from app.api.routes import count_jobs, detections, health, video_jobs
+from app.api.routes import count_jobs, detections, enrichment_jobs, health, video_jobs
 from app.core.config import Settings
 from app.core.lifespan import build_lifespan
 
@@ -35,6 +35,7 @@ def create_app(settings: Settings | None = None, detector: Detector | None = Non
     app.include_router(detections.router, prefix="/api")
     app.include_router(video_jobs.router, prefix="/api")
     app.include_router(count_jobs.router, prefix="/api")
+    app.include_router(enrichment_jobs.router, prefix="/api")
 
     @app.middleware("http")
     async def request_identity(request: Request, call_next) -> Response:

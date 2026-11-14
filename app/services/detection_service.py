@@ -14,6 +14,7 @@ from app.domain.models import AnalysisRequest, AnalysisStatus, Detection, Valida
 from app.domain.schemas import AnnotatedImage, BoundingBox, DetectionResponse, DetectionResponseItem, ImageMetadata
 from app.services.annotation_service import annotate
 from app.services.temporary_artifacts import TemporaryArtifactStore
+from app.services.image_detection_store import ImageDetectionStore
 
 
 class DetectionService:
@@ -23,6 +24,7 @@ class DetectionService:
         artifacts: TemporaryArtifactStore,
         logger: logging.Logger,
         max_concurrent_inferences: int = 1,
+        image_sources: ImageDetectionStore | None = None,
     ) -> None:
         self.detector = detector
         self.artifacts = artifacts
@@ -30,6 +32,7 @@ class DetectionService:
         self._inference_slots = threading.BoundedSemaphore(max_concurrent_inferences)
         self._requests: dict[str, AnalysisRequest] = {}
         self._requests_lock = threading.Lock()
+        self.image_sources = image_sources
 
     def begin(self, request_id: str, source_type: str = "image") -> AnalysisRequest:
         request = AnalysisRequest.received(request_id, source_type)
@@ -63,7 +66,7 @@ class DetectionService:
             return self._requests.get(request_id)
 
     def analyze(
-        self, request_id: str, image: ValidatedImage, validation_ms: int = 0
+        self, request_id: str, image: ValidatedImage, validation_ms: int = 0, owner_key_id: str = "default"
     ) -> DetectionResponse:
         request = self._get_or_begin(request_id).transition(
             AnalysisStatus.VALIDATED, validation_ms=validation_ms
@@ -88,7 +91,9 @@ class DetectionService:
             raise ApiError(503, "model_unavailable", "The image could not be analyzed at this time.") from exc
         before_annotation = perf_counter()
         annotated_bytes = annotate(decoded, detections)
-        artifact = self.artifacts.save(request_id, annotated_bytes)
+        artifact = self.artifacts.save(request_id, annotated_bytes, owner_key_id)
+        if self.image_sources is not None:
+            self.image_sources.create(request_id, owner_key_id, image.data, image.media_type, image.width, image.height, detections)
         finished = perf_counter()
         inference_ms = round((before_annotation - before_inference) * 1000)
         annotation_ms = round((finished - before_annotation) * 1000)
