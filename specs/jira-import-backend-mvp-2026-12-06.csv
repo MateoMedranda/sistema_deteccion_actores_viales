@@ -1,0 +1,41 @@
+Work item ID,Parent,Work type,Summary,Description,Priority,Status,Story Points,Labels,Due Date
+1,,Epic,Backend de deteccion de imagen,Trabajo pendiente para cerrar y asegurar la API de analisis de imagen,High,To Do,,backend-dic-6,2026-11-13
+101,1,Story,Cerrar la primera iteracion de analisis de imagen,Como responsable tecnico quiero cerrar los hallazgos de la API de imagen antes de extenderla a video,Highest,To Do,2,backend-dic-6;imagenes,2026-11-13
+1001,101,Sub-task,Ejecutar pruebas pendientes de imagen,Ejecutar y registrar pruebas unitarias de integracion y de contrato pendientes,High,To Do,,backend-dic-6;imagenes,2026-11-12
+1002,101,Sub-task,Registrar rechazos de carga de forma segura,Completar registros seguros de validacion y cobertura para extensiones no permitidas,High,To Do,,backend-dic-6;seguridad,2026-11-13
+1003,101,Sub-task,Generar evidencia de rendimiento de imagen,Ejecutar benchmark y conservar latencia modelo dispositivo y p95,High,To Do,,backend-dic-6;rendimiento,2026-11-13
+2,,Epic,Backend de video y rastreo,Trabajo para recibir procesar y entregar videos anotados mediante API con identificadores persistentes,High,To Do,,backend-dic-6,2026-11-25
+201,2,Story,Recibir y validar un video vial,Como usuario de la API quiero cargar un video para procesarlo sin que archivos invalidos afecten el servicio,High,To Do,5,backend-dic-6;video,2026-11-15
+2011,201,Sub-task,Definir limites de video,Definir formatos codecs duracion tamano y resolucion permitidos junto con VideoAnalysisJob,High,To Do,,backend-dic-6;video,2026-11-12
+2012,201,Sub-task,Crear carga de video,Implementar POST de video y validacion segura de contenido,High,To Do,,backend-dic-6;video,2026-11-14
+2013,201,Sub-task,Probar rechazos y limpieza de videos,Probar formato tamano duracion corrupcion y eliminacion de temporales fallidos,High,To Do,,backend-dic-6;pruebas;video,2026-11-15
+202,2,Story,Procesar un video como trabajo asincrono,Como usuario de la API quiero consultar estado y progreso sin bloquear la solicitud HTTP,Highest,To Do,8,backend-dic-6;video,2026-11-20
+2021,202,Sub-task,Implementar cola de trabajos de video,Crear worker o cola con estados queued processing completed failed y cancelled,Highest,To Do,,backend-dic-6;video,2026-11-17
+2022,202,Sub-task,Crear consulta de estado y progreso,Exponer consulta del job y cancelacion con mensajes seguros,High,To Do,,backend-dic-6;video,2026-11-19
+2023,202,Sub-task,Limitar concurrencia y registrar etapas,Reutilizar modelo limitar trabajos y medir validacion inferencia renderizado y total,High,To Do,,backend-dic-6;rendimiento,2026-11-20
+203,2,Story,Entregar video anotado y resumen mediante API,Como consumidor de la API quiero recuperar un video anotado temporal y un resumen por clase,High,To Do,5,backend-dic-6;video,2026-11-22
+2031,203,Sub-task,Renderizar video anotado,Implementar lectura escritura y superposicion de cajas clase y confianza,High,To Do,,backend-dic-6;video,2026-11-21
+2032,203,Sub-task,Publicar artefacto temporal de video,Extender artefactos temporales con URL protegida metadatos y expiracion,High,To Do,,backend-dic-6;seguridad,2026-11-22
+204,2,Story,Asignar ID persistente a cada actor,Como sistema quiero asociar el mismo actor entre fotogramas para habilitar conteo sin duplicados,Highest,To Do,8,backend-dic-6;tracking,2026-11-25
+2041,204,Sub-task,Definir contrato de rastreador,Definir track id clase confianza caja fotograma y estado de pista,High,To Do,,backend-dic-6;tracking,2026-11-22
+2042,204,Sub-task,Implementar adaptador de rastreo,Integrar el algoritmo de rastreo seleccionado con parametros configurables,Highest,To Do,,backend-dic-6;tracking,2026-11-24
+2043,204,Sub-task,Probar continuidad de pistas,Probar asociaciones perdida de pista reaparicion breve y dos actores cercanos,High,To Do,,backend-dic-6;pruebas;tracking,2026-11-25
+3,,Epic,Backend de conteo por linea,Trabajo para configurar una linea mediante API y contar cruces por actor clase y direccion,Highest,To Do,,backend-dic-6,2026-12-05
+501,3,Story,Configurar una linea de conteo mediante API,Como analista quiero guardar una linea recta y sus reglas de conteo para un video,High,To Do,5,backend-dic-6;conteo,2026-11-28
+5011,501,Sub-task,Definir modelo CountingLine,Crear coordenadas normalizadas direccion clases y relacion con la escena o video,High,To Do,,backend-dic-6;conteo,2026-11-26
+5012,501,Sub-task,Exponer CRUD de lineas,Crear rutas para crear consultar editar y eliminar lineas de conteo,High,To Do,,backend-dic-6;conteo,2026-11-27
+5013,501,Sub-task,Probar configuracion de lineas,Probar normalizacion recuperacion de configuracion y autorizacion,High,To Do,,backend-dic-6;pruebas;conteo,2026-11-28
+502,3,Story,Detectar cruces sin doble conteo,Como analista quiero contar cada actor una vez cuando cruza la linea en la direccion elegida,Highest,To Do,8,backend-dic-6;conteo,2026-12-03
+5021,502,Sub-task,Calcular cambio de lado de linea,Implementar calculo de lado y transicion de trayectoria respecto de la linea,Highest,To Do,,backend-dic-6;conteo,2026-11-30
+5022,502,Sub-task,Aplicar tolerancia y memoria de cruces,Evitar rebotes y duplicados con zona de tolerancia y registro por track id y linea,Highest,To Do,,backend-dic-6;conteo,2026-12-01
+5023,502,Sub-task,Registrar evento de conteo,Guardar linea track id clase direccion confianza y fotograma para cada cruce valido,High,To Do,,backend-dic-6;conteo,2026-12-02
+5024,502,Sub-task,Probar trayectorias de conteo,Probar cruce valido ida y vuelta ruido oclusion y dos actores,Highest,To Do,,backend-dic-6;pruebas;conteo,2026-12-03
+503,3,Story,Entregar conteos y eventos mediante API,Como consumidor de la API quiero consultar totales por clase y direccion junto con sus eventos,High,To Do,5,backend-dic-6;conteo,2026-12-05
+5031,503,Sub-task,Incluir conteos en contrato de video,Agregar resumen de conteo y eventos al resultado del trabajo de video,High,To Do,,backend-dic-6;conteo,2026-12-04
+5032,503,Sub-task,Renderizar linea y contador en video,Dibujar la linea y el contador actualizado en el video anotado,High,To Do,,backend-dic-6;video;conteo,2026-12-04
+5033,503,Sub-task,Preparar demostracion de backend,Ejecutar flujo completo con un video corto y documentar solicitudes y respuestas,High,To Do,,backend-dic-6;pruebas;demo,2026-12-05
+4,,Epic,Calidad seguridad y entrega de backend,Trabajo minimo de calidad para demostrar el backend de forma segura,High,To Do,,backend-dic-6,2026-12-06
+602,4,Story,Validar calidad critica del backend,Como responsable de calidad quiero pruebas de seguridad contrato y rendimiento para aceptar la demostracion,Highest,To Do,3,backend-dic-6;pruebas;seguridad,2026-12-06
+6021,602,Sub-task,Ejecutar pruebas criticas de API,Ejecutar pruebas de carga autorizacion expiracion y contrato de imagen y video,Highest,To Do,,backend-dic-6;pruebas,2026-12-05
+6022,602,Sub-task,Verificar que no se filtren secretos,Revisar logs y respuestas para confirmar que no exponen API keys rutas internas ni archivos privados,Highest,To Do,,backend-dic-6;seguridad,2026-12-05
+6023,602,Sub-task,Registrar evidencia de entrega,Guardar resultados de pruebas y limitaciones conocidas para la demostracion,High,To Do,,backend-dic-6;auditoria,2026-12-06

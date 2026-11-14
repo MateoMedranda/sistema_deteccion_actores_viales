@@ -19,6 +19,17 @@ class JsonFormatter(logging.Formatter):
             "annotation_ms",
             "total_ms",
             "error_code",
+            "job_id",
+            "owner_key_id",
+            "progress",
+            "frame_ms",
+            "memory_mb",
+            "model_version",
+            "tracker",
+            "ffmpeg_version",
+            "upload_ms",
+            "output_ms",
+            "exception_type",
         ):
             if hasattr(record, key):
                 payload[key] = getattr(record, key)

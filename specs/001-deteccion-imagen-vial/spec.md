@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-21
 
-**Status**: Draft
+**Status**: Validada condicionalmente (evidencia automatizada completada; SC-001 requiere un benchmark vial real).
 
 **Input**: Usuario solicita analizar una imagen de actores viales y obtener resultados estructurados
 y una visualización de las detecciones.
@@ -153,3 +153,16 @@ de detección y la visualización anotada sin transformación manual ni acceso a
   en iteraciones posteriores.
 - La representación visual anotada estará disponible para que la interfaz cliente la muestre, pero
   el desarrollo de una interfaz web de producción no es parte de esta funcionalidad.
+
+## Evidencia de validación (2026-11-12)
+
+| Elemento | Resultado | Evidencia |
+|---|---|---|
+| FR-001 a FR-010 | Verificados en pruebas automatizadas | 29/29 pruebas aprobadas; cobertura global de líneas del 90%. |
+| Rechazos y observabilidad | Verificados | Pruebas de archivo no permitido, corrupto, límites y log estructurado de rechazo. |
+| Contrato y consumo cliente | Verificados | Pruebas de contrato OpenAPI, recuperación protegida de artefactos y consumidor de respuestas públicas. |
+| Modelo configurado | Verificado operativamente | El modelo cargó, `/health/ready` respondió 200 y una inferencia de humo respondió 200. |
+| SC-001 | Pendiente de validación representativa | La prueba persistió métricas de infraestructura con detector falso; faltan 20 imágenes viales autorizadas y medición con el modelo aprobado. |
+| SC-002 a SC-005 | Verificados mediante la suite automatizada | Casos de error, anotación, contrato cliente y solicitudes consecutivas cubiertos por pruebas. |
+
+La evidencia detallada, cobertura y limitaciones se conservan en `coverage.md`.

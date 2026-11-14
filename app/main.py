@@ -14,7 +14,8 @@ from app.api.error_handlers import (
     http_error_handler,
     request_validation_error_handler,
 )
-from app.api.routes import detections, health
+from app.api.upload_auth import reject_unauthorized_video_upload
+from app.api.routes import detections, health, video_jobs
 from app.core.config import Settings
 from app.core.lifespan import build_lifespan
 
@@ -32,6 +33,7 @@ def create_app(settings: Settings | None = None, detector: Detector | None = Non
     app.add_exception_handler(StarletteHTTPException, http_error_handler)
     app.include_router(health.router)
     app.include_router(detections.router, prefix="/api")
+    app.include_router(video_jobs.router, prefix="/api")
 
     @app.middleware("http")
     async def request_identity(request: Request, call_next) -> Response:
@@ -39,6 +41,10 @@ def create_app(settings: Settings | None = None, detector: Detector | None = Non
         response = await call_next(request)
         response.headers["X-Request-ID"] = request.state.request_id
         return response
+
+    @app.middleware("http")
+    async def video_upload_authentication(request: Request, call_next) -> Response:
+        return await reject_unauthorized_video_upload(request, call_next, settings)
 
     return app
 

@@ -15,7 +15,7 @@ class FakeDetector:
     model_name = "fake-yolov10s.pt"
 
     def __init__(self, detections: list[Detection] | None = None) -> None:
-        self.detections = detections or [
+        self.detections = detections if detections is not None else [
             Detection(class_id=0, class_name="Car", confidence=0.91, x_min=5, y_min=5, x_max=30, y_max=30)
         ]
 
@@ -37,7 +37,12 @@ def api_key() -> str:
 
 @pytest.fixture
 def client(tmp_path, api_key):
-    settings = Settings(api_key=api_key, temp_artifact_dir=tmp_path / "artifacts")
+    settings = Settings(
+        api_key=api_key,
+        temp_artifact_dir=tmp_path / "artifacts",
+        video_job_db_path=tmp_path / "video-jobs.sqlite3",
+        video_temp_dir=tmp_path / "video-jobs",
+    )
     with TestClient(create_app(settings=settings, detector=FakeDetector())) as test_client:
         yield test_client
 

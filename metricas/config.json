@@ -1,0 +1,21 @@
+{
+  "proyecto": "Sistema de detección de actores viales",
+  "descripcion": "Microservicio FastAPI que analiza imágenes viales con un modelo YOLOv10s y entrega detecciones y una visualización anotada temporal.",
+  "dominio": "movilidad urbana",
+  "tipo_aplicacion": "API REST",
+  "metodologia": "SDD",
+  "herramienta_sdd": "GitHub Spec Kit 1.2.2",
+  "tamano_equipo": 1,
+  "moneda": "USD",
+  "costo_hora_humano": 0,
+  "horas_por_persona_mes": 152,
+  "max_horas_sesion_automatica": 4,
+  "minutos_inactividad_pausa": 30,
+  "directorio_specs": "specs",
+  "rutas_excluidas": ["specs/", "docs/", "metricas/", ".specify/", ".agents/", ".github/", ".claude/"],
+  "archivos_excluidos": "(^|/)(package-lock\\.json|pnpm-lock\\.yaml|yarn\\.lock|poetry\\.lock|Cargo\\.lock)$",
+  "extensiones_codigo": ["js", "mjs", "cjs", "ts", "tsx", "jsx", "vue", "svelte", "py", "java", "kt", "cs",
+                         "go", "rs", "rb", "php", "swift", "dart", "c", "cpp", "h", "ps1", "sh", "sql",
+                         "css", "scss", "html", "glsl", "wgsl", "json", "yml", "yaml"],
+  "patron_pruebas": "(^|/)(tests?|__tests__|spec|e2e)/|[._-](test|spec)s?\\.[a-z]+\\}?$"
+}

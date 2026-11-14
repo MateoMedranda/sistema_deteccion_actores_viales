@@ -66,7 +66,7 @@ La primera iteración queda validada cuando los escenarios anteriores pasan, las
 se ejecutan sin fallos y se conserva la evidencia de versión de modelo, configuración no secreta,
 hardware y métricas obtenidas.
 
-## Evidencia de implementación (2026-10-21)
+## Evidencia previa de implementación (2026-10-21)
 
 - Se verificó compilación sintáctica de `app/` y `tests/` con Python 3.12.
 - Pasaron 6 pruebas unitarias síncronas: anotación, mapeo de detecciones, fallo de inferencia,
@@ -79,3 +79,20 @@ hardware y métricas obtenidas.
 - Para cerrar la validación, configurar los pesos aprobados, una clave de prueba y 20 imágenes de
   referencia; después ejecutar `uv run pytest --basetemp .pytest-tmp` y registrar hardware,
   dispositivo y percentil 95 de latencia.
+
+## Evidencia de ejecución (2026-11-12)
+
+- La suite completa se ejecutó con `uv run pytest --basetemp .pytest-tmp-cov --cov=app`:
+  **29 pruebas aprobadas**, 1 advertencia de deprecación externa de Starlette y **90%** de cobertura
+  global de líneas. El XML quedó en `.runtime/audit/coverage.xml`.
+- Se comprobaron los escenarios automatizados de análisis exitoso, resultado sin detecciones,
+  errores seguros, autenticación, aislamiento de artefactos, contrato OpenAPI y consumo desde un
+  cliente de prueba.
+- El servicio cargó los pesos configurados y `/health/ready` devolvió `200`. Una imagen sintética
+  válida procesada extremo a extremo respondió `200` en 744 ms; no produjo detecciones, como era
+  esperable para una imagen gris sin actores viales.
+- La prueba de rendimiento generó `.runtime/benchmarks/reference-images.json` con 20 solicitudes
+  de infraestructura (detector falso), hardware, modelo, dispositivo, tiempos por fase y p95.
+- Sigue pendiente el escenario representativo de rendimiento: ejecutar las 20 imágenes viales
+  autorizadas con el modelo aprobado y registrar su p95. No se debe usar la medición sintética para
+  afirmar SC-001.

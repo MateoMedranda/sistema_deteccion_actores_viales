@@ -15,6 +15,83 @@ class AnalysisStatus(StrEnum):
     FAILED = "failed"
 
 
+class VideoJobStatus(StrEnum):
+    QUEUED = "queued"
+    PROCESSING = "processing"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+
+
+VIDEO_TERMINAL_STATES = {VideoJobStatus.COMPLETED, VideoJobStatus.FAILED, VideoJobStatus.CANCELLED}
+VIDEO_TRANSITIONS = {
+    VideoJobStatus.QUEUED: {VideoJobStatus.PROCESSING, VideoJobStatus.CANCELLED, VideoJobStatus.FAILED},
+    VideoJobStatus.PROCESSING: {VideoJobStatus.COMPLETED, VideoJobStatus.CANCELLED, VideoJobStatus.FAILED},
+    VideoJobStatus.COMPLETED: set(),
+    VideoJobStatus.FAILED: set(),
+    VideoJobStatus.CANCELLED: set(),
+}
+
+
+def may_transition(current: VideoJobStatus, target: VideoJobStatus) -> bool:
+    return target in VIDEO_TRANSITIONS[current]
+
+
+@dataclass(frozen=True)
+class VideoMetadata:
+    media_type: str
+    container: str
+    codec: str
+    size_bytes: int
+    duration_seconds: float
+    width: int
+    height: int
+    fps: float
+    total_frames: int
+
+
+@dataclass(frozen=True)
+class VideoJob:
+    job_id: str
+    owner_key_id: str
+    status: VideoJobStatus
+    metadata: VideoMetadata
+    created_at: datetime
+    updated_at: datetime
+    expires_at: datetime
+    staged_path: Path | None = None
+    output_path: Path | None = None
+    processed_frames: int = 0
+    error_code: str | None = None
+
+
+@dataclass(frozen=True)
+class FrameDetection:
+    frame_index: int
+    track_id: int
+    class_id: int
+    class_name: str
+    confidence: float
+    x_min: int
+    y_min: int
+    x_max: int
+    y_max: int
+
+
+@dataclass(frozen=True)
+class VideoResult:
+    job_id: str
+    class_summary: dict[str, int]
+    detections: list[FrameDetection]
+
+
+@dataclass(frozen=True)
+class VideoArtifact:
+    job_id: str
+    path: Path
+    expires_at: datetime
+
+
 @dataclass(frozen=True)
 class AnalysisRequest:
     request_id: str

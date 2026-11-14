@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     model_weights_path: Path | None = None
     ultralytics_path: Path | None = None
     api_key: str | None = None
+    api_keys: str | None = None
     model_confidence_threshold: float = Field(default=0.25, ge=0, le=1)
     inference_device: str = "0"
     max_upload_bytes: int = Field(default=10 * 1024 * 1024, gt=0)
@@ -19,6 +20,20 @@ class Settings(BaseSettings):
     artifact_ttl_seconds: int = Field(default=900, gt=0)
     max_concurrent_inferences: int = Field(default=1, gt=0)
     temp_artifact_dir: Path = Path(".runtime/artifacts")
+    max_video_upload_bytes: int = Field(default=100 * 1024 * 1024, gt=0)
+    max_video_duration_seconds: int = Field(default=120, gt=0)
+    max_video_width: int = Field(default=1920, gt=0)
+    max_video_height: int = Field(default=1080, gt=0)
+    max_video_fps: int = Field(default=30, gt=0)
+    max_video_frames: int = Field(default=3600, gt=0)
+    max_concurrent_video_jobs: int = Field(default=1, gt=0)
+    max_queued_video_jobs: int = Field(default=20, gt=0)
+    video_job_timeout_seconds: int = Field(default=300, gt=0)
+    video_result_ttl_seconds: int = Field(default=3600, gt=0)
+    video_job_db_path: Path = Path(".runtime/video-jobs.sqlite3")
+    video_temp_dir: Path = Path(".runtime/video-jobs")
+    ffprobe_executable: str = "ffprobe"
+    ffmpeg_executable: str = "ffmpeg"
 
     @field_validator("api_key")
     @classmethod
@@ -33,6 +48,23 @@ class Settings(BaseSettings):
             errors.append("MODEL_WEIGHTS_PATH is required")
         elif not self.model_weights_path.is_file():
             errors.append("MODEL_WEIGHTS_PATH does not exist")
-        if self.api_key is None:
-            errors.append("API_KEY is required")
+        if self.api_key is None and not self.api_keys:
+            errors.append("API_KEY or API_KEYS is required")
         return errors
+
+    def configured_api_keys(self) -> dict[str, str]:
+        """Return key-id to secret mappings without ever logging the secret values.
+
+        `API_KEY` preserves the first iteration contract.  `API_KEYS` allows comma-separated
+        `principal_id:secret` values for isolated video jobs.
+        """
+        keys: dict[str, str] = {}
+        if self.api_key:
+            keys["default"] = self.api_key
+        if self.api_keys:
+            for item in self.api_keys.split(","):
+                key_id, separator, secret = item.strip().partition(":")
+                if not separator or not key_id or not secret:
+                    raise ValueError("API_KEYS entries must use principal_id:secret")
+                keys[key_id] = secret
+        return keys

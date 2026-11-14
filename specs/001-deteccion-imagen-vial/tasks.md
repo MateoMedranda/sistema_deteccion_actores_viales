@@ -81,7 +81,7 @@ quedan aislados por `request_id`.
 - [X] T024 [US1] Implement orchestration of a validated image, detector call, metrics, annotated image, and response entities in `app/services/detection_service.py`
 - [X] T025 [US1] Implement protected `POST /v1/detections/images` and `GET /v1/detections/{requestId}/annotated-image` routes in `app/api/routes/detections.py`
 - [X] T026 [US1] Integrate detection routes, lifespan state, structured timing logs, and the success response contract in `app/main.py`
-- [ ] T027 [US1] Run the US1 contract, unit, and integration tests from `tests/contract/test_detection_contract.py`, `tests/unit/test_detection_service.py`, `tests/unit/test_annotation_service.py`, and `tests/integration/test_detection_routes.py`
+- [X] T027 [US1] Run the US1 contract, unit, and integration tests from `tests/contract/test_detection_contract.py`, `tests/unit/test_detection_service.py`, `tests/unit/test_annotation_service.py`, and `tests/integration/test_detection_routes.py`
 
 **Checkpoint**: Un usuario autorizado puede analizar una imagen válida y visualizar resultados
 estructurados y anotados, incluso cuando no existan detecciones.
@@ -108,7 +108,7 @@ temporales.
 - [X] T031 [US2] Implement streamed size enforcement, MIME allowlist (`image/jpeg`, `image/png`), safe decode, and 16-megapixel validation in `app/services/image_validation.py`
 - [X] T032 [US2] Connect validation failures to the public error schema and ensure temporary upload cleanup in `app/services/detection_service.py`
 - [X] T033 [US2] Map validation failures to `413`, `415`, and `422` contract responses in `app/api/routes/detections.py`
-- [ ] T034 [US2] Run the US2 unit, contract, and integration tests from `tests/unit/test_image_validation.py`, `tests/contract/test_error_responses.py`, and `tests/integration/test_invalid_uploads.py`
+- [X] T034 [US2] Run the US2 unit, contract, and integration tests from `tests/unit/test_image_validation.py`, `tests/contract/test_error_responses.py`, and `tests/integration/test_invalid_uploads.py`
 
 **Checkpoint**: Las cargas inválidas se rechazan antes de inferencia con mensajes seguros y sin
 generar resultados parciales ni archivos residuales.
@@ -134,7 +134,7 @@ servicio para mostrar detecciones y recuperar la imagen anotada, sin usar rutas 
 - [X] T038 [US3] Implement artifact-expiry detection, deletion, and `410`/`404` behavior in `app/services/temporary_artifacts.py`
 - [X] T039 [US3] Complete documented route metadata, response models, and security requirements so generated service documentation conforms to `specs/001-deteccion-imagen-vial/contracts/openapi.yaml` in `app/api/routes/detections.py`
 - [X] T040 [US3] Add a documented sample consumer flow that uses only public fields and the temporary URL in `README.md`
-- [ ] T041 [US3] Run the US3 contract and integration tests from `tests/contract/test_openapi_contract.py`, `tests/integration/test_artifact_access.py`, and `tests/integration/test_client_consumption.py`
+- [X] T041 [US3] Run the US3 contract and integration tests from `tests/contract/test_openapi_contract.py`, `tests/integration/test_artifact_access.py`, and `tests/integration/test_client_consumption.py`
 
 **Checkpoint**: El contrato público permite a una interfaz de prueba representar las detecciones y
 la imagen anotada sin conocer la implementación, los pesos ni las rutas privadas.
@@ -150,7 +150,7 @@ la imagen anotada sin conocer la implementación, los pesos ni las rutas privada
 - [X] T044 [P] Document environment variables, secure deployment expectations, API-key handling, model provenance, and excluded scope in `README.md`
 - [X] T045 Perform security review for API-key protection, non-secret logging, upload limits, private temporary storage, and artifact access using `specs/001-deteccion-imagen-vial/plan.md`
 - [ ] T046 Run all automated tests, execute every validation scenario in `specs/001-deteccion-imagen-vial/quickstart.md`, and record the resulting evidence in `specs/001-deteccion-imagen-vial/quickstart.md`
-- [ ] T047 Review FR-001 through FR-010 and SC-001 through SC-005 against the implementation and update completion evidence in `specs/001-deteccion-imagen-vial/spec.md`
+- [X] T047 Review FR-001 through FR-010 and SC-001 through SC-005 against the implementation and update completion evidence in `specs/001-deteccion-imagen-vial/spec.md`
 
 ---
 
@@ -219,10 +219,21 @@ Task: "Implement temporary artifacts in app/services/temporary_artifacts.py"
 
 ## Phase 7: Convergence
 
-- [ ] T048 CRITICAL Register every validation rejection with request ID, source type, safe error code, validation duration, and rejected status in `app/api/routes/detections.py`; add focused coverage per Constitution II (partial)
-- [ ] T049 CRITICAL Enforce allowed `.jpg`, `.jpeg`, and `.png` filename extensions in `app/services/image_validation.py` and add unit coverage, per Constitution II (partial)
+- [X] T048 CRITICAL Register every validation rejection with request ID, source type, safe error code, validation duration, and rejected status in `app/api/routes/detections.py`; add focused coverage per Constitution II (partial)
+- [X] T049 CRITICAL Enforce allowed `.jpg`, `.jpeg`, and `.png` filename extensions in `app/services/image_validation.py` and add unit coverage, per Constitution II (partial)
 - [X] T050 Align the annotated-image path parameter with `{requestId}` in `specs/001-deteccion-imagen-vial/contracts/openapi.yaml`, update `app/api/routes/detections.py`, and extend `tests/contract/test_openapi_contract.py` to compare the exact path, per US3/AC1 and contract (contradicts)
 - [X] T051 Normalize every detection bounding box to the analyzed image bounds in `app/adapters/yolov10_detector.py` or `app/services/detection_service.py` and add unit coverage, per FR-004 and data-model.md (partial)
 - [X] T052 Complete and use the `AnalysisRequest` lifecycle fields (`submitted_at`, processing time, public error code and state transitions) in `app/domain/models.py` and `app/services/detection_service.py`, per data-model.md (partial)
 - [X] T053 Strengthen `tests/unit/test_annotation_service.py` so it verifies that each annotation emits the class name and confidence label, per T019 and Constitution IV (partial)
-- [ ] T054 Capture and persist non-secret validation, inference, annotation, total-latency, model, device, hardware and p95 measurements in `tests/performance/test_reference_images.py`, per T042, SC-001 and Constitution V (partial)
+- [X] T054 Capture and persist non-secret validation, inference, annotation, total-latency, model, device, hardware and p95 measurements in `tests/performance/test_reference_images.py`, per T042, SC-001 and Constitution V (partial)
+
+---
+
+## Phase 8: Convergence
+
+- [ ] T055 CRITICAL Reject unauthenticated image uploads before multipart body parsing or temporary storage, and add an integration test proving no uploaded content is accepted before API-key authentication, per Constitution III (contradicts)
+- [ ] T056 CRITICAL Add a configurable inference/request timeout with a safe public timeout error and integration coverage, per Constitution security, performance and data constraints (missing)
+- [ ] T057 CRITICAL Record non-secret per-request memory usage together with latency and error outcome in structured logs and the benchmark report, with automated coverage, per Constitution V (partial)
+- [ ] T058 CRITICAL Resolve and document the Constitution IV conflict between its controlled video E2E-test requirement and this image-only iteration, through an approved exception or an explicitly amended scope/constitution, per Constitution IV (contradicts)
+- [ ] T059 Strengthen the 20-request validation to assert 20 unique request IDs and that every result and annotated artifact remains isolated, per SC-005 (partial)
+- [ ] T060 Extend the 20-result client-consumption test to retrieve each annotated-image public URL and verify it can be displayed without internal access, per US3/AC1 and SC-004 (partial)

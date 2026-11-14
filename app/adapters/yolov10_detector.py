@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy as np
 
 from app.domain.models import Detection
+from app.adapters.yolov10_tracker import YOLOv10ByteTrackAdapter
 
 
 class YOLOv10Detector:
@@ -42,3 +43,8 @@ class YOLOv10Detector:
                 )
             )
         return detections
+
+    def create_video_tracker(self) -> YOLOv10ByteTrackAdapter:
+        tracker = YOLOv10ByteTrackAdapter(self._model, self._confidence_threshold, self._device)
+        tracker.reset()
+        return tracker

@@ -16,3 +16,10 @@ def readiness(request: Request):
     if not request.app.state.ready:
         return JSONResponse(status_code=503, content={"status": "not_ready"})
     return HealthResponse(status="ready")
+
+
+@router.get("/health/video-ready", response_model=HealthResponse)
+def video_readiness(request: Request):
+    if not request.app.state.ready or not request.app.state.video_tools_ready:
+        return JSONResponse(status_code=503, content={"status": "not_ready"})
+    return HealthResponse(status="ready")

@@ -11,7 +11,22 @@ def test_health_and_authentication(client):
     assert response.status_code == 401
 
 
+def test_video_readiness_reports_tool_state(client):
+    response = client.get("/health/video-ready")
+    assert response.status_code in {200, 503}
+
+
+def test_video_upload_is_rejected_before_multipart_parsing(client):
+    response = client.post("/api/v1/video-jobs", content=b"not-a-video")
+    assert response.status_code == 401
+    assert response.json()["code"] == "unauthorized"
+
+
 def test_service_without_model_is_not_ready(tmp_path):
-    settings = Settings(api_key="test", temp_artifact_dir=tmp_path / "artifacts")
+    settings = Settings(
+        api_key="test",
+        model_weights_path=tmp_path / "missing-model.pt",
+        temp_artifact_dir=tmp_path / "artifacts",
+    )
     with TestClient(create_app(settings=settings)) as client:
         assert client.get("/health/ready").status_code == 503

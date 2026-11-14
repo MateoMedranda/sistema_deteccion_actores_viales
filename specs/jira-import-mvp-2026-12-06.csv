@@ -1,0 +1,48 @@
+Work item ID,Parent,Work type,Summary,Description,Priority,Status,Story Points,Labels,Due Date
+1,,Epic,Base de deteccion e interfaz de imagen,Trabajo necesario para cerrar el flujo de imagen y ofrecer una interfaz minima al usuario,High,To Do,,mvp-dic-6,2026-11-09
+101,1,Story,Cerrar la primera iteracion de analisis de imagen,Como responsable tecnico quiero cerrar hallazgos de imagen para reutilizar la API como base confiable,Highest,To Do,2,mvp-dic-6;imagenes,2026-11-09
+1001,101,Sub-task,Ejecutar pruebas pendientes de imagen,Ejecutar y registrar las pruebas unitarias de integracion y contrato pendientes,High,To Do,,mvp-dic-6;imagenes,2026-11-03
+1002,101,Sub-task,Registrar rechazos de carga de forma segura,Completar registros seguros de validacion y cobertura para extensiones no permitidas,High,To Do,,mvp-dic-6;seguridad,2026-11-05
+1003,101,Sub-task,Generar evidencia de rendimiento de imagen,Ejecutar benchmark y adjuntar latencia modelo dispositivo y p95 a la auditoria,High,To Do,,mvp-dic-6;rendimiento,2026-11-09
+102,1,Story,Interfaz para analizar una imagen,Como usuario quiero cargar una imagen y visualizar cajas clase confianza y resultado anotado,High,To Do,5,mvp-dic-6;frontend;imagenes,2026-11-09
+1021,102,Sub-task,Disenar pantalla de carga de imagen,Crear pantalla con selector de archivo envio y estados de carga,High,To Do,,mvp-dic-6;frontend,2026-11-03
+1022,102,Sub-task,Mostrar resultado anotado de imagen,Consumir el contrato publico y mostrar detecciones imagen anotada y errores seguros,High,To Do,,mvp-dic-6;frontend,2026-11-07
+1023,102,Sub-task,Proteger credenciales de la interfaz,Implementar consumo mediante backend o BFF sin exponer API key en el navegador,Highest,To Do,,mvp-dic-6;seguridad;frontend,2026-11-09
+2,,Epic,Procesamiento de video y rastreo,Trabajo para recibir procesar y entregar un video vial anotado con identificadores persistentes,High,To Do,,mvp-dic-6,2026-11-23
+201,2,Story,Recibir y validar un video vial,Como usuario quiero cargar un video para procesarlo sin que archivos invalidos afecten el servicio,High,To Do,5,mvp-dic-6;backend;video,2026-11-13
+2011,201,Sub-task,Definir limites de video,Definir formatos codecs duracion tamano y resolucion permitidos junto con el esquema VideoAnalysisJob,High,To Do,,mvp-dic-6;backend;video,2026-11-10
+2012,201,Sub-task,Crear carga de video,Implementar POST de video y validacion segura de contenido,High,To Do,,mvp-dic-6;backend;video,2026-11-12
+2013,201,Sub-task,Probar rechazos y limpieza de videos,Probar formato tamano duracion corrupcion y eliminacion de temporales fallidos,High,To Do,,mvp-dic-6;pruebas;video,2026-11-13
+202,2,Story,Procesar un video como trabajo asincrono,Como usuario quiero consultar estado y progreso del analisis sin bloquear la solicitud HTTP,Highest,To Do,8,mvp-dic-6;backend;video,2026-11-18
+2021,202,Sub-task,Implementar cola de trabajos de video,Crear worker o cola local con estados queued processing completed failed y cancelled,Highest,To Do,,mvp-dic-6;backend;video,2026-11-15
+2022,202,Sub-task,Crear consulta de estado y progreso,Exponer consulta del job y cancelacion con mensajes seguros,High,To Do,,mvp-dic-6;backend;video,2026-11-17
+2023,202,Sub-task,Limitar concurrencia y registrar etapas,Reutilizar modelo limitar trabajos concurrentes y medir validacion inferencia renderizado y total,High,To Do,,mvp-dic-6;backend;rendimiento,2026-11-18
+203,2,Story,Entregar video anotado y resumen,Como usuario quiero reproducir el video anotado y revisar las detecciones por clase,High,To Do,5,mvp-dic-6;backend;frontend;video,2026-11-20
+2031,203,Sub-task,Renderizar video anotado,Implementar lectura escritura y superposicion de cajas clase y confianza,High,To Do,,mvp-dic-6;backend;video,2026-11-19
+2032,203,Sub-task,Publicar artefacto temporal de video,Extender artefactos temporales con URL protegida metadatos y expiracion,High,To Do,,mvp-dic-6;backend;seguridad,2026-11-20
+2033,203,Sub-task,Mostrar video y resumen en la interfaz,Agregar reproductor resultado por clase y estados de procesamiento en frontend,High,To Do,,mvp-dic-6;frontend;video,2026-11-20
+204,2,Story,Asignar ID persistente a cada actor,Como sistema quiero asociar el mismo actor entre fotogramas para habilitar conteo sin duplicados,Highest,To Do,8,mvp-dic-6;backend;tracking,2026-11-23
+2041,204,Sub-task,Definir contrato de rastreador,Definir track id clase confianza caja fotograma y estado de pista,High,To Do,,mvp-dic-6;backend;tracking,2026-11-20
+2042,204,Sub-task,Implementar adaptador de rastreo,Integrar el algoritmo de rastreo seleccionado con parametros configurables,Highest,To Do,,mvp-dic-6;backend;tracking,2026-11-22
+2043,204,Sub-task,Probar continuidad de pistas,Probar asociaciones perdida de pista reaparicion breve y dos actores cercanos,High,To Do,,mvp-dic-6;pruebas;tracking,2026-11-23
+3,,Epic,Conteo por linea configurable,Trabajo para dibujar una linea sobre el video y contar cruces por actor clase y direccion,Highest,To Do,,mvp-dic-6,2026-12-06
+501,3,Story,Configurar una linea de conteo sobre el video,Como analista vial quiero dibujar y guardar una linea recta para decidir donde se cuenta el transito,High,To Do,5,mvp-dic-6;frontend;conteo,2026-11-28
+5011,501,Sub-task,Guardar configuracion de linea,Crear CountingLine con coordenadas normalizadas direccion clases y escena,High,To Do,,mvp-dic-6;backend;conteo,2026-11-25
+5012,501,Sub-task,Exponer CRUD de lineas,Crear rutas para crear consultar editar y eliminar la linea de una escena,High,To Do,,mvp-dic-6;backend;conteo,2026-11-26
+5013,501,Sub-task,Dibujar linea en la interfaz,Permitir seleccionar dos puntos mover eliminar y previsualizar una linea sobre un fotograma,High,To Do,,mvp-dic-6;frontend;conteo,2026-11-28
+5014,501,Sub-task,Probar coordenadas y permisos,Probar normalizacion recuperacion de configuracion y autorizacion,High,To Do,,mvp-dic-6;pruebas;conteo,2026-11-28
+502,3,Story,Detectar cruces sin doble conteo,Como analista vial quiero contar cada actor una vez cuando cruza la linea en la direccion elegida,Highest,To Do,8,mvp-dic-6;backend;conteo,2026-12-03
+5021,502,Sub-task,Calcular cambio de lado de linea,Implementar calculo de lado y transicion de trayectoria respecto de la linea,Highest,To Do,,mvp-dic-6;backend;conteo,2026-11-30
+5022,502,Sub-task,Aplicar tolerancia y memoria de cruces,Evitar rebotes y duplicados con zona de tolerancia y registro por track id y linea,Highest,To Do,,mvp-dic-6;backend;conteo,2026-12-01
+5023,502,Sub-task,Registrar evento de conteo,Guardar linea track id clase direccion confianza y fotograma para cada cruce valido,High,To Do,,mvp-dic-6;backend;conteo,2026-12-02
+5024,502,Sub-task,Probar trayectorias de conteo,Probar cruce valido ida y vuelta ruido oclusion y dos actores,Highest,To Do,,mvp-dic-6;pruebas;conteo,2026-12-03
+503,3,Story,Mostrar conteos y eventos,Como usuario quiero ver el total por clase y direccion en el video y en la interfaz,High,To Do,5,mvp-dic-6;frontend;conteo,2026-12-06
+5031,503,Sub-task,Incluir conteos en contrato de video,Agregar resumen de conteo y eventos al resultado del trabajo de video,High,To Do,,mvp-dic-6;backend;conteo,2026-12-04
+5032,503,Sub-task,Renderizar linea y contador en video,Dibujar la linea y el contador actualizado en el video anotado,High,To Do,,mvp-dic-6;backend;video;conteo,2026-12-04
+5033,503,Sub-task,Mostrar tablero de conteos,Crear tarjetas por clase direccion y tabla simple de eventos en frontend,High,To Do,,mvp-dic-6;frontend;conteo,2026-12-05
+5034,503,Sub-task,Preparar demostracion integrada,Ejecutar flujo completo con un video corto y documentar pasos de demostracion,High,To Do,,mvp-dic-6;pruebas;demo,2026-12-06
+4,,Epic,Calidad seguridad y entrega,Trabajo minimo de calidad para demostrar el MVP de forma segura el 6 de diciembre,High,To Do,,mvp-dic-6,2026-12-06
+602,4,Story,Validar calidad critica del MVP,Como responsable de calidad quiero pruebas repetibles de seguridad contrato y rendimiento para aceptar la demostracion,Highest,To Do,3,mvp-dic-6;pruebas;seguridad,2026-12-06
+6021,602,Sub-task,Ejecutar pruebas criticas de API,Ejecutar pruebas de carga autorizacion expiracion y contrato de imagen y video,Highest,To Do,,mvp-dic-6;pruebas,2026-12-05
+6022,602,Sub-task,Verificar que no se filtren secretos,Revisar logs respuestas y frontend para confirmar que no exponen API keys rutas internas ni imagenes privadas,Highest,To Do,,mvp-dic-6;seguridad,2026-12-05
+6023,602,Sub-task,Registrar evidencia de entrega,Guardar resultados de prueba y limitaciones conocidas para la demostracion del 6 de diciembre,High,To Do,,mvp-dic-6;auditoria,2026-12-06
