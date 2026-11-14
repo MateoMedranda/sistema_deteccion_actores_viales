@@ -64,7 +64,7 @@ Como usuario autorizado, quiero recuperar un video anotado con la línea y los c
 
 ### Edge Cases
 
-- Un actor inicia o termina sobre la línea: no se cuenta hasta observar un cambio de lado válido.
+- Un actor inicia o termina sobre la línea: no se cuenta hasta observar dos lados no nulos y distintos. Una observación exactamente sobre la línea no reemplaza el último lado no nulo; por tanto, la secuencia lado A → línea → lado B constituye un único cruce válido cuando se observa el lado B.
 - Dos actores con clases distintas cruzan en el mismo fotograma: ambos generan eventos separados.
 - El seguimiento se pierde y reaparece con otro identificador: se trata como un nuevo actor; el sistema no afirma una identidad real.
 - El video o sus detecciones expiran durante el cálculo: no se publica un resultado parcial.

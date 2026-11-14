@@ -19,7 +19,7 @@ description: "Tareas implementables para conteo direccional de actores por líne
 
 - [ ] T001 [P] Añadir en `app/core/config.py` los límites configurables del trabajo de conteo (concurrencia, directorio temporal y retención) con valores seguros por defecto.
 - [ ] T002 [P] Preparar en `tests/video_fixtures.py` trayectorias y videos controlados reutilizables con `track_id`, clases, cruces, no-cruces y cruces simultáneos.
-- [ ] T003 Registrar el nuevo router de conteos en `app/api/routes/__init__.py` y `app/main.py` bajo el prefijo existente `/api`, sin crear rutas de frontend.
+- [ ] T003 Crear el esqueleto importable de `app/api/routes/count_jobs.py` y registrarlo en `app/api/routes/__init__.py` y `app/main.py` bajo el prefijo existente `/api`, sin crear rutas de frontend.
 
 ---
 
@@ -58,7 +58,7 @@ description: "Tareas implementables para conteo direccional de actores por líne
 - [ ] T014 [US1] Crear `app/services/count_job_service.py` para validar que el `source_video_job_id` pertenece al solicitante y está `completed` y no vencido antes de persistir un trabajo.
 - [ ] T015 [US1] Implementar en `app/services/count_job_store.py` la creación atómica de `CountLine` y `CountJob` con UUID público, estado `queued`, propietario y `expires_at` no posterior a la fuente.
 - [ ] T016 [US1] Añadir en `app/services/count_worker.py` el encolado no bloqueante del trabajo creado, respetando el límite de concurrencia configurado.
-- [ ] T017 [US1] Crear `app/api/routes/count_jobs.py` con el endpoint de creación autenticado, respuesta `202` y errores que no revelen propiedad, rutas internas ni secretos.
+- [ ] T017 [US1] Implementar en `app/api/routes/count_jobs.py` el endpoint de creación autenticado, respuesta `202` y errores que no revelen propiedad, rutas internas ni secretos.
 - [ ] T018 [US1] Registrar en `app/services/count_job_service.py` y `app/api/routes/count_jobs.py` los logs estructurados de identificador de conteo, video fuente y resultado seguro de creación.
 
 **Checkpoint**: La creación de un trabajo de conteo es segura, aislada, asíncrona y demostrable sin implementar aún eventos o video anotado.
@@ -73,18 +73,18 @@ description: "Tareas implementables para conteo direccional de actores por líne
 
 ### Tests for User Story 2
 
-- [ ] T019 [P] [US2] Ampliar `tests/unit/test_line_counting.py` con pruebas de signo del producto cruzado, centro de caja, línea diagonal, cambio válido de lado y clasificación `A_to_B`/`B_to_A`.
+- [ ] T019 [P] [US2] Ampliar `tests/unit/test_line_counting.py` con pruebas de signo del producto cruzado, centro de caja, línea diagonal, cambio válido de lado, clasificación `A_to_B`/`B_to_A` y secuencias lado A → línea → lado B, inicio o fin sobre la línea.
 - [ ] T020 [P] [US2] Ampliar `tests/unit/test_count_job_store.py` para la unicidad por `count_job_id`/`track_id`, progreso no decreciente y agregados por clase y sentido.
 - [ ] T021 [P] [US2] Crear pruebas de contrato de consulta de estado y eventos paginados en `tests/contract/test_count_jobs_contract.py`.
 - [ ] T022 [P] [US2] Ampliar `tests/integration/test_count_job_routes.py` con progreso incremental, eventos/totales durante `processing`, aislamiento entre credenciales y cero cruces.
 
 ### Implementation for User Story 2
 
-- [ ] T023 [US2] Implementar en `app/services/line_counting.py` la determinación de lado mediante producto cruzado y el cruce válido cuando el centro de la caja cambia de lado entre observaciones consecutivas.
+- [ ] T023 [US2] Implementar en `app/services/line_counting.py` la determinación de lado mediante producto cruzado, conservando el último lado no nulo, y el cruce válido cuando el centro de la caja observa dos lados no nulos distintos.
 - [ ] T024 [US2] Implementar en `app/services/line_counting.py` la deduplicación: contar solamente el primer cambio válido por cada par `count_job_id`/`track_id`, ignorando actor estacionario, roce y recross posterior.
 - [ ] T025 [US2] Implementar en `app/services/count_job_store.py` el guardado transaccional de `CountEvent` con `class_id`, `class_name`, `direction`, `frame_index` no negativo y `video_time_seconds` no negativo, junto con totales agregados.
 - [ ] T026 [US2] Crear `app/services/count_processing.py` para leer exclusivamente `FrameDetection` y `track_id` ya almacenados del video fuente, procesarlos por fotograma y no invocar detector, tracker ni pesos del modelo.
-- [ ] T027 [US2] Integrar en `app/services/count_worker.py` la publicación incremental de `processed_frames`, porcentaje, eventos confirmados, totales, duración y errores seguros durante el procesamiento.
+- [ ] T027 [US2] Integrar en `app/services/count_worker.py` la publicación incremental de `processed_frames`, porcentaje, eventos confirmados, totales, duración y errores seguros; comprobar cancelación y vencimiento de la fuente antes de publicar cada avance o resultado.
 - [ ] T028 [US2] Añadir en `app/services/count_job_service.py` las consultas autorizadas de estado, resumen y eventos paginados ordenados por fotograma, verificando propietario y TTL en cada acceso.
 - [ ] T029 [US2] Implementar en `app/api/routes/count_jobs.py` los endpoints `GET /v1/count-jobs/{countJobId}` y `GET /v1/count-jobs/{countJobId}/events` conforme a `specs/003-conteo-por-linea/contracts/openapi.yaml`.
 - [ ] T030 [US2] Añadir en `app/services/count_processing.py` logs estructurados de duración, fotogramas, cantidad de eventos y errores, sin incluir detecciones completas, rutas ni credenciales.
@@ -108,8 +108,8 @@ description: "Tareas implementables para conteo direccional de actores por líne
 ### Implementation for User Story 3
 
 - [ ] T034 [US3] Crear `app/services/count_annotation_service.py` para superponer sobre el video temporal existente la línea orientada, `A_to_B`, `B_to_A`, `track_id` y totales acumulados, sin redetectar actores.
-- [ ] T035 [US3] Integrar en `app/services/count_processing.py` la generación atómica del MP4 anotado temporal y conservar su ruta privada solo cuando el trabajo llegue a `completed`.
-- [ ] T036 [US3] Añadir en `app/services/count_job_store.py` la recuperación y purga coordinada del artefacto, configuración, eventos y resumen cuando venza el video fuente o falle el trabajo.
+- [ ] T035 [US3] Integrar en `app/services/count_processing.py` la generación atómica del MP4 anotado temporal; comprobar que fuente y trabajo siguen vigentes/no cancelados y conservar su ruta privada solo cuando el trabajo llegue a `completed`.
+- [ ] T036 [US3] Añadir en `app/services/count_job_store.py` la recuperación y purga coordinada del artefacto, configuración, eventos y resumen cuando venza el video fuente, se cancele o falle el trabajo, sin publicar resultados parciales.
 - [ ] T037 [US3] Implementar en `app/services/count_job_service.py` y `app/api/routes/count_jobs.py` la recuperación autenticada de `/annotated-video`, sin filtrar rutas de archivos ni contenido de otro propietario.
 
 **Checkpoint**: El resultado visual temporal está protegido, muestra evidencia coherente y desaparece con la fuente temporal.
