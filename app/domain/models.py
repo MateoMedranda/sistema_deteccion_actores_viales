@@ -49,6 +49,10 @@ ENRICHMENT_TRANSITIONS = {
 }
 
 
+def may_transition_enrichment(current: EnrichmentJobStatus, target: EnrichmentJobStatus) -> bool:
+    return target in ENRICHMENT_TRANSITIONS[current]
+
+
 COUNT_TERMINAL_STATES = {CountJobStatus.COMPLETED, CountJobStatus.FAILED, CountJobStatus.CANCELLED}
 COUNT_TRANSITIONS = {
     CountJobStatus.QUEUED: {CountJobStatus.PROCESSING, CountJobStatus.CANCELLED, CountJobStatus.FAILED},
@@ -261,3 +265,40 @@ class EnrichmentJob:
     updated_at: datetime
     expires_at: datetime
     error_code: str | None = None
+
+
+@dataclass(frozen=True)
+class EnrichmentUnit:
+    unit_id: str
+    enrichment_job_id: str
+    detection_id: int
+    track_id: int | None
+    class_id: int
+    class_name: str
+    evidence_frame_indexes: tuple[int, ...]
+
+
+@dataclass(frozen=True)
+class AttributeResult:
+    unit_id: str
+    attribute_name: str
+    label: str
+    confidence: float
+    evidence_frame_index: int | None
+
+
+@dataclass(frozen=True)
+class PlateResult:
+    unit_id: str
+    status: str
+    plate_text: str | None
+    localizer_confidence: float | None
+    ocr_confidence: float | None
+
+
+@dataclass(frozen=True)
+class PlateCandidate:
+    unit_id: str
+    text: str | None
+    confidence: float | None
+    frame_index: int | None

@@ -19,7 +19,7 @@ description: "Tareas implementables para extracción de características y placa
 
 - [X] T001 Añadir en `pyproject.toml` las dependencias explícitas y versiones reproducibles para PaddleOCR/PaddlePaddle y el cargador compatible con el checkpoint EfficientNet-B1, sin depender de instalaciones transitivas de Ultralytics.
 - [X] T002 [P] Añadir en `app/core/config.py` y `.env.example` rutas externas de pesos/manifiesto, directorios privados, límites de cola/concurrencia, TTL, lista de clases vehiculares, máximo de evidencia por track y umbrales de localización, reintento y aceptación OCR.
-- [ ] T003 [P] Crear en `tests/enrichment_fixtures.py` imágenes, detecciones, tracks, lecturas OCR y API keys sintéticas; no incluir matrículas reales ni pesos en el repositorio.
+- [X] T003 [P] Crear en `tests/enrichment_fixtures.py` imágenes, detecciones, tracks, lecturas OCR y API keys sintéticas; no incluir matrículas reales ni pesos en el repositorio.
 - [X] T004 [P] Crear el manifiesto de ejemplo y validador de configuración en `specs/004-extraccion-caracteristicas-y-placas/model-manifest.example.yaml` para arquitectura, etiquetas, entrada, normalización, umbrales, versión y checksum del EfficientNet-B1.
 
 ---
@@ -30,14 +30,14 @@ description: "Tareas implementables para extracción de características y placa
 
 **⚠️ CRITICAL**: No iniciar una historia de usuario antes de completar esta fase.
 
-- [ ] T005 [P] Extender `app/domain/models.py` con `EnrichmentJobStatus`, `EnrichmentJob`, `EnrichmentUnit`, `AttributeResult`, `PlateResult`, `PlateCandidate` y transiciones `queued → processing → completed`; permitir `failed` o `cancelled` solo desde estados no terminales.
+- [X] T005 [P] Extender `app/domain/models.py` con `EnrichmentJobStatus`, `EnrichmentJob`, `EnrichmentUnit`, `AttributeResult`, `PlateResult`, `PlateCandidate` y transiciones `queued → processing → completed`; permitir `failed` o `cancelled` solo desde estados no terminales.
 - [X] T006 [P] Extender `app/domain/schemas.py` con DTOs del contrato: fuente `image|video`, creación, estado/progreso, resultado paginado, atributos, caja relativa y placa con estados `read`, `unreadable`, `not_detected` o `failed`.
-- [ ] T007 Crear protocolos tipados y falsos de prueba en `app/adapters/attribute_extractor_protocol.py`, `app/adapters/plate_localizer_protocol.py`, `app/adapters/plate_reader_protocol.py` y `tests/enrichment_fixtures.py`.
+- [X] T007 Crear protocolos tipados y falsos de prueba en `app/adapters/attribute_extractor_protocol.py`, `app/adapters/plate_localizer_protocol.py`, `app/adapters/plate_reader_protocol.py` y `tests/enrichment_fixtures.py`.
 - [X] T008 Crear `app/services/source_artifacts.py` para almacenar originales y variantes con nombres no predecibles, rutas privadas y eliminación idempotente; nunca devolver una ruta local ni URL pública de recorte.
 - [X] T009 Crear `app/services/image_detection_store.py` con una fuente temporal que cumpla: `source_id` UUID, `owner_key_id` obligatorio, imagen original privada, dimensiones/medio validados, detecciones con `detection_id` estable y `expires_at` no posterior a `ARTIFACT_TTL_SECONDS`.
 - [X] T010 Actualizar `app/services/detection_service.py`, `app/api/routes/detections.py` y `app/services/temporary_artifacts.py` para asociar el principal autenticado, conservar el original/detecciones de imagen y proteger también la imagen anotada por propietario hasta su vencimiento.
 - [X] T011 Actualizar `app/services/video_processing.py`, `app/services/video_job_store.py` y `app/services/video_artifacts.py` para conservar la entrada original de un `VideoJob` terminado solo hasta su TTL, sin romper la limpieza de videos anotados existentes.
-- [ ] T012 Crear `app/services/enrichment_job_store.py` con SQLite, índices por propietario/vencimiento y tablas para trabajos, unidades, atributos, placas y candidatos; imponer un `track_id` consolidado por trabajo y `expires_at = min(vencimiento fuente, ENRICHMENT_RESULT_TTL_SECONDS)`.
+- [X] T012 Crear `app/services/enrichment_job_store.py` con SQLite, índices por propietario/vencimiento y tablas para trabajos, unidades, atributos, placas y candidatos; imponer un `track_id` consolidado por trabajo y `expires_at = min(vencimiento fuente, ENRICHMENT_RESULT_TTL_SECONDS)`.
 - [ ] T013 Crear `app/services/enrichment_job_service.py` y `app/services/enrichment_worker.py` como cola temporal recuperable: reencolar `processing` vigente tras reinicio y purgar resultados/fuentes vencidos sin texto, recortes ni rutas residuales.
 - [ ] T014 Integrar configuración, almacenes, adaptadores cargados una vez, límites por modelo, trabajador y limpieza en `app/core/lifespan.py`; registrar `ready` solo después de smoke checks no sensibles de componentes configurados.
 - [ ] T015 Crear `app/api/routes/enrichment_jobs.py`, registrarlo en `app/main.py` bajo `/api` y ampliar `app/api/error_handlers.py` con errores seguros para fuente no apta, cola llena, modelo no disponible y resultado vencido.
@@ -88,10 +88,10 @@ description: "Tareas implementables para extracción de características y placa
 ### Implementation for User Story 2
 
 - [X] T030 [US2] Implementar `app/adapters/efficientnet_attribute_extractor.py` contra `AttributeExtractor`, usando únicamente manifiesto y pesos externos; cargar el modelo una vez y devolver etiquetas del catálogo aprobado.
-- [ ] T031 [US2] Crear la selección de candidatos por track en `app/services/track_consolidation.py`, con máximo configurable de fotogramas de evidencia y sin afirmar identidad real fuera del seguimiento existente.
-- [ ] T032 [US2] Implementar en `app/services/enrichment_processing.py` la rama de atributos: recorte válido, inferencia acotada, atributo/etiqueta/confianza, fotograma de evidencia y estado `completed|failed` por unidad.
+- [X] T031 [US2] Crear la selección de candidatos por track en `app/services/track_consolidation.py`, con máximo configurable de fotogramas de evidencia y sin afirmar identidad real fuera del seguimiento existente.
+- [X] T032 [US2] Implementar en `app/services/enrichment_processing.py` la rama de atributos: recorte válido, inferencia acotada, atributo/etiqueta/confianza, fotograma de evidencia y estado `completed|failed` por unidad.
 - [ ] T033 [US2] Implementar en `app/services/enrichment_job_store.py` la persistencia de `AttributeResult` con clave única `(unit_id, attribute_name)`, confianza finita entre 0 y 1 y manifiesto/versiones no secretas.
-- [ ] T034 [US2] Integrar en `app/services/enrichment_worker.py` la ejecución independiente de atributos con semáforo del modelo y la conservación de resultados aun cuando la rama de placa falle.
+- [X] T034 [US2] Integrar en `app/services/enrichment_worker.py` la ejecución independiente de atributos con semáforo del modelo y la conservación de resultados aun cuando la rama de placa falle.
 - [ ] T035 [US2] Implementar en `app/services/enrichment_job_service.py` y `app/api/routes/enrichment_jobs.py` la paginación de resultados conforme al contrato, con atributos, referencia de detección y `evidence_frame_indexes` sin revelar recortes.
 
 **Checkpoint**: Los atributos del modelo aprobado se entregan por vehículo/track con trazabilidad, aislamiento y tolerancia al fallo de la otra rama.
@@ -115,11 +115,11 @@ description: "Tareas implementables para extracción de características y placa
 
 - [X] T040 [US3] Implementar `app/adapters/yolov8_plate_localizer.py` contra `PlateLocalizer`, cargando una vez los pesos externos YOLOv8n y devolviendo una única candidata de mayor confianza dentro del recorte vehicular.
 - [X] T041 [US3] Implementar `app/adapters/paddle_plate_reader.py` contra `PlateReader`, con directorio/modelo/idioma/dispositivo externos y retorno de texto más `rec_score` sin registrar el texto.
-- [ ] T042 [US3] Implementar `app/services/plate_quality.py` para validar calidad, rectificar orientación/perspectiva y aplicar únicamente contraste, reducción de ruido, nitidez y escalado conservador cuando el OCR original quede bajo `PLATE_OCR_RETRY_THRESHOLD`.
+- [X] T042 [US3] Implementar `app/services/plate_quality.py` para validar calidad, rectificar orientación/perspectiva y aplicar únicamente contraste, reducción de ruido, nitidez y escalado conservador cuando el OCR original quede bajo `PLATE_OCR_RETRY_THRESHOLD`.
 - [ ] T043 [US3] Implementar en `app/services/enrichment_processing.py` la rama de placa: localización, OCR original, un único reintento, umbral `PLATE_OCR_ACCEPT_THRESHOLD`, artefactos temporales privados y estados seguros sin completar caracteres por formato.
-- [ ] T044 [US3] Implementar `app/services/plate_consensus.py` para consolidar por `track_id` lecturas válidas ponderadas por calidad, confianza del localizador y OCR; devolver `unreadable` ante desacuerdo o evidencia insuficiente.
+- [X] T044 [US3] Implementar `app/services/plate_consensus.py` para consolidar por `track_id` lecturas válidas ponderadas por calidad, confianza del localizador y OCR; devolver `unreadable` ante desacuerdo o evidencia insuficiente.
 - [ ] T045 [US3] Implementar en `app/services/enrichment_job_store.py` la persistencia temporal de candidatos y `PlateResult`, permitiendo `plate_text` solo con estado `read` y purgándolo junto con sus variantes/recortes.
-- [ ] T046 [US3] Integrar en `app/services/enrichment_worker.py` la rama de placa en paralelo, con semáforo independiente, y conservar la rama de atributos cuando la placa falle o viceversa.
+- [X] T046 [US3] Integrar en `app/services/enrichment_worker.py` la rama de placa en paralelo, con semáforo independiente, y conservar la rama de atributos cuando la placa falle o viceversa.
 - [ ] T047 [US3] Actualizar `app/domain/schemas.py`, `app/services/enrichment_job_service.py` y `app/api/routes/enrichment_jobs.py` para devolver caja relativa, confianzas, evidencia y texto exclusivamente al propietario y solo con `plate.status=read`.
 
 **Checkpoint**: La lectura de placa es privada, temporal, respaldada por confianza/consenso y no transforma una duda de OCR en una matrícula afirmada.

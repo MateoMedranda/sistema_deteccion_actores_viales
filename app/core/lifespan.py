@@ -83,7 +83,10 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
                 reader = PaddlePlateReader(settings.paddle_ocr_lang)
         except Exception:
             logger.exception("plate_model_initialization_failed")
-        enrichment_worker = EnrichmentWorker(enrichment_jobs, app.state.enrichment_job_service, EnrichmentProcessor(attributes, localizer, reader, settings.plate_ocr_retry_threshold, settings.plate_ocr_accept_threshold), logger)
+        enrichment_processor = EnrichmentProcessor(attributes, localizer, reader, settings.plate_ocr_retry_threshold, settings.plate_ocr_accept_threshold, settings.max_concurrent_attribute_inferences, settings.max_concurrent_plate_inferences)
+        enrichment_configured = bool(settings.attribute_model_weights_path or settings.plate_model_weights_path)
+        app.state.enrichment_models_ready = not enrichment_configured or (attributes is not None and localizer is not None and reader is not None)
+        enrichment_worker = EnrichmentWorker(enrichment_jobs, app.state.enrichment_job_service, enrichment_processor, logger)
         enrichment_worker.start(); app.state.enrichment_worker = enrichment_worker
         video_worker = None
         if detector is not None:

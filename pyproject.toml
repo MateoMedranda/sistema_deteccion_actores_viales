@@ -21,7 +21,9 @@ dependencies = [
   "torch>=2.5,<3",
   "torchvision>=0.20,<1",
   "paddlepaddle>=3,<4",
-  "paddleocr>=3,<4",
+  # The approved ALPR adapter uses the stable PaddleOCR 2.x `ocr()` API.  Version 3
+  # pulls PaddleX/ModelScope, which imports PyTorch during OCR startup on Windows.
+  "paddleocr>=2.8,<3",
 ]
 
 [project.optional-dependencies]

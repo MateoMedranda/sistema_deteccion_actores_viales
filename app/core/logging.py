@@ -30,6 +30,13 @@ class JsonFormatter(logging.Formatter):
             "upload_ms",
             "output_ms",
             "exception_type",
+            "enrichment_job_id",
+            "branch",
+            "latency_ms",
+            "eligible_vehicles",
+            "expires_at",
+            "retry_count",
+            "candidate_count",
         ):
             if hasattr(record, key):
                 payload[key] = getattr(record, key)

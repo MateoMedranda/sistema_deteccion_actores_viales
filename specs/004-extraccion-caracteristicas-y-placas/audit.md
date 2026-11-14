@@ -15,14 +15,14 @@
 
 | Comando | Resultado |
 |---|---|
-| `uv run pytest tests/unit/test_enrichment_core.py tests/integration/test_enrichment_job_routes.py --basetemp .pytest-tmp-004-run-d -q` | 4 aprobadas |
-| `uv run pytest --basetemp .pytest-tmp-004-run-b -q` | 83 aprobadas, 1 fallo heredado de conteo por línea |
+| `uv run pytest tests/unit/test_enrichment_core.py tests/unit/test_enrichment_job_store.py tests/unit/test_track_consolidation.py tests/unit/test_plate_quality.py tests/integration/test_enrichment_job_routes.py --basetemp .pytest-tmp-004-check -q` | 7 aprobadas |
+| `uv run pytest --basetemp .pytest-tmp-004-final --cov=app --cov-report=term-missing -q` | 84% de cobertura total; 1 fallo heredado de conteo por línea |
 
 El único fallo de la suite completa fue `tests/integration/test_count_job_routes.py::test_count_job_reports_one_directional_event`: el trabajo de conteo termina pero no registra el evento esperado. No pertenece al flujo añadido en esta iteración y queda pendiente de corrección/regresión de la iteración 003.
 
 ## Limitaciones y trabajo pendiente real
 
-1. El smoke con modelos reales no se completó: en este equipo `import torch` falla al cargar `torch/lib/shm.dll` (`WinError 127`). Debe repararse la instalación nativa de PyTorch/Microsoft Visual C++ y ejecutar los smoke/E2E con los pesos autorizados.
+1. El smoke con modelos reales no se completó: el checkpoint EfficientNet se puede abrir mediante `weights_only=True`, pero importar PaddleOCR alcanza `torch/lib/shm.dll` y falla con `WinError 127`. Se fijó PaddleOCR 2.x, compatible con el adaptador aprobado, pero debe repararse la instalación nativa de PyTorch/Microsoft Visual C++ antes de ejecutar los smoke/E2E con los pesos autorizados.
 2. Faltan la evaluación anotada de 20 recortes y 10 tracks, sus métricas de F1/AP/CER/tasa de lectura falsa y el benchmark p50/p95.
 3. La consolidación actual selecciona la evidencia de mayor confianza por `track_id`; queda pendiente implementar consenso multi-fotograma de placas y la persistencia relacional detallada de candidatos.
 4. Faltan las pruebas de contrato completas, limpieza/expiración de variantes, límites de concurrencia por modelo y telemetría p50/p95.

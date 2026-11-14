@@ -1,13 +1,11 @@
 from __future__ import annotations
-from dataclasses import asdict
-from pathlib import Path
 
 from app.api.error_handlers import ApiError
 from app.core.config import Settings
 from app.domain.models import Detection, FrameDetection
 from app.services.enrichment_job_store import EnrichmentJobStore
 from app.services.image_detection_store import ImageDetectionStore
-from app.services.vehicle_cropping import crop_vehicle
+from app.services.track_consolidation import select_track_evidence
 
 
 class EnrichmentJobService:
@@ -33,11 +31,7 @@ class EnrichmentJobService:
         vehicle_classes = self.settings.vehicle_class_set()
         if kind == "image":
             return [{"detection_id": index + 1, "track_id": None, "class_id": d.class_id, "class_name": d.class_name, "frame_index": None, "bbox": d} for index, d in enumerate(source.detections) if d.class_name.lower() in vehicle_classes]
-        best: dict[int, FrameDetection] = {}
-        for detection in self.video_jobs.all_detections(source.job_id, owner_key_id):
-            if detection.class_name.lower() not in vehicle_classes: continue
-            if detection.track_id not in best or detection.confidence > best[detection.track_id].confidence: best[detection.track_id] = detection
-        return [{"detection_id": index + 1, "track_id": d.track_id, "class_id": d.class_id, "class_name": d.class_name, "frame_index": d.frame_index, "bbox": d} for index, d in enumerate(best.values())]
+        return select_track_evidence(self.video_jobs.all_detections(source.job_id, owner_key_id), vehicle_classes, self.settings.max_evidence_frames_per_track)
 
     def status(self, job_id: str, owner_key_id: str) -> dict:
         job = self.jobs.get(job_id, owner_key_id); results, total = self.jobs.results(job_id, owner_key_id, 1, 100) if job.status.value in {"completed", "processing"} else ([], 0)

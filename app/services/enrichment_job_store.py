@@ -27,6 +27,21 @@ class EnrichmentJobStore:
         self.connection.execute("""CREATE TABLE IF NOT EXISTS expired_enrichment_jobs (
           enrichment_job_id TEXT NOT NULL, owner_key_id TEXT NOT NULL, expired_at TEXT NOT NULL,
           PRIMARY KEY(enrichment_job_id, owner_key_id))""")
+        self.connection.executescript("""
+          CREATE TABLE IF NOT EXISTS enrichment_units (
+            unit_id TEXT PRIMARY KEY, enrichment_job_id TEXT NOT NULL, detection_id INTEGER NOT NULL,
+            track_id INTEGER, class_id INTEGER NOT NULL, class_name TEXT NOT NULL, evidence_json TEXT NOT NULL);
+          CREATE UNIQUE INDEX IF NOT EXISTS idx_enrichment_track_once ON enrichment_units(enrichment_job_id, track_id) WHERE track_id IS NOT NULL;
+          CREATE TABLE IF NOT EXISTS enrichment_attributes (
+            unit_id TEXT NOT NULL, attribute_name TEXT NOT NULL, label TEXT NOT NULL, confidence REAL NOT NULL,
+            evidence_frame_index INTEGER, manifest_version TEXT, PRIMARY KEY(unit_id, attribute_name));
+          CREATE TABLE IF NOT EXISTS enrichment_plates (
+            unit_id TEXT PRIMARY KEY, status TEXT NOT NULL, plate_text TEXT, localizer_confidence REAL,
+            ocr_confidence REAL, used_enhancement INTEGER NOT NULL, evidence_json TEXT NOT NULL);
+          CREATE TABLE IF NOT EXISTS enrichment_plate_candidates (
+            unit_id TEXT NOT NULL, frame_index INTEGER, text TEXT, localizer_confidence REAL, ocr_confidence REAL,
+            quality REAL, PRIMARY KEY(unit_id, frame_index, text));
+        """)
         self.connection.commit(); self.recover()
 
     def create(self, source_kind: str, source_id: str, owner_key_id: str, total_units: int,
@@ -62,7 +77,12 @@ class EnrichmentJobStore:
     def finish(self, job_id: str, results: list[dict]) -> None:
         with self.lock:
             if self._is_terminal_or_expired(job_id): return
+            self._persist_results(job_id, results)
             self.connection.execute("UPDATE enrichment_jobs SET status='completed', processed_units=total_units, results_json=?, updated_at=? WHERE enrichment_job_id=?", (json.dumps(results), datetime.now(UTC).isoformat(), job_id)); self.connection.commit()
+
+    def progress(self, job_id: str, processed_units: int) -> None:
+        with self.lock:
+            self.connection.execute("UPDATE enrichment_jobs SET processed_units=MAX(processed_units, ?), updated_at=? WHERE enrichment_job_id=? AND status='processing'", (processed_units, datetime.now(UTC).isoformat(), job_id)); self.connection.commit()
 
     def fail(self, job_id: str, error_code: str) -> None:
         with self.lock:
@@ -88,12 +108,30 @@ class EnrichmentJobStore:
         with self.lock:
             now = datetime.now(UTC).isoformat(); expired = self.connection.execute("SELECT enrichment_job_id, owner_key_id FROM enrichment_jobs WHERE expires_at<=?", (now,)).fetchall()
             self.connection.executemany("INSERT OR REPLACE INTO expired_enrichment_jobs VALUES (?,?,?)", [(row['enrichment_job_id'], row['owner_key_id'], now) for row in expired])
+            for row in expired:
+                unit_ids = "SELECT unit_id FROM enrichment_units WHERE enrichment_job_id=?"
+                self.connection.execute(f"DELETE FROM enrichment_attributes WHERE unit_id IN ({unit_ids})", (row['enrichment_job_id'],))
+                self.connection.execute(f"DELETE FROM enrichment_plates WHERE unit_id IN ({unit_ids})", (row['enrichment_job_id'],))
+                self.connection.execute(f"DELETE FROM enrichment_plate_candidates WHERE unit_id IN ({unit_ids})", (row['enrichment_job_id'],))
+                self.connection.execute("DELETE FROM enrichment_units WHERE enrichment_job_id=?", (row['enrichment_job_id'],))
             self.connection.execute("DELETE FROM enrichment_jobs WHERE expires_at<=?", (now,)); self.connection.commit()
 
     def close(self) -> None: self.connection.close()
     def _is_terminal_or_expired(self, job_id: str) -> bool:
         row = self.connection.execute("SELECT status, expires_at FROM enrichment_jobs WHERE enrichment_job_id=?", (job_id,)).fetchone()
         return row is None or row["status"] == "cancelled" or datetime.fromisoformat(row["expires_at"]) <= datetime.now(UTC)
+
+    def _persist_results(self, job_id: str, results: list[dict]) -> None:
+        self.connection.execute("DELETE FROM enrichment_units WHERE enrichment_job_id=?", (job_id,))
+        for item in results:
+            unit_id = f"{job_id}:{item['vehicle_key']}"
+            self.connection.execute("INSERT INTO enrichment_units VALUES (?,?,?,?,?,?,?)", (unit_id, job_id, item['detection_id'], item['track_id'], item['class_id'], item['class_name'], json.dumps(item['evidence_frame_indexes'])))
+            for attribute in item['attributes']:
+                confidence = float(attribute['confidence'])
+                if not 0 <= confidence <= 1: raise ValueError("invalid_attribute_confidence")
+                self.connection.execute("INSERT INTO enrichment_attributes VALUES (?,?,?,?,?,?)", (unit_id, attribute['name'], attribute['label'], confidence, attribute.get('evidence_frame_index'), "external"))
+            plate = item['plate']; text = plate.get('text') if plate.get('status') == 'read' else None
+            self.connection.execute("INSERT INTO enrichment_plates VALUES (?,?,?,?,?,?,?)", (unit_id, plate['status'], text, plate.get('localizer_confidence'), plate.get('ocr_confidence'), int(plate.get('used_enhancement', False)), json.dumps(plate.get('evidence_frame_indexes', []))))
     @staticmethod
     def _row(row: sqlite3.Row) -> EnrichmentJob:
         return EnrichmentJob(row['enrichment_job_id'], row['source_kind'], row['source_id'], row['owner_key_id'], EnrichmentJobStatus(row['status']), row['total_units'], row['processed_units'], datetime.fromisoformat(row['created_at']), datetime.fromisoformat(row['updated_at']), datetime.fromisoformat(row['expires_at']), row['error_code'])

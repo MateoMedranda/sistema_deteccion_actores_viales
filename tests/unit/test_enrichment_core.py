@@ -13,6 +13,7 @@ def test_vehicle_crop_is_bounded_and_rejects_non_vehicle() -> None:
     crop = crop_vehicle(image, car, {"car"})
     assert crop is not None and crop.image.shape[:2] == (7, 10)
     assert crop_vehicle(image, Detection(1, "person", .9, 1, 1, 2, 2), {"car"}) is None
+    assert crop_vehicle(image, Detection(0, "car", .9, 12, 1, 14, 2), {"car"}) is None
 
 
 def test_consensus_never_corrects_or_fabricates_text() -> None:
