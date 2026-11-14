@@ -22,6 +22,7 @@ export class ApiClient {
   cancelCount(id:string) { return this.json(`/api/v1/count-jobs/${id}`, {method:"DELETE"}); }
   enrich(kind:"image"|"video", source_id:string) { return this.json("/api/v1/enrichment-jobs", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({source:{kind,source_id}})}); }
   enrichment(id:string) { return this.json(`/api/v1/enrichment-jobs/${id}`); }
+  enrichmentResults(id:string) { return this.json(`/api/v1/enrichment-jobs/${id}/results?page=1&page_size=50`); }
   cancelEnrichment(id:string) { return this.json(`/api/v1/enrichment-jobs/${id}`, {method:"DELETE"}); }
   async blob(path:string) { return this.request(path).then(r => r.blob()); }
 }
