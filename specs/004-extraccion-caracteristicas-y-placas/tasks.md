@@ -221,3 +221,7 @@ Task: "T039 Aislamiento y logs seguros en tests/integration/test_enrichment_plat
 - `[P]` indica archivos distintos sin dependencia de tareas incompletas.
 - Las pruebas se realizan primero y deben fallar antes de escribir la implementación correspondiente.
 - Los pesos, manifiestos, placas reales y `.env` no se agregan al repositorio.
+
+## Phase 8: Convergence
+
+- [ ] T061 Restablecer un runtime de PyTorch compatible con Windows, verificar que `torch`, `torchvision`, PaddleOCR y los tres pesos aprobados cargan sin errores nativos, y ejecutar el smoke opt-in de T055 antes de declarar disponible el enriquecimiento real, por FR-013 y Constitución IV/V (partial).
