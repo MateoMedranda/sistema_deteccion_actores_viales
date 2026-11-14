@@ -1,0 +1,2 @@
+type Props = { baseUrl:string; apiKey:string; onBaseUrl:(value:string)=>void; onApiKey:(value:string)=>void; onReset:()=>void };
+export function SessionConfig({baseUrl,apiKey,onBaseUrl,onApiKey,onReset}:Props) { return <section><h2>Sesión</h2><label>URL backend <input aria-label="URL backend" value={baseUrl} onChange={e=>onBaseUrl(e.target.value)} /></label><label>API key <input aria-label="API key" type="password" value={apiKey} onChange={e=>onApiKey(e.target.value)} /></label><button onClick={onReset}>Reiniciar demostración</button></section>; }

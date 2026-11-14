@@ -28,6 +28,11 @@ class CountJobService:
     def get(self, count_job_id: str, principal: Principal) -> CountJob:
         return self.store.get(count_job_id, principal.key_id)
 
+    def cancel(self, count_job_id: str, principal: Principal) -> CountJob:
+        job = self.store.cancel(count_job_id, principal.key_id)
+        self.logger.info("count_job_cancelled", extra={"count_job_id": job.count_job_id, "owner_key_id": principal.key_id})
+        return job
+
     def events(self, count_job_id: str, principal: Principal, page: int, page_size: int):
         return self.store.events(count_job_id, principal.key_id, page, page_size)
 

@@ -5,6 +5,7 @@ from uuid import uuid4
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import Response
+from starlette.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.adapters.detector_protocol import Detector
@@ -31,6 +32,13 @@ def create_app(settings: Settings | None = None, detector: Detector | None = Non
     app.add_exception_handler(ApiError, api_error_handler)
     app.add_exception_handler(RequestValidationError, request_validation_error_handler)
     app.add_exception_handler(StarletteHTTPException, http_error_handler)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.frontend_origin_list(),
+        allow_credentials=False,
+        allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
+        allow_headers=["Content-Type", "X-API-Key"],
+    )
     app.include_router(health.router)
     app.include_router(detections.router, prefix="/api")
     app.include_router(video_jobs.router, prefix="/api")

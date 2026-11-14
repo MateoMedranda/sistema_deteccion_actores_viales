@@ -67,6 +67,11 @@ def get_count_job(countJobId: str, request: Request, principal: Principal = Depe
     return public_job(request, request.app.state.count_job_service.get(countJobId, principal))
 
 
+@router.delete("/count-jobs/{countJobId}", status_code=202, response_model=CountJobResponse)
+def cancel_count_job(countJobId: str, request: Request, principal: Principal = Depends(require_api_key)) -> CountJobResponse:
+    return public_job(request, request.app.state.count_job_service.cancel(countJobId, principal))
+
+
 @router.get("/count-jobs/{countJobId}/events", response_model=CountEventPage)
 def list_count_events(
     countJobId: str,

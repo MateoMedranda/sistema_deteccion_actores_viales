@@ -12,8 +12,8 @@ def _completed_source(client, tmp_path):
     job = client.app.state.video_jobs.create("default", metadata(), tmp_path / "staged.mp4")
     assert client.app.state.video_jobs.dequeue() is not None
     client.app.state.video_jobs.finish(job.job_id, source_video, [
-        FrameDetection(0, 11, 0, "car", .9, 10, 4, 30, 14),
-        FrameDetection(1, 11, 0, "car", .9, 10, 32, 30, 42),
+        FrameDetection(0, 11, 0, "car", .9, 4, 0, 12, 4),
+        FrameDetection(1, 11, 0, "car", .9, 4, 12, 12, 16),
     ])
     return job
 
@@ -52,3 +52,17 @@ def test_count_job_rejects_invalid_line_and_other_owner(client, auth_headers, tm
         json={"point_a": {"x": 0, "y": .5}, "point_b": {"x": 1, "y": .5}},
     )
     assert inaccessible.status_code == 404
+
+
+def test_count_job_can_be_cancelled_by_its_owner(client, auth_headers, tmp_path) -> None:
+    source = _completed_source(client, tmp_path)
+    created = client.post(
+        f"/api/v1/video-jobs/{source.job_id}/count-jobs", headers=auth_headers,
+        json={"point_a": {"x": 0, "y": .5}, "point_b": {"x": 1, "y": .5}},
+    )
+    assert created.status_code == 202
+    count_id = created.json()["count_job_id"]
+    response = client.delete(f"/api/v1/count-jobs/{count_id}", headers=auth_headers)
+    assert response.status_code == 202
+    assert response.json()["status"] == "cancelled"
+    assert client.delete(f"/api/v1/count-jobs/{count_id}", headers=auth_headers).status_code == 409

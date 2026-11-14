@@ -55,9 +55,18 @@ class Settings(BaseSettings):
     plate_localizer_threshold: float = Field(default=0.25, ge=0, le=1)
     plate_ocr_retry_threshold: float = Field(default=0.70, ge=0, le=1)
     plate_ocr_accept_threshold: float = Field(default=0.80, ge=0, le=1)
+    frontend_allowed_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
 
     def vehicle_class_set(self) -> set[str]:
         return {item.strip().lower() for item in self.vehicle_classes.split(",") if item.strip()}
+
+    def frontend_origin_list(self) -> list[str]:
+        origins = [item.strip().rstrip("/") for item in self.frontend_allowed_origins.split(",") if item.strip()]
+        if any(origin == "*" for origin in origins):
+            raise ValueError("FRONTEND_ALLOWED_ORIGINS cannot contain wildcard origins")
+        if any(not origin.startswith(("http://", "https://")) for origin in origins):
+            raise ValueError("FRONTEND_ALLOWED_ORIGINS entries must be HTTP(S) origins")
+        return origins
 
     @field_validator("api_key")
     @classmethod
