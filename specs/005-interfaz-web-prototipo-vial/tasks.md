@@ -49,15 +49,15 @@
 - [ ] T013 [P] Crear tipos TypeScript para respuestas, estados terminales, errores seguros, medios protegidos, trabajos y puntos normalizados en frontend/src/services/apiTypes.ts
 - [ ] T014 [P] Crear validación de URL HTTP(S), normalización sin barra final y prueba unitaria de entradas inválidas en frontend/src/utils/urlValidation.ts y frontend/tests/unit/urlValidation.test.ts
 - [ ] T015 [P] Crear traductor de errores {code, message, request_id} a mensajes de UI sin cuerpos crudos, rutas, cabeceras ni API key, con pruebas en frontend/src/services/errorMapping.ts y frontend/tests/unit/errorMapping.test.ts
-- [ ] T016 Implementar ApiClient base que use URL y API key en memoria, FormData, AbortController y resolución de URL relativa de artefacto en frontend/src/services/apiClient.ts
-- [ ] T017 Crear pruebas unitarias del ApiClient para X-API-Key, FormData, URL relativa y ausencia de secretos en URL/localStorage en frontend/tests/unit/apiClient.test.ts
+- [ ] T016 Crear pruebas unitarias iniciales del ApiClient para X-API-Key, FormData, URL relativa y ausencia de secretos en URL/localStorage en frontend/tests/unit/apiClient.test.ts
+- [ ] T017 Implementar ApiClient base que use URL y API key en memoria, FormData, AbortController y resolución de URL relativa de artefacto en frontend/src/services/apiClient.ts
 - [ ] T018 Implementar DemoSessionProvider con los campos apiBaseUrl, apiKey, activeImage, activeVideo, activeCount, activeEnrichment y limpieza de estado solo en memoria en frontend/src/state/demoSession.tsx
-- [ ] T019 Implementar hook para descargar artefactos autenticados como Blob y revocar URL.createObjectURL al reemplazar, limpiar o desmontar en frontend/src/hooks/useObjectUrl.ts
-- [ ] T020 Crear pruebas unitarias de revocación de Blob y de que los medios no se cargan con una URL remota directa en frontend/tests/unit/useObjectUrl.test.ts
-- [ ] T021 Implementar polling secuencial con setTimeout, AbortController y detención por estados terminales, 404, 409, 410, reinicio o desmontaje en frontend/src/hooks/usePolling.ts
-- [ ] T022 Crear pruebas unitarias de polling sin solicitudes superpuestas y cancelación por estado terminal en frontend/tests/unit/usePolling.test.ts
-- [ ] T023 Implementar configuración de sesión, entrada de API key, URL de backend, reinicio y componente de estado/error seguro en frontend/src/components/SessionConfig.tsx, frontend/src/components/SafeStatus.tsx y frontend/src/App.tsx
-- [ ] T024 Crear prueba de componente para configuración temporal, reinicio y ausencia de API key en la vista/almacenamiento del navegador en frontend/tests/component/SessionConfig.test.tsx
+- [ ] T019 Crear pruebas unitarias iniciales de revocación de Blob y de que los medios no se cargan con una URL remota directa en frontend/tests/unit/useObjectUrl.test.ts
+- [ ] T020 Implementar hook para descargar artefactos autenticados como Blob y revocar URL.createObjectURL al reemplazar, limpiar o desmontar en frontend/src/hooks/useObjectUrl.ts
+- [ ] T021 Crear pruebas unitarias iniciales de polling sin solicitudes superpuestas y cancelación por estado terminal en frontend/tests/unit/usePolling.test.ts
+- [ ] T022 Implementar polling secuencial con setTimeout, AbortController y detención por estados terminales, 404, 409, 410, reinicio o desmontaje en frontend/src/hooks/usePolling.ts
+- [ ] T023 Crear prueba de componente inicial para configuración temporal, reemplazo de API key que aborte/limpie operaciones obsoletas, reinicio y ausencia de API key en la vista/almacenamiento del navegador en frontend/tests/component/SessionConfig.test.tsx
+- [ ] T024 Implementar configuración de sesión, entrada de API key, reinicio y componente de estado/error seguro; al reemplazar la API key debe abortar y limpiar resultados de operaciones anteriores en frontend/src/components/SessionConfig.tsx, frontend/src/components/SafeStatus.tsx, frontend/src/App.tsx y frontend/src/state/demoSession.tsx
 
 **Checkpoint**: CORS y DELETE de conteo son verificables; el frontend tiene sesión efímera, cliente seguro, descarga protegida, polling y estructura de aplicación.
 
@@ -158,9 +158,9 @@
 **Purpose**: Verificar la experiencia completa, seguridad, compilación, documentación y evidencia de entrega.
 
 - [ ] T051 [P] Añadir recorrido Playwright de imagen, video, línea/conteo, enriquecimiento, reinicio y estados de error con API simulada en frontend/tests/e2e/prototype-vial.spec.ts
-- [ ] T052 [P] Añadir prueba de que la API key, texto de placa, URLs Blob e IDs se limpian al reiniciar/desmontar en frontend/tests/component/sessionCleanup.test.tsx
+- [ ] T052 [P] Añadir prueba de que la API key, texto de placa, URLs Blob e IDs se limpian al reiniciar/desmontar y que el reemplazo de API key no muestra resultados obsoletos en frontend/tests/component/sessionCleanup.test.tsx
 - [ ] T053 [P] Añadir pruebas de accesibilidad básica de etiquetas, foco y mensajes de estado en frontend/tests/component/accessibility.test.tsx
-- [ ] T054 Ejecutar npm run test, npm run test:e2e y npm run build; corregir errores de tipado, pruebas y construcción en frontend/
+- [ ] T054 Ejecutar npm run test, npm run test:e2e y npm run build; corregir únicamente errores de tipado, pruebas o construcción introducidos por esta iteración en frontend/
 - [ ] T055 Ejecutar uv run pytest tests/contract/test_count_jobs_contract.py tests/integration/test_count_job_routes.py tests/integration/test_cors.py y registrar resultados en specs/005-interfaz-web-prototipo-vial/audit.md
 - [ ] T056 Actualizar instrucciones de instalación, URL configurable, CORS, límites conocidos y demostración de flujos en README.md y specs/005-interfaz-web-prototipo-vial/quickstart.md
 - [ ] T057 Revisar que no existan API keys, rutas privadas, texto de placa no autorizado, localStorage/sessionStorage ni CORS comodín en frontend/ y app/, y registrar el resultado en specs/005-interfaz-web-prototipo-vial/audit.md
