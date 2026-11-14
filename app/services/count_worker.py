@@ -26,7 +26,7 @@ class CountWorker:
             try:
                 self.processor.process(job)
             except CountProcessingError as exc:
-                if str(exc) != "count_cancelled":
+                if str(exc) not in {"count_cancelled", "count_expired", "count_not_active"}:
                     self.store.fail(job.count_job_id, str(exc))
                 self.logger.info("count_job_failed", extra={
                     "count_job_id": job.count_job_id, "source_video_job_id": job.source_video_job_id,

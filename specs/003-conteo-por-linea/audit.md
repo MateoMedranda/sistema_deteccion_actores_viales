@@ -16,8 +16,15 @@
 ## Pruebas ejecutadas
 
 - Correctas: compilación de `app` y `tests` mediante `python -m compileall -q app tests`.
-- Correctas: suite completa `python -m pytest --basetemp .pytest-tmp --cov=app --cov-report=term-missing -q`: todas las pruebas ejecutables pasaron; tres se omitieron por no disponer de FFmpeg para fabricar MP4 de integración.
-- Cobertura global observada: 78%. La geometría de línea, el almacén de conteo, el procesador sin detector, la anotación, el contrato y el control de acceso tienen pruebas específicas.
+- Correctas: suite completa `python -m pytest --basetemp .pytest-tmp --cov=app --cov-report=term-missing -q`: todas las pruebas ejecutables pasaron; tres se omitieron por no disponer de FFmpeg para fabricar MP4 de integración heredada.
+- Cobertura global observada: 85%. La geometría de línea, el almacén de conteo, el procesador sin detector, la anotación, el contrato y el control de acceso tienen pruebas específicas.
+
+## Evidencia de convergencia
+
+- El cierre de `CountJobStore.finish()` publica el artefacto solo si el trabajo continúa en `processing` y no venció; el procesador elimina el archivo temporal si detecta cancelación o vencimiento.
+- La regresión ejecuta el procesador sobre 10 MP4 controlados: cada cruce genera exactamente un evento de la clase y dirección esperadas; un video sin cambio de lado no genera eventos.
+- El benchmark crea 10 trabajos vía HTTP, comprueba p95 menor a 2 segundos y limita el crecimiento de memoria a menos de 100 MB; el flujo consume detecciones persistidas, sin detector.
+- Las pruebas de integración confirman 410 para un conteo vencido, aislamiento por credencial y cancelación sin eventos ni artefacto parcial.
 
 ## Cobertura de requisitos
 

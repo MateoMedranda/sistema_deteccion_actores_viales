@@ -190,7 +190,7 @@ Task: "T022 Pruebas de integración en tests/integration/test_count_job_routes.p
 
 ## Phase 7: Convergence
 
-- [ ] T043 Hacer atómico en `app/services/count_job_store.py` y `app/services/count_processing.py` el cierre de un conteo, verificando estado `processing` y vencimiento propio antes de publicar; eliminar el MP4 temporal cuando el trabajo venza o se cancele durante el renderizado. (FR-011, partial)
-- [ ] T044 Ampliar `tests/e2e/test_line_counting_regression.py` para ejecutar `CountProcessor` sobre los 10 MP4 controlados y demostrar un único evento correcto por cruce y ningún evento para trayectorias sin cambio de lado. (SC-003, SC-004, partial)
-- [ ] T045 Ampliar `tests/performance/test_line_counting_benchmark.py` y `specs/003-conteo-por-linea/audit.md` con una medición reproducible de confirmación HTTP p95 menor a dos segundos, memoria y evidencia de cero inferencias. (SC-001, Constitution V, partial)
-- [ ] T046 Ampliar `tests/integration/test_count_job_routes.py` y `tests/integration/test_count_artifact_access.py` con vencimiento 410, fuente vencida durante el cálculo y cancelación sin artefacto ni eventos parciales. (SC-002, SC-006, partial)
+- [X] T043 Hacer atómico en `app/services/count_job_store.py` y `app/services/count_processing.py` el cierre de un conteo, verificando estado `processing` y vencimiento propio antes de publicar; eliminar el MP4 temporal cuando el trabajo venza o se cancele durante el renderizado. (FR-011, partial)
+- [X] T044 Ampliar `tests/e2e/test_line_counting_regression.py` para ejecutar `CountProcessor` sobre los 10 MP4 controlados y demostrar un único evento correcto por cruce y ningún evento para trayectorias sin cambio de lado. (SC-003, SC-004, partial)
+- [X] T045 Ampliar `tests/performance/test_line_counting_benchmark.py` y `specs/003-conteo-por-linea/audit.md` con una medición reproducible de confirmación HTTP p95 menor a dos segundos, memoria y evidencia de cero inferencias. (SC-001, Constitution V, partial)
+- [X] T046 Ampliar `tests/integration/test_count_job_routes.py` y `tests/integration/test_count_artifact_access.py` con vencimiento 410, fuente vencida durante el cálculo y cancelación sin artefacto ni eventos parciales. (SC-002, SC-006, partial)

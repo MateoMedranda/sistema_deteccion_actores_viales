@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
 from time import perf_counter
+from statistics import quantiles
 
 import psutil
 
@@ -10,6 +11,7 @@ from app.services.count_job_store import CountJobStore
 from app.services.count_processing import CountProcessor
 from app.services.line_counting import side_of_line, validate_line
 from app.services.video_artifacts import VideoArtifactStore
+from tests.unit.test_video_job_store import metadata
 
 
 def test_line_geometry_is_fast_and_performs_no_inference() -> None:
@@ -68,3 +70,22 @@ def test_count_processor_meets_small_controlled_budget_without_detector(tmp_path
     assert store.get(created.count_job_id, "owner").status.value == "completed"
     assert store.summary(created.count_job_id, "owner")[0].total == 1
     store.close()
+
+
+def test_count_job_confirmation_http_p95_is_under_two_seconds(client, auth_headers, tmp_path) -> None:
+    """Creation uses stored video metadata only and does not invoke model inference."""
+    source = client.app.state.video_jobs.create("default", metadata(), tmp_path / "staged.mp4")
+    assert client.app.state.video_jobs.dequeue() is not None
+    client.app.state.video_jobs.finish(source.job_id, tmp_path / "source.mp4", [])
+    before_memory = psutil.Process().memory_info().rss
+    samples: list[float] = []
+    for _ in range(10):
+        started = perf_counter()
+        response = client.post(
+            f"/api/v1/video-jobs/{source.job_id}/count-jobs", headers=auth_headers,
+            json={"point_a": {"x": 0, "y": .5}, "point_b": {"x": 1, "y": .5}},
+        )
+        samples.append(perf_counter() - started)
+        assert response.status_code == 202
+    p95 = quantiles(samples, n=20, method="inclusive")[18]
+    assert p95 < 2 and psutil.Process().memory_info().rss - before_memory < 100 * 1024 * 1024

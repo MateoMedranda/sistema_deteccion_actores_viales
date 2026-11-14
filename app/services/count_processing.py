@@ -73,7 +73,9 @@ class CountProcessor:
             output = self.artifacts.count_output_path()
             self.annotation_service.render(job, source.output_path, output, detections, events)
             self._ensure_source_is_active(job)
-            self.count_store.finish(job.count_job_id, output)
+            if not self.count_store.finish(job.count_job_id, output):
+                self._ensure_count_is_active(job)
+                raise CountProcessingError("count_not_active")
             self.logger.info("count_job_completed", extra={
                 "count_job_id": job.count_job_id,
                 "source_video_job_id": job.source_video_job_id,
@@ -87,8 +89,7 @@ class CountProcessor:
             raise
 
     def _ensure_source_is_active(self, job: CountJob) -> None:
-        if self.count_store.is_cancelled(job.count_job_id):
-            raise CountProcessingError("count_cancelled")
+        self._ensure_count_is_active(job)
         try:
             source = self.video_store.get(job.source_video_job_id, job.owner_key_id)
         except ApiError as exc:
@@ -97,3 +98,9 @@ class CountProcessor:
             raise
         if source.status is not VideoJobStatus.COMPLETED:
             raise CountProcessingError("source_not_ready")
+
+    def _ensure_count_is_active(self, job: CountJob) -> None:
+        if self.count_store.is_cancelled(job.count_job_id):
+            raise CountProcessingError("count_cancelled")
+        if not self.count_store.is_active(job.count_job_id):
+            raise CountProcessingError("count_expired")

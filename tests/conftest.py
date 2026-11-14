@@ -42,6 +42,8 @@ def client(tmp_path, api_key):
         temp_artifact_dir=tmp_path / "artifacts",
         video_job_db_path=tmp_path / "video-jobs.sqlite3",
         video_temp_dir=tmp_path / "video-jobs",
+        count_job_db_path=tmp_path / "count-jobs.sqlite3",
+        count_temp_dir=tmp_path / "count-jobs",
     )
     with TestClient(create_app(settings=settings, detector=FakeDetector())) as test_client:
         yield test_client

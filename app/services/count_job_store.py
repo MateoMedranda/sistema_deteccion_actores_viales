@@ -163,14 +163,27 @@ class CountJobStore:
     def all_events(self, count_job_id: str, owner_key_id: str) -> list[CountEvent]:
         return self.events(count_job_id, owner_key_id, 1, 1_000_000)[0]
 
-    def finish(self, count_job_id: str, output_path: Path) -> None:
+    def is_active(self, count_job_id: str) -> bool:
+        """Return whether a worker may still publish progress or an artifact for this job."""
+        row = self._connection.execute(
+            "SELECT status, expires_at FROM count_jobs WHERE count_job_id=?", (count_job_id,)
+        ).fetchone()
+        return (
+            row is not None
+            and row["status"] == CountJobStatus.PROCESSING.value
+            and datetime.fromisoformat(row["expires_at"]) > datetime.now(UTC)
+        )
+
+    def finish(self, count_job_id: str, output_path: Path) -> bool:
+        """Publish an artifact only while the job remains processing and unexpired."""
         with self._lock:
-            self._connection.execute(
+            changed = self._connection.execute(
                 """UPDATE count_jobs SET status='completed', output_path=?, processed_frames=total_frames, updated_at=?
-                   WHERE count_job_id=? AND status='processing'""",
-                (str(output_path), datetime.now(UTC).isoformat(), count_job_id),
-            )
+                   WHERE count_job_id=? AND status='processing' AND expires_at>?""",
+                (str(output_path), datetime.now(UTC).isoformat(), count_job_id, datetime.now(UTC).isoformat()),
+            ).rowcount
             self._connection.commit()
+            return bool(changed)
 
     def fail(self, count_job_id: str, error_code: str) -> None:
         with self._lock:
