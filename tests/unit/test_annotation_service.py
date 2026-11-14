@@ -21,3 +21,8 @@ def test_annotation_returns_jpeg_with_box_and_label(monkeypatch):
     assert decoded.shape == image.shape
     assert np.any(decoded != 0)
     assert labels == ["Car 0.90"]
+
+
+def test_annotation_uses_a_different_stable_color_per_class():
+    assert annotation_service.color_for_class(0) != annotation_service.color_for_class(1)
+    assert annotation_service.color_for_class(0) == annotation_service.color_for_class(8)
