@@ -5,6 +5,15 @@
 **Status**: Draft
 **Input**: Construir una interfaz web inicial, sencilla y funcional para demostrar de forma visual el comportamiento de todas las capacidades disponibles del sistema vial.
 
+## Clarifications
+
+### Session 2026-11-14
+
+- Q: ¿Cómo debe seleccionar la interfaz la dirección del backend durante la demostración? → A: Usar `http://127.0.0.1:8000` como valor inicial y permitir modificar la URL solo en memoria durante la sesión.
+- Q: Al reiniciar la demostración, ¿la interfaz debe intentar cancelar los trabajos de video, conteo o enriquecimiento que aún estén en ejecución? → A: Intentar cancelar los trabajos activos y limpiar siempre la sesión visible, aun cuando la cancelación no pueda confirmarse.
+- Q: ¿Cómo debe mostrar la interfaz el texto de una placa que el backend marcó como legible? → A: Mostrar el texto completo solo durante la sesión local activa y únicamente si el backend lo autoriza como legible; no guardarlo, exportarlo ni incluirlo en errores.
+- Q: ¿Cuántos trabajos de video debe gestionar simultáneamente este primer prototipo en una misma sesión? → A: Gestionar un único video activo por sesión; la gestión de varios videos queda como ampliación futura.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Analizar una imagen vial (Priority: P1)
@@ -82,20 +91,21 @@ Como usuario autorizado, quiero solicitar el enriquecimiento de una imagen o vid
 
 - **FR-001**: La interfaz MUST permitir que el usuario configure una credencial de acceso para la sesión y la use en cada operación protegida, sin incluirla en enlaces, capturas de errores, almacenamiento permanente ni código publicado.
 - **FR-002**: La interfaz MUST permitir seleccionar y enviar una imagen, mostrar el avance visible de la solicitud y presentar el resultado anotado junto con detecciones legibles.
-- **FR-003**: La interfaz MUST permitir seleccionar y enviar un video, conservar su identificador temporal durante la sesión y consultar periódicamente su estado hasta un estado terminal o vencimiento.
+- **FR-003**: La interfaz MUST permitir seleccionar y enviar un único video activo por sesión, conservar su identificador temporal durante la sesión y consultar periódicamente su estado hasta un estado terminal o vencimiento. Para seleccionar otro video, el usuario deberá reiniciar la demostración o cancelar el trabajo activo.
 - **FR-004**: La interfaz MUST mostrar el video anotado y los resultados temporales disponibles de un video terminado, incluyendo resumen y detecciones con navegación paginada cuando aplique.
 - **FR-005**: La interfaz MUST permitir dibujar, ajustar y borrar una línea usando dos puntos sobre la representación del video y convertirla proporcionalmente a las dimensiones originales antes de solicitar el conteo.
 - **FR-006**: La interfaz MUST mostrar el estado, avance, eventos y totales de un conteo por línea, diferenciando clase y sentido de cruce.
-- **FR-007**: La interfaz MUST permitir crear y consultar un trabajo de enriquecimiento sobre una imagen o video propio vigente y mostrar atributos, evidencias no sensibles, estados de placa y texto únicamente cuando el backend lo entregue como legible.
+- **FR-007**: La interfaz MUST permitir crear y consultar un trabajo de enriquecimiento sobre una imagen o video propio vigente y mostrar atributos, evidencias no sensibles y estados de placa. El texto de placa completo solo se mostrará mientras la sesión local esté activa y únicamente cuando el backend lo entregue como legible; la interfaz no lo guardará, exportará ni incluirá en errores.
 - **FR-008**: La interfaz MUST representar de forma segura los estados `queued`, `processing`, `completed`, `failed`, `cancelled`, `expired`, `read`, `unreadable` y `not_detected`, sin sustituir información del backend por inferencias propias.
 - **FR-009**: La interfaz MUST ofrecer mensajes claros para validación, errores de autorización, no disponibilidad, conflicto y vencimiento, sin exponer contenido técnico sensible.
-- **FR-010**: La interfaz MUST permitir reiniciar una demostración y eliminar del estado visible los identificadores, archivos seleccionados, resultados y texto de placa de la sesión actual.
+- **FR-010**: Al reiniciar una demostración, la interfaz MUST intentar cancelar los trabajos de video, conteo o enriquecimiento que estén activos y eliminar inmediatamente del estado visible los identificadores, archivos seleccionados, resultados y texto de placa de la sesión actual, incluso si la cancelación no se puede confirmar.
 - **FR-011**: La interfaz MUST documentar cómo configurarla, iniciarla y vincularla con el servicio local, incluyendo las funcionalidades que pueden no estar disponibles mientras los modelos estén en mantenimiento.
 - **FR-012**: La interfaz MUST mantener módulos separados para carga, estado de trabajos, visualización de resultados, dibujo de línea y acceso al servicio, de modo que otro integrante pueda mejorar su diseño o sustituir una sección sin reescribir el prototipo completo.
+- **FR-013**: La interfaz MUST usar `http://127.0.0.1:8000` como dirección inicial del backend y permitir al usuario sustituirla por una dirección HTTP(S) válida durante la sesión, sin conservarla al reiniciar o cerrar la navegación.
 
 ### Key Entities
 
-- **Sesión de demostración**: Estado local y efímero de credencial, fuente seleccionada, identificadores temporales y resultados visibles.
+- **Sesión de demostración**: Estado local y efímero de la credencial, dirección del backend, fuente seleccionada, identificadores temporales y resultados visibles.
 - **Fuente de análisis**: Imagen o video enviado por el usuario y su identificador temporal de consulta.
 - **Trabajo**: Operación temporal de video, conteo o enriquecimiento que expone estado, avance, vencimiento y resultado.
 - **Línea de conteo**: Dos puntos normalizados, configurables visualmente, asociados a un video terminado.
@@ -119,3 +129,4 @@ Como usuario autorizado, quiero solicitar el enriquecimiento de una imagen o vid
 - La credencial es introducida conscientemente por el usuario para la sesión actual y solo se conserva en memoria durante la demostración.
 - La primera versión prioriza claridad funcional sobre identidad visual, accesibilidad avanzada, cuentas de usuario, persistencia de preferencias, optimización para móvil o diseño final.
 - La demostración de enriquecimiento puede informar que no está disponible mientras se completa la configuración de modelos del backend.
+- La administración simultánea de varios videos se considera una ampliación futura y no forma parte de este prototipo.
