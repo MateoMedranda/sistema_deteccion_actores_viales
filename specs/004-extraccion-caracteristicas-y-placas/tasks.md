@@ -32,7 +32,7 @@ description: "Tareas implementables para extracción de características y placa
 
 - [ ] T005 [P] Extender `app/domain/models.py` con `EnrichmentJobStatus`, `EnrichmentJob`, `EnrichmentUnit`, `AttributeResult`, `PlateResult`, `PlateCandidate` y transiciones `queued → processing → completed`; permitir `failed` o `cancelled` solo desde estados no terminales.
 - [ ] T006 [P] Extender `app/domain/schemas.py` con DTOs del contrato: fuente `image|video`, creación, estado/progreso, resultado paginado, atributos, caja relativa y placa con estados `read`, `unreadable`, `not_detected` o `failed`.
-- [ ] T007 [P] Crear protocolos tipados y falsos de prueba en `app/adapters/attribute_extractor_protocol.py`, `app/adapters/plate_localizer_protocol.py`, `app/adapters/plate_reader_protocol.py` y `tests/enrichment_fixtures.py`.
+- [ ] T007 Crear protocolos tipados y falsos de prueba en `app/adapters/attribute_extractor_protocol.py`, `app/adapters/plate_localizer_protocol.py`, `app/adapters/plate_reader_protocol.py` y `tests/enrichment_fixtures.py`.
 - [ ] T008 Crear `app/services/source_artifacts.py` para almacenar originales y variantes con nombres no predecibles, rutas privadas y eliminación idempotente; nunca devolver una ruta local ni URL pública de recorte.
 - [ ] T009 Crear `app/services/image_detection_store.py` con una fuente temporal que cumpla: `source_id` UUID, `owner_key_id` obligatorio, imagen original privada, dimensiones/medio validados, detecciones con `detection_id` estable y `expires_at` no posterior a `ARTIFACT_TTL_SECONDS`.
 - [ ] T010 Actualizar `app/services/detection_service.py`, `app/api/routes/detections.py` y `app/services/temporary_artifacts.py` para asociar el principal autenticado, conservar el original/detecciones de imagen y proteger también la imagen anotada por propietario hasta su vencimiento.
@@ -142,7 +142,7 @@ description: "Tareas implementables para extracción de características y placa
 - [ ] T050 [US4] Implementar en `app/services/enrichment_job_store.py` publicación atómica: no publicar resultados parciales si la fuente vence, eliminar candidatos/placas/recortes al cancelar, fallar o expirar y conservar solo marcador mínimo para `410` del propietario.
 - [ ] T051 [US4] Implementar en `app/services/enrichment_job_service.py` la consulta autorizada y paginada de resultados disponibles, con progreso y errores genéricos que no revelen modelo, ruta, fuente ajena ni texto sensible.
 - [ ] T052 [US4] Añadir en `app/services/enrichment_worker.py` y `app/core/logging.py` métricas estructuradas por trabajo/rama: latencia, p50/p95, memoria, errores, reintentos, candidatos y consenso; excluir textos de placa, imágenes, rutas y secretos.
-- [ ] T053 [US4] Actualizar `app/core/lifespan.py` y `app/services/source_artifacts.py` para ejecutar limpieza coordinada de fuente, resultados y artefactos de enriquecimiento al finalizar, reiniciar y vencer TTL.
+- [ ] T053 [US4] Actualizar `app/core/lifespan.py` y `app/services/source_artifacts.py` para eliminar recortes y variantes intermedias al finalizar; conservar la fuente según su TTL propio y los resultados publicados hasta `expires_at`; limpiar los artefactos de enriquecimiento al cancelar, fallar o vencer TTL, sin eliminar una fuente válida solo porque termine el trabajo.
 
 **Checkpoint**: Resultados útiles permanecen disponibles solo para su propietario mientras son vigentes y dejan evidencia de operación sin filtrar datos sensibles.
 
@@ -157,8 +157,8 @@ description: "Tareas implementables para extracción de características y placa
 - [ ] T056 [P] Crear evaluación E2E de al menos 20 recortes y 10 tracks en `tests/e2e/test_enrichment_regression.py`: asociación correcta, atributos, placas `read|unreadable|not_detected`, un registro por track y consenso sin autocorrección.
 - [ ] T057 [P] Crear benchmark reproducible en `tests/performance/test_enrichment_reference_benchmark.py` para confirmación menor a dos segundos, p50/p95 por rama/track, memoria, errores y carga única de modelos.
 - [ ] T058 Documentar en `specs/004-extraccion-caracteristicas-y-placas/model-evaluation.md` el conjunto autorizado, hardware, manifiestos, macro F1, AP/IoU, exactitud OCR, CER, tasa de lectura falsa y comparación original/reintento/consenso con línea base aprobada.
-- [ ] T059 Actualizar `specs/004-extraccion-caracteristicas-y-placas/quickstart.md` con evidencia ejecutada de fuentes de imagen/video, aislamiento, vencimiento, baja confianza y desacuerdo de placas.
-- [ ] T060 Ejecutar `uv run pytest --basetemp .pytest-tmp-enrichment --cov=app --cov-report=term-missing`, resolver regresiones y registrar pruebas, cobertura, métricas, riesgos y pendientes en `specs/004-extraccion-caracteristicas-y-placas/audit.md`.
+- [ ] T059 Ejecutar `uv run pytest --basetemp .pytest-tmp-enrichment --cov=app --cov-report=term-missing`, resolver regresiones y registrar pruebas, cobertura, métricas, riesgos y pendientes en `specs/004-extraccion-caracteristicas-y-placas/audit.md`.
+- [ ] T060 Actualizar `specs/004-extraccion-caracteristicas-y-placas/quickstart.md` con evidencia ejecutada de fuentes de imagen/video, aislamiento, vencimiento, baja confianza y desacuerdo de placas.
 
 ---
 
@@ -182,8 +182,8 @@ description: "Tareas implementables para extracción de características y placa
 
 ## Parallel Opportunities
 
-- Setup: T002, T003 y T004 pueden avanzar en paralelo después de T001.
-- Foundation: T005–T007 y T016–T017 pueden avanzar en paralelo; T008–T015 se integran según sus dependencias de fuente/almacén/ciclo de vida.
+- Setup: T002–T004 pueden avanzar en paralelo después de T001.
+- Foundation: T005, T006, T016 y T017 pueden avanzar en paralelo; T007 comienza después de T003 porque ambos modifican `tests/enrichment_fixtures.py`; T008–T015 se integran según sus dependencias de fuente/almacén/ciclo de vida.
 - US1: T018–T020 se escriben en paralelo antes de T021–T026.
 - US2: T027–T029 se escriben en paralelo; T030 y T031 pueden comenzar en paralelo, seguidas por T032–T035.
 - US3: T036–T039 se escriben en paralelo; T040 y T041 pueden comenzar en paralelo, seguidas por T042–T047.
