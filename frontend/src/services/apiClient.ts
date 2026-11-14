@@ -11,10 +11,12 @@ export class ApiClient {
   }
   async json(path: string, init?: RequestInit) { return this.request(path, init).then(r => r.json()); }
   uploadImage(file: File) { const body = new FormData(); body.append("image", file); return this.json("/api/v1/detections/images", { method:"POST", body }); }
+  annotatedImage(requestId:string) { return this.blob(`/api/v1/detections/${requestId}/annotated-image`); }
   uploadVideo(file: File) { const body = new FormData(); body.append("video", file); return this.json("/api/v1/video-jobs", { method:"POST", body }); }
   video(id:string) { return this.json(`/api/v1/video-jobs/${id}`); }
   cancelVideo(id:string) { return this.json(`/api/v1/video-jobs/${id}`, { method:"DELETE" }); }
   videoResults(id:string) { return Promise.all([this.json(`/api/v1/video-jobs/${id}/summary`), this.json(`/api/v1/video-jobs/${id}/detections?page=1&page_size=50`)]); }
+  annotatedVideo(id:string) { return this.json(`/api/v1/video-jobs/${id}/annotated-video`).then((item:{url:string}) => this.blob(item.url)); }
   count(videoId:string, point_a:Point, point_b:Point) { return this.json(`/api/v1/video-jobs/${videoId}/count-jobs`, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({point_a,point_b}) }); }
   countJob(id:string) { return this.json(`/api/v1/count-jobs/${id}`); }
   cancelCount(id:string) { return this.json(`/api/v1/count-jobs/${id}`, {method:"DELETE"}); }
