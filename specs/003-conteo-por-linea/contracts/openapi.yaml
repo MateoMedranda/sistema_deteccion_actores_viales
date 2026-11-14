@@ -1,0 +1,64 @@
+openapi: 3.1.0
+info:
+  title: Road Actor Detection API - Line Counting
+  version: 3.0.0
+  description: Conteo temporal y direccional sobre detecciones de un video terminado.
+servers:
+  - url: /api
+paths:
+  /v1/video-jobs/{videoJobId}/count-jobs:
+    post:
+      summary: Crea un trabajo asíncrono de conteo
+      security: [{ ApiKeyAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/VideoJobId'
+      responses:
+        '202': { description: Trabajo aceptado }
+        '400': { description: Línea inválida }
+        '401': { description: Credencial inválida }
+        '404': { description: Video inaccesible }
+        '409': { description: Video no terminado }
+        '410': { description: Video vencido }
+  /v1/count-jobs/{countJobId}:
+    get:
+      summary: Consulta progreso y totales acumulados
+      security: [{ ApiKeyAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/CountJobId'
+      responses:
+        '200': { description: Estado y resumen }
+        '401': { description: Credencial inválida }
+        '404': { description: Conteo inaccesible }
+        '410': { description: Conteo vencido }
+  /v1/count-jobs/{countJobId}/events:
+    get:
+      summary: Lista eventos confirmados
+      security: [{ ApiKeyAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/CountJobId'
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1, default: 1 }
+        - name: page_size
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 50 }
+      responses:
+        '200': { description: Eventos ordenados por fotograma }
+        '409': { description: Resultado aún no disponible }
+  /v1/count-jobs/{countJobId}/annotated-video:
+    get:
+      summary: Recupera el video temporal con línea y contadores
+      security: [{ ApiKeyAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/CountJobId'
+      responses:
+        '200': { description: Video MP4 anotado }
+        '404': { description: Artefacto no disponible }
+        '410': { description: Conteo vencido }
+components:
+  securitySchemes:
+    ApiKeyAuth: { type: apiKey, in: header, name: X-API-Key }
+  parameters:
+    VideoJobId: { name: videoJobId, in: path, required: true, schema: { type: string, format: uuid } }
+    CountJobId: { name: countJobId, in: path, required: true, schema: { type: string, format: uuid } }
+
