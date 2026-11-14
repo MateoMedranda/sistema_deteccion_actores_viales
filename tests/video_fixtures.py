@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from app.domain.models import Detection, VideoMetadata
+from app.domain.models import FrameDetection
 
 
 class FakeProbe:
@@ -26,6 +27,14 @@ class StableTrackerDetector:
 
     def detect(self, image):
         return [Detection(0, "car", 0.9, 5, 5, min(30, image.shape[1]), min(30, image.shape[0]))]
+
+
+def line_crossing_detections() -> list[FrameDetection]:
+    """A controlled tracked car that crosses a horizontal line exactly once."""
+    return [
+        FrameDetection(0, 11, 0, "car", .9, 10, 4, 30, 14),
+        FrameDetection(1, 11, 0, "car", .9, 10, 32, 30, 42),
+    ]
 
 
 def ffmpeg_executable() -> str:

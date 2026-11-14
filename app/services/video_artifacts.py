@@ -18,6 +18,9 @@ class VideoArtifactStore:
     def annotated_output_path(self) -> Path:
         return self.output_root / f"{uuid4().hex}.mp4"
 
+    def count_output_path(self) -> Path:
+        return self.output_root / f"count-{uuid4().hex}.mp4"
+
     def remove(self, path: Path | None) -> None:
         if path is not None:
             path.unlink(missing_ok=True)

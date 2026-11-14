@@ -10,10 +10,10 @@
 
 1. Iniciar el servicio con uv run uvicorn app.main:app --reload.
 2. Procesar un video hasta que su trabajo quede completed.
-3. Crear un trabajo de conteo para el identificador de video enviando point_a y point_b normalizados.
-4. Consultar el trabajo hasta completed; durante processing, verificar que progreso, eventos y totales acumulados solo aumentan.
-5. Recuperar eventos paginados y confirmar un evento máximo por track_id.
-6. Recuperar el video anotado y comparar línea, dirección y totales con el resumen.
+3. Crear un trabajo de conteo para el identificador de video enviando `POST /api/v1/video-jobs/{videoJobId}/count-jobs` con `{"point_a":{"x":0,"y":0.5},"point_b":{"x":1,"y":0.5}}` y la cabecera `X-API-Key`.
+4. Consultar `GET /api/v1/count-jobs/{countJobId}` hasta `completed`; durante `processing`, verificar que progreso, eventos y totales acumulados solo aumentan.
+5. Recuperar `GET /api/v1/count-jobs/{countJobId}/events?page=1&page_size=50` y confirmar un evento máximo por `track_id`.
+6. Recuperar `GET /api/v1/count-jobs/{countJobId}/annotated-video` y comparar línea, dirección y totales con el resumen.
 7. Repetir con puntos inválidos, otra credencial, video vencido, cero cruces y actores que permanecen en el mismo lado.
 
 ## Evidencia esperada

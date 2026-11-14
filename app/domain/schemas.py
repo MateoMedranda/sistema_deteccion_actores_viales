@@ -93,3 +93,64 @@ class TemporaryVideo(BaseModel):
     url: str
     media_type: str = "video/mp4"
     expires_at: datetime
+
+
+class NormalizedPoint(BaseModel):
+    x: float = Field(ge=0, le=1)
+    y: float = Field(ge=0, le=1)
+
+
+class CountJobCreateRequest(BaseModel):
+    point_a: NormalizedPoint
+    point_b: NormalizedPoint
+
+
+class CountLineResponse(BaseModel):
+    point_a: NormalizedPoint
+    point_b: NormalizedPoint
+
+
+class CountJobAccepted(BaseModel):
+    count_job_id: str
+    status: Literal["queued"]
+    created_at: datetime
+    expires_at: datetime
+    line: CountLineResponse
+
+
+class CountEventResponse(BaseModel):
+    track_id: int = Field(ge=1)
+    class_id: int = Field(ge=0)
+    class_name: str = Field(min_length=1)
+    direction: Literal["A_to_B", "B_to_A"]
+    frame_index: int = Field(ge=0)
+    video_time_seconds: float = Field(ge=0)
+
+
+class CountSummaryResponse(BaseModel):
+    class_name: str = Field(min_length=1)
+    direction: Literal["A_to_B", "B_to_A"]
+    total: int = Field(ge=0)
+
+
+class CountJobResponse(BaseModel):
+    count_job_id: str
+    source_video_job_id: str
+    status: Literal["queued", "processing", "completed", "failed", "cancelled"]
+    line: CountLineResponse
+    progress_percent: int = Field(ge=0, le=100)
+    processed_frames: int = Field(ge=0)
+    total_frames: int = Field(ge=1)
+    events: list[CountEventResponse]
+    summary: list[CountSummaryResponse]
+    created_at: datetime
+    updated_at: datetime
+    expires_at: datetime
+    error: ErrorResponse | None = None
+
+
+class CountEventPage(BaseModel):
+    items: list[CountEventResponse]
+    page: int = Field(ge=1)
+    page_size: int = Field(ge=1, le=100)
+    total: int = Field(ge=0)

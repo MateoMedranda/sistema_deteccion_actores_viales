@@ -109,12 +109,19 @@ components:
         point_b: { $ref: '#/components/schemas/NormalizedPoint' }
     CountJobAccepted:
       type: object
-      required: [count_job_id, status, created_at, expires_at]
+      required: [count_job_id, status, created_at, expires_at, line]
       properties:
         count_job_id: { type: string, format: uuid }
         status: { type: string, enum: [queued] }
         created_at: { type: string, format: date-time }
         expires_at: { type: string, format: date-time }
+        line: { $ref: '#/components/schemas/CountLine' }
+    CountLine:
+      type: object
+      required: [point_a, point_b]
+      properties:
+        point_a: { $ref: '#/components/schemas/NormalizedPoint' }
+        point_b: { $ref: '#/components/schemas/NormalizedPoint' }
     CountEvent:
       type: object
       required: [track_id, class_id, class_name, direction, frame_index, video_time_seconds]
@@ -134,11 +141,12 @@ components:
         total: { type: integer, minimum: 0 }
     CountJobResponse:
       type: object
-      required: [count_job_id, source_video_job_id, status, processed_frames, total_frames, progress_percent, events, summary, created_at, updated_at, expires_at]
+      required: [count_job_id, source_video_job_id, status, line, processed_frames, total_frames, progress_percent, events, summary, created_at, updated_at, expires_at]
       properties:
         count_job_id: { type: string, format: uuid }
         source_video_job_id: { type: string, format: uuid }
         status: { type: string, enum: [queued, processing, completed, failed, cancelled] }
+        line: { $ref: '#/components/schemas/CountLine' }
         processed_frames: { type: integer, minimum: 0 }
         total_frames: { type: integer, minimum: 1 }
         progress_percent: { type: integer, minimum: 0, maximum: 100 }

@@ -32,6 +32,11 @@ class Settings(BaseSettings):
     video_result_ttl_seconds: int = Field(default=3600, gt=0)
     video_job_db_path: Path = Path(".runtime/video-jobs.sqlite3")
     video_temp_dir: Path = Path(".runtime/video-jobs")
+    max_concurrent_count_jobs: int = Field(default=1, gt=0)
+    max_queued_count_jobs: int = Field(default=20, gt=0)
+    count_result_ttl_seconds: int = Field(default=3600, gt=0)
+    count_job_db_path: Path = Path(".runtime/count-jobs.sqlite3")
+    count_temp_dir: Path = Path(".runtime/count-jobs")
     ffprobe_executable: str = "ffprobe"
     ffmpeg_executable: str = "ffmpeg"
 

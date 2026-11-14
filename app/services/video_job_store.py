@@ -150,6 +150,19 @@ class VideoJobStore:
         ).fetchall()
         return {row["class_name"]: row["total"] for row in rows}
 
+    def all_detections(self, job_id: str, owner_key_id: str) -> list[FrameDetection]:
+        """Return completed source detections for downstream analytics without reinference."""
+        job = self.get(job_id, owner_key_id)
+        if job.status is not VideoJobStatus.COMPLETED:
+            raise ApiError(409, "source_not_ready", "The source video is not available for counting.")
+        rows = self._connection.execute(
+            "SELECT * FROM video_detections WHERE job_id=? ORDER BY frame_index, track_id", (job_id,)
+        ).fetchall()
+        return [FrameDetection(
+            row["frame_index"], row["track_id"], row["class_id"], row["class_name"], row["confidence"],
+            row["x_min"], row["y_min"], row["x_max"], row["y_max"],
+        ) for row in rows]
+
     def recover(self) -> None:
         now = datetime.now(UTC).isoformat()
         self._connection.execute("UPDATE video_jobs SET status='queued', updated_at=? WHERE status='processing' AND expires_at>?", (now, now)); self._connection.commit()

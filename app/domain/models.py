@@ -23,6 +23,24 @@ class VideoJobStatus(StrEnum):
     CANCELLED = "cancelled"
 
 
+class CountJobStatus(StrEnum):
+    QUEUED = "queued"
+    PROCESSING = "processing"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+
+
+COUNT_TERMINAL_STATES = {CountJobStatus.COMPLETED, CountJobStatus.FAILED, CountJobStatus.CANCELLED}
+COUNT_TRANSITIONS = {
+    CountJobStatus.QUEUED: {CountJobStatus.PROCESSING, CountJobStatus.CANCELLED, CountJobStatus.FAILED},
+    CountJobStatus.PROCESSING: {CountJobStatus.COMPLETED, CountJobStatus.CANCELLED, CountJobStatus.FAILED},
+    CountJobStatus.COMPLETED: set(),
+    CountJobStatus.FAILED: set(),
+    CountJobStatus.CANCELLED: set(),
+}
+
+
 VIDEO_TERMINAL_STATES = {VideoJobStatus.COMPLETED, VideoJobStatus.FAILED, VideoJobStatus.CANCELLED}
 VIDEO_TRANSITIONS = {
     VideoJobStatus.QUEUED: {VideoJobStatus.PROCESSING, VideoJobStatus.CANCELLED, VideoJobStatus.FAILED},
@@ -35,6 +53,10 @@ VIDEO_TRANSITIONS = {
 
 def may_transition(current: VideoJobStatus, target: VideoJobStatus) -> bool:
     return target in VIDEO_TRANSITIONS[current]
+
+
+def may_transition_count(current: CountJobStatus, target: CountJobStatus) -> bool:
+    return target in COUNT_TRANSITIONS[current]
 
 
 @dataclass(frozen=True)
@@ -76,6 +98,52 @@ class FrameDetection:
     y_min: int
     x_max: int
     y_max: int
+
+
+@dataclass(frozen=True)
+class CountPoint:
+    x: float
+    y: float
+
+
+@dataclass(frozen=True)
+class CountLine:
+    point_a: CountPoint
+    point_b: CountPoint
+
+
+@dataclass(frozen=True)
+class CountJob:
+    count_job_id: str
+    source_video_job_id: str
+    owner_key_id: str
+    status: CountJobStatus
+    line: CountLine
+    created_at: datetime
+    updated_at: datetime
+    expires_at: datetime
+    total_frames: int
+    processed_frames: int = 0
+    output_path: Path | None = None
+    error_code: str | None = None
+
+
+@dataclass(frozen=True)
+class CountEvent:
+    count_job_id: str
+    track_id: int
+    class_id: int
+    class_name: str
+    direction: str
+    frame_index: int
+    video_time_seconds: float
+
+
+@dataclass(frozen=True)
+class CountSummary:
+    class_name: str
+    direction: str
+    total: int
 
 
 @dataclass(frozen=True)
