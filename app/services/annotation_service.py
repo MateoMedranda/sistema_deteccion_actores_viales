@@ -31,8 +31,8 @@ def annotate(image: np.ndarray, detections: list[Detection]) -> bytes:
     for detection in detections:
         color = color_for_class(detection.class_id)
         cv2.rectangle(canvas, (detection.x_min, detection.y_min), (detection.x_max, detection.y_max), color, thickness, cv2.LINE_AA)
-        label = f"{detection.class_name} {detection.confidence:.2f}"
-        (label_width, label_height), baseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.45, 1)
+        label = f"{detection.class_name} {detection.confidence:.0%}"
+        (label_width, label_height), baseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.32, 1)
         # Prefer the small label above the box; use the top interior only when it would leave the image.
         label_bottom = detection.y_min - 4
         if label_bottom - label_height - baseline < 0:
@@ -50,7 +50,7 @@ def annotate(image: np.ndarray, detections: list[Detection]) -> bytes:
             label,
             (label_left + 2, label_bottom),
             cv2.FONT_HERSHEY_SIMPLEX,
-            0.45,
+            0.32,
             (255, 255, 255),
             1,
             cv2.LINE_AA,
