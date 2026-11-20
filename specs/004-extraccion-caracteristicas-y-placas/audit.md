@@ -61,3 +61,28 @@ El `requirements.txt` del repositorio de investigación declara PaddleOCR 2.9.1 
 Las pruebas de regresión cubren configuración del predictor, umbral real de YOLO, conservación de cajas ante errores, registros seguros, lectura observada y rectificación sin rotaciones espurias. La fixture HTTP ahora ignora el `.env` personal y usa almacenamiento de enriquecimiento aislado para no consumir modelos ni trabajos del usuario.
 
 Verificación final: `.venv/Scripts/python.exe -m pytest` — **101 aprobadas**, dos avisos de dependencias, sin fallos. `git diff --check` sin errores.
+
+## Reproducción del repositorio de investigación — 2026-11-20
+
+Se creó un entorno aislado local `.runtime/ocr-original-env` (Python 3.11.17) con PaddlePaddle 2.6.2, PaddleOCR 2.9.1, NumPy 1.26.4, Torch 2.7.1 CPU, torchvision 0.22.1 CPU y las versiones originales de OpenCV/albumentations. Se ejecutaron directamente `core/yolov10_detector.py` y `core/alpr_model.py` del repositorio de investigación, sin reescribirlos ni modificarlos, sobre `ITB3BGJW45C27PEIPUCRDPFLYU.jpg`. Se reutilizaron sus checkpoints y los modelos de OCR locales. Es una reproducción de las dependencias principales de inferencia, no una copia exacta de todas las dependencias transitivas ni de la GPU histórica.
+
+El script reproducible `scripts/diagnose_alpr.py` importa esos módulos en modo `original`; en modo `backend` ejecuta los adaptadores actuales. Solo imprime conteos, dimensiones y versiones, sin textos de placas ni contenido de imágenes.
+
+| Flujo | Actores | Placas localizadas | Sin placa | Textos aceptados/devueltos |
+|---|---:|---:|---:|---:|
+| Código original, Paddle 2.6.2 + OCR 2.9.1 | 21 | 11 (`UNREADABLE`) | 10 (`NO_PLATE`) | 0 |
+| Backend, Paddle 3.3.1 + OCR 2.10.0 | 21 | 11 (`unreadable`) | 10 (`not_detected`) | 0 |
+
+Comando del original desde la raíz del proyecto (las rutas de imagen y repositorio son entradas locales):
+
+```powershell
+.\.runtime\ocr-original-env\Scripts\python.exe scripts/diagnose_alpr.py --mode original --image C:/Users/USER/Downloads/ITB3BGJW45C27PEIPUCRDPFLYU.jpg --original-repo C:/Users/USER/Desktop/Mateo/Vehicle_Detection_System
+```
+
+Controles adicionales en el entorno original:
+
+- OCR sobre texto sintético conocido `ABC1234`: lectura correcta, confianza 0.99948. El motor puede detectar y reconocer texto legible.
+- Reconocimiento directo de los 11 recortes de placa, ampliados a 64 píxeles de alto: ninguna lectura alcanza 0.80 (máximo aproximado 0.647); con CLAHE, máximo aproximado 0.624.
+- El código original completo devuelve cero textos incluso sin el umbral adicional de aceptación del backend. Por tanto, para este archivo concreto, `unreadable` no se explica únicamente por ese umbral ni por el cambio de versiones de Paddle. No se afirma que los resultados históricos del usuario fueran incorrectos; todavía se necesita el archivo exacto y la salida histórica correspondiente para contrastarlos.
+
+No se sustituyen las dependencias del backend por versiones antiguas ni se reduce el umbral de aceptación: la prueba aislada no demostró una mejora que justifique esos cambios. La precisión de lectura debe evaluarse con placas transcritas, imágenes con suficiente detalle original y/o varios fotogramas de video; ampliar un recorte no recupera información perdida. El entorno aislado queda disponible para repetir comparaciones y está excluido de Git.
