@@ -12,7 +12,7 @@ class YOLOv8PlateLocalizer:
         self.model, self.threshold = YOLO(str(weights_path)), threshold
 
     def locate(self, vehicle_crop: np.ndarray) -> PlateLocation | None:
-        result = self.model(vehicle_crop, verbose=False)[0]
+        result = self.model(vehicle_crop, conf=self.threshold, verbose=False)[0]
         candidates = [box for box in result.boxes if float(box.conf[0]) >= self.threshold]
         if not candidates: return None
         best = max(candidates, key=lambda box: float(box.conf[0]))

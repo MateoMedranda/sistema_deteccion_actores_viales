@@ -38,12 +38,15 @@ def api_key() -> str:
 @pytest.fixture
 def client(tmp_path, api_key):
     settings = Settings(
+        _env_file=None,
         api_key=api_key,
         temp_artifact_dir=tmp_path / "artifacts",
         video_job_db_path=tmp_path / "video-jobs.sqlite3",
         video_temp_dir=tmp_path / "video-jobs",
         count_job_db_path=tmp_path / "count-jobs.sqlite3",
         count_temp_dir=tmp_path / "count-jobs",
+        enrichment_job_db_path=tmp_path / "enrichment-jobs.sqlite3",
+        enrichment_temp_dir=tmp_path / "enrichment",
     )
     with TestClient(create_app(settings=settings, detector=FakeDetector())) as test_client:
         yield test_client

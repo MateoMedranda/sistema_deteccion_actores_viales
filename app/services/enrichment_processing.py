@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import concurrent.futures
 import threading
+import logging
 from dataclasses import asdict
 import numpy as np
 
@@ -37,6 +38,8 @@ class EnrichmentProcessor:
 
     def _plate(self, crop: np.ndarray, frame_index: int | None) -> dict:
         if self.localizer is None or self.reader is None: return {"status": "failed", "used_enhancement": False, "evidence_frame_indexes": [], "error_code": "plate_model_unavailable"}
+        stage = "localization"
+        evidence = {}
         try:
             with self.plate_slots:
                 location = self.localizer.locate(crop)
@@ -44,7 +47,9 @@ class EnrichmentProcessor:
             height, width = crop.shape[:2]
             x1, y1, x2, y2 = max(0, location.x_min), max(0, location.y_min), min(width, location.x_max), min(height, location.y_max)
             if x2 <= x1 or y2 <= y1: return {"status": "unreadable", "used_enhancement": False, "evidence_frame_indexes": []}
-            plate = crop[y1:y2, x1:x2]
+            evidence = {"bbox_relative": {"x_min": x1 / width, "y_min": y1 / height, "x_max": x2 / width, "y_max": y2 / height}, "localizer_confidence": location.confidence}
+            stage = "ocr"
+            plate = crop[y1:y2, x1:x2].copy()
             with self.plate_slots:
                 reading = self.reader.read(plate)
             enhanced = False
@@ -57,5 +62,8 @@ class EnrichmentProcessor:
             if reading is not None and reading.confidence >= self.accept_threshold:
                 output.update({"status": "read", "text": reading.text})
             return output
-        except Exception:
-            return {"status": "failed", "used_enhancement": False, "evidence_frame_indexes": [], "error_code": "plate_processing_failed"}
+        except Exception as exc:
+            # Record only the exception type and stage; plate text, image data,
+            # internal paths and exception messages never enter application logs.
+            logging.getLogger("road_actor_detection").error("plate_processing_failed", extra={"branch": stage, "exception_type": type(exc).__name__, "error_code": "plate_processing_failed"})
+            return {"status": "failed", **evidence, "used_enhancement": False, "evidence_frame_indexes": [], "error_code": "plate_processing_failed"}

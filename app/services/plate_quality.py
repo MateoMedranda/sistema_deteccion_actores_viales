@@ -6,13 +6,15 @@ import numpy as np
 def conservative_enhance(image: np.ndarray) -> np.ndarray:
     """Non-generative, deterministic retry image; it never adds plate characters."""
     if image.size == 0: return image
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # Enlarge tiny plate crops before contrast normalization. Interpolation
+    # improves OCR input size but does not recover missing character detail.
+    height, width = image.shape[:2]
+    scale = max(1.0, min(4.0, 64 / height))
+    enlarged = cv2.resize(image, (round(width * scale), round(height * scale)), interpolation=cv2.INTER_CUBIC)
+    gray = cv2.cvtColor(enlarged, cv2.COLOR_BGR2GRAY)
     gray = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8)).apply(gray)
-    gray = cv2.fastNlMeansDenoising(gray, None, 5, 7, 21)
-    gray = cv2.GaussianBlur(gray, (0, 0), 1.0)
-    sharp = cv2.addWeighted(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY), 1.4, gray, -0.4, 0)
-    scaled = cv2.resize(sharp, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
-    return cv2.cvtColor(scaled, cv2.COLOR_GRAY2BGR)
+    padded = cv2.copyMakeBorder(gray, 8, 8, 8, 8, cv2.BORDER_REPLICATE)
+    return cv2.cvtColor(padded, cv2.COLOR_GRAY2BGR)
 
 
 def rectify_plate(image: np.ndarray) -> np.ndarray:
@@ -24,6 +26,14 @@ def rectify_plate(image: np.ndarray) -> np.ndarray:
     if points is None or len(points) < 8:
         return image
     angle = cv2.minAreaRect(points)[-1]
-    angle = angle + 90 if angle < -45 else angle
-    matrix = cv2.getRotationMatrix2D((image.shape[1] / 2, image.shape[0] / 2), angle, 1.0)
-    return cv2.warpAffine(image, matrix, (image.shape[1], image.shape[0]), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
+    angle = (angle + 45) % 90 - 45
+    if abs(angle) > 15 or abs(angle) < .5:
+        return image
+    height, width = image.shape[:2]
+    matrix = cv2.getRotationMatrix2D((width / 2, height / 2), angle, 1.0)
+    cosine, sine = abs(matrix[0, 0]), abs(matrix[0, 1])
+    new_width = int(np.ceil(height * sine + width * cosine))
+    new_height = int(np.ceil(height * cosine + width * sine))
+    matrix[0, 2] += (new_width - width) / 2
+    matrix[1, 2] += (new_height - height) / 2
+    return cv2.warpAffine(image, matrix, (new_width, new_height), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
