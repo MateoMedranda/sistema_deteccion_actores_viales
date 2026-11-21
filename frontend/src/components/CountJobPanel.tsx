@@ -1,2 +1,44 @@
-import { useEffect, useState } from "react"; import type { Point } from "../services/apiTypes"; import { ApiClient } from "../services/apiClient";
-export function CountJobPanel({client,videoId,line}:{client:ApiClient|undefined;videoId?:string;line?:[Point,Point]}) {const [message,setMessage]=useState("");const [job,setJob]=useState<any>(); useEffect(()=>{if(!client||!job?.count_job_id||["completed","failed","cancelled"].includes(job.status))return;const timer=setTimeout(async()=>{try{setJob(await client.countJob(job.count_job_id))}catch{setMessage("El conteo ya no está disponible.")}},1200);return()=>clearTimeout(timer)},[client,job]); const run=async()=>{if(!client||!videoId||!line)return setMessage("Complete video y línea primero.");try{setJob(await client.count(videoId,...line));setMessage("Conteo iniciado.")}catch{setMessage("No fue posible iniciar el conteo.")}};return <section><h2>Conteo</h2><button onClick={run}>Iniciar conteo</button><p role="status">{message} {job&&`Estado: ${job.status} · ${job.progress_percent ?? 0}%`}</p>{job?.summary?.length>0&&<pre>{JSON.stringify(job.summary,null,2)}</pre>}{job?.events?.length>0&&<pre>{JSON.stringify(job.events,null,2)}</pre>}</section>}
+import type { Point } from "../services/apiTypes";
+import { ApiClient } from "../services/apiClient";
+import { useLegacyJob } from "../hooks/useLegacyJob";
+import type { SessionLifecycle } from "../hooks/useSessionLifecycle";
+export function CountJobPanel({
+  client,
+  videoId,
+  line,
+  lifecycle,
+}: {
+  client?: ApiClient;
+  videoId?: string;
+  line?: [Point, Point];
+  lifecycle?: SessionLifecycle;
+}) {
+  const { job, message, setMessage, run } = useLegacyJob({
+    idKey: "count_job_id",
+    lifecycle,
+    poll: (id, options) => client!.countJob(id, options),
+    cancel: (id) => client!.cancelCount(id),
+  });
+  const start = () => {
+    if (!client || !videoId || !line)
+      return setMessage("Completa video y línea primero.");
+    void run((options) => client.count(videoId, ...line, options));
+  };
+  return (
+    <section>
+      <h2>Conteo</h2>
+      <button onClick={start}>Iniciar conteo</button>
+      <p role="status">
+        {message}{" "}
+        {job &&
+          "Estado: " + job.status + " · " + (job.progress_percent ?? 0) + "%"}
+      </p>
+      {job?.summary?.length > 0 && (
+        <pre>{JSON.stringify(job.summary, null, 2)}</pre>
+      )}
+      {job?.events?.length > 0 && (
+        <pre>{JSON.stringify(job.events, null, 2)}</pre>
+      )}
+    </section>
+  );
+}

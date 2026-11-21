@@ -11,7 +11,7 @@ from tests.conftest import image_bytes
 async def test_accepts_valid_jpeg():
     upload = UploadFile(filename="street.jpg", file=__import__("io").BytesIO(image_bytes()), headers={"content-type": "image/jpeg"})
     result = await ImageValidator(Settings(api_key="test")).validate(upload)
-    assert result.media_type == "image/jpeg"
+    assert result.media_type == "image/png"  # accepted JPEG is normalized to canonical PNG
     assert result.width == 40
 
 

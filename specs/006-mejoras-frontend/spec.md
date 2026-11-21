@@ -1,6 +1,6 @@
 # Feature Specification: Exploración visual de imágenes viales enriquecidas
 
-**Feature Branch**: `codex/006-mejoras-frontend`
+**Feature Branch**: `feature/006-mejoras-frontend`
 
 **Created**: 2026-11-20
 
@@ -151,13 +151,24 @@ Como usuario del prototipo, quiero conservar las funciones de imagen, video y co
 - **FR-024**: La interfaz MUST respetar la autorización y el vencimiento de la evidencia; ante rechazo o expiración retirará los datos afectados y solicitará un nuevo análisis o acceso válido, sin inventar vigencias ni mecanismos de autenticación nuevos.
 - **FR-025**: Esta iteración MUST abarcar el frontend y las correcciones de backend y contratos necesarias para completar y proteger el recorrido de imágenes. Los cambios conservarán compatibilidad con clientes existentes y no sustituirán autenticación, modelos, pesos o umbrales aprobados. Las especificaciones históricas conservarán su significado; los contratos nuevos se documentarán en 006.
 - **FR-026**: La información no disponible MUST identificarse explícitamente. Las carencias de servicio abordadas por este plan se convertirán en trabajo implementable dentro de 006; solo quedarán como dependencias externas los recursos o capacidades realmente fuera de alcance. No se declarará una capacidad completada mediante datos inventados.
-- **FR-027**: El trabajo MUST permanecer en `codex/006-mejoras-frontend`. Puede utilizar el checkout original al dejar de existir trabajo paralelo de backend, preservando cambios y archivos ajenos y sin alterar la rama histórica del backend. El worktree separado deja de ser obligatorio.
+- **FR-027**: El trabajo MUST permanecer en `feature/006-mejoras-frontend`. Puede utilizar el checkout original al dejar de existir trabajo paralelo de backend, preservando cambios y archivos ajenos y sin alterar la rama histórica del backend. El worktree separado deja de ser obligatorio.
 - **FR-028**: El sistema MUST utilizar una única orientación, dimensiones y geometría válidas para la imagen analizada, sus anotaciones, sus detecciones y sus recortes. Las cajas inválidas no producirán evidencia aproximada ni identidades inconsistentes.
 - **FR-029**: El sistema MUST informar qué detecciones admiten enriquecimiento y hasta cuándo están disponibles la fuente y su evidencia, sin exigir que el usuario conozca reglas internas de elegibilidad o conservación.
 - **FR-030**: El servicio MUST informar la disponibilidad real de atributos, localización de placa y lectura, distinguiendo capacidades ausentes. La indisponibilidad de una rama no bloqueará las detecciones ni los resultados válidos de otra.
 - **FR-031**: El sistema MUST impedir la publicación de resultados posteriores a cancelación o vencimiento y conservar las transiciones terminales frente a respuestas tardías o operaciones concurrentes. El procesamiento cooperativo se detendrá entre unidades, sin prometer interrumpir una inferencia ya iniciada.
 - **FR-032**: El servicio MUST eliminar la evidencia temporal y los resultados sensibles al vencer su vigencia sin depender de una nueva solicitud del usuario; la limpieza periódica tendrá un margen máximo de 2 segundos y un cierre ordenado.
 - **FR-033**: El servicio MUST suprimir el texto de placa no autorizado o no legible antes de guardar o responder cualquier representación de resultados, manteniendo el recorte localizado cuando sea válido.
+- **FR-034**: Las operaciones de inferencia afectadas MUST producir mediciones correlacionadas por solicitud o trabajo de duración, uso de memoria del proceso y resultado/error seguro; el video conservará su medición por cuadro. La validación MUST documentar hardware, modelo, parámetros, latencias y memoria frente a la línea base, sin registrar credenciales, imágenes, texto de placas ni rutas privadas.
+
+### Límites de espera del recorrido de imágenes
+
+- Analizar una imagen: máximo 120 s por solicitud, incluido envío y respuesta.
+- Solicitar el inicio del enriquecimiento: máximo 15 s por solicitud.
+- Consultar estado o capacidades: máximo 10 s por solicitud.
+- Obtener una página de resultados o una imagen protegida: máximo 30 s por solicitud.
+- Observar automáticamente un enriquecimiento: máximo 120 s por ciclo iniciado por el usuario, limitado además por la menor vigencia conocida de fuente, trabajo y artefactos; una consulta no amplía ese presupuesto.
+- Al agotar un plazo se interrumpe la espera local y se comunica cómo continuar. Si existe identificador de trabajo, se conserva mientras esté vigente para consultar el mismo trabajo mediante una acción explícita; no se crea otro por un fallo de consulta. Una nueva acción explícita de reanudar puede abrir otro ciclo limitado por la vigencia restante, nunca ampliar la del servidor.
+- No se repite automáticamente ningún envío de análisis o creación cuyo resultado sea ambiguo. Abortar la espera HTTP no garantiza cancelar una operación remota ya iniciada. Reinicio, cambio de fuente/credencial o vencimiento tienen prioridad y limpian la evidencia afectada.
 
 ### Key Entities
 
@@ -187,6 +198,7 @@ Como usuario del prototipo, quiero conservar las funciones de imagen, video y co
 - **SC-012**: En imágenes controladas con orientación normal, rotada y reflejada, el 100% de cajas y recortes coincide con la evidencia del mismo vehículo y de la misma placa, incluyendo cajas en los bordes.
 - **SC-013**: El 100% de pruebas de cancelación o vencimiento concurrentes con finalización impide publicar resultados posteriores; la evidencia y los resultados sensibles vencidos se eliminan en un máximo de 2 segundos incluso sin solicitudes nuevas.
 - **SC-014**: En los casos de modelos ausentes, disponibles por separado o completos, la disponibilidad informada coincide con la real; ninguna representación persistida o entregada contiene texto de placa cuando su estado no es legible.
+- **SC-015**: El 100% de los casos controlados de éxito y fallo de detección y enriquecimiento incluye una medición correlacionada con duración, memoria del proceso y resultado/error seguro. La comparación de al menos 10 imágenes/20 vehículos registra latencia y memoria antes/después bajo las mismas condiciones, y la prueba de video conserva métricas por cuadro, sin evidencia sensible en los registros.
 
 ## Assumptions
 

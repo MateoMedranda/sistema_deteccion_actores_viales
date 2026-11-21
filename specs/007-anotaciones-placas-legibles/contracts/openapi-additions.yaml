@@ -1,0 +1,591 @@
+openapi: 3.1.0
+info:
+  title: 007 — contrato aditivo de anotaciones y placas
+  version: 0.1.0
+  description: Contrato aditivo implementado en007; aceptación OCR real pendiente. No reemplaza operaciones
+    históricas. OpenAPI3.1 permite nullable JSONSchema explícito.
+paths:
+  /api/v1/enrichment-jobs/{enrichmentJobId}/detections/{detectionId}/plate-preview:
+    get:
+      operationId: getPlatePreview007
+      summary: PNG derivado de placa con metadata de procedencia, sin ejecutar modelos
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - name: enrichmentJobId
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      - name: detectionId
+        in: path
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+      - name: profile
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - display-contrast-v1
+          default: display-contrast-v1
+      responses:
+        '200':
+          description: PNG de la misma placa autorizada; no reemplaza el original
+          headers:
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+                const: no-store
+            X-Plate-Preview-Metadata:
+              required: true
+              description: JSON ASCII compacto <=2048 bytes, expuesto por CORS. Validar
+                identidad/geometría/perfil/TTL y dimensiones del PNG.
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/PreviewMetadata007'
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: Error JSON seguro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          headers:
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+                const: no-store
+        '404':
+          description: Error JSON seguro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          headers:
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+                const: no-store
+        '409':
+          description: Error JSON seguro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          headers:
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+                const: no-store
+        '410':
+          description: Error JSON seguro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          headers:
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+                const: no-store
+        '422':
+          description: Error JSON seguro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          headers:
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+                const: no-store
+        '429':
+          description: Error JSON seguro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          headers:
+            Retry-After:
+              schema:
+                type: string
+                const: '1'
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+                const: no-store
+        '503':
+          description: Error JSON seguro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          headers:
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+                const: no-store
+        '504':
+          description: Error JSON seguro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          headers:
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+                const: no-store
+  /api/v1/enrichment-jobs/{enrichmentJobId}/results:
+    get:
+      operationId: getEnrichmentResults007
+      summary: Operación existente con provenance opcional aditiva
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - name: enrichmentJobId
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      - name: page
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 50
+      responses:
+        '200':
+          description: Página de resultados compatible con el cliente previo
+          headers:
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+                const: no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrichedVehiclePage007'
+        '401':
+          description: Error JSON seguro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          headers:
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+                const: no-store
+        '404':
+          description: Error JSON seguro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          headers:
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+                const: no-store
+        '409':
+          description: Error JSON seguro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          headers:
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+                const: no-store
+        '410':
+          description: Error JSON seguro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          headers:
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+                const: no-store
+        '422':
+          description: Error JSON seguro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          headers:
+            Cache-Control:
+              required: true
+              schema:
+                type: string
+                const: no-store
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - code
+      - message
+      - request_id
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        request_id:
+          type: string
+    Size007:
+      type: object
+      additionalProperties: false
+      required:
+      - width
+      - height
+      properties:
+        width:
+          type: integer
+          minimum: 2
+        height:
+          type: integer
+          minimum: 2
+    GlobalBox007:
+      type: object
+      additionalProperties: false
+      required:
+      - x_min
+      - y_min
+      - x_max
+      - y_max
+      properties:
+        x_min:
+          type: integer
+          minimum: 0
+        y_min:
+          type: integer
+          minimum: 0
+        x_max:
+          type: integer
+          minimum: 0
+        y_max:
+          type: integer
+          minimum: 0
+      description: ROI global half-open; orden estricto y coherencia con original/dimensiones
+        verificados semánticamente.
+    PreviewMetadata007:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - source_id
+      - enrichment_job_id
+      - detection_id
+      - profile_id
+      - input_size
+      - output_size
+      - original_bbox
+      - applied_steps
+      - original_to_processed
+      - expires_at
+      properties:
+        version:
+          type: integer
+          const: 1
+        source_id:
+          type: string
+          minLength: 1
+          maxLength: 128
+        enrichment_job_id:
+          type: string
+          minLength: 1
+          maxLength: 128
+        detection_id:
+          type: integer
+          minimum: 1
+        profile_id:
+          type: string
+          enum:
+          - display-contrast-v1
+        input_size:
+          $ref: '#/components/schemas/Size007'
+        output_size:
+          allOf:
+          - $ref: '#/components/schemas/Size007'
+          - properties:
+              width:
+                maximum: 2048
+              height:
+                maximum: 2048
+          description: Además width*height <= 2000000.
+        original_bbox:
+          $ref: '#/components/schemas/GlobalBox007'
+        applied_steps:
+          type: array
+          items:
+            type: string
+            enum:
+            - grayscale
+            - resize_integer
+            - clahe
+          minItems: 2
+          maxItems: 3
+          uniqueItems: true
+        original_to_processed:
+          type: array
+          minItems: 6
+          maxItems: 6
+          items:
+            type: number
+          description: '[s,0,0,0,s,0]; escala entera1..4; coordenadas locales de borde
+            de píxel, valores finitos.'
+        expires_at:
+          type: string
+          format: date-time
+      description: Header serializado como JSON ASCII compacto <=2048bytes. Identidad,
+        ROI, pasos, matriz y tamaños deben concordar entre sí y con el PNG/contexto.
+    PlateReadingProvenance007:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - policy_id
+      - attempted_variants
+      - selected_variant
+      properties:
+        version:
+          type: integer
+          const: 1
+        policy_id:
+          type: string
+          enum:
+          - baseline-v1
+          - candidate-rescue-v1
+          - legacy-unknown
+        attempted_variants:
+          type: array
+          uniqueItems: true
+          maxItems: 4
+          items:
+            type: string
+            enum:
+            - raw
+            - legacy-retry-v1
+            - bilateral-clahe-v1
+            - bilateral-adaptive-v1
+        selected_variant:
+          type: string
+          enum:
+          - raw
+          - legacy-retry-v1
+          - bilateral-clahe-v1
+          - bilateral-adaptive-v1
+          - none
+          - unknown
+      description: 'Read: selected en attempted; no read: none. Excepción legacy-unknown
+        admite unknown/lista vacía; ausencia histórica nunca se infiere desde used_enhancement.'
+    RelativeBoundingBox:
+      type: object
+      required:
+      - x_min
+      - y_min
+      - x_max
+      - y_max
+      properties:
+        x_min:
+          type: number
+          minimum: 0
+          maximum: 1
+        y_min:
+          type: number
+          minimum: 0
+          maximum: 1
+        x_max:
+          type: number
+          minimum: 0
+          maximum: 1
+        y_max:
+          type: number
+          minimum: 0
+          maximum: 1
+      description: Caja ordenada relativa al vehículo, no a la escena.
+    EnrichmentAttribute:
+      type: object
+      required:
+      - name
+      - label
+      - confidence
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+        evidence_frame_index:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+    EnrichmentPlate007:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          type: string
+          enum:
+          - read
+          - unreadable
+          - not_detected
+          - failed
+        bbox_relative:
+          anyOf:
+          - $ref: '#/components/schemas/RelativeBoundingBox'
+          - type: 'null'
+        localizer_confidence:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+          maximum: 1
+        ocr_confidence:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+          maximum: 1
+        text:
+          type:
+          - string
+          - 'null'
+        used_enhancement:
+          type: boolean
+          default: false
+        evidence_frame_indexes:
+          type: array
+          items:
+            type: integer
+            minimum: 0
+        provenance:
+          anyOf:
+          - $ref: '#/components/schemas/PlateReadingProvenance007'
+          - type: 'null'
+          description: Extensión opcional, imágenes nuevas con procedencia exacta;
+            antiguos/video null o ausente.
+      description: Texto solo read; not_detected elimina bbox. Conservar used_enhancement
+        como intento.
+    EnrichedVehicleResult007:
+      type: object
+      required:
+      - vehicle_key
+      - detection_id
+      - class_id
+      - class_name
+      - attributes_status
+      - plate_status
+      - attributes
+      - plate
+      properties:
+        vehicle_key:
+          type: string
+        detection_id:
+          type: integer
+          minimum: 1
+        track_id:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+        class_id:
+          type: integer
+          minimum: 0
+        class_name:
+          type: string
+        evidence_frame_indexes:
+          type: array
+          items:
+            type: integer
+            minimum: 0
+        attributes_status:
+          type: string
+          enum:
+          - completed
+          - failed
+        plate_status:
+          type: string
+          enum:
+          - read
+          - unreadable
+          - not_detected
+          - failed
+        attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnrichmentAttribute'
+        plate:
+          $ref: '#/components/schemas/EnrichmentPlate007'
+        error_code:
+          type:
+          - string
+          - 'null'
+    EnrichedVehiclePage007:
+      type: object
+      required:
+      - items
+      - page
+      - page_size
+      - total
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnrichedVehicleResult007'
+        page:
+          type: integer
+          minimum: 1
+        page_size:
+          type: integer
+          minimum: 1
+          maximum: 100
+        total:
+          type: integer
+          minimum: 0

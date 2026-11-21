@@ -28,6 +28,9 @@ from app.services.enrichment_job_store import EnrichmentJobStore
 from app.services.enrichment_job_service import EnrichmentJobService
 from app.services.enrichment_processing import EnrichmentProcessor
 from app.services.enrichment_worker import EnrichmentWorker
+from app.services.temporary_cleanup import PeriodicCleanup
+from app.services.plate_preview_store import PlatePreviewStore
+from app.services.plate_preview_service import PlatePreviewService
 from app.adapters.efficientnet_attribute_extractor import EfficientNetAttributeExtractor
 from app.adapters.yolov8_plate_localizer import YOLOv8PlateLocalizer
 from app.adapters.paddle_plate_reader import PaddlePlateReader
@@ -55,10 +58,10 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
                     settings.ultralytics_path,
                 )
             except Exception:
-                logger.exception("model_initialization_failed")
+                logger.error("model_initialization_failed", extra={"error_code":"model_initialization_failed"})
         app.state.settings = settings
         app.state.service = DetectionService(
-            detector, artifacts, logger, settings.max_concurrent_inferences, image_sources
+            detector, artifacts, logger, settings.max_concurrent_inferences, image_sources, settings.vehicle_class_set
         )
         app.state.ready = detector is not None
         app.state.video_probe = FFprobeAdapter(settings.ffprobe_executable)
@@ -76,16 +79,17 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
             if settings.attribute_model_weights_path and settings.attribute_model_manifest_path:
                 attributes = EfficientNetAttributeExtractor(settings.attribute_model_weights_path, settings.attribute_model_manifest_path, settings.inference_device)
         except Exception:
-            logger.exception("attribute_model_initialization_failed")
+            logger.error("attribute_model_initialization_failed", extra={"error_code":"attribute_model_initialization_failed"})
         try:
             if settings.plate_model_weights_path:
                 localizer = YOLOv8PlateLocalizer(settings.plate_model_weights_path, settings.plate_localizer_threshold)
                 reader = PaddlePlateReader(settings.paddle_ocr_lang)
         except Exception:
-            logger.exception("plate_model_initialization_failed")
+            logger.error("plate_model_initialization_failed", extra={"error_code":"plate_model_initialization_failed"})
         enrichment_processor = EnrichmentProcessor(attributes, localizer, reader, settings.plate_ocr_retry_threshold, settings.plate_ocr_accept_threshold, settings.max_concurrent_attribute_inferences, settings.max_concurrent_plate_inferences)
-        enrichment_configured = bool(settings.attribute_model_weights_path or settings.plate_model_weights_path)
-        app.state.enrichment_models_ready = not enrichment_configured or (attributes is not None and localizer is not None and reader is not None)
+        enrichment_processor.logger = logger
+        app.state.enrichment_job_service.processor = enrichment_processor
+        app.state.enrichment_models_ready = all(value == "ready" for value in enrichment_processor.capabilities.values())
         enrichment_worker = EnrichmentWorker(enrichment_jobs, app.state.enrichment_job_service, enrichment_processor, logger)
         enrichment_worker.start(); app.state.enrichment_worker = enrichment_worker
         video_worker = None
@@ -111,7 +115,15 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
             count_worker.start()
         app.state.count_worker = count_workers[0]
         app.state.count_workers = count_workers
+        preview_store=PlatePreviewStore()
+        app.state.plate_preview_store=preview_store
+        app.state.plate_preview_service=PlatePreviewService(enrichment_jobs,image_sources,preview_store)
+        janitor = PeriodicCleanup((image_sources, enrichment_jobs, artifacts, video_jobs, count_jobs, preview_store), logger)
+        app.state.temporary_cleanup = janitor
+        janitor.start()
         yield
+        janitor.close()
+        preview_store.close()
         for count_worker in count_workers:
             count_worker.close()
         enrichment_worker.close()

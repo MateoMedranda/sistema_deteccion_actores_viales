@@ -1,6 +1,6 @@
 # Implementation Plan: Exploración visual de imágenes viales enriquecidas
 
-**Branch**: `codex/006-mejoras-frontend` | **Date**: 2026-11-20 | **Spec**: [spec.md](spec.md)
+**Branch**: `feature/006-mejoras-frontend` | **Date**: 2026-11-20 | **Spec**: [spec.md](spec.md)
 **Input**: Iteración 006 y ampliación del usuario: incluir cambios importantes de backend para que puedan ejecutarse durante implementación. El worktree es opcional; preservar la rama histórica y todo archivo ajeno.
 
 ## Summary
@@ -31,9 +31,9 @@ Una imagen estática utiliza «Detección N». No se creará un `track_id` ficti
 | II. Validación y trazabilidad | PASS: validar imagen/cajas y estados. | PASS: orientación única, cajas no degeneradas, códigos seguros y medidas sin evidencia sensible. |
 | III. Seguridad y datos | PASS: mantener propietario, autenticación y temporalidad. | PASS: original protegido, `no-store`, saneamiento previo a toda persistencia, limpieza periódica y revocación de URLs. |
 | IV. Pruebas y modelo | PASS: se requieren pruebas proporcionales y regresión imagen/video. | PASS: pruebas por requisito, evidencia controlada y comprobación comparativa de normalización de imagen; sin cambios de pesos o umbrales. |
-| V. Rendimiento | PASS: no duplicar inferencia por rediseño. | PASS: crop local, reutilizar original canónico, no endpoint combinado ni publicación incremental compleja. |
+| V. Rendimiento | PASS: no duplicar inferencia por rediseño. | PASS: duraciones/RSS/error correlacionados en detección y enriquecimiento; frame_ms de video conservado, comparación con línea base y recursos liberados sin inferencias duplicadas. |
 
-No hay excepción constitucional. La ampliación del alcance está autorizada por el usuario y reflejada en FR-025 a FR-033; no requiere modificar la constitución.
+La alineación constitucional incluye FR-034/SC-015 y la instrumentación de T005/T009/T017/T067. No hay excepción constitucional. La ampliación del alcance está autorizada por el usuario y reflejada en FR-025 a FR-034; no requiere modificar la constitución.
 
 ## Project Structure
 
@@ -88,6 +88,7 @@ app/
   domain/schemas.py              # extensiones aditivas y validación
   services/image_validation.py
   services/image_geometry.py     # geometría canónica compartida nueva
+  services/inference_metrics.py  # duración/RSS correlacionados, sin datos sensibles
   services/detection_service.py
   services/image_detection_store.py
   services/vehicle_cropping.py
@@ -106,7 +107,7 @@ tests/                           # raíz real, no subcarpeta de app
 
 ## Phase 0 — Research decisions
 
-Decisiones resueltas en [research.md](research.md): controles HTML sobre la imagen, ficha en flujo, estado por generación, imagen canónica, protocolo de backend aditivo y disponibilidad independiente. La investigación de dos agentes fue solo de lectura. No quedan decisiones técnicas bloqueantes ni marcadores pendientes.
+Decisiones resueltas en [research.md](research.md): controles HTML sobre la imagen, ficha en flujo, estado por generación, imagen canónica, protocolo de backend aditivo y disponibilidad independiente. La investigación de dos agentes fue solo de lectura. Las políticas de espera, observabilidad y fixtures de disponibilidad se concretan a continuación y en los contratos; no quedan decisiones técnicas bloqueantes ni marcadores pendientes.
 
 ## Phase 1 — Design
 
@@ -119,6 +120,24 @@ Decisiones resueltas en [research.md](research.md): controles HTML sobre la imag
 - Reintento de enriquecimiento repite solo esa etapa. Si un POST de creación tuvo respuesta ambigua, no repetir automáticamente ni afirmar que el servidor no recibió el trabajo.
 - Cada carga, cambio de credencial/base, reset o desmontaje invalida una generación; aborta fetch y timers, revoca recursos y limpia todas las selecciones. Un ID remoto que llega tarde se cancela con el cliente anterior cuando aún es posible; nunca restaura la sesión.
 - Reset común remonta los paneles por generación y recoge canceladores de video/conteo/enriquecimiento con `Promise.allSettled`, sin esperar para limpiar la vista. No confundir abortar HTTP con cancelar un trabajo remoto.
+
+### Plazos de espera y recuperación
+
+Aplicar los límites de la especificación solo al recorrido de imágenes: detección 120 s; creación de enriquecimiento 15 s; estado/capacidades 10 s; páginas y medios 30 s; observación automática 120 s por ciclo explícito y hasta el menor TTL conocido. Usar reloj monotónico para presupuestos y pruebas con temporizadores controlados. El deadline del próximo fetch será el mínimo de su límite individual, el presupuesto restante y el TTL aplicable. Expirar el presupuesto produce interrupted, aborta fetch/timers y mantiene solo información todavía autorizada; expirar la fuente retira su evidencia. Reanudar consulta el mismo job conocido, sin rePOST; el resultado ambiguo de creación requiere explicación y decisión explícita, sin prometer exactamente una ejecución.
+
+### Observabilidad exigida por la constitución
+
+Extender la instrumentación existente sin cambiar modelos: detección conserva tiempos de validación/inferencia/anotación/total; worker y processor añaden duración por trabajo/unidad y ramas de atributos/localización/OCR. Usar un contexto común en `app/services/inference_metrics.py`, configurado por solicitud/job y cerrado también en errores, cancelación y vencimiento. Incluir identificador, fuente, etapa, duración, `memory_mb` (RSS de proceso), `peak_memory_mb` (máximo muestreado de RSS), estado y error_code seguro. Tomar muestra inicial/final y, para operaciones largas, muestreo cada 100 ms; declarar que RSS pertenece al proceso y no es asignación exclusiva del job cuando hay concurrencia. Para imagen no inventar tiempo por cuadro; conservar `frame_ms` en video.
+
+T005 prueba correlación, unidades, finalización y ausencia de datos sensibles en registros. T009 integra medición en detección; T017 en worker/processor; T026 conserva la instrumentación al separar capacidades. T067 compara dataset, hardware y configuración iguales con la línea base, registrando latencia/RSS y diferencias; los objetivos siguen siendo ficha <1 s y limpieza <=2 s, sin imponer un tiempo de inferencia independiente del hardware. La muestra de comparación documenta el costo de normalizar y la ausencia de retención creciente tras ciclos de procesamiento y limpieza.
+
+### Compatibilidad de fixtures de enriquecimiento
+
+T023 debe adaptar `tests/conftest.py`, `tests/enrichment_fixtures.py` y `tests/integration/test_enrichment_job_routes.py`: las pruebas que esperan crear trabajo con 202 utilizarán fixture explícita con adaptadores sintéticos realmente instalados antes del cálculo de capacidades. El caso sin modelos conserva fixture independiente y verifica 503 `enrichment_unavailable`. No forzar flags ready ni relajar aserciones para ocultar el cambio; no cargar pesos reales en esos tests. Conservar los contratos anteriores admitidos y documentar la corrección de disponibilidad.
+
+### Alcance del primer incremento
+
+T033 acredita solo el MVP de orquestación: todavía no cierra la aceptación completa de US1. Su escenario de selección durante enriquecimiento se ejecuta en T040 después de T039, con trabajo aún processing. La ficha enriquecida completa requiere además US3. El cierre de todas las historias se mantiene en T069.
 
 ### Diseño visual y accesibilidad
 

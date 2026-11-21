@@ -10,5 +10,8 @@ def test_client_can_consume_only_public_response_fields(client, auth_headers):
         )
         body = response.json()
         detection = body["detections"][0]
-        assert set(detection) == {"detection_id", "class_id", "class_name", "confidence", "bbox"}
+        assert set(detection) == {"detection_id", "class_id", "class_name", "confidence", "bbox", "enrichment_eligible"}
+        assert isinstance(detection["enrichment_eligible"], bool)
+        assert set(body["original_image"]) == {"url", "media_type", "expires_at"}
+        assert body["original_image"]["url"].startswith("/api/")
         assert body["annotated_image"]["url"].startswith("/api/")

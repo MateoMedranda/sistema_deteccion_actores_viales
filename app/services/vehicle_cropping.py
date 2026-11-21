@@ -1,10 +1,7 @@
-from __future__ import annotations
-
 from dataclasses import dataclass
 import numpy as np
-
 from app.domain.models import Detection, FrameDetection
-
+from app.services.image_geometry import clip_box
 
 @dataclass(frozen=True)
 class VehicleCrop:
@@ -14,13 +11,12 @@ class VehicleCrop:
     x_max: int
     y_max: int
 
-
-def crop_vehicle(image: np.ndarray, detection: Detection | FrameDetection, vehicle_classes: set[str]) -> VehicleCrop | None:
-    if detection.class_name.lower() not in vehicle_classes:
+def crop_vehicle(image: np.ndarray, detection: Detection | FrameDetection, vehicle_classes: set[str]):
+    if image is None or detection.class_name.lower() not in vehicle_classes:
         return None
     height, width = image.shape[:2]
-    x_min = max(0, min(width, int(detection.x_min))); y_min = max(0, min(height, int(detection.y_min)))
-    x_max = max(0, min(width, int(detection.x_max))); y_max = max(0, min(height, int(detection.y_max)))
-    if x_max <= x_min or y_max <= y_min:
+    box = clip_box(detection.x_min, detection.y_min, detection.x_max, detection.y_max, width, height)
+    if box is None:
         return None
-    return VehicleCrop(image[y_min:y_max, x_min:x_max].copy(), x_min, y_min, x_max, y_max)
+    x1, y1, x2, y2 = box
+    return VehicleCrop(image[y1:y2, x1:x2].copy(), *box)

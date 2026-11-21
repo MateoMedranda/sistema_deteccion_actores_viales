@@ -1,0 +1,72 @@
+{
+  "basis": "controlled synthetic data already loaded; monotonic browser clock",
+  "runs": [
+    {
+      "project": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "durations_ms": [
+        72.30000001192093,
+        79.19999998807907,
+        75.69999998807907,
+        83.10000002384186,
+        73.60000002384186,
+        86.80000001192093
+      ],
+      "includes": "selection, correct details and local crop; source and enrichment already loaded"
+    },
+    {
+      "project": "tablet",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "durations_ms": [
+        87.39999997615814,
+        83.5,
+        73.5,
+        82.60000002384186,
+        76.59999996423721,
+        85.10000002384186
+      ],
+      "includes": "selection, correct details and local crop; source and enrichment already loaded"
+    },
+    {
+      "project": "mobile",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "durations_ms": [
+        71.40000003576279,
+        81.19999998807907,
+        77,
+        82.80000001192093,
+        76.80000001192093,
+        85.30000001192093
+      ],
+      "includes": "selection, correct details and local crop; source and enrichment already loaded"
+    }
+  ],
+  "suite": {
+    "passed": 93,
+    "unexpected": 0,
+    "duration_ms": 124404.104
+  },
+  "environment": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 117 Stepping 2, AuthenticAMD",
+    "logical_cpus": 16,
+    "browser": "Chromium headless",
+    "browser_version": "159.0.8154.6",
+    "playwright": "1.65.1",
+    "viewports_css_px": [
+      "1440x1000",
+      "768x1024",
+      "360x800"
+    ],
+    "concurrency": "one browser worker; no real models; fixture data already loaded"
+  }
+}

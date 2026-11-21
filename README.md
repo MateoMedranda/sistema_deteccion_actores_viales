@@ -2,8 +2,9 @@
 
 Microservicio para analizar imágenes y videos viales con el modelo YOLOv10s aprobado. La API de
 video registra un trabajo asíncrono, procesa los fotogramas, conserva las detecciones de forma
-temporal y publica un MP4 anotado cuando concluye. Cámara, placas, atributos, conteo por línea,
-historial permanente e interfaz web siguen fuera de alcance.
+temporal y publica un MP4 anotado cuando concluye. Incluye conteo por línea, enriquecimiento de
+atributos y placas e interfaz web. La iteración 006 incorpora exploración interactiva de imágenes;
+cámara e historial permanente siguen fuera de alcance.
 
 ## Configuración
 
@@ -71,3 +72,45 @@ eliminan al vencer `VIDEO_RESULT_TTL_SECONDS` o al detener limpiamente el servic
 - Ejecute `uv run pytest` antes de entregar cambios.
 - La procedencia aprobada del modelo es `yolov10s_best.pt` evaluado en
   `Vehicle_Detection_System`; cambiar pesos, clases o umbral exige una nueva evaluación.
+
+## Interfaz de exploración de imágenes (006)
+
+Con la API iniciada, desde otra terminal:
+
+```powershell
+Set-Location -LiteralPath './frontend'
+npm ci
+npm run dev -- --host 127.0.0.1
+```
+
+Configura la sesión en la interfaz, selecciona JPEG/PNG y pulsa **Analizar imagen**. El flujo detecta y enriquece automáticamente. Selecciona un recuadro o su control equivalente en la lista para consultar atributos y recortes del vehículo y de la placa. Se utiliza **Detección N** para imagen estática; Track ID real en imágenes permanece como dependencia externa.
+
+El original canónico PNG se obtiene mediante GET /api/v1/detections/{requestId}/original-image con la misma API key y propiedad que el análisis. La respuesta incluye original_image, source_expires_at y enrichment_eligible por detección. Original, anotación y resultados afectados usan Cache-Control: no-store. No hay endpoints nuevos de crop.
+
+GET /health/enrichment-ready devuelve disponibilidad independiente de atributos, localización y OCR. Una disponibilidad parcial puede responder 503 en health y aun permitir enriquecimiento útil; una rama ausente no oculta las válidas. El janitor purga fuentes/resultados vencidos sin necesitar tráfico nuevo.
+
+```powershell
+uv run pytest
+npm --prefix frontend run build
+npm --prefix frontend run test
+Set-Location -LiteralPath './frontend'
+npx playwright install chromium
+npm run test:e2e
+```
+
+Playwright administra Vite 4173 y API sintética 8767, con almacenamiento temporal aislado. No reutiliza servidores personales ni necesita pesos privados para validar la UI. Las pruebas con modelos aprobados son independientes; consultar [validación 006](specs/006-mejoras-frontend/validation.md), [quickstart](specs/006-mejoras-frontend/quickstart.md) y [pendientes de usabilidad](specs/006-mejoras-frontend/usability.md).
+
+
+La interfaz consulta GET /health/image-policy para mostrar los límites de archivo y píxeles configurados, sin cambiarlos. Original y anotación se recuperan independientemente sin repetir inferencia; rechazos de acceso retiran inmediatamente la evidencia. Los archivos temporales nuevos conservan recibos privados de vencimiento para purga tras reinicios; no se eliminan automáticamente ficheros históricos sin propiedad demostrable. Detalles y pruebas: [correcciones de convergencia](specs/006-mejoras-frontend/convergence-validation.md).
+
+## Anotaciones despejadas y comparación de placas (007)
+
+La exploración de imágenes ahora usa el original canónico, sin etiquetas numéricas sobre la escena. Los contornos distinguen13 clases con colores sólidos y una leyenda; foco, puntero y selección tienen formas diferenciadas. La banda externa identifica la detección contextual sin cambiar la ficha hasta activarla. La lista permite seleccionar vehículos pequeños por teclado o toque.
+
+Una placa localizada permite comparar **Original** y **Procesada**, con ampliación1x/2x/4x dentro de la ficha. La versión visual aplica gris, contraste local y ampliación acotada; no reconstruye caracteres ni modifica la lectura. Cambiar de vista o ampliar no vuelve a ejecutar detección, localización ni OCR. La procedencia de lectura distingue intentos y variante seleccionada cuando el servicio los conoce.
+
+El GET autenticado `/api/v1/enrichment-jobs/{enrichmentJobId}/detections/{detectionId}/plate-preview` devuelve PNG y la cabecera CORS `X-Plate-Preview-Metadata`. No acepta coordenadas ni recetas del cliente. Conserva dueño, no-store y menor TTL; usa una caché RAM acotada y un solo cálculo CPU real por proceso. Ante fallo visual sigue disponible el original autorizado; ante rechazo de acceso se retira la evidencia.
+
+La lectura productiva conserva **baseline-v1**. La candidata de rescate y el evaluador están implementados, pero **todavía no se acredita mayor exactitud**: faltan referencias privadas verificadas y evaluación reservada. No se modificaron los modelos, pesos ni umbrales. Video y conteo mantienen sus flujos.
+
+Consultar [guía007](specs/007-anotaciones-placas-legibles/quickstart.md), [validación](specs/007-anotaciones-placas-legibles/validation.md), [auditoría](specs/007-anotaciones-placas-legibles/audit.md) y [decisión de política](specs/007-anotaciones-placas-legibles/policy-decision.md). Los pendientes006 conservan su estado independiente.

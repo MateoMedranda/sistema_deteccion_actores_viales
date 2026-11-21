@@ -74,3 +74,11 @@ Un readiness global negativo no prohíbe el trabajo parcial: se acepta si hay at
 ## Recursos y límites de privacidad
 
 Sesión solo en memoria del navegador. Bytes originales de upload se liberan tras disponer del canónico; descriptor canónico reemplaza la previsualización de carga para geometría final. Backend guarda solo el original canónico ya necesario para enriquecimiento y las anotaciones temporales. Nuevo GET aplica propiedad, autorización y `Cache-Control: no-store`; datos ya entregados no son revocables físicamente, por lo que la UI debe retirar blobs al vencimiento y no exportar o persistirlos.
+
+## Presupuestos de espera de imágenes
+
+Por solicitud: detectar 120 s, crear enriquecimiento 15 s, consultar estado/capacidades 10 s y obtener página/medio 30 s. Observación automática por ciclo explícito: 120 s, acotada por menor TTL conocido. El deadline efectivo usa mínimo de límite de solicitud, presupuesto restante y vigencia. Plazo agotado -> interrupted; fuente vencida -> expired con retirada de datos. Reanudar abre un ciclo explícito para el mismo job vigente y no crea otro ni prolonga TTL. Nunca rePOST automático con resultado ambiguo.
+
+## Medición de inferencia
+
+Identidad correlacionada por request_id o job_id, fuente, etapa, duración en ms, estado/error_code seguro; memory_mb es RSS del proceso y peak_memory_mb el máximo de muestras inicial/final y cada 100 ms durante operaciones largas, sin atribuirlo exclusivamente a un job concurrente. Conservar frame_ms de video y no inventarlo para imagen. Todos los contextos de medición se cierran en éxito/fallo/cancelación/expiración. No serializar claves, imágenes, placas o rutas privadas en los eventos. FR-034/SC-015 fijan cobertura y comparación con línea base.

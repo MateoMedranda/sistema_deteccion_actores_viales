@@ -1,2 +1,88 @@
-import { useState } from "react"; import type { Point } from "../services/apiTypes"; import { normalizedPoint, validLine } from "../utils/lineCoordinates";
-export function LineEditor({onLine,videoUrl}:{onLine:(a:Point,b:Point)=>void;videoUrl:string}) { const [points,setPoints]=useState<Point[]>([]); const [dragging,setDragging]=useState<number|null>(null); const p=(e:React.PointerEvent<HTMLDivElement>)=>normalizedPoint(e.nativeEvent,e.currentTarget.getBoundingClientRect()); const publish=(next:Point[])=>{setPoints(next);if(next.length===2&&validLine(next[0],next[1]))onLine(next[0],next[1]);}; const down=(e:React.PointerEvent<HTMLDivElement>)=>{e.currentTarget.setPointerCapture(e.pointerId);const next=[p(e),p(e)];setDragging(1);publish(next)}; const move=(e:React.PointerEvent<HTMLDivElement>)=>{if(dragging!==null){const next=[...points];next[dragging]=p(e);publish(next)}}; return <section><h2>Línea de conteo</h2><p>En el primer fotograma, haga clic y arrastre. Arrastre los extremos amarillos para ajustar.</p><div className="line-editor" onPointerDown={down} onPointerMove={move} onPointerUp={()=>setDragging(null)}><video muted preload="metadata" src={videoUrl}/>{points.length===2&&<svg viewBox="0 0 1 1" preserveAspectRatio="none"><line x1={points[0].x} y1={points[0].y} x2={points[1].x} y2={points[1].y}/></svg>}{points.map((point,index)=><button key={index} className="line-handle" style={{left:`${point.x*100}%`,top:`${point.y*100}%`}} onPointerDown={e=>{e.stopPropagation();setDragging(index)}} aria-label={`Extremo ${index+1}`}/>)}</div><button onClick={()=>setPoints([])}>Borrar línea</button></section>; }
+import { useEffect, useState } from "react";
+import type { Point } from "../services/apiTypes";
+import { normalizedPoint, validLine } from "../utils/lineCoordinates";
+export function LineEditor({
+  onLine,
+  videoUrl,
+  onClear,
+}: {
+  onLine: (a: Point, b: Point) => void;
+  videoUrl: string;
+  onClear?: () => void;
+}) {
+  const [points, setPoints] = useState<Point[]>([]);
+  const [dragging, setDragging] = useState<number | null>(null);
+  useEffect(() => {
+    setPoints([]);
+    setDragging(null);
+    onClear?.();
+  }, [videoUrl]);
+  const p = (e: React.PointerEvent<HTMLDivElement>) =>
+    normalizedPoint(e.nativeEvent, e.currentTarget.getBoundingClientRect());
+  const publish = (next: Point[]) => {
+    setPoints(next);
+    if (next.length === 2 && validLine(next[0], next[1]))
+      onLine(next[0], next[1]);
+  };
+  const down = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    const next = [p(e), p(e)];
+    setDragging(1);
+    publish(next);
+  };
+  const move = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (dragging !== null) {
+      const next = [...points];
+      next[dragging] = p(e);
+      publish(next);
+    }
+  };
+  return (
+    <section>
+      <h2>Línea de conteo</h2>
+      <p>
+        En el primer fotograma, haga clic y arrastre. Arrastre los extremos
+        amarillos para ajustar.
+      </p>
+      <div
+        className="line-editor"
+        onPointerDown={down}
+        onPointerMove={move}
+        onPointerUp={() => setDragging(null)}
+      >
+        <video muted preload="metadata" src={videoUrl} />
+        {points.length === 2 && (
+          <svg viewBox="0 0 1 1" preserveAspectRatio="none">
+            <line
+              x1={points[0].x}
+              y1={points[0].y}
+              x2={points[1].x}
+              y2={points[1].y}
+            />
+          </svg>
+        )}
+        {points.map((point, index) => (
+          <button
+            key={index}
+            className="line-handle"
+            style={{ left: `${point.x * 100}%`, top: `${point.y * 100}%` }}
+            onPointerDown={(e) => {
+              e.stopPropagation();
+              setDragging(index);
+            }}
+            aria-label={`Extremo ${index + 1}`}
+          />
+        ))}
+      </div>
+      <button
+        onClick={() => {
+          setPoints([]);
+          setDragging(null);
+          onClear?.();
+        }}
+      >
+        Borrar línea
+      </button>
+    </section>
+  );
+}

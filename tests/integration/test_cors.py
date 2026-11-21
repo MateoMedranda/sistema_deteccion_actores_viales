@@ -33,3 +33,10 @@ def test_cors_configuration_rejects_wildcard() -> None:
         assert "wildcard" in str(error)
     else:
         raise AssertionError("Wildcard origins must be rejected")
+
+
+def test_original_evidence_preflight_preserves_auth_header(client):
+    response=client.options("/api/v1/detections/source/original-image",headers={"Origin":"http://localhost:5173","Access-Control-Request-Method":"GET","Access-Control-Request-Headers":"X-API-Key"})
+    assert response.status_code==200
+    assert response.headers["access-control-allow-origin"]=="http://localhost:5173"
+    assert "x-api-key" in response.headers["access-control-allow-headers"].lower()

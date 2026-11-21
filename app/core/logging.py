@@ -24,6 +24,9 @@ class JsonFormatter(logging.Formatter):
             "progress",
             "frame_ms",
             "memory_mb",
+            "initial_memory_mb",
+            "peak_memory_mb",
+            "duration_ms",
             "model_version",
             "tracker",
             "ffmpeg_version",
@@ -37,6 +40,7 @@ class JsonFormatter(logging.Formatter):
             "expires_at",
             "retry_count",
             "candidate_count",
+            "profile_id",
         ):
             if hasattr(record, key):
                 payload[key] = getattr(record, key)

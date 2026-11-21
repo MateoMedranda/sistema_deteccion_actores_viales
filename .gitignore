@@ -28,3 +28,5 @@ Thumbs.db
 metricas/.sesion-activa.json
 metricas/.ultima-actividad
 metricas/salidas/
+
+*.log

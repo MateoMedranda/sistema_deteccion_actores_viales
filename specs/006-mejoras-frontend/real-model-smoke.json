@@ -1,0 +1,833 @@
+{
+  "timestamp": "2026-11-20T23:49:49.527441+00:00",
+  "kind": "real-model smoke; no labelled reference or baseline comparison",
+  "images": [
+    {
+      "ordinal": 1,
+      "http_status": 200,
+      "request_ms": 1046.99,
+      "detections": 16,
+      "eligible": 16,
+      "original_status": 200,
+      "creation_status": 202,
+      "enrichment_status": "completed",
+      "results": 16,
+      "plate_states": {
+        "read": 2,
+        "unreadable": 8,
+        "not_detected": 6
+      },
+      "attributes_states": {
+        "completed": 16
+      }
+    },
+    {
+      "ordinal": 2,
+      "http_status": 200,
+      "request_ms": 458.7,
+      "detections": 0,
+      "eligible": 0,
+      "original_status": 200
+    },
+    {
+      "ordinal": 3,
+      "http_status": 200,
+      "request_ms": 387.12,
+      "detections": 1,
+      "eligible": 0,
+      "original_status": 200
+    },
+    {
+      "ordinal": 4,
+      "http_status": 200,
+      "request_ms": 443.99,
+      "detections": 1,
+      "eligible": 0,
+      "original_status": 200
+    },
+    {
+      "ordinal": 5,
+      "http_status": 200,
+      "request_ms": 439.32,
+      "detections": 1,
+      "eligible": 0,
+      "original_status": 200
+    },
+    {
+      "ordinal": 6,
+      "http_status": 200,
+      "request_ms": 395.1,
+      "detections": 2,
+      "eligible": 0,
+      "original_status": 200
+    }
+  ],
+  "readiness": {
+    "detection": 200,
+    "enrichment": {
+      "status": "ready",
+      "capabilities": {
+        "attributes": "ready",
+        "plate_localization": "ready",
+        "plate_ocr": "ready"
+      }
+    }
+  },
+  "measurements": [
+    {
+      "branch": "detection",
+      "duration_ms": 376.12,
+      "initial_memory_mb": 854.33,
+      "memory_mb": 961.75,
+      "peak_memory_mb": 984.08,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 66.904,
+      "initial_memory_mb": 992.98,
+      "memory_mb": 1050.63,
+      "peak_memory_mb": 1050.63,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 105.767,
+      "initial_memory_mb": 993.11,
+      "memory_mb": 1056.36,
+      "peak_memory_mb": 1056.36,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_ocr",
+      "duration_ms": 183.249,
+      "initial_memory_mb": 1056.36,
+      "memory_mb": 1067.43,
+      "peak_memory_mb": 1067.43,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 289.577,
+      "initial_memory_mb": 993.05,
+      "memory_mb": 1067.41,
+      "peak_memory_mb": 1067.41,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 291.171,
+      "initial_memory_mb": 992.94,
+      "memory_mb": 1066.51,
+      "peak_memory_mb": 1067.4,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 48.65,
+      "initial_memory_mb": 1022.94,
+      "memory_mb": 1075.32,
+      "peak_memory_mb": 1075.32,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 83.92,
+      "initial_memory_mb": 1023.01,
+      "memory_mb": 1075.75,
+      "peak_memory_mb": 1075.75,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_ocr",
+      "duration_ms": 205.915,
+      "initial_memory_mb": 1075.75,
+      "memory_mb": 1081.13,
+      "peak_memory_mb": 1081.13,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 290.559,
+      "initial_memory_mb": 1022.98,
+      "memory_mb": 1081.11,
+      "peak_memory_mb": 1081.13,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 293.651,
+      "initial_memory_mb": 1022.9,
+      "memory_mb": 1073.18,
+      "peak_memory_mb": 1081.13,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 65.259,
+      "initial_memory_mb": 1035.98,
+      "memory_mb": 1078.49,
+      "peak_memory_mb": 1078.49,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 72.825,
+      "initial_memory_mb": 1036.09,
+      "memory_mb": 1079.48,
+      "peak_memory_mb": 1079.48,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_ocr",
+      "duration_ms": 184.901,
+      "initial_memory_mb": 1079.48,
+      "memory_mb": 1082.37,
+      "peak_memory_mb": 1082.37,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 258.358,
+      "initial_memory_mb": 1036.05,
+      "memory_mb": 1082.36,
+      "peak_memory_mb": 1082.37,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 261.013,
+      "initial_memory_mb": 1035.87,
+      "memory_mb": 1082.31,
+      "peak_memory_mb": 1082.37,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 77.469,
+      "initial_memory_mb": 1043.72,
+      "memory_mb": 1098.89,
+      "peak_memory_mb": 1098.89,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 138.823,
+      "initial_memory_mb": 1043.79,
+      "memory_mb": 1099.47,
+      "peak_memory_mb": 1099.47,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 139.612,
+      "initial_memory_mb": 1043.76,
+      "memory_mb": 1099.45,
+      "peak_memory_mb": 1099.45,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 142.244,
+      "initial_memory_mb": 1043.68,
+      "memory_mb": 1099.41,
+      "peak_memory_mb": 1099.41,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 140.004,
+      "initial_memory_mb": 1078.93,
+      "memory_mb": 1104.13,
+      "peak_memory_mb": 1104.13,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 172.345,
+      "initial_memory_mb": 1078.7,
+      "memory_mb": 1098.25,
+      "peak_memory_mb": 1100.91,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_ocr",
+      "duration_ms": 31.901,
+      "initial_memory_mb": 1104.13,
+      "memory_mb": 1098.24,
+      "peak_memory_mb": 1104.13,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 172.493,
+      "initial_memory_mb": 1078.82,
+      "memory_mb": 1098.22,
+      "peak_memory_mb": 1100.89,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 174.211,
+      "initial_memory_mb": 1078.66,
+      "memory_mb": 1098.19,
+      "peak_memory_mb": 1100.91,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 52.051,
+      "initial_memory_mb": 1062.33,
+      "memory_mb": 1110.35,
+      "peak_memory_mb": 1110.35,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 75.863,
+      "initial_memory_mb": 1062.43,
+      "memory_mb": 1111.5,
+      "peak_memory_mb": 1111.5,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 76.616,
+      "initial_memory_mb": 1062.41,
+      "memory_mb": 1111.49,
+      "peak_memory_mb": 1111.49,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 78.521,
+      "initial_memory_mb": 1062.29,
+      "memory_mb": 1111.44,
+      "peak_memory_mb": 1111.44,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 81.666,
+      "initial_memory_mb": 1101.36,
+      "memory_mb": 1128.01,
+      "peak_memory_mb": 1128.01,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 99.423,
+      "initial_memory_mb": 1101.62,
+      "memory_mb": 1128.84,
+      "peak_memory_mb": 1128.84,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_ocr",
+      "duration_ms": 320.24,
+      "initial_memory_mb": 1128.84,
+      "memory_mb": 1137.53,
+      "peak_memory_mb": 1137.54,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 420.461,
+      "initial_memory_mb": 1101.47,
+      "memory_mb": 1137.5,
+      "peak_memory_mb": 1137.54,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 423.016,
+      "initial_memory_mb": 1101.32,
+      "memory_mb": 1131.32,
+      "peak_memory_mb": 1137.53,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 48.099,
+      "initial_memory_mb": 1086.87,
+      "memory_mb": 1137.25,
+      "peak_memory_mb": 1137.25,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 63.288,
+      "initial_memory_mb": 1086.94,
+      "memory_mb": 1138.1,
+      "peak_memory_mb": 1138.1,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 63.663,
+      "initial_memory_mb": 1086.91,
+      "memory_mb": 1138.09,
+      "peak_memory_mb": 1138.09,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 64.878,
+      "initial_memory_mb": 1086.83,
+      "memory_mb": 1138.04,
+      "peak_memory_mb": 1138.04,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 52.483,
+      "initial_memory_mb": 1127.96,
+      "memory_mb": 1151.38,
+      "peak_memory_mb": 1151.38,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 53.578,
+      "initial_memory_mb": 1128.04,
+      "memory_mb": 1151.36,
+      "peak_memory_mb": 1151.36,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_ocr",
+      "duration_ms": 26.324,
+      "initial_memory_mb": 1151.36,
+      "memory_mb": 1152.92,
+      "peak_memory_mb": 1152.92,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 80.599,
+      "initial_memory_mb": 1128.02,
+      "memory_mb": 1152.91,
+      "peak_memory_mb": 1152.91,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 82.453,
+      "initial_memory_mb": 1127.92,
+      "memory_mb": 1152.86,
+      "peak_memory_mb": 1152.86,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 60.677,
+      "initial_memory_mb": 1105.13,
+      "memory_mb": 1159.98,
+      "peak_memory_mb": 1159.98,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_ocr",
+      "duration_ms": 204.547,
+      "initial_memory_mb": 1159.98,
+      "memory_mb": 1155.46,
+      "peak_memory_mb": 1159.98,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 266.205,
+      "initial_memory_mb": 1105.11,
+      "memory_mb": 1155.43,
+      "peak_memory_mb": 1155.46,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 272.113,
+      "initial_memory_mb": 1105.06,
+      "memory_mb": 1159.25,
+      "peak_memory_mb": 1159.25,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 273.514,
+      "initial_memory_mb": 1108.39,
+      "memory_mb": 1159.21,
+      "peak_memory_mb": 1159.21,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 50.527,
+      "initial_memory_mb": 1120.63,
+      "memory_mb": 1167.84,
+      "peak_memory_mb": 1167.84,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 51.031,
+      "initial_memory_mb": 1120.71,
+      "memory_mb": 1167.82,
+      "peak_memory_mb": 1167.82,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_ocr",
+      "duration_ms": 216.698,
+      "initial_memory_mb": 1167.81,
+      "memory_mb": 1170.95,
+      "peak_memory_mb": 1170.96,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 268.573,
+      "initial_memory_mb": 1120.7,
+      "memory_mb": 1170.92,
+      "peak_memory_mb": 1170.96,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 270.196,
+      "initial_memory_mb": 1120.86,
+      "memory_mb": 1170.84,
+      "peak_memory_mb": 1170.92,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 94.749,
+      "initial_memory_mb": 1121.7,
+      "memory_mb": 1174.75,
+      "peak_memory_mb": 1174.75,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 107.411,
+      "initial_memory_mb": 1121.63,
+      "memory_mb": 1175.04,
+      "peak_memory_mb": 1175.04,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_ocr",
+      "duration_ms": 205.026,
+      "initial_memory_mb": 1174.75,
+      "memory_mb": 1177.86,
+      "peak_memory_mb": 1177.86,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 300.598,
+      "initial_memory_mb": 1121.67,
+      "memory_mb": 1177.84,
+      "peak_memory_mb": 1177.86,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 302.809,
+      "initial_memory_mb": 1121.59,
+      "memory_mb": 1168.22,
+      "peak_memory_mb": 1177.86,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 62.226,
+      "initial_memory_mb": 1130.65,
+      "memory_mb": 1184.44,
+      "peak_memory_mb": 1184.44,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 78.28,
+      "initial_memory_mb": 1130.81,
+      "memory_mb": 1185.07,
+      "peak_memory_mb": 1185.07,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_ocr",
+      "duration_ms": 184.105,
+      "initial_memory_mb": 1185.07,
+      "memory_mb": 1188.08,
+      "peak_memory_mb": 1188.09,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 262.931,
+      "initial_memory_mb": 1130.69,
+      "memory_mb": 1188.08,
+      "peak_memory_mb": 1188.09,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 264.484,
+      "initial_memory_mb": 1130.61,
+      "memory_mb": 1188.03,
+      "peak_memory_mb": 1188.09,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 51.148,
+      "initial_memory_mb": 1138.12,
+      "memory_mb": 1185.02,
+      "peak_memory_mb": 1185.02,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 51.78,
+      "initial_memory_mb": 1138.09,
+      "memory_mb": 1185.0,
+      "peak_memory_mb": 1185.0,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 55.049,
+      "initial_memory_mb": 1138.05,
+      "memory_mb": 1184.98,
+      "peak_memory_mb": 1184.98,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 56.292,
+      "initial_memory_mb": 1137.99,
+      "memory_mb": 1184.94,
+      "peak_memory_mb": 1184.94,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 49.396,
+      "initial_memory_mb": 1184.57,
+      "memory_mb": 1194.8,
+      "peak_memory_mb": 1194.8,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 49.863,
+      "initial_memory_mb": 1184.52,
+      "memory_mb": 1194.79,
+      "peak_memory_mb": 1194.79,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 55.918,
+      "initial_memory_mb": 1184.48,
+      "memory_mb": 1194.76,
+      "peak_memory_mb": 1194.76,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 57.195,
+      "initial_memory_mb": 1184.42,
+      "memory_mb": 1194.72,
+      "peak_memory_mb": 1194.72,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "attributes",
+      "duration_ms": 58.937,
+      "initial_memory_mb": 1184.31,
+      "memory_mb": 1197.18,
+      "peak_memory_mb": 1197.18,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate_localization",
+      "duration_ms": 62.048,
+      "initial_memory_mb": 1185.4,
+      "memory_mb": 1195.67,
+      "peak_memory_mb": 1195.67,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "plate",
+      "duration_ms": 62.58,
+      "initial_memory_mb": 1184.68,
+      "memory_mb": 1195.66,
+      "peak_memory_mb": 1195.66,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_unit",
+      "duration_ms": 64.423,
+      "initial_memory_mb": 1183.56,
+      "memory_mb": 1195.61,
+      "peak_memory_mb": 1195.61,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "enrichment_job",
+      "duration_ms": 3294.453,
+      "initial_memory_mb": 961.84,
+      "memory_mb": 1195.11,
+      "peak_memory_mb": 1195.11,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "detection",
+      "duration_ms": 242.854,
+      "initial_memory_mb": 1183.12,
+      "memory_mb": 1180.91,
+      "peak_memory_mb": 1201.13,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "detection",
+      "duration_ms": 220.494,
+      "initial_memory_mb": 1184.07,
+      "memory_mb": 1173.11,
+      "peak_memory_mb": 1193.46,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "detection",
+      "duration_ms": 254.644,
+      "initial_memory_mb": 1173.74,
+      "memory_mb": 1181.3,
+      "peak_memory_mb": 1201.91,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "detection",
+      "duration_ms": 249.588,
+      "initial_memory_mb": 1181.44,
+      "memory_mb": 1173.91,
+      "peak_memory_mb": 1194.51,
+      "status": "completed",
+      "error_code": null
+    },
+    {
+      "branch": "detection",
+      "duration_ms": 224.958,
+      "initial_memory_mb": 1174.37,
+      "memory_mb": 1181.94,
+      "peak_memory_mb": 1202.55,
+      "status": "completed",
+      "error_code": null
+    }
+  ],
+  "environment": {
+    "python": "3.12.15",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "versions": {
+      "torch": "2.14.1",
+      "torchvision": "0.29.1",
+      "paddleocr": "2.10.0",
+      "paddlepaddle": "3.3.1",
+      "ultralytics": "8.4.183"
+    },
+    "processor": "AMD64 Family 25 Model 117 Stepping 2, AuthenticAMD",
+    "gpu": null,
+    "device": "cpu",
+    "model_confidence_threshold": 0.25,
+    "plate_localizer_threshold": 0.25,
+    "plate_ocr_retry_threshold": 0.7,
+    "plate_ocr_accept_threshold": 0.8,
+    "max_concurrent_inferences": 1,
+    "max_concurrent_attribute_inferences": 1,
+    "max_concurrent_plate_inferences": 1
+  },
+  "model_checksums": {
+    "model_weights_path": "63bd56f75cfc33ec68029bb08db621fc53bbfa539d8ba475f13ea56af7bbe579",
+    "attribute_model_weights_path": "22efcc9627bef63814ae3e66523216611932567d9866c96dfd2b2a439ff3ff0e",
+    "plate_model_weights_path": "78426a49d15737566b7c8689e30e34f4bcae75349d8bf85e55096d7acf15da8d"
+  }
+}

@@ -4,12 +4,12 @@
 
 ## Entorno
 
-- Continuar en `codex/006-mejoras-frontend`, con los cambios de backend ya confirmados preservados.
+- Continuar en `feature/006-mejoras-frontend`, con los cambios de backend ya confirmados preservados.
 - Python >=3.12, uv y dependencias del proyecto; Node/npm compatibles con el lockfile existente.
 - Configuración privada del servicio, clave de sesión y pesos/manifiestos aprobados para comprobación real. Nunca copiar credenciales a comandos de documentación ni al frontend.
 - FFmpeg/ffprobe para regresión de video; medios de prueba autorizados. Para casos deterministas, usar adaptadores de prueba existentes, no servicios o datos de personas sin autorización.
 
-## Iniciar tras implementar
+## Iniciar la implementación disponible
 
 Desde la raíz del checkout activo:
 
@@ -43,7 +43,7 @@ Si faltan `.env` o recursos locales al trasladar el checkout, usar la configurac
 
 ## Comprobaciones de backend
 
-Añadir pruebas con estos destinos durante implementación; los comandos son el objetivo de ejecución posterior, no una afirmación de que ya existen:
+Las pruebas de estos destinos están implementadas. Los resultados realmente ejecutados se registran en validation.md:
 
 ```powershell
 uv run pytest tests/unit/test_image_geometry.py tests/unit/test_image_validation.py tests/unit/test_enrichment_job_store.py tests/unit/test_enrichment_core.py
@@ -63,7 +63,7 @@ Al cerrar implementación, ejecutar la suite completa pertinente con `uv run pyt
 
 ## Comprobaciones de frontend
 
-Desde `frontend/`, después de crear las pruebas y configuración previstas:
+Desde `frontend/`, con las pruebas y configuración implementadas:
 
 ```powershell
 npm run build
@@ -85,3 +85,25 @@ Registrar resultados en la documentación de validación de 006 durante implemen
 SC-007 requiere evaluación con 5 personas: >=4 completan el recorrido sin ayuda y califican claridad/presentación >=4/5. Si aún no se realiza, se declara pendiente; no sustituirla por una opinión del agente ni por snapshots.
 
 Esta guía, el [modelo de datos](data-model.md), el [contrato frontend](contracts/frontend-interactions.md) y el [contrato backend](contracts/backend-additions.md) deben convertirse en tareas trazables con `$speckit-tasks` antes de implementar.
+
+## Comprobaciones incorporadas tras análisis
+
+- Readiness: fixture explícita de adaptadores listos para los casos 202; fixture sin modelos para 503. Comprobar `tests/conftest.py`, `tests/enrichment_fixtures.py` y `tests/integration/test_enrichment_job_routes.py` además de la nueva matriz. No forzar ready ni cargar pesos para tests deterministas.
+- Esperas: reloj/temporizadores controlados para detectar 120 s, crear enriquecimiento 15 s, estado 10 s, página/medio 30 s y ciclo 120 s, limitado por TTL. Probar petición bloqueada, presupuesto total, respuesta tardía y reanudación del mismo job sin rePOST.
+- Observabilidad: ejecutar la nueva `tests/unit/test_inference_observability.py` y registrar duración/RSS inicial/final/máximo muestreado, resultado/error seguro y correlación; conservar frame_ms de video. Comparar latencia/memoria con dataset/hardware/modelo/configuración iguales, sin incluir imágenes, placas o credenciales en logs.
+- Contratos: comprobar que el YAML enlaza POST imagen -> DetectionResponse006, GET original -> binario protegido y GET readiness -> EnrichmentReadiness006, con todas las referencias locales resolubles; verificar semántica de capacidades/errores además de sintaxis YAML.
+- MVP: T033 solo valida orquestación; el escenario US1 de selección mientras processing se cierra con T039/T040. No marcar US1 completa en T033.
+
+
+## Estado de la entrega
+
+Consultar [validation.md](validation.md), [audit.md](audit.md) y [usability.md](usability.md). El frontend y B1–B5 están implementados; la aceptación completa requiere cerrar T067 y T068. No se certifica calidad de modelos mediante fixtures.
+
+Para ejecutar las pruebas de navegador, instalar Chromium con npx playwright install chromium desde frontend y ejecutar npm run test:e2e. Los puertos de prueba son 4173/8767. Las bases de video, conteo y enriquecimiento y las fuentes se alojan en un TemporaryDirectory independiente.
+
+El script scripts/validate_frontend_models.py acepta --media-manifest (JSON privado con arrays images/videos) y --output (informe agregado). Utiliza la configuración existente de modelos, credencial de prueba y almacenamiento temporal propios. No publiques el manifiesto de medios ni archivos de placa. El informe agregado de esta ejecución es real-model-smoke.json; todavía no constituye la comparación completa de T067.
+
+
+## Correcciones de convergencia
+
+T070–T082 están implementadas. Ver [convergence-validation.md](convergence-validation.md) y [loaded-detail-latency.json](loaded-detail-latency.json). GET /health/image-policy permite mostrar los límites existentes sin cambiar configuración. Los recibos privados de archivos nuevos permiten purga tras reiniciar; no se borra material histórico sin propiedad demostrable. Playwright genera también test-results/results.json para conservar mediciones reproducibles; ese informe local está ignorado y el agregado no sensible se documenta en 006.

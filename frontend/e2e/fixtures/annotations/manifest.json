@@ -1,0 +1,5144 @@
+[
+  {
+    "name": "scene-0",
+    "width": 960,
+    "height": 600,
+    "detections": [
+      {
+        "detection_id": 1,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 10,
+          "x_max": 34,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 12,
+        "class_id": 1,
+        "class_name": "truck",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 10,
+          "x_max": 255,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 123,
+        "class_id": 2,
+        "class_name": "bus",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 10,
+          "x_max": 390,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 151,
+        "class_id": 3,
+        "class_name": "van",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 10,
+          "x_max": 525,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 162,
+        "class_id": 4,
+        "class_name": "pickup",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 10,
+          "x_max": 574,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 273,
+        "class_id": 5,
+        "class_name": "suv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 10,
+          "x_max": 795,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 301,
+        "class_id": 6,
+        "class_name": "sedan",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 10,
+          "x_max": 930,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 312,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 150,
+          "x_max": 120,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 423,
+        "class_id": 8,
+        "class_name": "mpv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 150,
+          "x_max": 169,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 451,
+        "class_id": 9,
+        "class_name": "estate",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 150,
+          "x_max": 390,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 462,
+        "class_id": 10,
+        "class_name": "person",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 150,
+          "x_max": 525,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 573,
+        "class_id": 11,
+        "class_name": "bicycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 150,
+          "x_max": 660,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 601,
+        "class_id": 12,
+        "class_name": "motorcycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 150,
+          "x_max": 709,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 612,
+        "class_id": 13,
+        "class_name": "unknown",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 150,
+          "x_max": 930,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 723,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 290,
+          "x_max": 120,
+          "y_max": 390
+        }
+      },
+      {
+        "detection_id": 751,
+        "class_id": 1,
+        "class_name": "truck",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 290,
+          "x_max": 255,
+          "y_max": 390
+        }
+      },
+      {
+        "detection_id": 762,
+        "class_id": 2,
+        "class_name": "bus",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 290,
+          "x_max": 304,
+          "y_max": 320
+        }
+      },
+      {
+        "detection_id": 873,
+        "class_id": 3,
+        "class_name": "van",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 290,
+          "x_max": 525,
+          "y_max": 390
+        }
+      },
+      {
+        "detection_id": 901,
+        "class_id": 4,
+        "class_name": "pickup",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 290,
+          "x_max": 660,
+          "y_max": 390
+        }
+      },
+      {
+        "detection_id": 912,
+        "class_id": 5,
+        "class_name": "suv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 290,
+          "x_max": 795,
+          "y_max": 390
+        }
+      },
+      {
+        "detection_id": 1023,
+        "class_id": 6,
+        "class_name": "sedan",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 290,
+          "x_max": 844,
+          "y_max": 320
+        }
+      },
+      {
+        "detection_id": 1051,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 430,
+          "x_max": 120,
+          "y_max": 530
+        }
+      },
+      {
+        "detection_id": 1062,
+        "class_id": 8,
+        "class_name": "mpv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 430,
+          "x_max": 255,
+          "y_max": 530
+        }
+      },
+      {
+        "detection_id": 1173,
+        "class_id": 9,
+        "class_name": "estate",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 430,
+          "x_max": 390,
+          "y_max": 530
+        }
+      },
+      {
+        "detection_id": 1201,
+        "class_id": 10,
+        "class_name": "person",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 430,
+          "x_max": 439,
+          "y_max": 460
+        }
+      },
+      {
+        "detection_id": 1212,
+        "class_id": 11,
+        "class_name": "bicycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 430,
+          "x_max": 660,
+          "y_max": 530
+        }
+      },
+      {
+        "detection_id": 1323,
+        "class_id": 12,
+        "class_name": "motorcycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 430,
+          "x_max": 795,
+          "y_max": 530
+        }
+      },
+      {
+        "detection_id": 1351,
+        "class_id": 13,
+        "class_name": "unknown",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 430,
+          "x_max": 930,
+          "y_max": 530
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-1",
+        "detection_id": 1,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN0",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-12",
+        "detection_id": 12,
+        "track_id": null,
+        "class_id": 1,
+        "class_name": "truck",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-123",
+        "detection_id": 123,
+        "track_id": null,
+        "class_id": 2,
+        "class_name": "bus",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-151",
+        "detection_id": 151,
+        "track_id": null,
+        "class_id": 3,
+        "class_name": "van",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-162",
+        "detection_id": 162,
+        "track_id": null,
+        "class_id": 4,
+        "class_name": "pickup",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN4",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-273",
+        "detection_id": 273,
+        "track_id": null,
+        "class_id": 5,
+        "class_name": "suv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-301",
+        "detection_id": 301,
+        "track_id": null,
+        "class_id": 6,
+        "class_name": "sedan",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-312",
+        "detection_id": 312,
+        "track_id": null,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-423",
+        "detection_id": 423,
+        "track_id": null,
+        "class_id": 8,
+        "class_name": "mpv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN8",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-451",
+        "detection_id": 451,
+        "track_id": null,
+        "class_id": 9,
+        "class_name": "estate",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-723",
+        "detection_id": 723,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-751",
+        "detection_id": 751,
+        "track_id": null,
+        "class_id": 1,
+        "class_name": "truck",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-762",
+        "detection_id": 762,
+        "track_id": null,
+        "class_id": 2,
+        "class_name": "bus",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN16",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-873",
+        "detection_id": 873,
+        "track_id": null,
+        "class_id": 3,
+        "class_name": "van",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-901",
+        "detection_id": 901,
+        "track_id": null,
+        "class_id": 4,
+        "class_name": "pickup",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-912",
+        "detection_id": 912,
+        "track_id": null,
+        "class_id": 5,
+        "class_name": "suv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-1023",
+        "detection_id": 1023,
+        "track_id": null,
+        "class_id": 6,
+        "class_name": "sedan",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN20",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-1051",
+        "detection_id": 1051,
+        "track_id": null,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-1062",
+        "detection_id": 1062,
+        "track_id": null,
+        "class_id": 8,
+        "class_name": "mpv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-1173",
+        "detection_id": 1173,
+        "track_id": null,
+        "class_id": 9,
+        "class_name": "estate",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      }
+    ]
+  },
+  {
+    "name": "scene-1",
+    "width": 960,
+    "height": 600,
+    "detections": [
+      {
+        "detection_id": 1,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 10,
+          "x_max": 34,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 12,
+        "class_id": 1,
+        "class_name": "truck",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 10,
+          "x_max": 255,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 123,
+        "class_id": 2,
+        "class_name": "bus",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 10,
+          "x_max": 390,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 151,
+        "class_id": 3,
+        "class_name": "van",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 10,
+          "x_max": 525,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 162,
+        "class_id": 4,
+        "class_name": "pickup",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 10,
+          "x_max": 574,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 273,
+        "class_id": 5,
+        "class_name": "suv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 10,
+          "x_max": 795,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 301,
+        "class_id": 6,
+        "class_name": "sedan",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 10,
+          "x_max": 930,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 312,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 150,
+          "x_max": 120,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 423,
+        "class_id": 8,
+        "class_name": "mpv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 150,
+          "x_max": 169,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 451,
+        "class_id": 9,
+        "class_name": "estate",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 150,
+          "x_max": 390,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 462,
+        "class_id": 10,
+        "class_name": "person",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 150,
+          "x_max": 525,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 573,
+        "class_id": 11,
+        "class_name": "bicycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 150,
+          "x_max": 660,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 601,
+        "class_id": 12,
+        "class_name": "motorcycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 150,
+          "x_max": 709,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 612,
+        "class_id": 13,
+        "class_name": "unknown",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 150,
+          "x_max": 930,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 723,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 290,
+          "x_max": 120,
+          "y_max": 390
+        }
+      },
+      {
+        "detection_id": 751,
+        "class_id": 1,
+        "class_name": "truck",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 290,
+          "x_max": 255,
+          "y_max": 390
+        }
+      },
+      {
+        "detection_id": 762,
+        "class_id": 2,
+        "class_name": "bus",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 290,
+          "x_max": 304,
+          "y_max": 320
+        }
+      },
+      {
+        "detection_id": 873,
+        "class_id": 3,
+        "class_name": "van",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 290,
+          "x_max": 525,
+          "y_max": 390
+        }
+      },
+      {
+        "detection_id": 901,
+        "class_id": 4,
+        "class_name": "pickup",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 290,
+          "x_max": 660,
+          "y_max": 390
+        }
+      },
+      {
+        "detection_id": 912,
+        "class_id": 5,
+        "class_name": "suv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 290,
+          "x_max": 795,
+          "y_max": 390
+        }
+      },
+      {
+        "detection_id": 1023,
+        "class_id": 6,
+        "class_name": "sedan",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 290,
+          "x_max": 844,
+          "y_max": 320
+        }
+      },
+      {
+        "detection_id": 1051,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 430,
+          "x_max": 120,
+          "y_max": 530
+        }
+      },
+      {
+        "detection_id": 1062,
+        "class_id": 8,
+        "class_name": "mpv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 430,
+          "x_max": 255,
+          "y_max": 530
+        }
+      },
+      {
+        "detection_id": 1173,
+        "class_id": 9,
+        "class_name": "estate",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 430,
+          "x_max": 390,
+          "y_max": 530
+        }
+      },
+      {
+        "detection_id": 1201,
+        "class_id": 10,
+        "class_name": "person",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 430,
+          "x_max": 439,
+          "y_max": 460
+        }
+      },
+      {
+        "detection_id": 1212,
+        "class_id": 11,
+        "class_name": "bicycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 430,
+          "x_max": 660,
+          "y_max": 530
+        }
+      },
+      {
+        "detection_id": 1323,
+        "class_id": 12,
+        "class_name": "motorcycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 430,
+          "x_max": 795,
+          "y_max": 530
+        }
+      },
+      {
+        "detection_id": 1351,
+        "class_id": 13,
+        "class_name": "unknown",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 430,
+          "x_max": 930,
+          "y_max": 530
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-1",
+        "detection_id": 1,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN0",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-12",
+        "detection_id": 12,
+        "track_id": null,
+        "class_id": 1,
+        "class_name": "truck",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-123",
+        "detection_id": 123,
+        "track_id": null,
+        "class_id": 2,
+        "class_name": "bus",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-151",
+        "detection_id": 151,
+        "track_id": null,
+        "class_id": 3,
+        "class_name": "van",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-162",
+        "detection_id": 162,
+        "track_id": null,
+        "class_id": 4,
+        "class_name": "pickup",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN4",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-273",
+        "detection_id": 273,
+        "track_id": null,
+        "class_id": 5,
+        "class_name": "suv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-301",
+        "detection_id": 301,
+        "track_id": null,
+        "class_id": 6,
+        "class_name": "sedan",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-312",
+        "detection_id": 312,
+        "track_id": null,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-423",
+        "detection_id": 423,
+        "track_id": null,
+        "class_id": 8,
+        "class_name": "mpv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN8",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-451",
+        "detection_id": 451,
+        "track_id": null,
+        "class_id": 9,
+        "class_name": "estate",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-723",
+        "detection_id": 723,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-751",
+        "detection_id": 751,
+        "track_id": null,
+        "class_id": 1,
+        "class_name": "truck",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-762",
+        "detection_id": 762,
+        "track_id": null,
+        "class_id": 2,
+        "class_name": "bus",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN16",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-873",
+        "detection_id": 873,
+        "track_id": null,
+        "class_id": 3,
+        "class_name": "van",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-901",
+        "detection_id": 901,
+        "track_id": null,
+        "class_id": 4,
+        "class_name": "pickup",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-912",
+        "detection_id": 912,
+        "track_id": null,
+        "class_id": 5,
+        "class_name": "suv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-1023",
+        "detection_id": 1023,
+        "track_id": null,
+        "class_id": 6,
+        "class_name": "sedan",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN20",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-1051",
+        "detection_id": 1051,
+        "track_id": null,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-1062",
+        "detection_id": 1062,
+        "track_id": null,
+        "class_id": 8,
+        "class_name": "mpv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-1173",
+        "detection_id": 1173,
+        "track_id": null,
+        "class_id": 9,
+        "class_name": "estate",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      }
+    ]
+  },
+  {
+    "name": "scene-2",
+    "width": 960,
+    "height": 600,
+    "detections": [
+      {
+        "detection_id": 1,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 10,
+          "x_max": 34,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 12,
+        "class_id": 1,
+        "class_name": "truck",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 10,
+          "x_max": 255,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 123,
+        "class_id": 2,
+        "class_name": "bus",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 10,
+          "x_max": 390,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 151,
+        "class_id": 3,
+        "class_name": "van",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 10,
+          "x_max": 525,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 162,
+        "class_id": 4,
+        "class_name": "pickup",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 10,
+          "x_max": 574,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 273,
+        "class_id": 5,
+        "class_name": "suv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 10,
+          "x_max": 795,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 301,
+        "class_id": 6,
+        "class_name": "sedan",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 10,
+          "x_max": 930,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 312,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 150,
+          "x_max": 120,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 423,
+        "class_id": 8,
+        "class_name": "mpv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 150,
+          "x_max": 169,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 451,
+        "class_id": 9,
+        "class_name": "estate",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 150,
+          "x_max": 390,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 462,
+        "class_id": 10,
+        "class_name": "person",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 150,
+          "x_max": 525,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 573,
+        "class_id": 11,
+        "class_name": "bicycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 150,
+          "x_max": 660,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 601,
+        "class_id": 12,
+        "class_name": "motorcycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 150,
+          "x_max": 709,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 612,
+        "class_id": 13,
+        "class_name": "unknown",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 150,
+          "x_max": 930,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 723,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 290,
+          "x_max": 120,
+          "y_max": 390
+        }
+      },
+      {
+        "detection_id": 751,
+        "class_id": 1,
+        "class_name": "truck",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 290,
+          "x_max": 255,
+          "y_max": 390
+        }
+      },
+      {
+        "detection_id": 762,
+        "class_id": 2,
+        "class_name": "bus",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 290,
+          "x_max": 304,
+          "y_max": 320
+        }
+      },
+      {
+        "detection_id": 873,
+        "class_id": 3,
+        "class_name": "van",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 290,
+          "x_max": 525,
+          "y_max": 390
+        }
+      },
+      {
+        "detection_id": 901,
+        "class_id": 4,
+        "class_name": "pickup",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 290,
+          "x_max": 660,
+          "y_max": 390
+        }
+      },
+      {
+        "detection_id": 912,
+        "class_id": 5,
+        "class_name": "suv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 290,
+          "x_max": 795,
+          "y_max": 390
+        }
+      },
+      {
+        "detection_id": 1023,
+        "class_id": 6,
+        "class_name": "sedan",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 290,
+          "x_max": 844,
+          "y_max": 320
+        }
+      },
+      {
+        "detection_id": 1051,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 430,
+          "x_max": 120,
+          "y_max": 530
+        }
+      },
+      {
+        "detection_id": 1062,
+        "class_id": 8,
+        "class_name": "mpv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 430,
+          "x_max": 255,
+          "y_max": 530
+        }
+      },
+      {
+        "detection_id": 1173,
+        "class_id": 9,
+        "class_name": "estate",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 430,
+          "x_max": 390,
+          "y_max": 530
+        }
+      },
+      {
+        "detection_id": 1201,
+        "class_id": 10,
+        "class_name": "person",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 430,
+          "x_max": 439,
+          "y_max": 460
+        }
+      },
+      {
+        "detection_id": 1212,
+        "class_id": 11,
+        "class_name": "bicycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 430,
+          "x_max": 660,
+          "y_max": 530
+        }
+      },
+      {
+        "detection_id": 1323,
+        "class_id": 12,
+        "class_name": "motorcycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 430,
+          "x_max": 795,
+          "y_max": 530
+        }
+      },
+      {
+        "detection_id": 1351,
+        "class_id": 13,
+        "class_name": "unknown",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 430,
+          "x_max": 930,
+          "y_max": 530
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-1",
+        "detection_id": 1,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN0",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-12",
+        "detection_id": 12,
+        "track_id": null,
+        "class_id": 1,
+        "class_name": "truck",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-123",
+        "detection_id": 123,
+        "track_id": null,
+        "class_id": 2,
+        "class_name": "bus",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-151",
+        "detection_id": 151,
+        "track_id": null,
+        "class_id": 3,
+        "class_name": "van",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-162",
+        "detection_id": 162,
+        "track_id": null,
+        "class_id": 4,
+        "class_name": "pickup",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN4",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-273",
+        "detection_id": 273,
+        "track_id": null,
+        "class_id": 5,
+        "class_name": "suv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-301",
+        "detection_id": 301,
+        "track_id": null,
+        "class_id": 6,
+        "class_name": "sedan",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-312",
+        "detection_id": 312,
+        "track_id": null,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-423",
+        "detection_id": 423,
+        "track_id": null,
+        "class_id": 8,
+        "class_name": "mpv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN8",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-451",
+        "detection_id": 451,
+        "track_id": null,
+        "class_id": 9,
+        "class_name": "estate",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-723",
+        "detection_id": 723,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-751",
+        "detection_id": 751,
+        "track_id": null,
+        "class_id": 1,
+        "class_name": "truck",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-762",
+        "detection_id": 762,
+        "track_id": null,
+        "class_id": 2,
+        "class_name": "bus",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN16",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-873",
+        "detection_id": 873,
+        "track_id": null,
+        "class_id": 3,
+        "class_name": "van",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-901",
+        "detection_id": 901,
+        "track_id": null,
+        "class_id": 4,
+        "class_name": "pickup",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-912",
+        "detection_id": 912,
+        "track_id": null,
+        "class_id": 5,
+        "class_name": "suv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-1023",
+        "detection_id": 1023,
+        "track_id": null,
+        "class_id": 6,
+        "class_name": "sedan",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN20",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-1051",
+        "detection_id": 1051,
+        "track_id": null,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-1062",
+        "detection_id": 1062,
+        "track_id": null,
+        "class_id": 8,
+        "class_name": "mpv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-1173",
+        "detection_id": 1173,
+        "track_id": null,
+        "class_id": 9,
+        "class_name": "estate",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      }
+    ]
+  },
+  {
+    "name": "scene-3",
+    "width": 960,
+    "height": 600,
+    "detections": [
+      {
+        "detection_id": 1,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 10,
+          "x_max": 34,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 12,
+        "class_id": 1,
+        "class_name": "truck",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 10,
+          "x_max": 255,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 123,
+        "class_id": 2,
+        "class_name": "bus",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 10,
+          "x_max": 390,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 151,
+        "class_id": 3,
+        "class_name": "van",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 10,
+          "x_max": 525,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 162,
+        "class_id": 4,
+        "class_name": "pickup",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 10,
+          "x_max": 574,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 273,
+        "class_id": 5,
+        "class_name": "suv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 10,
+          "x_max": 795,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 301,
+        "class_id": 6,
+        "class_name": "sedan",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 10,
+          "x_max": 930,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 312,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 150,
+          "x_max": 120,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 423,
+        "class_id": 8,
+        "class_name": "mpv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 150,
+          "x_max": 169,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 451,
+        "class_id": 9,
+        "class_name": "estate",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 150,
+          "x_max": 390,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 462,
+        "class_id": 10,
+        "class_name": "person",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 150,
+          "x_max": 525,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 573,
+        "class_id": 11,
+        "class_name": "bicycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 150,
+          "x_max": 660,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 601,
+        "class_id": 12,
+        "class_name": "motorcycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 150,
+          "x_max": 709,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 612,
+        "class_id": 13,
+        "class_name": "unknown",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 150,
+          "x_max": 930,
+          "y_max": 250
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-1",
+        "detection_id": 1,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN0",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-12",
+        "detection_id": 12,
+        "track_id": null,
+        "class_id": 1,
+        "class_name": "truck",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-123",
+        "detection_id": 123,
+        "track_id": null,
+        "class_id": 2,
+        "class_name": "bus",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-151",
+        "detection_id": 151,
+        "track_id": null,
+        "class_id": 3,
+        "class_name": "van",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-162",
+        "detection_id": 162,
+        "track_id": null,
+        "class_id": 4,
+        "class_name": "pickup",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN4",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-273",
+        "detection_id": 273,
+        "track_id": null,
+        "class_id": 5,
+        "class_name": "suv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-301",
+        "detection_id": 301,
+        "track_id": null,
+        "class_id": 6,
+        "class_name": "sedan",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-312",
+        "detection_id": 312,
+        "track_id": null,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-423",
+        "detection_id": 423,
+        "track_id": null,
+        "class_id": 8,
+        "class_name": "mpv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN8",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-451",
+        "detection_id": 451,
+        "track_id": null,
+        "class_id": 9,
+        "class_name": "estate",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "scene-4",
+    "width": 960,
+    "height": 600,
+    "detections": [
+      {
+        "detection_id": 1,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 10,
+          "x_max": 34,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 12,
+        "class_id": 1,
+        "class_name": "truck",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 10,
+          "x_max": 255,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 123,
+        "class_id": 2,
+        "class_name": "bus",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 10,
+          "x_max": 390,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 151,
+        "class_id": 3,
+        "class_name": "van",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 10,
+          "x_max": 525,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 162,
+        "class_id": 4,
+        "class_name": "pickup",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 10,
+          "x_max": 574,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 273,
+        "class_id": 5,
+        "class_name": "suv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 10,
+          "x_max": 795,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 301,
+        "class_id": 6,
+        "class_name": "sedan",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 10,
+          "x_max": 930,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 312,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 150,
+          "x_max": 120,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 423,
+        "class_id": 8,
+        "class_name": "mpv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 150,
+          "x_max": 169,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 451,
+        "class_id": 9,
+        "class_name": "estate",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 150,
+          "x_max": 390,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 462,
+        "class_id": 10,
+        "class_name": "person",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 150,
+          "x_max": 525,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 573,
+        "class_id": 11,
+        "class_name": "bicycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 150,
+          "x_max": 660,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 601,
+        "class_id": 12,
+        "class_name": "motorcycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 150,
+          "x_max": 709,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 612,
+        "class_id": 13,
+        "class_name": "unknown",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 150,
+          "x_max": 930,
+          "y_max": 250
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-1",
+        "detection_id": 1,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN0",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-12",
+        "detection_id": 12,
+        "track_id": null,
+        "class_id": 1,
+        "class_name": "truck",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-123",
+        "detection_id": 123,
+        "track_id": null,
+        "class_id": 2,
+        "class_name": "bus",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-151",
+        "detection_id": 151,
+        "track_id": null,
+        "class_id": 3,
+        "class_name": "van",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-162",
+        "detection_id": 162,
+        "track_id": null,
+        "class_id": 4,
+        "class_name": "pickup",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN4",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-273",
+        "detection_id": 273,
+        "track_id": null,
+        "class_id": 5,
+        "class_name": "suv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-301",
+        "detection_id": 301,
+        "track_id": null,
+        "class_id": 6,
+        "class_name": "sedan",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-312",
+        "detection_id": 312,
+        "track_id": null,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-423",
+        "detection_id": 423,
+        "track_id": null,
+        "class_id": 8,
+        "class_name": "mpv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN8",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-451",
+        "detection_id": 451,
+        "track_id": null,
+        "class_id": 9,
+        "class_name": "estate",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "scene-5",
+    "width": 960,
+    "height": 600,
+    "detections": [
+      {
+        "detection_id": 1,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 10,
+          "x_max": 34,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 12,
+        "class_id": 1,
+        "class_name": "truck",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 10,
+          "x_max": 255,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 123,
+        "class_id": 2,
+        "class_name": "bus",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 10,
+          "x_max": 390,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 151,
+        "class_id": 3,
+        "class_name": "van",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 10,
+          "x_max": 525,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 162,
+        "class_id": 4,
+        "class_name": "pickup",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 10,
+          "x_max": 574,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 273,
+        "class_id": 5,
+        "class_name": "suv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 10,
+          "x_max": 795,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 301,
+        "class_id": 6,
+        "class_name": "sedan",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 10,
+          "x_max": 930,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 312,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 150,
+          "x_max": 120,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 423,
+        "class_id": 8,
+        "class_name": "mpv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 150,
+          "x_max": 169,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 451,
+        "class_id": 9,
+        "class_name": "estate",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 150,
+          "x_max": 390,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 462,
+        "class_id": 10,
+        "class_name": "person",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 150,
+          "x_max": 525,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 573,
+        "class_id": 11,
+        "class_name": "bicycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 150,
+          "x_max": 660,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 601,
+        "class_id": 12,
+        "class_name": "motorcycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 150,
+          "x_max": 709,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 612,
+        "class_id": 13,
+        "class_name": "unknown",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 150,
+          "x_max": 930,
+          "y_max": 250
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-1",
+        "detection_id": 1,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN0",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-12",
+        "detection_id": 12,
+        "track_id": null,
+        "class_id": 1,
+        "class_name": "truck",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-123",
+        "detection_id": 123,
+        "track_id": null,
+        "class_id": 2,
+        "class_name": "bus",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-151",
+        "detection_id": 151,
+        "track_id": null,
+        "class_id": 3,
+        "class_name": "van",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-162",
+        "detection_id": 162,
+        "track_id": null,
+        "class_id": 4,
+        "class_name": "pickup",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN4",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-273",
+        "detection_id": 273,
+        "track_id": null,
+        "class_id": 5,
+        "class_name": "suv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-301",
+        "detection_id": 301,
+        "track_id": null,
+        "class_id": 6,
+        "class_name": "sedan",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-312",
+        "detection_id": 312,
+        "track_id": null,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-423",
+        "detection_id": 423,
+        "track_id": null,
+        "class_id": 8,
+        "class_name": "mpv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN8",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-451",
+        "detection_id": 451,
+        "track_id": null,
+        "class_id": 9,
+        "class_name": "estate",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "scene-6",
+    "width": 960,
+    "height": 600,
+    "detections": [
+      {
+        "detection_id": 1,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 10,
+          "x_max": 34,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 12,
+        "class_id": 1,
+        "class_name": "truck",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 10,
+          "x_max": 255,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 123,
+        "class_id": 2,
+        "class_name": "bus",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 10,
+          "x_max": 390,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 151,
+        "class_id": 3,
+        "class_name": "van",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 10,
+          "x_max": 525,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 162,
+        "class_id": 4,
+        "class_name": "pickup",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 10,
+          "x_max": 574,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 273,
+        "class_id": 5,
+        "class_name": "suv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 10,
+          "x_max": 795,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 301,
+        "class_id": 6,
+        "class_name": "sedan",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 10,
+          "x_max": 930,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 312,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 150,
+          "x_max": 120,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 423,
+        "class_id": 8,
+        "class_name": "mpv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 150,
+          "x_max": 169,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 451,
+        "class_id": 9,
+        "class_name": "estate",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 150,
+          "x_max": 390,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 462,
+        "class_id": 10,
+        "class_name": "person",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 150,
+          "x_max": 525,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 573,
+        "class_id": 11,
+        "class_name": "bicycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 150,
+          "x_max": 660,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 601,
+        "class_id": 12,
+        "class_name": "motorcycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 150,
+          "x_max": 709,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 612,
+        "class_id": 13,
+        "class_name": "unknown",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 150,
+          "x_max": 930,
+          "y_max": 250
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-1",
+        "detection_id": 1,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN0",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-12",
+        "detection_id": 12,
+        "track_id": null,
+        "class_id": 1,
+        "class_name": "truck",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-123",
+        "detection_id": 123,
+        "track_id": null,
+        "class_id": 2,
+        "class_name": "bus",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-151",
+        "detection_id": 151,
+        "track_id": null,
+        "class_id": 3,
+        "class_name": "van",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-162",
+        "detection_id": 162,
+        "track_id": null,
+        "class_id": 4,
+        "class_name": "pickup",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN4",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-273",
+        "detection_id": 273,
+        "track_id": null,
+        "class_id": 5,
+        "class_name": "suv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-301",
+        "detection_id": 301,
+        "track_id": null,
+        "class_id": 6,
+        "class_name": "sedan",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-312",
+        "detection_id": 312,
+        "track_id": null,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-423",
+        "detection_id": 423,
+        "track_id": null,
+        "class_id": 8,
+        "class_name": "mpv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN8",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-451",
+        "detection_id": 451,
+        "track_id": null,
+        "class_id": 9,
+        "class_name": "estate",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "scene-7",
+    "width": 960,
+    "height": 600,
+    "detections": [
+      {
+        "detection_id": 1,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 10,
+          "x_max": 34,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 12,
+        "class_id": 1,
+        "class_name": "truck",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 10,
+          "x_max": 255,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 123,
+        "class_id": 2,
+        "class_name": "bus",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 10,
+          "x_max": 390,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 151,
+        "class_id": 3,
+        "class_name": "van",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 10,
+          "x_max": 525,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 162,
+        "class_id": 4,
+        "class_name": "pickup",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 10,
+          "x_max": 574,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 273,
+        "class_id": 5,
+        "class_name": "suv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 10,
+          "x_max": 795,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 301,
+        "class_id": 6,
+        "class_name": "sedan",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 10,
+          "x_max": 930,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 312,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 150,
+          "x_max": 120,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 423,
+        "class_id": 8,
+        "class_name": "mpv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 150,
+          "x_max": 169,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 451,
+        "class_id": 9,
+        "class_name": "estate",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 150,
+          "x_max": 390,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 462,
+        "class_id": 10,
+        "class_name": "person",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 150,
+          "x_max": 525,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 573,
+        "class_id": 11,
+        "class_name": "bicycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 150,
+          "x_max": 660,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 601,
+        "class_id": 12,
+        "class_name": "motorcycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 150,
+          "x_max": 709,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 612,
+        "class_id": 13,
+        "class_name": "unknown",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 150,
+          "x_max": 930,
+          "y_max": 250
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-1",
+        "detection_id": 1,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN0",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-12",
+        "detection_id": 12,
+        "track_id": null,
+        "class_id": 1,
+        "class_name": "truck",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-123",
+        "detection_id": 123,
+        "track_id": null,
+        "class_id": 2,
+        "class_name": "bus",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-151",
+        "detection_id": 151,
+        "track_id": null,
+        "class_id": 3,
+        "class_name": "van",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-162",
+        "detection_id": 162,
+        "track_id": null,
+        "class_id": 4,
+        "class_name": "pickup",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN4",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-273",
+        "detection_id": 273,
+        "track_id": null,
+        "class_id": 5,
+        "class_name": "suv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-301",
+        "detection_id": 301,
+        "track_id": null,
+        "class_id": 6,
+        "class_name": "sedan",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-312",
+        "detection_id": 312,
+        "track_id": null,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-423",
+        "detection_id": 423,
+        "track_id": null,
+        "class_id": 8,
+        "class_name": "mpv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN8",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-451",
+        "detection_id": 451,
+        "track_id": null,
+        "class_id": 9,
+        "class_name": "estate",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "scene-8",
+    "width": 960,
+    "height": 600,
+    "detections": [
+      {
+        "detection_id": 1,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 10,
+          "x_max": 34,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 12,
+        "class_id": 1,
+        "class_name": "truck",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 10,
+          "x_max": 255,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 123,
+        "class_id": 2,
+        "class_name": "bus",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 10,
+          "x_max": 390,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 151,
+        "class_id": 3,
+        "class_name": "van",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 10,
+          "x_max": 525,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 162,
+        "class_id": 4,
+        "class_name": "pickup",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 10,
+          "x_max": 574,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 273,
+        "class_id": 5,
+        "class_name": "suv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 10,
+          "x_max": 795,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 301,
+        "class_id": 6,
+        "class_name": "sedan",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 10,
+          "x_max": 930,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 312,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 150,
+          "x_max": 120,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 423,
+        "class_id": 8,
+        "class_name": "mpv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 150,
+          "x_max": 169,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 451,
+        "class_id": 9,
+        "class_name": "estate",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 150,
+          "x_max": 390,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 462,
+        "class_id": 10,
+        "class_name": "person",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 150,
+          "x_max": 525,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 573,
+        "class_id": 11,
+        "class_name": "bicycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 150,
+          "x_max": 660,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 601,
+        "class_id": 12,
+        "class_name": "motorcycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 150,
+          "x_max": 709,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 612,
+        "class_id": 13,
+        "class_name": "unknown",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 150,
+          "x_max": 930,
+          "y_max": 250
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-1",
+        "detection_id": 1,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN0",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-12",
+        "detection_id": 12,
+        "track_id": null,
+        "class_id": 1,
+        "class_name": "truck",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-123",
+        "detection_id": 123,
+        "track_id": null,
+        "class_id": 2,
+        "class_name": "bus",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-151",
+        "detection_id": 151,
+        "track_id": null,
+        "class_id": 3,
+        "class_name": "van",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-162",
+        "detection_id": 162,
+        "track_id": null,
+        "class_id": 4,
+        "class_name": "pickup",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN4",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-273",
+        "detection_id": 273,
+        "track_id": null,
+        "class_id": 5,
+        "class_name": "suv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-301",
+        "detection_id": 301,
+        "track_id": null,
+        "class_id": 6,
+        "class_name": "sedan",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-312",
+        "detection_id": 312,
+        "track_id": null,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-423",
+        "detection_id": 423,
+        "track_id": null,
+        "class_id": 8,
+        "class_name": "mpv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN8",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-451",
+        "detection_id": 451,
+        "track_id": null,
+        "class_id": 9,
+        "class_name": "estate",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "scene-9",
+    "width": 960,
+    "height": 600,
+    "detections": [
+      {
+        "detection_id": 1,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 10,
+          "x_max": 34,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 12,
+        "class_id": 1,
+        "class_name": "truck",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 10,
+          "x_max": 120,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 123,
+        "class_id": 2,
+        "class_name": "bus",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 10,
+          "x_max": 390,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 151,
+        "class_id": 3,
+        "class_name": "van",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 10,
+          "x_max": 525,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 162,
+        "class_id": 4,
+        "class_name": "pickup",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 10,
+          "x_max": 574,
+          "y_max": 40
+        }
+      },
+      {
+        "detection_id": 273,
+        "class_id": 5,
+        "class_name": "suv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 10,
+          "x_max": 795,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 301,
+        "class_id": 6,
+        "class_name": "sedan",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 10,
+          "x_max": 930,
+          "y_max": 110
+        }
+      },
+      {
+        "detection_id": 312,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 10,
+          "y_min": 150,
+          "x_max": 120,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 423,
+        "class_id": 8,
+        "class_name": "mpv",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 145,
+          "y_min": 150,
+          "x_max": 169,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 451,
+        "class_id": 9,
+        "class_name": "estate",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 280,
+          "y_min": 150,
+          "x_max": 390,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 462,
+        "class_id": 10,
+        "class_name": "person",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 415,
+          "y_min": 150,
+          "x_max": 525,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 573,
+        "class_id": 11,
+        "class_name": "bicycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 550,
+          "y_min": 150,
+          "x_max": 660,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 601,
+        "class_id": 12,
+        "class_name": "motorcycle",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 685,
+          "y_min": 150,
+          "x_max": 709,
+          "y_max": 180
+        }
+      },
+      {
+        "detection_id": 612,
+        "class_id": 13,
+        "class_name": "unknown",
+        "confidence": 0.95,
+        "enrichment_eligible": false,
+        "bbox": {
+          "x_min": 820,
+          "y_min": 150,
+          "x_max": 930,
+          "y_max": 250
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-1",
+        "detection_id": 1,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN0",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-12",
+        "detection_id": 12,
+        "track_id": null,
+        "class_id": 1,
+        "class_name": "truck",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-123",
+        "detection_id": 123,
+        "track_id": null,
+        "class_id": 2,
+        "class_name": "bus",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-151",
+        "detection_id": 151,
+        "track_id": null,
+        "class_id": 3,
+        "class_name": "van",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-162",
+        "detection_id": 162,
+        "track_id": null,
+        "class_id": 4,
+        "class_name": "pickup",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN4",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-273",
+        "detection_id": 273,
+        "track_id": null,
+        "class_id": 5,
+        "class_name": "suv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-301",
+        "detection_id": 301,
+        "track_id": null,
+        "class_id": 6,
+        "class_name": "sedan",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-312",
+        "detection_id": 312,
+        "track_id": null,
+        "class_id": 7,
+        "class_name": "hatchback",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": []
+        }
+      },
+      {
+        "vehicle_key": "detection-423",
+        "detection_id": 423,
+        "track_id": null,
+        "class_id": 8,
+        "class_name": "mpv",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN8",
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.25,
+            "y_min": 0.6666666666666666,
+            "x_max": 0.75,
+            "y_max": 0.8333333333333334
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-451",
+        "detection_id": 451,
+        "track_id": null,
+        "class_id": 9,
+        "class_name": "estate",
+        "attributes_status": "completed",
+        "attributes": [],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": null,
+          "used_enhancement": false,
+          "evidence_frame_indexes": [],
+          "bbox_relative": {
+            "x_min": 0.24545454545454545,
+            "y_min": 0.66,
+            "x_max": 0.7454545454545455,
+            "y_max": 0.83
+          }
+        }
+      }
+    ]
+  }
+]

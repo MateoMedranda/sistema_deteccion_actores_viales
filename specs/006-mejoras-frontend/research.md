@@ -55,3 +55,9 @@
 ## Resultado
 
 Decisiones técnicas resueltas para planificar. Recursos externos restantes: pesos/manifiestos válidos, medios controlados y acceso al entorno de evaluación. No se ejecutaron inferencias ni mediciones. Los cambios de backend identificados forman parte del trabajo de 006, según ampliación expresa del usuario.
+
+## Ajustes tras análisis autorizado — 2026-11-20
+
+**Decision**: Concretar plazos de imágenes (120/15/10/30 s por tipo de solicitud y 120 s por ciclo de observación, siempre acotados por TTL), instrumentación correlacionada de duración/RSS y fixtures explícitos de capacidades. Mantener las 69 tareas e integrar correcciones en sus responsabilidades existentes. T033 es MVP parcial de orquestación; aceptación de selección de US1 después de T039/T040.
+**Rationale**: Resuelve C1/I1/A1/I2 del análisis sin atribuir observabilidad al simple hecho de ejecutar suites ni readiness a una bandera falsa. El contrato OpenAPI pasa a enlazar las respuestas con POST imagen, GET original y GET readiness mediante referencias locales resolubles.
+**Alternatives considered**: Reintentos automáticos de POST, plazos ilimitados, flags ready forzados, cierre anticipado de US1 y esquemas sin operaciones vinculadas no satisfacen los criterios acordados.

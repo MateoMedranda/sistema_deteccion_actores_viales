@@ -80,3 +80,18 @@ Crear enriquecimiento no se bloquea solo por 503 del health global: aceptar si h
 ## Validación exigida
 
 Contrato antiguo sigue pasando; contrato nuevo comprueba campos y ruta. Pruebas de acceso/TTL, orientación EXIF y geometría, elegibilidad configurable, ramas disponibles por separado, saneamiento de JSON/tablas/respuesta, cancel/finish y TTL/finish concurrentes. No modificar los contratos históricos para ocultar una regresión; describir en 006 las extensiones y mantener la documentación viva del servicio cuando se implemente.
+
+## Contrato OpenAPI enlazado
+
+`openapi-additions.yaml` es un subconjunto autocontenido de las tres operaciones afectadas, con rutas completas desde `/`: POST `/api/v1/detections/images` devuelve `DetectionResponse006`; GET del original devuelve PNG protegido; GET `/health/enrichment-ready` devuelve `EnrichmentReadiness006` con 200 ready o 503 not_ready. `DetectionResponse006` compone los campos existentes de 001 y las extensiones; la colección de detecciones usa `DetectionItem006`, que enlaza la elegibilidad añadida. Todas las referencias son locales y resolubles.
+
+No reemplaza las demás operaciones del servicio ni redefine el contrato de video. Las pruebas de T006 deben validar la forma OpenAPI, la resolución y alcanzabilidad de referencias desde operaciones, y contrastar las respuestas reales con el contrato, además de verificar relaciones geométricas que no expresa un esquema estático. La matriz de disponibilidad de T023 prueba 202 con adaptadores sintéticos explícitos y 503 sin modelos; conservar una prueba que depende de un ready ficticio no es compatibilidad válida.
+
+
+## Límites públicos de imagen (T076)
+
+GET /health/image-policy es una operación pública aditiva y devuelve media_types, max_upload_bytes y max_image_pixels, tomados de los valores existentes del validador/Settings. No expone rutas, pesos, credenciales ni configuración adicional. El cliente valida el DTO y consulta con plazo de 10 s; si un servidor anterior no ofrece la operación, comunica que no pudo obtener límites y mantiene la validación autoritativa en backend. No se introducen ni cambian límites arbitrarios.
+
+## Recuperación de limpieza temporal (T071)
+
+Los archivos gestionados nuevos tienen recibos privados mínimos de propiedad/vencimiento anteriores a los bytes. El janitor reconoce esos recibos tras reiniciar y elimina al vencer, conservando reducciones del plazo publicado. No recupera autorización ni resultados de fuentes cuya metadata en memoria se perdió. No se modifica la semántica de 404 ajeno/desconocido ni se publica ningún recibo/ruta. Archivos históricos sin propiedad demostrable se preservan para revisión local.

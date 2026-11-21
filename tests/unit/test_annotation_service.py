@@ -20,7 +20,7 @@ def test_annotation_returns_jpeg_with_box_and_label(monkeypatch):
     assert decoded is not None
     assert decoded.shape == image.shape
     assert np.any(decoded != 0)
-    assert labels == ["Car 90%"]
+    assert labels == ["#1 Car 90%"]
 
 
 def test_annotation_uses_a_different_stable_color_per_class():

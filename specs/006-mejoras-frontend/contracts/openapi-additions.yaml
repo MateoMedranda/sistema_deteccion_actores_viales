@@ -1,32 +1,141 @@
 openapi: 3.1.0
 info:
-  title: Road actor image exploration - proposed additions 006
-  version: 0.1.0-plan
-  description: Design overlay for existing API; not a replacement for its complete OpenAPI document.
+  title: Road actor image exploration - implemented additions 006
+  version: 0.2.0
+  description: Self-contained contract for image analysis, canonical original evidence,
+    enrichment readiness and public image upload limits. Other operations retain their
+    existing contracts.
 paths:
+  /api/v1/detections/images:
+    post:
+      summary: Analyze a JPEG or PNG upload and return canonical-image detections
+      operationId: analyzeImage006
+      security:
+      - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - image
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: Imagen JPEG o PNG dentro del límite configurado.
+      responses:
+        '200':
+          description: Completed detection, including zero actors. Image metadata
+            and boxes refer to the same canonical PNG.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetectionResponse006'
+        '400':
+          $ref: '#/components/responses/InvalidImage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '413':
+          $ref: '#/components/responses/FileTooLarge'
+        '415':
+          $ref: '#/components/responses/UnsupportedMedia'
+        '422':
+          $ref: '#/components/responses/UndecodableImage'
+        '503':
+          $ref: '#/components/responses/ModelUnavailable'
   /api/v1/detections/{requestId}/original-image:
     get:
       operationId: getCanonicalOriginalImage006
       summary: Read the owned, unexpired canonical image
       security:
-        - ApiKeyAuth: []
+      - ApiKeyAuth: []
       parameters:
-        - name: requestId
-          in: path
-          required: true
-          schema: { type: string, format: uuid }
+      - name: requestId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         '200':
-          description: Canonical PNG, EXIF orientation applied and private metadata removed
+          description: Canonical PNG, EXIF orientation applied and private metadata
+            removed
           headers:
             Cache-Control:
-              schema: { type: string, const: no-store }
+              schema:
+                type: string
+                const: no-store
           content:
             image/png:
-              schema: { type: string, format: binary }
-        '401': { $ref: '#/components/responses/Unauthorized' }
-        '404': { $ref: '#/components/responses/NotFound' }
-        '410': { $ref: '#/components/responses/Expired' }
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '410':
+          $ref: '#/components/responses/Expired'
+  /health/enrichment-ready:
+    get:
+      operationId: enrichmentReadiness006
+      summary: Report initialized enrichment capabilities without private model details
+      security: []
+      responses:
+        '200':
+          description: Detector and all enrichment branches are ready.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/EnrichmentReadiness006'
+                - type: object
+                  properties:
+                    status:
+                      type: string
+                      const: ready
+                - type: object
+                  properties:
+                    capabilities:
+                      type: object
+                      properties:
+                        attributes:
+                          type: string
+                          const: ready
+                        plate_localization:
+                          type: string
+                          const: ready
+                        plate_ocr:
+                          type: string
+                          const: ready
+        '503':
+          description: At least one required capability or detector is unavailable.
+            Useful independent branches can still support enrichment creation under
+            the existing job contract.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/EnrichmentReadiness006'
+                - type: object
+                  properties:
+                    status:
+                      type: string
+                      const: not_ready
+  /health/image-policy:
+    get:
+      summary: Return only configured image upload limits
+      operationId: imageUploadPolicy006
+      responses:
+        '200':
+          description: Existing configured limits; no private configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageUploadPolicy'
+      security: []
 components:
   securitySchemes:
     ApiKeyAuth:
@@ -38,57 +147,276 @@ components:
       description: Missing or invalid credential
       content:
         application/json:
-          schema: { $ref: '#/components/schemas/ErrorResponse' }
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
     NotFound:
       description: Unknown source or source owned by another principal
       content:
         application/json:
-          schema: { $ref: '#/components/schemas/ErrorResponse' }
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
     Expired:
       description: Expired source known to its authenticated owner
       content:
         application/json:
-          schema: { $ref: '#/components/schemas/ErrorResponse' }
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InvalidImage:
+      description: El contenido no corresponde a una imagen válida.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    FileTooLarge:
+      description: El archivo supera el límite configurado.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    UnsupportedMedia:
+      description: El tipo de imagen no está permitido.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    UndecodableImage:
+      description: La imagen no puede decodificarse de forma segura.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ModelUnavailable:
+      description: El modelo no está listo para procesar solicitudes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ArtifactNotFound:
+      description: No existe un artefacto para la solicitud indicada.
+    ArtifactExpired:
+      description: El artefacto temporal ya venció y fue eliminado.
   schemas:
     ErrorResponse:
       type: object
-      required: [code, message, request_id]
+      required:
+      - code
+      - message
+      - request_id
       properties:
-        code: { type: string }
-        message: { type: string }
-        request_id: { type: string }
+        code:
+          type: string
+        message:
+          type: string
+        request_id:
+          type: string
     ImageResponseAdditions:
-      description: Fields added to the existing DetectionResponse; preserve all existing fields.
+      description: Fields added to the existing DetectionResponse; preserve all existing
+        fields.
       type: object
-      required: [source_expires_at, original_image]
+      required:
+      - source_expires_at
+      - original_image
       properties:
-        source_expires_at: { type: string, format: date-time }
+        source_expires_at:
+          type: string
+          format: date-time
         original_image:
           type: object
-          required: [url, media_type, expires_at]
+          required:
+          - url
+          - media_type
+          - expires_at
           properties:
-            url: { type: string, format: uri-reference }
-            media_type: { type: string, const: image/png }
-            expires_at: { type: string, format: date-time }
+            url:
+              type: string
+              format: uri-reference
+            media_type:
+              type: string
+              const: image/png
+            expires_at:
+              type: string
+              format: date-time
     DetectionItemAdditions:
       description: Merge into each existing DetectionResponseItem; no fabricated track_id.
       type: object
-      required: [enrichment_eligible]
+      required:
+      - enrichment_eligible
       properties:
-        enrichment_eligible: { type: boolean }
+        enrichment_eligible:
+          type: boolean
     EnrichmentReadiness006:
-      description: Add capabilities to the existing health response; 200 only for ready, otherwise 503.
+      description: Add capabilities to the existing health response; 200 only for
+        ready, otherwise 503.
       type: object
-      required: [status, capabilities]
+      required:
+      - status
+      - capabilities
       properties:
-        status: { type: string, enum: [ready, not_ready] }
+        status:
+          type: string
+          enum:
+          - ready
+          - not_ready
         capabilities:
           type: object
-          required: [attributes, plate_localization, plate_ocr]
+          required:
+          - attributes
+          - plate_localization
+          - plate_ocr
           properties:
-            attributes: { $ref: '#/components/schemas/CapabilityState' }
-            plate_localization: { $ref: '#/components/schemas/CapabilityState' }
-            plate_ocr: { $ref: '#/components/schemas/CapabilityState' }
+            attributes:
+              $ref: '#/components/schemas/CapabilityState'
+            plate_localization:
+              $ref: '#/components/schemas/CapabilityState'
+            plate_ocr:
+              $ref: '#/components/schemas/CapabilityState'
     CapabilityState:
       type: string
-      enum: [ready, unavailable]
+      enum:
+      - ready
+      - unavailable
+    DetectionResponse:
+      type: object
+      required:
+      - request_id
+      - status
+      - processing_time_ms
+      - image
+      - detections
+      - annotated_image
+      properties:
+        request_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - completed
+        processing_time_ms:
+          type: integer
+          minimum: 0
+        image:
+          type: object
+          required:
+          - width
+          - height
+          - media_type
+          properties:
+            width:
+              type: integer
+              minimum: 1
+            height:
+              type: integer
+              minimum: 1
+            media_type:
+              type: string
+              enum:
+              - image/jpeg
+              - image/png
+        detections:
+          type: array
+          items:
+            $ref: '#/components/schemas/Detection'
+        annotated_image:
+          type: object
+          required:
+          - url
+          - media_type
+          - expires_at
+          properties:
+            url:
+              type: string
+              format: uri-reference
+            media_type:
+              type: string
+              enum:
+              - image/jpeg
+            expires_at:
+              type: string
+              format: date-time
+    Detection:
+      type: object
+      required:
+      - detection_id
+      - class_id
+      - class_name
+      - confidence
+      - bbox
+      properties:
+        detection_id:
+          type: integer
+          minimum: 1
+        class_id:
+          type: integer
+          minimum: 0
+        class_name:
+          type: string
+          minLength: 1
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+        bbox:
+          type: object
+          required:
+          - x_min
+          - y_min
+          - x_max
+          - y_max
+          properties:
+            x_min:
+              type: integer
+              minimum: 0
+            y_min:
+              type: integer
+              minimum: 0
+            x_max:
+              type: integer
+              minimum: 1
+            y_max:
+              type: integer
+              minimum: 1
+    DetectionItem006:
+      description: Existing detection plus server-defined enrichment eligibility.
+        Bounding boxes use canonical pixels. No fabricated track identifier.
+      allOf:
+      - $ref: '#/components/schemas/Detection'
+      - $ref: '#/components/schemas/DetectionItemAdditions'
+    DetectionResponse006:
+      description: 'Complete response: original required fields plus canonical-image
+        descriptor, effective source TTL and eligible detections.'
+      allOf:
+      - $ref: '#/components/schemas/DetectionResponse'
+      - $ref: '#/components/schemas/ImageResponseAdditions'
+      - type: object
+        properties:
+          detections:
+            type: array
+            items:
+              $ref: '#/components/schemas/DetectionItem006'
+          image:
+            type: object
+            properties:
+              media_type:
+                type: string
+                const: image/png
+    ImageUploadPolicy:
+      type: object
+      required:
+      - media_types
+      - max_upload_bytes
+      - max_image_pixels
+      properties:
+        media_types:
+          type: array
+          items:
+            type: string
+            enum:
+            - image/jpeg
+            - image/png
+        max_upload_bytes:
+          type: integer
+          minimum: 1
+        max_image_pixels:
+          type: integer
+          minimum: 1

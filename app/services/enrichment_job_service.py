@@ -11,10 +11,13 @@ from app.services.track_consolidation import select_track_evidence
 class EnrichmentJobService:
     def __init__(self, settings: Settings, jobs: EnrichmentJobStore, images: ImageDetectionStore, video_jobs) -> None:
         self.settings, self.jobs, self.images, self.video_jobs = settings, jobs, images, video_jobs
+        self.processor = None
 
     def create(self, kind: str, source_id: str, owner_key_id: str):
         source = self.resolve(kind, source_id, owner_key_id)
         units = self.units_for_source(kind, source, owner_key_id)
+        if self.processor is None or not self.processor.usable:
+            raise ApiError(503, "enrichment_unavailable", "Enrichment is not available at this time.")
         if not units: raise ApiError(400, "no_eligible_vehicles", "The source has no eligible vehicle detections.")
         return self.jobs.create(kind, source_id, owner_key_id, len(units), source.expires_at)
 

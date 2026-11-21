@@ -55,3 +55,24 @@ def client(tmp_path, api_key):
 @pytest.fixture
 def auth_headers(api_key):
     return {"X-API-Key": api_key}
+
+
+@pytest.fixture
+def enrichment_client(tmp_path, api_key, monkeypatch):
+    from tests.enrichment_fixtures import FakeAttributes, FakeLocalizer, FakeReader
+    monkeypatch.setattr("app.core.lifespan.EfficientNetAttributeExtractor", lambda *a: FakeAttributes())
+    monkeypatch.setattr("app.core.lifespan.YOLOv8PlateLocalizer", lambda *a: FakeLocalizer())
+    monkeypatch.setattr("app.core.lifespan.PaddlePlateReader", lambda *a: FakeReader())
+    settings = Settings(_env_file=None, api_key=api_key,
+        temp_artifact_dir=tmp_path/"artifacts", video_job_db_path=tmp_path/"video.sqlite3", video_temp_dir=tmp_path/"video",
+        count_job_db_path=tmp_path/"count.sqlite3", count_temp_dir=tmp_path/"count",
+        enrichment_job_db_path=tmp_path/"enrichment.sqlite3", enrichment_temp_dir=tmp_path/"sources",
+        attribute_model_weights_path=tmp_path/"fake.pt", attribute_model_manifest_path=tmp_path/"fake.json",
+        plate_model_weights_path=tmp_path/"plate.pt")
+    with TestClient(create_app(settings=settings, detector=FakeDetector())) as test_client:
+        yield test_client
+
+@pytest.fixture
+def annotation_controls():
+    from tests.annotation_fixtures import Clock,Barrier,CountedReader
+    return {"clock":Clock(),"barrier":Barrier(),"reader":CountedReader(),"owners":("owner-alpha","owner-beta")}

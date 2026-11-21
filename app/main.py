@@ -3,6 +3,8 @@ from __future__ import annotations
 from uuid import uuid4
 
 from fastapi import FastAPI, Request
+from fastapi.openapi.utils import get_openapi
+from app.domain.schemas import PlatePreviewMetadata
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import Response
 from starlette.middleware.cors import CORSMiddleware
@@ -38,6 +40,7 @@ def create_app(settings: Settings | None = None, detector: Detector | None = Non
         allow_credentials=False,
         allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
         allow_headers=["Content-Type", "X-API-Key"],
+        expose_headers=["X-Plate-Preview-Metadata"],
     )
     app.include_router(health.router)
     app.include_router(detections.router, prefix="/api")
@@ -50,12 +53,24 @@ def create_app(settings: Settings | None = None, detector: Detector | None = Non
         request.state.request_id = str(uuid4())
         response = await call_next(request)
         response.headers["X-Request-ID"] = request.state.request_id
+        if request.url.path.startswith("/api/"):
+            response.headers["Cache-Control"] = "no-store"
         return response
 
     @app.middleware("http")
     async def video_upload_authentication(request: Request, call_next) -> Response:
         return await reject_unauthorized_video_upload(request, call_next, settings)
 
+    def documented_openapi():
+        if app.openapi_schema is None:
+            schema=get_openapi(title=app.title,version=app.version,routes=app.routes,description=app.description)
+            metadata=PlatePreviewMetadata.model_json_schema(ref_template="#/components/schemas/{model}")
+            definitions=metadata.pop("$defs",{})
+            schema.setdefault("components",{}).setdefault("schemas",{}).update(definitions)
+            schema["components"]["schemas"]["PlatePreviewMetadata"]=metadata
+            app.openapi_schema=schema
+        return app.openapi_schema
+    app.openapi=documented_openapi
     return app
 
 

@@ -1,14 +1,11 @@
 from __future__ import annotations
-
 import threading
-from dataclasses import dataclass
+from dataclasses import dataclass,replace
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
-
 from app.api.error_handlers import ApiError
 from app.domain.models import Detection
 from app.services.source_artifacts import SourceArtifactStore
-
 
 @dataclass(frozen=True)
 class ImageDetectionSource:
@@ -21,26 +18,33 @@ class ImageDetectionSource:
     detections: tuple[Detection, ...]
     expires_at: datetime
 
-
 class ImageDetectionStore:
-    def __init__(self, artifacts: SourceArtifactStore, ttl_seconds: int) -> None:
-        self.artifacts = artifacts
-        self.ttl = timedelta(seconds=ttl_seconds)
+    def __init__(self, artifacts: SourceArtifactStore, ttl_seconds: int, clock=None):
+        self.artifacts, self.ttl = artifacts, timedelta(seconds=ttl_seconds)
+        self.clock = clock or (lambda: datetime.now(UTC))
         self._sources: dict[str, ImageDetectionSource] = {}
         self._expired: set[tuple[str, str]] = set()
         self._lock = threading.RLock()
 
-    def create(self, source_id: str, owner_key_id: str, image: bytes, media_type: str,
-               width: int, height: int, detections: list[Detection]) -> ImageDetectionSource:
+    def create(self, source_id, owner_key_id, image, media_type, width, height, detections):
         with self._lock:
             self.cleanup()
-            suffix = ".png" if media_type == "image/png" else ".jpg"
-            source = ImageDetectionSource(source_id, owner_key_id, self.artifacts.save(image, suffix), width,
-                height, media_type, tuple(detections), datetime.now(UTC) + self.ttl)
+            expiry=self.clock()+self.ttl
+            source = ImageDetectionSource(source_id, owner_key_id,
+                self.artifacts.save(image, ".png" if media_type == "image/png" else ".jpg", expires_at=expiry),
+                width, height, media_type, tuple(detections), expiry)
             self._sources[source_id] = source
             return source
 
-    def get(self, source_id: str, owner_key_id: str) -> ImageDetectionSource:
+    def limit_expiry(self,source_id,expires_at):
+        with self._lock:
+            source=self._sources[source_id]
+            updated=replace(source,expires_at=min(source.expires_at,expires_at))
+            self.artifacts.limit_expiry(source.original_path,updated.expires_at)
+            self._sources[source_id]=updated
+            return updated
+
+    def get(self, source_id, owner_key_id):
         with self._lock:
             self.cleanup()
             source = self._sources.get(source_id)
@@ -50,9 +54,15 @@ class ImageDetectionStore:
                 raise ApiError(404, "source_not_found", "No accessible source was found.")
             return source
 
-    def cleanup(self) -> None:
+    def read_original(self, source_id, owner_key_id):
         with self._lock:
-            now = datetime.now(UTC)
+            source = self.get(source_id, owner_key_id)
+            return source.original_path.read_bytes(), source
+
+    def cleanup(self):
+        with self._lock:
+            now = self.clock()
+            self.artifacts.cleanup(now)
             for source_id, source in list(self._sources.items()):
                 if source.expires_at <= now:
                     self.artifacts.remove(source.original_path)

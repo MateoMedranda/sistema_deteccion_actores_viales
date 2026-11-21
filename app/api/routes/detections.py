@@ -5,7 +5,7 @@ from time import perf_counter
 
 from fastapi import APIRouter, Depends, File, Path, Request, UploadFile
 from fastapi.concurrency import run_in_threadpool
-from fastapi.responses import FileResponse
+from fastapi.responses import Response
 
 from app.api.dependencies import Principal, require_api_key
 from app.api.error_handlers import ApiError
@@ -65,12 +65,21 @@ def get_annotated_image(
     request_id: Annotated[str, Path(alias="requestId")],
     request: Request,
     principal: Principal = Depends(require_api_key),
-) -> FileResponse:
-    artifact, expired = request.app.state.service.artifacts.get(request_id)
-    if artifact is None:
-        if expired:
-            raise ApiError(410, "artifact_expired", "The annotated image has expired.")
-        raise ApiError(404, "artifact_not_found", "No annotated image was found for this request.")
-    if artifact.owner_key_id != principal.key_id:
-        raise ApiError(404, "artifact_not_found", "No annotated image was found for this request.")
-    return FileResponse(artifact.path, media_type="image/jpeg", filename="annotated-image.jpg")
+) -> Response:
+    data = request.app.state.service.artifacts.read(request_id, principal.key_id)
+    return Response(data, media_type="image/jpeg", headers={"Cache-Control": "no-store"})
+
+
+@router.get(
+    "/{requestId}/original-image",
+    responses={200: {"content": {"image/png": {"schema": {"type": "string", "format": "binary"}}}},
+               401: {"model": ErrorResponse}, 404: {"model": ErrorResponse}, 410: {"model": ErrorResponse}},
+    response_class=Response,
+)
+def get_original_image(
+    request_id: Annotated[str, Path(alias="requestId")],
+    request: Request,
+    principal: Principal = Depends(require_api_key),
+) -> Response:
+    data, source = request.app.state.image_sources.read_original(request_id, principal.key_id)
+    return Response(data, media_type=source.media_type, headers={"Cache-Control": "no-store"})

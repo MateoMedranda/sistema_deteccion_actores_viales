@@ -1,0 +1,4487 @@
+[
+  {
+    "name": "scene-0",
+    "detections": [
+      {
+        "detection_id": 3,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 20,
+          "y_min": 30,
+          "x_max": 220,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 6,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 310,
+          "y_min": 70,
+          "x_max": 610,
+          "y_max": 370
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-3",
+        "detection_id": 3,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-0-3",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN1",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-6",
+        "detection_id": 6,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-0-6",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      }
+    ],
+    "expected": [
+      {
+        "id": 3,
+        "label": "Vehicle-0-3",
+        "color": [
+          62,
+          83,
+          106
+        ],
+        "plateColor": [
+          109,
+          76,
+          117
+        ],
+        "width": 200,
+        "height": 220,
+        "plateWidth": 120,
+        "plateHeight": 44,
+        "status": "read",
+        "text": "SYN1"
+      },
+      {
+        "id": 6,
+        "label": "Vehicle-0-6",
+        "color": [
+          99,
+          136,
+          177
+        ],
+        "plateColor": [
+          188,
+          117,
+          34
+        ],
+        "width": 300,
+        "height": 300,
+        "plateWidth": 180,
+        "plateHeight": 60,
+        "status": "unreadable",
+        "text": null
+      }
+    ]
+  },
+  {
+    "name": "scene-1",
+    "detections": [
+      {
+        "detection_id": 3,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 22,
+          "y_min": 30,
+          "x_max": 222,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 6,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 310,
+          "y_min": 71,
+          "x_max": 610,
+          "y_max": 371
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-3",
+        "detection_id": 3,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-1-3",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-6",
+        "detection_id": 6,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-1-6",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      }
+    ],
+    "expected": [
+      {
+        "id": 3,
+        "label": "Vehicle-1-3",
+        "color": [
+          136,
+          189,
+          68
+        ],
+        "plateColor": [
+          87,
+          158,
+          131
+        ],
+        "width": 200,
+        "height": 220,
+        "plateWidth": 120,
+        "plateHeight": 44,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 6,
+        "label": "Vehicle-1-6",
+        "color": [
+          173,
+          62,
+          139
+        ],
+        "plateColor": [
+          166,
+          199,
+          48
+        ],
+        "width": 300,
+        "height": 300,
+        "plateWidth": 180,
+        "plateHeight": 60,
+        "status": "failed",
+        "text": null
+      }
+    ]
+  },
+  {
+    "name": "scene-2",
+    "detections": [
+      {
+        "detection_id": 3,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 24,
+          "y_min": 30,
+          "x_max": 224,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 6,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 310,
+          "y_min": 72,
+          "x_max": 610,
+          "y_max": 372
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-3",
+        "detection_id": 3,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-2-3",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN5",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-6",
+        "detection_id": 6,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-2-6",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      }
+    ],
+    "expected": [
+      {
+        "id": 3,
+        "label": "Vehicle-2-3",
+        "color": [
+          30,
+          115,
+          210
+        ],
+        "plateColor": [
+          65,
+          60,
+          145
+        ],
+        "width": 200,
+        "height": 220,
+        "plateWidth": 120,
+        "plateHeight": 44,
+        "status": "read",
+        "text": "SYN5"
+      },
+      {
+        "id": 6,
+        "label": "Vehicle-2-6",
+        "color": [
+          67,
+          168,
+          101
+        ],
+        "plateColor": [
+          144,
+          101,
+          62
+        ],
+        "width": 300,
+        "height": 300,
+        "plateWidth": 180,
+        "plateHeight": 60,
+        "status": "unreadable",
+        "text": null
+      }
+    ]
+  },
+  {
+    "name": "scene-3",
+    "detections": [
+      {
+        "detection_id": 3,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 26,
+          "y_min": 30,
+          "x_max": 226,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 6,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 310,
+          "y_min": 73,
+          "x_max": 610,
+          "y_max": 373
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-3",
+        "detection_id": 3,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-3-3",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-6",
+        "detection_id": 6,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-3-6",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      }
+    ],
+    "expected": [
+      {
+        "id": 3,
+        "label": "Vehicle-3-3",
+        "color": [
+          104,
+          41,
+          172
+        ],
+        "plateColor": [
+          43,
+          142,
+          159
+        ],
+        "width": 200,
+        "height": 220,
+        "plateWidth": 120,
+        "plateHeight": 44,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 6,
+        "label": "Vehicle-3-6",
+        "color": [
+          141,
+          94,
+          63
+        ],
+        "plateColor": [
+          122,
+          183,
+          76
+        ],
+        "width": 300,
+        "height": 300,
+        "plateWidth": 180,
+        "plateHeight": 60,
+        "status": "failed",
+        "text": null
+      }
+    ]
+  },
+  {
+    "name": "scene-4",
+    "detections": [
+      {
+        "detection_id": 3,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 28,
+          "y_min": 30,
+          "x_max": 228,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 6,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 310,
+          "y_min": 74,
+          "x_max": 610,
+          "y_max": 374
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-3",
+        "detection_id": 3,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-4-3",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN9",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-6",
+        "detection_id": 6,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-4-6",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      }
+    ],
+    "expected": [
+      {
+        "id": 3,
+        "label": "Vehicle-4-3",
+        "color": [
+          178,
+          147,
+          134
+        ],
+        "plateColor": [
+          201,
+          44,
+          173
+        ],
+        "width": 200,
+        "height": 220,
+        "plateWidth": 120,
+        "plateHeight": 44,
+        "status": "read",
+        "text": "SYN9"
+      },
+      {
+        "id": 6,
+        "label": "Vehicle-4-6",
+        "color": [
+          35,
+          200,
+          205
+        ],
+        "plateColor": [
+          100,
+          85,
+          90
+        ],
+        "width": 300,
+        "height": 300,
+        "plateWidth": 180,
+        "plateHeight": 60,
+        "status": "unreadable",
+        "text": null
+      }
+    ]
+  },
+  {
+    "name": "scene-5",
+    "detections": [
+      {
+        "detection_id": 3,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 30,
+          "y_min": 30,
+          "x_max": 230,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 6,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 310,
+          "y_min": 75,
+          "x_max": 610,
+          "y_max": 375
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-3",
+        "detection_id": 3,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-5-3",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-6",
+        "detection_id": 6,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-5-6",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      }
+    ],
+    "expected": [
+      {
+        "id": 3,
+        "label": "Vehicle-5-3",
+        "color": [
+          72,
+          73,
+          96
+        ],
+        "plateColor": [
+          179,
+          126,
+          187
+        ],
+        "width": 200,
+        "height": 220,
+        "plateWidth": 120,
+        "plateHeight": 44,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 6,
+        "label": "Vehicle-5-6",
+        "color": [
+          109,
+          126,
+          167
+        ],
+        "plateColor": [
+          78,
+          167,
+          104
+        ],
+        "width": 300,
+        "height": 300,
+        "plateWidth": 180,
+        "plateHeight": 60,
+        "status": "failed",
+        "text": null
+      }
+    ]
+  },
+  {
+    "name": "scene-6",
+    "detections": [
+      {
+        "detection_id": 3,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 32,
+          "y_min": 30,
+          "x_max": 232,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 6,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 310,
+          "y_min": 76,
+          "x_max": 610,
+          "y_max": 376
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-3",
+        "detection_id": 3,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-6-3",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN13",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-6",
+        "detection_id": 6,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-6-6",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      }
+    ],
+    "expected": [
+      {
+        "id": 3,
+        "label": "Vehicle-6-3",
+        "color": [
+          146,
+          179,
+          58
+        ],
+        "plateColor": [
+          157,
+          208,
+          21
+        ],
+        "width": 200,
+        "height": 220,
+        "plateWidth": 120,
+        "plateHeight": 44,
+        "status": "read",
+        "text": "SYN13"
+      },
+      {
+        "id": 6,
+        "label": "Vehicle-6-6",
+        "color": [
+          183,
+          52,
+          129
+        ],
+        "plateColor": [
+          56,
+          69,
+          118
+        ],
+        "width": 300,
+        "height": 300,
+        "plateWidth": 180,
+        "plateHeight": 60,
+        "status": "unreadable",
+        "text": null
+      }
+    ]
+  },
+  {
+    "name": "scene-7",
+    "detections": [
+      {
+        "detection_id": 3,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 34,
+          "y_min": 30,
+          "x_max": 234,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 6,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 310,
+          "y_min": 77,
+          "x_max": 610,
+          "y_max": 377
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-3",
+        "detection_id": 3,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-7-3",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-6",
+        "detection_id": 6,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-7-6",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      }
+    ],
+    "expected": [
+      {
+        "id": 3,
+        "label": "Vehicle-7-3",
+        "color": [
+          40,
+          105,
+          200
+        ],
+        "plateColor": [
+          135,
+          110,
+          35
+        ],
+        "width": 200,
+        "height": 220,
+        "plateWidth": 120,
+        "plateHeight": 44,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 6,
+        "label": "Vehicle-7-6",
+        "color": [
+          77,
+          158,
+          91
+        ],
+        "plateColor": [
+          34,
+          151,
+          132
+        ],
+        "width": 300,
+        "height": 300,
+        "plateWidth": 180,
+        "plateHeight": 60,
+        "status": "failed",
+        "text": null
+      }
+    ]
+  },
+  {
+    "name": "scene-8",
+    "detections": [
+      {
+        "detection_id": 3,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 36,
+          "y_min": 30,
+          "x_max": 236,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 6,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 310,
+          "y_min": 78,
+          "x_max": 610,
+          "y_max": 378
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-3",
+        "detection_id": 3,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-8-3",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN17",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-6",
+        "detection_id": 6,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-8-6",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      }
+    ],
+    "expected": [
+      {
+        "id": 3,
+        "label": "Vehicle-8-3",
+        "color": [
+          114,
+          31,
+          162
+        ],
+        "plateColor": [
+          113,
+          192,
+          49
+        ],
+        "width": 200,
+        "height": 220,
+        "plateWidth": 120,
+        "plateHeight": 44,
+        "status": "read",
+        "text": "SYN17"
+      },
+      {
+        "id": 6,
+        "label": "Vehicle-8-6",
+        "color": [
+          151,
+          84,
+          53
+        ],
+        "plateColor": [
+          192,
+          53,
+          146
+        ],
+        "width": 300,
+        "height": 300,
+        "plateWidth": 180,
+        "plateHeight": 60,
+        "status": "unreadable",
+        "text": null
+      }
+    ]
+  },
+  {
+    "name": "scene-9",
+    "detections": [
+      {
+        "detection_id": 3,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 38,
+          "y_min": 30,
+          "x_max": 238,
+          "y_max": 250
+        }
+      },
+      {
+        "detection_id": 6,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 310,
+          "y_min": 79,
+          "x_max": 610,
+          "y_max": 379
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-3",
+        "detection_id": 3,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-9-3",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-6",
+        "detection_id": 6,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-9-6",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      }
+    ],
+    "expected": [
+      {
+        "id": 3,
+        "label": "Vehicle-9-3",
+        "color": [
+          188,
+          137,
+          124
+        ],
+        "plateColor": [
+          91,
+          94,
+          63
+        ],
+        "width": 200,
+        "height": 220,
+        "plateWidth": 120,
+        "plateHeight": 44,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 6,
+        "label": "Vehicle-9-6",
+        "color": [
+          45,
+          190,
+          195
+        ],
+        "plateColor": [
+          170,
+          135,
+          160
+        ],
+        "width": 300,
+        "height": 300,
+        "plateWidth": 180,
+        "plateHeight": 60,
+        "status": "failed",
+        "text": null
+      }
+    ]
+  },
+  {
+    "name": "many",
+    "detections": [
+      {
+        "detection_id": 3,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 5,
+          "y_min": 5,
+          "x_max": 75,
+          "y_max": 50
+        }
+      },
+      {
+        "detection_id": 6,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 85,
+          "y_min": 5,
+          "x_max": 155,
+          "y_max": 50
+        }
+      },
+      {
+        "detection_id": 9,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 165,
+          "y_min": 5,
+          "x_max": 235,
+          "y_max": 50
+        }
+      },
+      {
+        "detection_id": 12,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 245,
+          "y_min": 5,
+          "x_max": 315,
+          "y_max": 50
+        }
+      },
+      {
+        "detection_id": 15,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 325,
+          "y_min": 5,
+          "x_max": 395,
+          "y_max": 50
+        }
+      },
+      {
+        "detection_id": 18,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 405,
+          "y_min": 5,
+          "x_max": 475,
+          "y_max": 50
+        }
+      },
+      {
+        "detection_id": 21,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 485,
+          "y_min": 5,
+          "x_max": 555,
+          "y_max": 50
+        }
+      },
+      {
+        "detection_id": 24,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 565,
+          "y_min": 5,
+          "x_max": 635,
+          "y_max": 50
+        }
+      },
+      {
+        "detection_id": 27,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 5,
+          "y_min": 60,
+          "x_max": 75,
+          "y_max": 105
+        }
+      },
+      {
+        "detection_id": 30,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 85,
+          "y_min": 60,
+          "x_max": 155,
+          "y_max": 105
+        }
+      },
+      {
+        "detection_id": 33,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 165,
+          "y_min": 60,
+          "x_max": 235,
+          "y_max": 105
+        }
+      },
+      {
+        "detection_id": 36,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 245,
+          "y_min": 60,
+          "x_max": 315,
+          "y_max": 105
+        }
+      },
+      {
+        "detection_id": 39,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 325,
+          "y_min": 60,
+          "x_max": 395,
+          "y_max": 105
+        }
+      },
+      {
+        "detection_id": 42,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 405,
+          "y_min": 60,
+          "x_max": 475,
+          "y_max": 105
+        }
+      },
+      {
+        "detection_id": 45,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 485,
+          "y_min": 60,
+          "x_max": 555,
+          "y_max": 105
+        }
+      },
+      {
+        "detection_id": 48,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 565,
+          "y_min": 60,
+          "x_max": 635,
+          "y_max": 105
+        }
+      },
+      {
+        "detection_id": 51,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 5,
+          "y_min": 115,
+          "x_max": 75,
+          "y_max": 160
+        }
+      },
+      {
+        "detection_id": 54,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 85,
+          "y_min": 115,
+          "x_max": 155,
+          "y_max": 160
+        }
+      },
+      {
+        "detection_id": 57,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 165,
+          "y_min": 115,
+          "x_max": 235,
+          "y_max": 160
+        }
+      },
+      {
+        "detection_id": 60,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 245,
+          "y_min": 115,
+          "x_max": 315,
+          "y_max": 160
+        }
+      },
+      {
+        "detection_id": 63,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 325,
+          "y_min": 115,
+          "x_max": 395,
+          "y_max": 160
+        }
+      },
+      {
+        "detection_id": 66,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 405,
+          "y_min": 115,
+          "x_max": 475,
+          "y_max": 160
+        }
+      },
+      {
+        "detection_id": 69,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 485,
+          "y_min": 115,
+          "x_max": 555,
+          "y_max": 160
+        }
+      },
+      {
+        "detection_id": 72,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 565,
+          "y_min": 115,
+          "x_max": 635,
+          "y_max": 160
+        }
+      },
+      {
+        "detection_id": 75,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 5,
+          "y_min": 170,
+          "x_max": 75,
+          "y_max": 215
+        }
+      },
+      {
+        "detection_id": 78,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 85,
+          "y_min": 170,
+          "x_max": 155,
+          "y_max": 215
+        }
+      },
+      {
+        "detection_id": 81,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 165,
+          "y_min": 170,
+          "x_max": 235,
+          "y_max": 215
+        }
+      },
+      {
+        "detection_id": 84,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 245,
+          "y_min": 170,
+          "x_max": 315,
+          "y_max": 215
+        }
+      },
+      {
+        "detection_id": 87,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 325,
+          "y_min": 170,
+          "x_max": 395,
+          "y_max": 215
+        }
+      },
+      {
+        "detection_id": 90,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 405,
+          "y_min": 170,
+          "x_max": 475,
+          "y_max": 215
+        }
+      },
+      {
+        "detection_id": 93,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 485,
+          "y_min": 170,
+          "x_max": 555,
+          "y_max": 215
+        }
+      },
+      {
+        "detection_id": 96,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 565,
+          "y_min": 170,
+          "x_max": 635,
+          "y_max": 215
+        }
+      },
+      {
+        "detection_id": 99,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 5,
+          "y_min": 225,
+          "x_max": 75,
+          "y_max": 270
+        }
+      },
+      {
+        "detection_id": 102,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 85,
+          "y_min": 225,
+          "x_max": 155,
+          "y_max": 270
+        }
+      },
+      {
+        "detection_id": 105,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 165,
+          "y_min": 225,
+          "x_max": 235,
+          "y_max": 270
+        }
+      },
+      {
+        "detection_id": 108,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 245,
+          "y_min": 225,
+          "x_max": 315,
+          "y_max": 270
+        }
+      },
+      {
+        "detection_id": 111,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 325,
+          "y_min": 225,
+          "x_max": 395,
+          "y_max": 270
+        }
+      },
+      {
+        "detection_id": 114,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 405,
+          "y_min": 225,
+          "x_max": 475,
+          "y_max": 270
+        }
+      },
+      {
+        "detection_id": 117,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 485,
+          "y_min": 225,
+          "x_max": 555,
+          "y_max": 270
+        }
+      },
+      {
+        "detection_id": 120,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 565,
+          "y_min": 225,
+          "x_max": 635,
+          "y_max": 270
+        }
+      },
+      {
+        "detection_id": 123,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 5,
+          "y_min": 280,
+          "x_max": 75,
+          "y_max": 325
+        }
+      },
+      {
+        "detection_id": 126,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 85,
+          "y_min": 280,
+          "x_max": 155,
+          "y_max": 325
+        }
+      },
+      {
+        "detection_id": 129,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 165,
+          "y_min": 280,
+          "x_max": 235,
+          "y_max": 325
+        }
+      },
+      {
+        "detection_id": 132,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 245,
+          "y_min": 280,
+          "x_max": 315,
+          "y_max": 325
+        }
+      },
+      {
+        "detection_id": 135,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 325,
+          "y_min": 280,
+          "x_max": 395,
+          "y_max": 325
+        }
+      },
+      {
+        "detection_id": 138,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 405,
+          "y_min": 280,
+          "x_max": 475,
+          "y_max": 325
+        }
+      },
+      {
+        "detection_id": 141,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 485,
+          "y_min": 280,
+          "x_max": 555,
+          "y_max": 325
+        }
+      },
+      {
+        "detection_id": 144,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 565,
+          "y_min": 280,
+          "x_max": 635,
+          "y_max": 325
+        }
+      },
+      {
+        "detection_id": 147,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 5,
+          "y_min": 335,
+          "x_max": 75,
+          "y_max": 380
+        }
+      },
+      {
+        "detection_id": 150,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 85,
+          "y_min": 335,
+          "x_max": 155,
+          "y_max": 380
+        }
+      },
+      {
+        "detection_id": 153,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 165,
+          "y_min": 335,
+          "x_max": 235,
+          "y_max": 380
+        }
+      },
+      {
+        "detection_id": 156,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 245,
+          "y_min": 335,
+          "x_max": 315,
+          "y_max": 380
+        }
+      },
+      {
+        "detection_id": 159,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 325,
+          "y_min": 335,
+          "x_max": 395,
+          "y_max": 380
+        }
+      },
+      {
+        "detection_id": 162,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 405,
+          "y_min": 335,
+          "x_max": 475,
+          "y_max": 380
+        }
+      },
+      {
+        "detection_id": 165,
+        "class_id": 0,
+        "class_name": "car",
+        "confidence": 0.95,
+        "enrichment_eligible": true,
+        "bbox": {
+          "x_min": 485,
+          "y_min": 335,
+          "x_max": 555,
+          "y_max": 380
+        }
+      }
+    ],
+    "results": [
+      {
+        "vehicle_key": "detection-3",
+        "detection_id": 3,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-3",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN21",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-6",
+        "detection_id": 6,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-6",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-9",
+        "detection_id": 9,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-9",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-12",
+        "detection_id": 12,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-12",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-15",
+        "detection_id": 15,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-15",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN25",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-18",
+        "detection_id": 18,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-18",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-21",
+        "detection_id": 21,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-21",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-24",
+        "detection_id": 24,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-24",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-27",
+        "detection_id": 27,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-27",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN29",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-30",
+        "detection_id": 30,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-30",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-33",
+        "detection_id": 33,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-33",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-36",
+        "detection_id": 36,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-36",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-39",
+        "detection_id": 39,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-39",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN33",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-42",
+        "detection_id": 42,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-42",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-45",
+        "detection_id": 45,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-45",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-48",
+        "detection_id": 48,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-48",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-51",
+        "detection_id": 51,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-51",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN37",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-54",
+        "detection_id": 54,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-54",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-57",
+        "detection_id": 57,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-57",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-60",
+        "detection_id": 60,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-60",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-63",
+        "detection_id": 63,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-63",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN41",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-66",
+        "detection_id": 66,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-66",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-69",
+        "detection_id": 69,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-69",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-72",
+        "detection_id": 72,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-72",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-75",
+        "detection_id": 75,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-75",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN45",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-78",
+        "detection_id": 78,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-78",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-81",
+        "detection_id": 81,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-81",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-84",
+        "detection_id": 84,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-84",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-87",
+        "detection_id": 87,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-87",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN49",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-90",
+        "detection_id": 90,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-90",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-93",
+        "detection_id": 93,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-93",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-96",
+        "detection_id": 96,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-96",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-99",
+        "detection_id": 99,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-99",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN53",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-102",
+        "detection_id": 102,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-102",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-105",
+        "detection_id": 105,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-105",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-108",
+        "detection_id": 108,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-108",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-111",
+        "detection_id": 111,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-111",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN57",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-114",
+        "detection_id": 114,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-114",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-117",
+        "detection_id": 117,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-117",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-120",
+        "detection_id": 120,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-120",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-123",
+        "detection_id": 123,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-123",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN61",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-126",
+        "detection_id": 126,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-126",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-129",
+        "detection_id": 129,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-129",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-132",
+        "detection_id": 132,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-132",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-135",
+        "detection_id": 135,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-135",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN65",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-138",
+        "detection_id": 138,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-138",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-141",
+        "detection_id": 141,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-141",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-144",
+        "detection_id": 144,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-144",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-147",
+        "detection_id": 147,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-147",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN69",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-150",
+        "detection_id": 150,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-150",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-153",
+        "detection_id": 153,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-153",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      },
+      {
+        "vehicle_key": "detection-156",
+        "detection_id": 156,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-156",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "failed",
+        "plate": {
+          "status": "failed",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-159",
+        "detection_id": 159,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-159",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "read",
+        "plate": {
+          "status": "read",
+          "text": "SYN73",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-162",
+        "detection_id": 162,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-162",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "unreadable",
+        "plate": {
+          "status": "unreadable",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false,
+          "bbox_relative": {
+            "x_min": 0.2,
+            "y_min": 0.6,
+            "x_max": 0.8,
+            "y_max": 0.8
+          }
+        }
+      },
+      {
+        "vehicle_key": "detection-165",
+        "detection_id": 165,
+        "track_id": null,
+        "class_id": 0,
+        "class_name": "car",
+        "attributes_status": "completed",
+        "attributes": [
+          {
+            "name": "model",
+            "label": "Vehicle-10-165",
+            "confidence": 0.9
+          }
+        ],
+        "plate_status": "not_detected",
+        "plate": {
+          "status": "not_detected",
+          "text": "PRIVATE_CANARY",
+          "used_enhancement": false
+        }
+      }
+    ],
+    "expected": [
+      {
+        "id": 3,
+        "label": "Vehicle-10-3",
+        "color": [
+          82,
+          63,
+          86
+        ],
+        "plateColor": [
+          69,
+          176,
+          77
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "read",
+        "text": "SYN21"
+      },
+      {
+        "id": 6,
+        "label": "Vehicle-10-6",
+        "color": [
+          119,
+          116,
+          157
+        ],
+        "plateColor": [
+          148,
+          37,
+          174
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "unreadable",
+        "text": null
+      },
+      {
+        "id": 9,
+        "label": "Vehicle-10-9",
+        "color": [
+          156,
+          169,
+          48
+        ],
+        "plateColor": [
+          47,
+          78,
+          91
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 12,
+        "label": "Vehicle-10-12",
+        "color": [
+          193,
+          42,
+          119
+        ],
+        "plateColor": [
+          126,
+          119,
+          188
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "failed",
+        "text": null
+      },
+      {
+        "id": 15,
+        "label": "Vehicle-10-15",
+        "color": [
+          50,
+          95,
+          190
+        ],
+        "plateColor": [
+          205,
+          160,
+          105
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "read",
+        "text": "SYN25"
+      },
+      {
+        "id": 18,
+        "label": "Vehicle-10-18",
+        "color": [
+          87,
+          148,
+          81
+        ],
+        "plateColor": [
+          104,
+          201,
+          22
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "unreadable",
+        "text": null
+      },
+      {
+        "id": 21,
+        "label": "Vehicle-10-21",
+        "color": [
+          124,
+          201,
+          152
+        ],
+        "plateColor": [
+          183,
+          62,
+          119
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 24,
+        "label": "Vehicle-10-24",
+        "color": [
+          161,
+          74,
+          43
+        ],
+        "plateColor": [
+          82,
+          103,
+          36
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "failed",
+        "text": null
+      },
+      {
+        "id": 27,
+        "label": "Vehicle-10-27",
+        "color": [
+          198,
+          127,
+          114
+        ],
+        "plateColor": [
+          161,
+          144,
+          133
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "read",
+        "text": "SYN29"
+      },
+      {
+        "id": 30,
+        "label": "Vehicle-10-30",
+        "color": [
+          55,
+          180,
+          185
+        ],
+        "plateColor": [
+          60,
+          185,
+          50
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "unreadable",
+        "text": null
+      },
+      {
+        "id": 33,
+        "label": "Vehicle-10-33",
+        "color": [
+          92,
+          53,
+          76
+        ],
+        "plateColor": [
+          139,
+          46,
+          147
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 36,
+        "label": "Vehicle-10-36",
+        "color": [
+          129,
+          106,
+          147
+        ],
+        "plateColor": [
+          38,
+          87,
+          64
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "failed",
+        "text": null
+      },
+      {
+        "id": 39,
+        "label": "Vehicle-10-39",
+        "color": [
+          166,
+          159,
+          38
+        ],
+        "plateColor": [
+          117,
+          128,
+          161
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "read",
+        "text": "SYN33"
+      },
+      {
+        "id": 42,
+        "label": "Vehicle-10-42",
+        "color": [
+          203,
+          32,
+          109
+        ],
+        "plateColor": [
+          196,
+          169,
+          78
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "unreadable",
+        "text": null
+      },
+      {
+        "id": 45,
+        "label": "Vehicle-10-45",
+        "color": [
+          60,
+          85,
+          180
+        ],
+        "plateColor": [
+          95,
+          210,
+          175
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 48,
+        "label": "Vehicle-10-48",
+        "color": [
+          97,
+          138,
+          71
+        ],
+        "plateColor": [
+          174,
+          71,
+          92
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "failed",
+        "text": null
+      },
+      {
+        "id": 51,
+        "label": "Vehicle-10-51",
+        "color": [
+          134,
+          191,
+          142
+        ],
+        "plateColor": [
+          73,
+          112,
+          189
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "read",
+        "text": "SYN37"
+      },
+      {
+        "id": 54,
+        "label": "Vehicle-10-54",
+        "color": [
+          171,
+          64,
+          213
+        ],
+        "plateColor": [
+          152,
+          153,
+          106
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "unreadable",
+        "text": null
+      },
+      {
+        "id": 57,
+        "label": "Vehicle-10-57",
+        "color": [
+          28,
+          117,
+          104
+        ],
+        "plateColor": [
+          51,
+          194,
+          23
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 60,
+        "label": "Vehicle-10-60",
+        "color": [
+          65,
+          170,
+          175
+        ],
+        "plateColor": [
+          130,
+          55,
+          120
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "failed",
+        "text": null
+      },
+      {
+        "id": 63,
+        "label": "Vehicle-10-63",
+        "color": [
+          102,
+          43,
+          66
+        ],
+        "plateColor": [
+          209,
+          96,
+          37
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "read",
+        "text": "SYN41"
+      },
+      {
+        "id": 66,
+        "label": "Vehicle-10-66",
+        "color": [
+          139,
+          96,
+          137
+        ],
+        "plateColor": [
+          108,
+          137,
+          134
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "unreadable",
+        "text": null
+      },
+      {
+        "id": 69,
+        "label": "Vehicle-10-69",
+        "color": [
+          176,
+          149,
+          208
+        ],
+        "plateColor": [
+          187,
+          178,
+          51
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 72,
+        "label": "Vehicle-10-72",
+        "color": [
+          33,
+          202,
+          99
+        ],
+        "plateColor": [
+          86,
+          39,
+          148
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "failed",
+        "text": null
+      },
+      {
+        "id": 75,
+        "label": "Vehicle-10-75",
+        "color": [
+          70,
+          75,
+          170
+        ],
+        "plateColor": [
+          165,
+          80,
+          65
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "read",
+        "text": "SYN45"
+      },
+      {
+        "id": 78,
+        "label": "Vehicle-10-78",
+        "color": [
+          107,
+          128,
+          61
+        ],
+        "plateColor": [
+          64,
+          121,
+          162
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "unreadable",
+        "text": null
+      },
+      {
+        "id": 81,
+        "label": "Vehicle-10-81",
+        "color": [
+          144,
+          181,
+          132
+        ],
+        "plateColor": [
+          143,
+          162,
+          79
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 84,
+        "label": "Vehicle-10-84",
+        "color": [
+          181,
+          54,
+          203
+        ],
+        "plateColor": [
+          42,
+          203,
+          176
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "failed",
+        "text": null
+      },
+      {
+        "id": 87,
+        "label": "Vehicle-10-87",
+        "color": [
+          38,
+          107,
+          94
+        ],
+        "plateColor": [
+          121,
+          64,
+          93
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "read",
+        "text": "SYN49"
+      },
+      {
+        "id": 90,
+        "label": "Vehicle-10-90",
+        "color": [
+          75,
+          160,
+          165
+        ],
+        "plateColor": [
+          200,
+          105,
+          190
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "unreadable",
+        "text": null
+      },
+      {
+        "id": 93,
+        "label": "Vehicle-10-93",
+        "color": [
+          112,
+          33,
+          56
+        ],
+        "plateColor": [
+          99,
+          146,
+          107
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 96,
+        "label": "Vehicle-10-96",
+        "color": [
+          149,
+          86,
+          127
+        ],
+        "plateColor": [
+          178,
+          187,
+          24
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "failed",
+        "text": null
+      },
+      {
+        "id": 99,
+        "label": "Vehicle-10-99",
+        "color": [
+          186,
+          139,
+          198
+        ],
+        "plateColor": [
+          77,
+          48,
+          121
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "read",
+        "text": "SYN53"
+      },
+      {
+        "id": 102,
+        "label": "Vehicle-10-102",
+        "color": [
+          43,
+          192,
+          89
+        ],
+        "plateColor": [
+          156,
+          89,
+          38
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "unreadable",
+        "text": null
+      },
+      {
+        "id": 105,
+        "label": "Vehicle-10-105",
+        "color": [
+          80,
+          65,
+          160
+        ],
+        "plateColor": [
+          55,
+          130,
+          135
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 108,
+        "label": "Vehicle-10-108",
+        "color": [
+          117,
+          118,
+          51
+        ],
+        "plateColor": [
+          134,
+          171,
+          52
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "failed",
+        "text": null
+      },
+      {
+        "id": 111,
+        "label": "Vehicle-10-111",
+        "color": [
+          154,
+          171,
+          122
+        ],
+        "plateColor": [
+          33,
+          212,
+          149
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "read",
+        "text": "SYN57"
+      },
+      {
+        "id": 114,
+        "label": "Vehicle-10-114",
+        "color": [
+          191,
+          44,
+          193
+        ],
+        "plateColor": [
+          112,
+          73,
+          66
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "unreadable",
+        "text": null
+      },
+      {
+        "id": 117,
+        "label": "Vehicle-10-117",
+        "color": [
+          48,
+          97,
+          84
+        ],
+        "plateColor": [
+          191,
+          114,
+          163
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 120,
+        "label": "Vehicle-10-120",
+        "color": [
+          85,
+          150,
+          155
+        ],
+        "plateColor": [
+          90,
+          155,
+          80
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "failed",
+        "text": null
+      },
+      {
+        "id": 123,
+        "label": "Vehicle-10-123",
+        "color": [
+          122,
+          203,
+          46
+        ],
+        "plateColor": [
+          169,
+          196,
+          177
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "read",
+        "text": "SYN61"
+      },
+      {
+        "id": 126,
+        "label": "Vehicle-10-126",
+        "color": [
+          159,
+          76,
+          117
+        ],
+        "plateColor": [
+          68,
+          57,
+          94
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "unreadable",
+        "text": null
+      },
+      {
+        "id": 129,
+        "label": "Vehicle-10-129",
+        "color": [
+          196,
+          129,
+          188
+        ],
+        "plateColor": [
+          147,
+          98,
+          191
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 132,
+        "label": "Vehicle-10-132",
+        "color": [
+          53,
+          182,
+          79
+        ],
+        "plateColor": [
+          46,
+          139,
+          108
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "failed",
+        "text": null
+      },
+      {
+        "id": 135,
+        "label": "Vehicle-10-135",
+        "color": [
+          90,
+          55,
+          150
+        ],
+        "plateColor": [
+          125,
+          180,
+          25
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "read",
+        "text": "SYN65"
+      },
+      {
+        "id": 138,
+        "label": "Vehicle-10-138",
+        "color": [
+          127,
+          108,
+          41
+        ],
+        "plateColor": [
+          204,
+          41,
+          122
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "unreadable",
+        "text": null
+      },
+      {
+        "id": 141,
+        "label": "Vehicle-10-141",
+        "color": [
+          164,
+          161,
+          112
+        ],
+        "plateColor": [
+          103,
+          82,
+          39
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 144,
+        "label": "Vehicle-10-144",
+        "color": [
+          201,
+          34,
+          183
+        ],
+        "plateColor": [
+          182,
+          123,
+          136
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "failed",
+        "text": null
+      },
+      {
+        "id": 147,
+        "label": "Vehicle-10-147",
+        "color": [
+          58,
+          87,
+          74
+        ],
+        "plateColor": [
+          81,
+          164,
+          53
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "read",
+        "text": "SYN69"
+      },
+      {
+        "id": 150,
+        "label": "Vehicle-10-150",
+        "color": [
+          95,
+          140,
+          145
+        ],
+        "plateColor": [
+          160,
+          205,
+          150
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "unreadable",
+        "text": null
+      },
+      {
+        "id": 153,
+        "label": "Vehicle-10-153",
+        "color": [
+          132,
+          193,
+          36
+        ],
+        "plateColor": [
+          59,
+          66,
+          67
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "not_detected",
+        "text": null
+      },
+      {
+        "id": 156,
+        "label": "Vehicle-10-156",
+        "color": [
+          169,
+          66,
+          107
+        ],
+        "plateColor": [
+          138,
+          107,
+          164
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "failed",
+        "text": null
+      },
+      {
+        "id": 159,
+        "label": "Vehicle-10-159",
+        "color": [
+          26,
+          119,
+          178
+        ],
+        "plateColor": [
+          37,
+          148,
+          81
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "read",
+        "text": "SYN73"
+      },
+      {
+        "id": 162,
+        "label": "Vehicle-10-162",
+        "color": [
+          63,
+          172,
+          69
+        ],
+        "plateColor": [
+          116,
+          189,
+          178
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "unreadable",
+        "text": null
+      },
+      {
+        "id": 165,
+        "label": "Vehicle-10-165",
+        "color": [
+          100,
+          45,
+          140
+        ],
+        "plateColor": [
+          195,
+          50,
+          95
+        ],
+        "width": 70,
+        "height": 45,
+        "plateWidth": 42,
+        "plateHeight": 9,
+        "status": "not_detected",
+        "text": null
+      }
+    ]
+  }
+]

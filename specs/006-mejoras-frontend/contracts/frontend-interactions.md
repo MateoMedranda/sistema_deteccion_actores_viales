@@ -46,3 +46,9 @@ No afirmar que cerrar navegador garantiza cancelar en servidor: el TTL y janitor
 ## Compatibilidad
 
 Video/conteo conservan sus controles y flujos. El ciclo común de sesión debe limpiar también sus estados internos y recursos. Sus contratos no se cambian para el nuevo diseño de imágenes. No hacer que el antiguo EnrichmentPanel permita duplicar enriquecimiento de la imagen gestionada por el nuevo módulo; conservar su ruta de video.
+
+## Plazos y estados de recuperación
+
+En imágenes: detección 120 s, creación de enriquecimiento 15 s, estado/capacidades 10 s y resultados/medios 30 s por solicitud. El ciclo automático de observación dispone de 120 s desde su inicio explícito y termina antes si vence fuente/job/artefacto. El próximo fetch usa el menor plazo restante; no se solapan consultas. Probar tanto solicitud bloqueada como agotamiento total con respuestas individuales rápidas.
+
+Al vencer un plazo local: interrupted y mensaje de siguiente acción; si la fuente sigue vigente, conservar detección útil e ID conocido. «Reanudar consulta» se refiere al mismo job y abre otro ciclo limitado solo tras acción explícita. El vencimiento real retira la evidencia y exige nueva fuente. Un timeout de POST no prueba rechazo del servidor, por lo que no se reenvía automáticamente. Reset/cambio de identidad invalida la generación antes de cualquier actualización.

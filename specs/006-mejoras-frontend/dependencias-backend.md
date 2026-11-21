@@ -36,7 +36,7 @@ Son hallazgos de lectura, no incidentes reproducidos mediante pruebas nuevas. La
 
 ## Rama y continuidad
 
-El trabajo se inició en `codex/006-mejoras-frontend` desde `81bc12d`. El backend confirmó después `6f0243a`, que añade diagnóstico y auditoría de ALPR sin cambiar los contratos estudiados. Antes de retirar el worktree se preservará la documentación y se incorporará ese commit de forma explícita; no se incorporarán archivos sueltos ni se sobrescribirán sesiones ajenas. Continuar en una rama separada del checkout principal está autorizado y no exige mantener un worktree adicional.
+El trabajo se inició en `feature/006-mejoras-frontend` desde `81bc12d`. El backend confirmó después `6f0243a`, que añade diagnóstico y auditoría de ALPR sin cambiar los contratos estudiados. Antes de retirar el worktree se preservará la documentación y se incorporará ese commit de forma explícita; no se incorporarán archivos sueltos ni se sobrescribirán sesiones ajenas. Continuar en una rama separada del checkout principal está autorizado y no exige mantener un worktree adicional.
 
 ## Referencias ejecutables posteriores
 
