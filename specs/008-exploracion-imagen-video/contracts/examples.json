@@ -1,0 +1,360 @@
+{
+  "valid": [
+    {
+      "schema": "WebPolicy",
+      "value": {
+        "image": {
+          "media_types": [
+            "image/jpeg",
+            "image/png"
+          ],
+          "max_upload_bytes": 10485760,
+          "max_image_pixels": 16000000
+        },
+        "video": {
+          "media_types": [
+            "video/mp4",
+            "video/quicktime"
+          ],
+          "max_upload_bytes": 104857600,
+          "max_duration_seconds": 120,
+          "max_width": 1920,
+          "max_height": 1080,
+          "max_fps": 30,
+          "max_frames": 3600
+        },
+        "capabilities": {
+          "image_detection": true,
+          "video_analysis": true,
+          "attributes": true,
+          "plates": true
+        }
+      }
+    },
+    {
+      "schema": "WebSession",
+      "value": {
+        "status": "ready",
+        "epoch": "00000000-0000-4000-8000-000000000001",
+        "expires_at": "2040-01-01T00:15:00Z",
+        "csrf_token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "policy": {
+          "image": {
+            "media_types": [
+              "image/jpeg",
+              "image/png"
+            ],
+            "max_upload_bytes": 10485760,
+            "max_image_pixels": 16000000
+          },
+          "video": {
+            "media_types": [
+              "video/mp4",
+              "video/quicktime"
+            ],
+            "max_upload_bytes": 104857600,
+            "max_duration_seconds": 120,
+            "max_width": 1920,
+            "max_height": 1080,
+            "max_fps": 30,
+            "max_frames": 3600
+          },
+          "capabilities": {
+            "image_detection": true,
+            "video_analysis": true,
+            "attributes": true,
+            "plates": true
+          }
+        }
+      }
+    },
+    {
+      "schema": "WebSession",
+      "value": {
+        "status": "configuration_missing",
+        "code": "web_configuration_missing",
+        "message": "Configuración pendiente."
+      }
+    },
+    {
+      "schema": "VideoJobResponse",
+      "value": {
+        "job_id": "synthetic-video",
+        "status": "processing",
+        "progress_percent": 100,
+        "processed_frames": 300,
+        "total_frames": 300,
+        "created_at": "2040-01-01T00:00:00Z",
+        "updated_at": "2040-01-01T00:00:01Z",
+        "expires_at": "2040-01-01T01:00:00Z",
+        "processing_phase": "encoding",
+        "frame_total_confirmed": true,
+        "video_metadata": null,
+        "eligible_track_count": null,
+        "classes_present": null
+      }
+    },
+    {
+      "schema": "VideoJobResponse",
+      "value": {
+        "job_id": "synthetic-video",
+        "status": "completed",
+        "progress_percent": 100,
+        "processed_frames": 300,
+        "total_frames": 300,
+        "created_at": "2040-01-01T00:00:00Z",
+        "updated_at": "2040-01-01T00:00:01Z",
+        "expires_at": "2040-01-01T01:00:00Z",
+        "processing_phase": "ready",
+        "frame_total_confirmed": true,
+        "video_metadata": {
+          "width": 640,
+          "height": 360,
+          "fps": 30,
+          "frame_count": 300,
+          "duration_seconds": 10,
+          "timebase": "processed-cfr"
+        },
+        "eligible_track_count": 2,
+        "classes_present": [
+          "car",
+          "person"
+        ]
+      }
+    },
+    {
+      "schema": "VideoJobResponse",
+      "value": {
+        "job_id": "synthetic-video",
+        "status": "completed",
+        "progress_percent": 100,
+        "processed_frames": 300,
+        "total_frames": 300,
+        "created_at": "2040-01-01T00:00:00Z",
+        "updated_at": "2040-01-01T00:00:01Z",
+        "expires_at": "2040-01-01T01:00:00Z",
+        "processing_phase": "ready",
+        "frame_total_confirmed": true,
+        "video_metadata": {
+          "width": 640,
+          "height": 360,
+          "fps": 30,
+          "frame_count": 300,
+          "duration_seconds": 10,
+          "timebase": "processed-cfr"
+        },
+        "eligible_track_count": 0,
+        "classes_present": []
+      }
+    },
+    {
+      "schema": "VideoJobResponse",
+      "value": {
+        "job_id": "synthetic-video",
+        "status": "processing",
+        "progress_percent": 100,
+        "processed_frames": 300,
+        "total_frames": 300,
+        "created_at": "2040-01-01T00:00:00Z",
+        "updated_at": "2040-01-01T00:00:01Z",
+        "expires_at": "2040-01-01T01:00:00Z"
+      }
+    },
+    {
+      "schema": "VideoReceipt",
+      "value": {
+        "job_id": "synthetic-video",
+        "status": "queued",
+        "created_at": "2040-01-01T00:00:00Z"
+      }
+    },
+    {
+      "schema": "EnrichmentReceipt",
+      "value": {
+        "enrichment_job_id": "synthetic-enrichment",
+        "status": "queued",
+        "created_at": "2040-01-01T00:00:00Z",
+        "expires_at": "2040-01-01T01:00:00Z"
+      }
+    },
+    {
+      "schema": "EvidenceReferences",
+      "value": {
+        "track_id": 7,
+        "evidence_frame_indexes": [
+          0,
+          12
+        ],
+        "attributes": [
+          {
+            "evidence_frame_index": 12
+          }
+        ],
+        "plate": {
+          "evidence_frame_indexes": [
+            12
+          ]
+        }
+      }
+    },
+    {
+      "schema": "VideoJobResponse",
+      "value": {
+        "job_id": "synthetic-video",
+        "status": "failed",
+        "progress_percent": 100,
+        "processed_frames": 300,
+        "total_frames": 300,
+        "created_at": "2040-01-01T00:00:00Z",
+        "updated_at": "2040-01-01T00:00:01Z",
+        "expires_at": "2040-01-01T01:00:00Z",
+        "processing_phase": "failed",
+        "frame_total_confirmed": true,
+        "video_metadata": null,
+        "eligible_track_count": null,
+        "classes_present": null,
+        "error": {
+          "code": "video_encoding_failed",
+          "message": "No se pudo preparar el resultado.",
+          "request_id": "synthetic-request"
+        }
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "schema": "WebSession",
+      "value": {
+        "status": "ready",
+        "epoch": "00000000-0000-4000-8000-000000000001",
+        "expires_at": "2040-01-01T00:15:00Z",
+        "csrf_token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "policy": {
+          "image": {
+            "media_types": [
+              "image/jpeg",
+              "image/png"
+            ],
+            "max_upload_bytes": 10485760,
+            "max_image_pixels": 16000000
+          },
+          "video": {
+            "media_types": [
+              "video/mp4",
+              "video/quicktime"
+            ],
+            "max_upload_bytes": 104857600,
+            "max_duration_seconds": 120,
+            "max_width": 1920,
+            "max_height": 1080,
+            "max_fps": 30,
+            "max_frames": 3600
+          },
+          "capabilities": {
+            "image_detection": true,
+            "video_analysis": true,
+            "attributes": true,
+            "plates": true
+          }
+        },
+        "backend_api_key": "forbidden-example-field"
+      }
+    },
+    {
+      "schema": "VideoJobResponse",
+      "value": {
+        "job_id": "synthetic-video",
+        "status": "processing",
+        "progress_percent": 100,
+        "processed_frames": 300,
+        "total_frames": 300,
+        "created_at": "2040-01-01T00:00:00Z",
+        "updated_at": "2040-01-01T00:00:01Z",
+        "expires_at": "2040-01-01T01:00:00Z",
+        "processing_phase": "ready",
+        "frame_total_confirmed": true,
+        "video_metadata": {
+          "width": 640,
+          "height": 360,
+          "fps": 30,
+          "frame_count": 300,
+          "duration_seconds": 10,
+          "timebase": "processed-cfr"
+        },
+        "eligible_track_count": 2,
+        "classes_present": [
+          "car",
+          "person"
+        ]
+      }
+    },
+    {
+      "schema": "VideoJobResponse",
+      "value": {
+        "job_id": "synthetic-video",
+        "status": "completed",
+        "progress_percent": 100,
+        "processed_frames": 300,
+        "total_frames": 300,
+        "created_at": "2040-01-01T00:00:00Z",
+        "updated_at": "2040-01-01T00:00:01Z",
+        "expires_at": "2040-01-01T01:00:00Z",
+        "processing_phase": "ready",
+        "frame_total_confirmed": true,
+        "video_metadata": null,
+        "eligible_track_count": 2,
+        "classes_present": [
+          "car",
+          "person"
+        ]
+      }
+    },
+    {
+      "schema": "VideoJobResponse",
+      "value": {
+        "job_id": "synthetic-video",
+        "status": "completed",
+        "progress_percent": 100,
+        "processed_frames": 300,
+        "total_frames": 300,
+        "created_at": "2040-01-01T00:00:00Z",
+        "updated_at": "2040-01-01T00:00:01Z",
+        "expires_at": "2040-01-01T01:00:00Z",
+        "processing_phase": "encoding",
+        "frame_total_confirmed": true,
+        "video_metadata": {
+          "width": 640,
+          "height": 360,
+          "fps": 30,
+          "frame_count": 300,
+          "duration_seconds": 10,
+          "timebase": "processed-cfr"
+        },
+        "eligible_track_count": 2,
+        "classes_present": [
+          "car",
+          "person"
+        ]
+      }
+    },
+    {
+      "schema": "EvidenceReferences",
+      "value": {
+        "evidence_frame_indexes": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "schema": "EvidenceReferences",
+      "value": {
+        "track_id": 0
+      }
+    },
+    {
+      "schema": "IdempotencyHeader",
+      "value": "bad/../key"
+    }
+  ]
+}

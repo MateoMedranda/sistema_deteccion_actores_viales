@@ -1,0 +1,711 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:road-ui:008:contracts",
+  "title": "Iteration 008 additive contracts",
+  "description": "Design contracts; never a replacement for historical API schemas. Arithmetic/identity/TTL checks remain normative in Markdown.",
+  "$defs": {
+    "SafeError": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]{1,64}$"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "ImagePolicy": {
+      "type": "object",
+      "properties": {
+        "media_types": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "image/jpeg",
+              "image/png"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "max_upload_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_image_pixels": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "media_types",
+        "max_upload_bytes",
+        "max_image_pixels"
+      ],
+      "additionalProperties": false
+    },
+    "VideoPolicy": {
+      "type": "object",
+      "properties": {
+        "media_types": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "video/mp4",
+              "video/quicktime"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "max_upload_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_duration_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "max_width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_fps": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "max_frames": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "media_types",
+        "max_upload_bytes",
+        "max_duration_seconds",
+        "max_width",
+        "max_height",
+        "max_fps",
+        "max_frames"
+      ],
+      "additionalProperties": false
+    },
+    "Capabilities": {
+      "type": "object",
+      "properties": {
+        "image_detection": {
+          "type": "boolean"
+        },
+        "video_analysis": {
+          "type": "boolean"
+        },
+        "attributes": {
+          "type": "boolean"
+        },
+        "plates": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "image_detection",
+        "video_analysis",
+        "attributes",
+        "plates"
+      ],
+      "additionalProperties": false
+    },
+    "WebPolicy": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "$ref": "#/$defs/ImagePolicy"
+        },
+        "video": {
+          "$ref": "#/$defs/VideoPolicy"
+        },
+        "capabilities": {
+          "$ref": "#/$defs/Capabilities"
+        }
+      },
+      "required": [
+        "image",
+        "video",
+        "capabilities"
+      ],
+      "additionalProperties": false
+    },
+    "SessionReady": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "const": "ready"
+        },
+        "epoch": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "csrf_token": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}$"
+        },
+        "policy": {
+          "$ref": "#/$defs/WebPolicy"
+        }
+      },
+      "required": [
+        "status",
+        "epoch",
+        "expires_at",
+        "csrf_token",
+        "policy"
+      ],
+      "additionalProperties": false
+    },
+    "SessionError": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "configuration_missing",
+            "configuration_invalid",
+            "upstream_unavailable",
+            "access_rejected"
+          ]
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]{1,64}$"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 300
+        }
+      },
+      "required": [
+        "status",
+        "code",
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "WebSession": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/SessionReady"
+        },
+        {
+          "$ref": "#/$defs/SessionError"
+        }
+      ]
+    },
+    "VideoMetadata": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fps": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "frame_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "duration_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "timebase": {
+          "const": "processed-cfr"
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "fps",
+        "frame_count",
+        "duration_seconds",
+        "timebase"
+      ],
+      "additionalProperties": false
+    },
+    "VideoJobAdditions": {
+      "type": "object",
+      "properties": {
+        "processing_phase": {
+          "enum": [
+            null,
+            "queued",
+            "frames",
+            "encoding",
+            "publishing",
+            "ready",
+            "failed",
+            "cancelled"
+          ]
+        },
+        "frame_total_confirmed": {
+          "type": "boolean"
+        },
+        "video_metadata": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VideoMetadata"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "eligible_track_count": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "classes_present": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "processing_phase"
+            ],
+            "properties": {
+              "processing_phase": {
+                "const": "queued"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "const": "queued"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "processing_phase"
+            ],
+            "properties": {
+              "processing_phase": {
+                "const": "frames"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "const": "processing"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "processing_phase"
+            ],
+            "properties": {
+              "processing_phase": {
+                "const": "encoding"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "const": "processing"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "processing_phase"
+            ],
+            "properties": {
+              "processing_phase": {
+                "const": "publishing"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "const": "processing"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "processing_phase"
+            ],
+            "properties": {
+              "processing_phase": {
+                "const": "ready"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "const": "completed"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "processing_phase"
+            ],
+            "properties": {
+              "processing_phase": {
+                "const": "failed"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "const": "failed"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "processing_phase"
+            ],
+            "properties": {
+              "processing_phase": {
+                "const": "cancelled"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "const": "cancelled"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "processing_phase"
+            ],
+            "properties": {
+              "processing_phase": {
+                "const": "ready"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "video_metadata",
+              "eligible_track_count",
+              "classes_present",
+              "frame_total_confirmed"
+            ],
+            "properties": {
+              "video_metadata": {
+                "$ref": "#/$defs/VideoMetadata"
+              },
+              "eligible_track_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "classes_present": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "uniqueItems": true
+              },
+              "frame_total_confirmed": {
+                "const": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    "VideoJobCore": {
+      "type": "object",
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "status": {
+          "enum": [
+            "queued",
+            "processing",
+            "completed",
+            "failed",
+            "cancelled"
+          ]
+        },
+        "progress_percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "processed_frames": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_frames": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SafeError"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "job_id",
+        "status",
+        "progress_percent",
+        "processed_frames",
+        "total_frames",
+        "created_at",
+        "updated_at",
+        "expires_at"
+      ],
+      "additionalProperties": true
+    },
+    "VideoJobResponse": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/VideoJobCore"
+        },
+        {
+          "$ref": "#/$defs/VideoJobAdditions"
+        }
+      ]
+    },
+    "VideoReceipt": {
+      "type": "object",
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "status": {
+          "const": "queued"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "job_id",
+        "status",
+        "created_at"
+      ],
+      "additionalProperties": true
+    },
+    "EnrichmentReceipt": {
+      "type": "object",
+      "properties": {
+        "enrichment_job_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "status": {
+          "const": "queued"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "enrichment_job_id",
+        "status",
+        "created_at",
+        "expires_at"
+      ],
+      "additionalProperties": true
+    },
+    "IdempotencyHeader": {
+      "type": "string",
+      "minLength": 16,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "EvidenceReferences": {
+      "type": "object",
+      "properties": {
+        "track_id": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_frame_indexes": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "uniqueItems": true,
+          "maxItems": 20
+        },
+        "attributes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "evidence_frame_index": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [],
+            "additionalProperties": true
+          }
+        },
+        "plate": {
+          "type": "object",
+          "properties": {
+            "evidence_frame_indexes": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            }
+          },
+          "required": [],
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": true
+    }
+  }
+}
