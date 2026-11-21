@@ -6,7 +6,7 @@ import { AnalysisProgress } from "./AnalysisProgress";
 import { AnnotatedImageViewer } from "./AnnotatedImageViewer";
 import { DetectionContext } from "./DetectionContext";
 import { ClassLegend } from "./ClassLegend";
-import { contextualDetectionId } from "./imageAnalysisReducer";
+import { contextualDetectionId, sceneContextualState } from "./imageAnalysisReducer";
 import { DetectionList } from "./DetectionList";
 import { VehicleDetails } from "./VehicleDetails";
 import "./image-analysis.css";
@@ -84,6 +84,7 @@ export function ImageWorkspace({ client }: { client?: ApiClient }) {
               onRetry={() => void retryMedia("original")}
               onFailure={() => reportMediaFailure("original")}
               selected={state.selected}
+              contextual={sceneContextualState(state)}
               onSelect={selectDetection}
               onContext={sceneContext}
             />

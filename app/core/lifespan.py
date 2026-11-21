@@ -123,6 +123,7 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         janitor.start()
         yield
         janitor.close()
+        app.state.plate_preview_service.close()
         preview_store.close()
         for count_worker in count_workers:
             count_worker.close()

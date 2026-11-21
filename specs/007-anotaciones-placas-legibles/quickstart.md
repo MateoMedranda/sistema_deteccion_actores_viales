@@ -53,3 +53,11 @@ $plateManifest = Read-Host 'Manifiesto privado autorizado'
 El reporte es agregado, sin textos, imágenes, identidades por placa, credenciales ni rutas privadas. Registra huellas, versiones, condiciones, denominadores, CER, lecturas falsas y coste. El CLI no promueve políticas. Una promoción requiere revisar el gate y cambiar explícitamente la composición, con regresiones.
 
 Sin referencias reales, T061–T064 y T070 permanecen pendientes. No crear un reporte PASS con fixtures. Se mantienen los pendientes históricos 006/T067 y006/T068.
+
+## Contexto congelado de evaluacion (T075)
+
+El CLI crea un EvaluationRun inmutable antes de la inferencia: identificador privado, bytes del manifiesto, huellas de originales, recetas, pesos, reglas y condiciones de ejecucion. Vincula tambien los archivos OCR cargados, OpenCV y el acelerador seleccionado; comprueba estabilidad antes y despues del calculo. Una alteracion invalida la corrida y evita escribir un reporte nuevo. El resumen agregado excluye el identificador privado, rutas, imagenes y referencias; no promueve politicas. La evaluacion real sigue NOT_RUN hasta disponer de T061-T064.
+
+## Dispositivos efectivos del evaluador (T076)
+
+El informe diferencia requested/selection_policy/devices (configuración e inventario congelados antes de inferir) de effective_devices (predictores observados por etapa). El localizador mantiene su modo automático, incluido CUDA cuando corresponda; no se fuerza a seguir el dispositivo del detector. OCR se verifica al crear sus predictores Paddle. Se registran estado y llamadas; una etapa no ejecutada no recibe un dispositivo inventado. Si la observación contradice la configuración, cambia o no puede acreditarse, el CLI termina con error seguro y no escribe un nuevo informe. Los pesos, parámetros y política de producción se conservan.

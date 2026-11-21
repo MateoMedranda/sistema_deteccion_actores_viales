@@ -44,3 +44,17 @@ T061–T064 y T070 permanecen abiertas. No se dispone de medios/referencias inde
 La revisión visual cubre capturas sintéticas, controles y estados implementados. No sustituye la prueba con usuarios de006 ni certifica todas las combinaciones posibles de navegador/hardware.
 
 Los comandos, resultados, mediciones y correcciones están en validation.md y evidence-summary.json. Los cambios se conservan sin commits automáticos ni staging.
+
+## Verificacion posterior de T071-T075 (2026-11-21)
+
+Los cinco hallazgos de convergencia quedaron corregidos y probados. FR-018/SC-005/008 incluyen barreras de acceso a imagenes, SQLite y cache sin bloqueo del loop, retiro temprano y limpieza ante fallos de instrumentacion. FR-002/003/004/007 incluyen contexto visual explicitamente sincronizado entre lista y escena, independiente de la seleccion. FR-005-008/SC-003 incluyen la matriz de13 clases y fallback con estilos efectivos, tres viewports, contraste claro/oscuro y texto200%. FR-019/SC-009 (parte tecnica) incluyen EvaluationRun congelado, mutaciones rechazadas, OpenCV/acelerador y resumen agregado privado.
+
+Validacion:239 pruebas backend,78 frontend, compilacion PASS,3 casos de matriz,6 casos finales de comparacion/rendimiento y24 regresiones adicionales de navegador PASS. Los retrasos y el fallo intermedio de metricas detectados durante este trabajo se corrigieron antes de cerrar las tareas. Datos y limites en [validation.md](validation.md) y [convergence-evidence.json](convergence-evidence.json).
+
+Estas verificaciones no cierran T061-T064/T070 ni acreditan mayor exactitud OCR: continua NOT_RUN y baseline-v1 activa.
+
+## Cierre técnico de T076 (2026-11-21)
+
+Se corrigió la brecha de T075/FR-019/SC-009 (parte técnica): el contexto distingue dispositivo solicitado de observado e incluye el localizador automático, además de detector y OCR. Inventario/políticas previos a inferencia se vinculan a predictores efectivos y se rechazan discrepancias, cambios o procedencia desconocida. Las etapas no ejecutadas quedan explícitas; no se deducen dispositivos desde una configuración genérica.
+
+Evidencia:32 pruebas enfocadas y253 pruebas backend PASS, con casos CPU y CUDA controlados, integración CLI, captura del hook Paddle y privacidad del resumen. Ver [validation.md](validation.md) y [t076-evidence.json](t076-evidence.json). No constituye validación sobre GPU real ni acredita mejora OCR. T061–T064/T070 permanecen pendientes; baseline-v1 no se modifica.

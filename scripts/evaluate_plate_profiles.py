@@ -171,13 +171,214 @@ def evaluate(manifest,manifest_path,settings,detector,localizer,reader):
             summary[name][stratum]=metrics([refs[i] for i in indexes],[predictions[name][i] for i in indexes])
         summary[name]["cost"]={"ocr_calls":sum(attempts[name]),"ocr_calls_per_plate":sum(attempts[name])/len(refs),"duration_ms":{"p50":percentile(times[name],.5),"p95":percentile(times[name],.95),"max":max(times[name]),"total":sum(times[name])},"selected_variants":dict(selected[name])}
     return {"arms":summary,"gate_pass":gate(summary["baseline-v1"],summary["candidate-rescue-v1"]),"test_samples":len(refs),"test_groups":len(groups),"shared_detection_localization_ms":{"total":sum(shared_ms),"p95":percentile(shared_ms,.95)},"total_duration_ms":(perf_counter()-started)*1000}
+
+from dataclasses import dataclass,replace
+_LOADED_PROFILE_INPUTS={name:sha(ROOT/"app/services"/name) for name in ("plate_profiles.py","plate_quality.py","plate_reading_policy.py")}
+from uuid import uuid4
+
+@dataclass(frozen=True)
+class InputFingerprint:
+    path:Path
+    digest:str
+
+@dataclass(frozen=True)
+class EvaluationRun:
+    """Private immutable run identity and exact input snapshot; never serialize wholesale."""
+    run_id:str
+    manifest_bytes:bytes
+    inputs:tuple[InputFingerprint,...]
+    profiles:tuple[tuple[str,str],...]
+    models:tuple[tuple[str,str],...]
+    conditions_json:str
+    def manifest(self):
+        return json.loads(self.manifest_bytes)
+    def assert_stable(self):
+        for item in self.inputs:
+            try:stable=sha(item.path)==item.digest
+            except OSError:stable=False
+            if not stable:raise ValueError("evaluation_inputs_changed")
+    def assert_settings(self,settings):
+        if json.loads(self.conditions_json)["thresholds"]!=thresholds(settings) or json.loads(self.conditions_json)["device"]!=settings.inference_device:
+            raise ValueError("evaluation_parameters_changed")
+    def bind_ocr(self,reader):
+        paths=[]
+        args=getattr(reader.ocr,"args",None)
+        for stage in ("det","rec","cls"):
+            directory=getattr(args,stage+"_model_dir",None)
+            if not directory:raise ValueError("ocr_model_hash_unavailable")
+            files=sorted(p for p in Path(directory).rglob("*") if p.is_file() and p.suffix in (".pdmodel",".pdiparams",".json"))
+            paths.extend(InputFingerprint(p.resolve(),sha(p)) for p in files)
+        dictionary=getattr(args,"rec_char_dict_path",None)
+        if dictionary:paths.append(InputFingerprint(Path(dictionary).resolve(),sha(dictionary)))
+        result=replace(self,inputs=self.inputs+tuple(paths),models=self.models+tuple(sorted(ocr_hashes(reader).items())))
+        result.assert_stable()
+        return result
+    def public_context(self):
+        # A single input commitment adds no per-image identifier to the public report.
+        commitment=hashlib.sha256("".join(item.digest for item in self.inputs).encode()).hexdigest()
+        return dict(manifest_sha256=hashlib.sha256(self.manifest_bytes).hexdigest(),
+                    profile_source_sha256=dict(self.profiles),model_sha256=dict(self.models),
+                    input_commitment_sha256=commitment,normalization=NORMALIZATION,
+                    conditions=json.loads(self.conditions_json))
+
+def thresholds(settings):
+    return dict(detector=settings.model_confidence_threshold,localizer=settings.plate_localizer_threshold,
+                retry=settings.plate_ocr_retry_threshold,accept=settings.plate_ocr_accept_threshold)
+
+def cuda_identity(index):
+    import torch
+    properties=torch.cuda.get_device_properties(index)
+    return dict(index=index,name=properties.name,memory_bytes=properties.total_memory,capability=f"{properties.major}.{properties.minor}")
+
+def cuda_inventory():
+    import torch
+    return [cuda_identity(index) for index in range(torch.cuda.device_count())] if torch.cuda.is_available() else []
+
+def accelerator_description(device):
+    # Freeze available hardware even for a CPU detector: the localizer uses auto.
+    devices=cuda_inventory()
+    requested=device.lower().strip()
+    if requested=="cpu":selected="cpu"
+    else:
+        first=requested.removeprefix("cuda:").split(",")[0]
+        if first in ("cuda",""):
+            import torch
+            first=str(torch.cuda.current_device())
+        if not first.isdigit() or int(first) not in {entry["index"] for entry in devices}:
+            raise ValueError("requested_accelerator_unavailable")
+        selected="cuda:"+str(int(first))
+    result=dict(detector_device=device,ocr_device="cpu",devices=devices,
+                requested={"detector":selected,"localizer":"auto","ocr":"cpu"},
+                selection_policy={"detector":"configured","localizer":"ultralytics-auto","ocr":"fixed-cpu"},
+                effective_devices={})
+    if devices:
+        import torch
+        result["cuda_runtime"]=torch.version.cuda
+    return result
+
+class DeviceObservations:
+    """Bind a frozen selection policy to observed predictors, without moving models."""
+    def __init__(self,run):
+        self.run=run
+        self.hardware=json.loads(run.conditions_json)["accelerator"]
+        self.devices={};self.calls={};self.getters={};self.failed=False
+
+    def _observe(self,stage,value):
+        try:
+            device=str(value).lower()
+            if device!="cpu":
+                import re
+                if not re.fullmatch(r"cuda:[0-9]+",device):raise ValueError()
+                index=int(device.split(":")[1]);device="cuda:"+str(index)
+                frozen=next((entry for entry in self.hardware["devices"] if entry["index"]==index),None)
+                if frozen is None or cuda_identity(index)!=frozen:raise ValueError()
+            requested=self.hardware["requested"][stage]
+            if requested!="auto" and requested!=device:raise ValueError()
+            if stage in self.devices and self.devices[stage]!=device:raise ValueError()
+            self.devices[stage]=device
+        except Exception:
+            self.failed=True
+            raise ValueError("evaluation_device_unverified") from None
+
+    def wrap(self,stage,operation,device,*,initialized=False):
+        self.getters[stage]=device;self.calls[stage]=0
+        if initialized:self._observe(stage,device())
+        def call(*args,**kwargs):
+            self.calls[stage]+=1
+            try:return operation(*args,**kwargs)
+            finally:
+                try:self._observe(stage,device())
+                except Exception:
+                    self.failed=True
+                    raise ValueError("evaluation_device_unverified") from None
+        return call
+
+    def finish(self):
+        if self.failed or set(self.getters)!={"detector","localizer","ocr"}:
+            raise ValueError("evaluation_device_unverified")
+        for stage,getter in self.getters.items():
+            if stage in self.devices:
+                try:self._observe(stage,getter())
+                except Exception:raise ValueError("evaluation_device_unverified") from None
+        conditions=json.loads(self.run.conditions_json)
+        effective={}
+        for stage in self.getters:
+            device=self.devices.get(stage)
+            row=dict(device=device,status="executed" if self.calls[stage] else "initialized" if device else "not_executed",calls=self.calls[stage])
+            if device and device.startswith("cuda:"):
+                row["accelerator"]=next(entry for entry in self.hardware["devices"] if entry["index"]==int(device.split(":")[1]))
+            effective[stage]=row
+        conditions["accelerator"]["effective_devices"]=effective
+        return replace(self.run,conditions_json=json.dumps(conditions,sort_keys=True))
+
+def load_observed_reader(factory,language):
+    # Observe the final configs actually passed to Paddle, including its CPU hook.
+    # Some PaddleOCR components discard Config; predictor identity binds all three.
+    from paddle import inference
+    from unittest.mock import patch
+    original=inference.create_predictor
+    created={}
+    def create(config):
+        if config.use_xpu():raise ValueError("evaluation_device_unverified")
+        device="cuda:"+str(config.gpu_device_id()) if config.use_gpu() else "cpu"
+        predictor=original(config);created[id(predictor)]=(predictor,device)
+        return predictor
+    with patch.object(inference,"create_predictor",side_effect=create):
+        reader=factory(language)
+    def observed():
+        devices=[]
+        for name in ("text_detector","text_recognizer","text_classifier"):
+            predictor=getattr(reader.ocr,name).predictor
+            bound=created.get(id(predictor))
+            if bound is None or bound[0] is not predictor:raise ValueError("evaluation_device_unverified")
+            devices.append(bound[1])
+        if len(set(devices))!=1:raise ValueError("evaluation_device_unverified")
+        return devices[0]
+    return reader,observed
+
+def runtime_conditions(settings):
+    dependencies=("numpy","pillow","fastapi","pydantic","psutil","paddleocr","paddlepaddle","ultralytics","torch")
+    versions={name:version(name) for name in dependencies}
+    versions["opencv"]=cv2.__version__
+    return dict(python=platform.python_version(),system=platform.system(),processor=platform.processor(),
+                logical_cpus=psutil.cpu_count(),ram_bytes=psutil.virtual_memory().total,
+                device=settings.inference_device,accelerator=accelerator_description(settings.inference_device),
+                concurrency=1,warmup="none; first call included",arm_order="alternating by group",
+                thresholds=thresholds(settings),versions=versions)
+
+def freeze_run(manifest_path,settings,*,profile_paths=None):
+    manifest_path=Path(manifest_path).resolve()
+    raw=manifest_path.read_bytes();manifest=json.loads(raw);validate_manifest(manifest)
+    paths=profile_paths if profile_paths is not None else {
+        name:ROOT/"app/services"/name for name in ("plate_profiles.py","plate_quality.py","plate_reading_policy.py")}
+    paths={**paths,"evaluate_plate_profiles.py":Path(__file__).resolve()}
+    profiles=tuple(sorted((name,sha(path)) for name,path in paths.items()))
+    if profile_paths is None and any(dict(profiles)[name]!=digest for name,digest in _LOADED_PROFILE_INPUTS.items()):raise ValueError("evaluation_inputs_changed")
+    inputs=[InputFingerprint(manifest_path,hashlib.sha256(raw).hexdigest())]
+    inputs.extend(InputFingerprint(Path(paths[name]).resolve(),digest) for name,digest in profiles)
+    models=[]
+    for name,path in (("detector",settings.model_weights_path),("plate_localizer",settings.plate_model_weights_path)):
+        if not path:raise ValueError("models_unavailable")
+        fingerprint=InputFingerprint(Path(path).resolve(),sha(path))
+        inputs.append(fingerprint);models.append((name,fingerprint.digest))
+    # Freeze authorized original bytes as well as the private references.
+    seen=set()
+    for sample in manifest["samples"]:
+        path=Path(sample["image"])
+        path=(path if path.is_absolute() else manifest_path.parent/path).resolve()
+        if path not in seen:
+            seen.add(path);inputs.append(InputFingerprint(path,sha(path)))
+    run=EvaluationRun(uuid4().hex,raw,tuple(inputs),profiles,tuple(models),json.dumps(runtime_conditions(settings),sort_keys=True))
+    run.assert_stable()
+    return run
+
 def main(argv=None):
     parser=argparse.ArgumentParser(description="Paired private plate evaluation; no automatic promotion.")
     parser.add_argument("--manifest",required=True,type=Path);parser.add_argument("--baseline",choices=["baseline-v1"],default="baseline-v1")
     parser.add_argument("--candidate",choices=["candidate-rescue-v1"],default="candidate-rescue-v1");parser.add_argument("--output",required=True,type=Path)
     args=parser.parse_args(argv)
     try:
-        manifest=json.loads(args.manifest.read_text(encoding="utf-8"));validate_manifest(manifest)
+        manifest=json.loads(args.manifest.read_bytes());validate_manifest(manifest)
         from app.core.config import Settings
         from app.adapters.yolov10_detector import YOLOv10Detector
         from app.adapters.yolov8_plate_localizer import YOLOv8PlateLocalizer
@@ -185,20 +386,26 @@ def main(argv=None):
         from app.services.inference_metrics import InferenceMetrics
         import logging
         settings=Settings()
-        if not settings.model_weights_path or not settings.plate_model_weights_path:raise ValueError("models_unavailable")
-        model_hashes={"detector":sha(settings.model_weights_path),"plate_localizer":sha(settings.plate_model_weights_path)}
-        # Libraries must not print private paths or observed OCR content.
+        # Freeze exact bytes and conditions before model initialization/inference.
         with open(os.devnull,"w") as sink,redirect_stdout(sink),redirect_stderr(sink):
+            run=freeze_run(args.manifest,settings)
+            if args.output.resolve() in {item.path for item in run.inputs}:raise ValueError("output_overwrites_input")
             detector=YOLOv10Detector(settings.model_weights_path,settings.model_confidence_threshold,settings.inference_device,settings.ultralytics_path)
             localizer=YOLOv8PlateLocalizer(settings.plate_model_weights_path,settings.plate_localizer_threshold)
-            reader=PaddlePlateReader(settings.paddle_ocr_lang)
-            model_hashes.update(ocr_hashes(reader))
+            reader,ocr_device=load_observed_reader(PaddlePlateReader,settings.paddle_ocr_lang)
+            run=run.bind_ocr(reader)
+            from types import SimpleNamespace
+            observed=DeviceObservations(run)
+            detector_proxy=SimpleNamespace(detect=observed.wrap("detector",detector.detect,lambda:detector._model.predictor.device))
+            localizer_proxy=SimpleNamespace(locate=observed.wrap("localizer",localizer.locate,lambda:localizer.model.predictor.device))
+            reader_proxy=SimpleNamespace(read=observed.wrap("ocr",reader.read,ocr_device,initialized=True))
+            run.assert_stable();run.assert_settings(settings)
             with InferenceMetrics(logging.getLogger("offline-plate-evaluation"),"plate_evaluation") as measurement:
-                result=evaluate(manifest,args.manifest,settings,detector,localizer,reader)
-        result.update(protocol_version=1,status="PASS" if result["gate_pass"] else "FAIL",policy_promoted=False,manifest_sha256=sha(args.manifest),
-            profile_source_sha256={p:sha(ROOT/"app/services"/p) for p in ("plate_profiles.py","plate_quality.py","plate_reading_policy.py")},
-            normalization=NORMALIZATION,model_sha256=model_hashes,
-            conditions={"python":platform.python_version(),"system":platform.system(),"processor":platform.processor(),"logical_cpus":psutil.cpu_count(),"ram_bytes":psutil.virtual_memory().total,"device":settings.inference_device,"concurrency":1,"warmup":"none; first call included","arm_order":"alternating by group","thresholds":{"detector":settings.model_confidence_threshold,"localizer":settings.plate_localizer_threshold,"retry":settings.plate_ocr_retry_threshold,"accept":settings.plate_ocr_accept_threshold},"versions":{name:version(name) for name in ("numpy","pillow","fastapi","pydantic","psutil","paddleocr","paddlepaddle","ultralytics","torch")}},
+                result=evaluate(run.manifest(),args.manifest,settings,detector_proxy,localizer_proxy,reader_proxy)
+            run=observed.finish()
+            run.assert_stable();run.assert_settings(settings)
+        result.update(protocol_version=1,status="PASS" if result["gate_pass"] else "FAIL",policy_promoted=False,
+            **run.public_context(),
             process_rss_mb={"initial":measurement.initial_memory_mb,"final":psutil.Process().memory_info().rss/1024/1024,"peak":measurement._peak})
         args.output.parent.mkdir(parents=True,exist_ok=True)
         args.output.write_text(json.dumps(result,indent=2,ensure_ascii=True),encoding="utf-8")

@@ -1,0 +1,4614 @@
+{
+  "date": "2026-11-21",
+  "branch": "feature/007-anotaciones-placas-legibles",
+  "tasks": [
+    "T071",
+    "T072",
+    "T073",
+    "T074",
+    "T075"
+  ],
+  "backend": {
+    "tests": "239",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "63.228"
+  },
+  "frontend": {
+    "numTotalTests": 78,
+    "numPassedTests": 78,
+    "numFailedTests": 0
+  },
+  "build": "PASS",
+  "browser_preview_final": {
+    "startTime": "2026-11-21T13:06:48.817Z",
+    "duration": 137372.91999999998,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "browser_class_matrix": {
+    "startTime": "2026-11-21T05:25:21.587Z",
+    "duration": 53071.386,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "browser_other_regressions": {
+    "passed": 24,
+    "scope": "unobstructed, selection, convergence, video-count; intermediate plate failures superseded by six final PASS"
+  },
+  "preview_measurements": [
+    {
+      "viewport": "desktop",
+      "samples": 30,
+      "cold_ms": [
+        250.19999992847443,
+        234.70000004768372,
+        215.5,
+        232.89999997615814,
+        264.2999999523163,
+        286.39999997615814,
+        247.20000004768372,
+        236.10000002384186,
+        230,
+        225.59999990463257,
+        263.10000002384186,
+        224.60000002384186,
+        210.39999997615814,
+        191.5,
+        245.79999995231628,
+        259.10000002384186,
+        281.89999997615814,
+        189.80000007152557,
+        248.80000007152557,
+        225.09999990463257,
+        223.20000004768372,
+        206.80000007152557,
+        253.09999990463257,
+        213.69999992847443,
+        207.90000009536743,
+        260.10000002384186,
+        196.10000002384186,
+        232.90000009536743,
+        238.60000002384186,
+        209.70000004768372
+      ],
+      "warm_ms": [
+        160.5,
+        176,
+        167.79999995231628,
+        231.89999997615814,
+        267.1999999284744,
+        241.30000007152557,
+        154.39999997615814,
+        163.79999995231628,
+        176.90000009536743,
+        235.5,
+        175.29999995231628,
+        207.70000004768372,
+        170.70000004768372,
+        236.20000004768372,
+        198.79999995231628,
+        237.79999995231628,
+        232.20000004768372,
+        166.10000002384186,
+        287.7999999523163,
+        174,
+        162,
+        171.79999995231628,
+        165.5,
+        166.69999992847443,
+        171,
+        170.69999992847443,
+        167,
+        167.5,
+        175.5,
+        247
+      ],
+      "cold_p95_ms": 281.89999997615814,
+      "warm_p95_ms": 267.1999999284744,
+      "scope": "synthetic authorized plates, real API, headers/body/decode/render, local machine"
+    },
+    {
+      "viewport": "tablet",
+      "samples": 30,
+      "cold_ms": [
+        268.39999997615814,
+        237.89999997615814,
+        206.89999997615814,
+        246,
+        204.89999997615814,
+        205.80000007152557,
+        218.60000002384186,
+        207.39999997615814,
+        239.60000002384186,
+        209.5,
+        211.30000007152557,
+        194.5,
+        237.39999997615814,
+        227.19999992847443,
+        211.20000004768372,
+        214.80000007152557,
+        230.60000002384186,
+        208.10000002384186,
+        214.29999995231628,
+        213.89999997615814,
+        222.29999995231628,
+        327.1999999284744,
+        231.60000002384186,
+        230.69999992847443,
+        203.69999992847443,
+        189.5,
+        188.79999995231628,
+        228.29999995231628,
+        307.09999990463257,
+        234.39999997615814
+      ],
+      "warm_ms": [
+        224.39999997615814,
+        223.69999992847443,
+        222.60000002384186,
+        230.10000002384186,
+        223.10000002384186,
+        220.39999997615814,
+        224,
+        213.89999997615814,
+        232.90000009536743,
+        219.60000002384186,
+        213.80000007152557,
+        173.10000002384186,
+        223.89999997615814,
+        221.79999995231628,
+        227.29999995231628,
+        222.90000009536743,
+        215.80000007152557,
+        225.89999997615814,
+        226.5,
+        232.79999995231628,
+        219.10000002384186,
+        222.79999995231628,
+        220.19999992847443,
+        242.10000002384186,
+        225.90000009536743,
+        219.20000004768372,
+        212.39999997615814,
+        216.60000002384186,
+        219,
+        225.39999997615814
+      ],
+      "cold_p95_ms": 307.09999990463257,
+      "warm_p95_ms": 232.90000009536743,
+      "scope": "synthetic authorized plates, real API, headers/body/decode/render, local machine"
+    },
+    {
+      "viewport": "mobile",
+      "samples": 30,
+      "cold_ms": [
+        214.60000002384186,
+        202,
+        210,
+        192.30000007152557,
+        217.10000002384186,
+        211.20000004768372,
+        323.2999999523163,
+        215.10000002384186,
+        190.10000002384186,
+        210.5,
+        343.39999997615814,
+        205.29999995231628,
+        207.90000009536743,
+        210.80000007152557,
+        220.19999992847443,
+        206.20000004768372,
+        235.60000002384186,
+        194.30000007152557,
+        215.5,
+        229.29999995231628,
+        230.79999995231628,
+        330,
+        208.79999995231628,
+        192.20000004768372,
+        197.79999995231628,
+        240.39999997615814,
+        401,
+        384.2999999523163,
+        362.10000002384186,
+        234.79999995231628
+      ],
+      "warm_ms": [
+        231.59999990463257,
+        229,
+        224.60000002384186,
+        226.60000002384186,
+        242.70000004768372,
+        216.5,
+        213.20000004768372,
+        214.69999992847443,
+        217.69999992847443,
+        240.60000002384186,
+        215.69999992847443,
+        212.60000002384186,
+        218.10000002384186,
+        251.20000004768372,
+        224.19999992847443,
+        238.60000002384186,
+        249.5,
+        225.39999997615814,
+        207.10000002384186,
+        239.20000004768372,
+        223,
+        204.39999997615814,
+        215.69999992847443,
+        205.70000004768372,
+        239.19999992847443,
+        249.20000004768372,
+        231.30000007152557,
+        294.2999999523163,
+        238.69999992847443,
+        248.5
+      ],
+      "cold_p95_ms": 384.2999999523163,
+      "warm_p95_ms": 251.20000004768372,
+      "scope": "synthetic authorized plates, real API, headers/body/decode/render, local machine"
+    }
+  ],
+  "class_measurements": [
+    {
+      "viewport": "desktop",
+      "measurements": [
+        {
+          "class": "car",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(37, 99, 235)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "truck",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(217, 119, 6)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "bus",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(147, 51, 234)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "van",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(13, 148, 136)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "pickup",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(220, 38, 38)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "suv",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(101, 163, 13)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "sedan",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(219, 39, 119)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "hatchback",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(8, 145, 178)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "mpv",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(79, 70, 229)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "estate",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(120, 113, 108)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "car",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(37, 99, 235)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "truck",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(217, 119, 6)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "bus",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(147, 51, 234)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "van",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(13, 148, 136)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "pickup",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(220, 38, 38)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "suv",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(101, 163, 13)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "sedan",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(219, 39, 119)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "hatchback",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(8, 145, 178)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "mpv",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(79, 70, 229)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "estate",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(120, 113, 108)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "car",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(37, 99, 235)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "truck",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(217, 119, 6)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "bus",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(147, 51, 234)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "van",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(13, 148, 136)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "pickup",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(220, 38, 38)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "suv",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(101, 163, 13)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "sedan",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(219, 39, 119)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "hatchback",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(8, 145, 178)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "mpv",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(79, 70, 229)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "estate",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(120, 113, 108)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "car",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(37, 99, 235)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "truck",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(217, 119, 6)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "bus",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(147, 51, 234)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "van",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(13, 148, 136)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "pickup",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(220, 38, 38)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "suv",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(101, 163, 13)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "sedan",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(219, 39, 119)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "hatchback",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(8, 145, 178)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "mpv",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(79, 70, 229)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "estate",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(120, 113, 108)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        }
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "measurements": [
+        {
+          "class": "car",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(37, 99, 235)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "truck",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(217, 119, 6)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "bus",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(147, 51, 234)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "van",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(13, 148, 136)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "pickup",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(220, 38, 38)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "suv",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(101, 163, 13)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "sedan",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(219, 39, 119)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "hatchback",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(8, 145, 178)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "mpv",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(79, 70, 229)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "estate",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(120, 113, 108)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "car",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(37, 99, 235)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "truck",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(217, 119, 6)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "bus",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(147, 51, 234)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "van",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(13, 148, 136)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "pickup",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(220, 38, 38)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "suv",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(101, 163, 13)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "sedan",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(219, 39, 119)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "hatchback",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(8, 145, 178)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "mpv",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(79, 70, 229)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "estate",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(120, 113, 108)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "car",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(37, 99, 235)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "truck",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(217, 119, 6)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "bus",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(147, 51, 234)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "van",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(13, 148, 136)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "pickup",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(220, 38, 38)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "suv",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(101, 163, 13)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "sedan",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(219, 39, 119)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "hatchback",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(8, 145, 178)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "mpv",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(79, 70, 229)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "estate",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(120, 113, 108)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "car",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(37, 99, 235)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "truck",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(217, 119, 6)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "bus",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(147, 51, 234)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "van",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(13, 148, 136)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "pickup",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(220, 38, 38)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "suv",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(101, 163, 13)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "sedan",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(219, 39, 119)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "hatchback",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(8, 145, 178)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "mpv",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(79, 70, 229)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "estate",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(120, 113, 108)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        }
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "measurements": [
+        {
+          "class": "car",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(37, 99, 235)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "truck",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(217, 119, 6)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "bus",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(147, 51, 234)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "van",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(13, 148, 136)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "pickup",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(220, 38, 38)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "suv",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(101, 163, 13)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "sedan",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(219, 39, 119)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "hatchback",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(8, 145, 178)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "mpv",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(79, 70, 229)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "estate",
+          "background": "rgb(0, 0, 0)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(120, 113, 108)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "car",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(37, 99, 235)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "truck",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(217, 119, 6)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "bus",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(147, 51, 234)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "van",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(13, 148, 136)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "pickup",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(220, 38, 38)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "suv",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(101, 163, 13)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "sedan",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(219, 39, 119)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "hatchback",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(8, 145, 178)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "mpv",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(79, 70, 229)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "estate",
+          "background": "rgb(0, 0, 0)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(120, 113, 108)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "car",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(37, 99, 235)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "truck",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(217, 119, 6)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "bus",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(147, 51, 234)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "van",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(13, 148, 136)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "pickup",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(220, 38, 38)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "suv",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(101, 163, 13)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "sedan",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(219, 39, 119)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "hatchback",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(8, 145, 178)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "mpv",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(79, 70, 229)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "estate",
+          "background": "rgb(255, 255, 255)",
+          "font": 100,
+          "normal": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(120, 113, 108)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "car",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(37, 99, 235)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(37, 99, 235)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "truck",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(217, 119, 6)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(217, 119, 6)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "bus",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(147, 51, 234)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(147, 51, 234)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "van",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(13, 148, 136)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(13, 148, 136)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "pickup",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(220, 38, 38)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(220, 38, 38)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "suv",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(101, 163, 13)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(101, 163, 13)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "sedan",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(219, 39, 119)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(219, 39, 119)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "hatchback",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(8, 145, 178)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(8, 145, 178)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "mpv",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(79, 70, 229)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(79, 70, 229)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        },
+        {
+          "class": "estate",
+          "background": "rgb(255, 255, 255)",
+          "font": 200,
+          "normal": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "focused": {
+            "color": "rgb(120, 113, 108)",
+            "style": "solid",
+            "width": "2px",
+            "outline": "rgb(0, 0, 0)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 8px, rgb(0, 0, 0) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "hovered": {
+            "color": "rgb(120, 113, 108)",
+            "style": "dashed",
+            "width": "3px",
+            "outline": "rgb(255, 255, 255)",
+            "outlineWidth": "3px",
+            "shadow": "rgb(255, 255, 255) 0px 0px 0px 1px, rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 1px inset",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          "text": {
+            "foreground": "rgb(49, 65, 91)",
+            "background": "rgb(244, 246, 250)"
+          }
+        }
+      ]
+    }
+  ],
+  "resources": {
+    "health_seconds_image": 0.0029,
+    "health_seconds_sqlite": 0.0029,
+    "health_seconds_cache": 0.0032,
+    "purge_seconds": 1.0201,
+    "rss_initial_mb": 797.52,
+    "rss_peak_mb": 798.2,
+    "rss_final_mb": 798.19
+  },
+  "actual_ocr_evaluation": "NOT_RUN",
+  "policy": "baseline-v1",
+  "pending_external": [
+    "T061",
+    "T062",
+    "T063",
+    "T064",
+    "T070"
+  ]
+}

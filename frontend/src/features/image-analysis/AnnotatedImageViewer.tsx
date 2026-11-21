@@ -4,8 +4,9 @@ import { projectBox } from "../../utils/imageGeometry";
 import { classPresentation } from "./classPresentation";
 export type ContextEvent = "hover"|"leave"|"focus"|"blur";
 export type ContextHandler = (event:ContextEvent,id:number,sourceId:string)=>void;
-export function AnnotatedImageViewer({source,url,selected,onSelect,onContext,state="loading",onRetry,onFailure}:{
+export function AnnotatedImageViewer({source,url,selected,contextual,onSelect,onContext,state="loading",onRetry,onFailure}:{
  source:DetectionResponse;url:string;selected?:number;onSelect:(id:number)=>void;
+ contextual?:{id:number;state:"focus"|"hover"|"selected"};
  onContext?:ContextHandler;state?:"idle"|"loading"|"ready"|"failed";onRetry?:()=>void;onFailure?:()=>void;
 }){
  return <div className="scene-frame">{url?<div className="scene-viewer">
@@ -18,6 +19,7 @@ export function AnnotatedImageViewer({source,url,selected,onSelect,onContext,sta
    const context=(e:ContextEvent)=>onContext?.(e,d.detection_id,source.request_id);
    return <button key={d.detection_id} className="scene-contour" style={style} data-class={p.key}
     aria-label={"Detección "+d.detection_id+", "+p.label} aria-pressed={selected===d.detection_id}
+    data-context={contextual?.id===d.detection_id?contextual.state:undefined}
     aria-controls="vehicle-details" onClick={()=>onSelect(d.detection_id)}
     onPointerEnter={()=>context("hover")} onPointerLeave={()=>context("leave")}
     onFocus={()=>context("focus")} onBlur={()=>context("blur")}/>;

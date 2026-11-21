@@ -68,6 +68,10 @@ export function contextualDetectionId(state:ImageState){
  const valid=(id?:number)=>state.response?.detections.some(d=>d.detection_id===id&&d.enrichment_eligible===true)?id:undefined;
  return valid(state.focusedDetectionId)??valid(state.hoveredDetectionId)??valid(state.selected);
 }
+export function sceneContextualState(state:ImageState):{id:number;state:"focus"|"hover"|"selected"}|undefined{
+ const id=contextualDetectionId(state);
+ return id===undefined?undefined:{id,state:id===state.focusedDetectionId?"focus":id===state.hoveredDetectionId?"hover":"selected"};
+}
 export function sceneInteraction(state:ImageState,event:"hover"|"leave"|"focus"|"blur",id:number,sourceId:string):ImageState{
  if(state.response?.request_id!==sourceId||!state.response.detections.some(d=>d.detection_id===id&&d.enrichment_eligible===true))return state;
  const key=event==="focus"||event==="blur"?"focusedDetectionId":"hoveredDetectionId";

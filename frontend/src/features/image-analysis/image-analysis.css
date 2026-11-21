@@ -247,7 +247,7 @@
     border-color 0.15s;
 }
 
-.scene-viewer button:hover {
+.scene-viewer button[data-context="hover"] {
   background: #e0ecff33;
   border-color: white;
 }
@@ -809,7 +809,7 @@
     0 0 0 2px #102136,
     inset 0 0 0 1px #102136;
 }
-.scene-column .scene-viewer button:hover {
+.scene-column .scene-viewer button[data-context="hover"] {
   border-color: #fff;
   box-shadow:
     0 0 0 3px #102136,
@@ -843,7 +843,7 @@
  padding:0; min-width:0; min-height:0; background:transparent;
 }
 .scene-viewer .noninteractive { pointer-events:none; }
-.scene-column .scene-viewer button:hover {
+.scene-column .scene-viewer button[data-context="hover"] {
  border:3px dashed var(--class-color); background:transparent;
  box-shadow:0 0 0 1px #fff,0 0 0 2px #000,inset 0 0 0 1px #fff;
 }
@@ -888,3 +888,9 @@
 @media(max-width:560px){.detection-list{grid-template-columns:1fr;}}
 
 .plate-inspection figcaption {position:sticky;left:0;top:0;z-index:1;background:#fff;width:fit-content;max-width:100%;}
+
+/* Contextual focus is also visible when keyboard focus remains in the list. */
+.scene-column .scene-viewer button[data-context="focus"] {
+ outline:3px solid #000;outline-offset:4px;
+ box-shadow:0 0 0 8px #fff,inset 0 0 0 1px #000;
+}

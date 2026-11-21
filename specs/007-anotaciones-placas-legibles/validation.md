@@ -91,3 +91,64 @@ Revisadas capturas originales de escritorio/móvil y hojas de revisión con30 ca
 No se declara certificación WCAG completa ni se sustituye la prueba humana de006. Matriz FR/SC e historias en [audit.md](audit.md). Rama confirmada y git diff --check sin errores de espacios. Índice sin cambios preparados; ningún reset, clean, stash, cambio de rama o commit.
 
 Hook before_implement de métricas ejecutado con la selección confirmada gpt-6.1-sol/high. Hook after_implement opcional revisado; disponible como $speckit-metricas-cerrar, no ejecutado automáticamente.
+
+## Correcciones T071-T075 verificadas (2026-11-21)
+
+Evidencia actual posterior a la convergencia, conservando los registros anteriores: [convergence-evidence.json](convergence-evidence.json). Checkout principal en feature/007-anotaciones-placas-legibles; cambios previos conservados y sin commit automatico.
+
+| Comprobacion | Resultado |
+|---|---|
+| Backend completo | 239 PASS, 0 fallos; 7 advertencias |
+| Frontend Vitest | 78 PASS |
+| TypeScript / Vite | PASS |
+| Matriz completa de clases | 3 PASS, 360/768/1440 |
+| Comparaciones y rendimiento de placas, API real | 6 PASS, 360/768/1440 |
+| Otras regresiones de navegador de esta correccion | 24 PASS: escena, seleccion, convergencia, video y conteo |
+
+**T071.** Resolucion, admision y reautorizacion bloqueantes salen del event loop a cuatro trabajadores de acceso acotados. Una senal notifica la terminacion: el sondeo frecuente inicial retrasaba I/O y fallo las metas de navegador; fue sustituido, sin relajar plazos ni aserciones. Se mantienen CPU1, single-flight, cero cola de computo para otras claves y deadline8s no renovable. El retiro usa un lock independiente de cache/SQLite; retiros y esperas vencidas no admiten computo ni publicacion tardios. Barreras sobre imagenes, store SQLite real y cache: health HTTP respondio en 2.9/2.9/3.2 ms mientras las barreras seguian retenidas, con liberacion de respaldo a400ms. Pasan desconexion, deadline y saturacion de cuatro accesos. Propietario/TTL/ROI se comprueban antes de lectura, hits, publicacion y entrega.
+
+**T072.** Fabrica, entrada, muestreo, arranque parcial, salida y emision de metricas quedan dentro de la garantia de liberacion. Fallos entregan503 seguro, resuelven el Future, limpian sampler y no cachean evidencia; se admite una solicitud posterior. La emision se difiere hasta conocer el resultado atomico de publicacion, incluso si el llamador usa InferenceMetrics sin parametros especiales. Se conservo la regresion de vencimiento de006/T083.
+
+**T073.** El visor recibe contexto explicito con prioridad foco>puntero>seleccion. Foco en lista enfatiza el contorno correcto sin mover foco ni cambiar ficha; color de clase y seleccion doble se conservan. Se prueban seleccion A/contexto B, blur/leave y reinicio de fuente/generacion. No se procesa por hover/foco.
+
+**T074.** Las13 clases y fallback se verifican en escena/leyenda y, cuando son elegibles, lista/ficha. Las otras clases conservan contorno informativo sin ficha inventada. Se comprobo orden/subconjuntos, estilos efectivos y contraste de texto/trazos/foco sobre negro/blanco, seleccion/hover/foco, alternativa44px y texto100/200% en tres viewports. Son120 observaciones de estados de clases elegibles, mas el catalogo no elegible. Las seis capturas completas revisadas estan en validation-assets/convergence-*-classes.png. No se declara certificacion WCAG completa.
+
+**T075.** EvaluationRun inmutable congela bytes del manifiesto, huellas de originales/perfiles/evaluador/pesos, parametros y entorno antes de inferir; conserva run_id privado y vincula pesos/diccionario OCR cargados. El resumen incluye OpenCV e identificacion del acelerador seleccionado sin divulgar run_id, rutas, placas o referencias. Pruebas unitarias y CLI controlado rechazan cambios de manifiesto, imagen, perfil, pesos y umbrales sin escribir un reporte nuevo ni promover candidatas.
+
+| Viewport | p95 frio | p95 caliente | Maximo local |
+|---|---:|---:|---:|
+| desktop | 281.9 ms | 267.2 ms | 287.8 ms |
+| tablet | 307.1 ms | 232.9 ms | 327.2 ms |
+| mobile | 384.3 ms | 251.2 ms | 401 ms |
+
+Por viewport:30 operaciones frias y30 calientes, reloj monotono desde seleccion hasta PNG correcto decodificado/renderizado; p95 nearest-rank muestra29. No se excluyeron fallos ni se aumento el presupuesto de2s/10s. Las30 comparaciones por viewport conservan ROI, metadata, identidad, CORS y contadores de modelos. Medios sinteticos autorizados con API real y adaptadores de prueba; no es una evaluacion OCR real.
+
+Purga sin trafico:1.0201s. RSS de proceso: inicial797.52MiB, pico798.20MiB, final798.19MiB; no se atribuye memoria exclusiva a un job.
+
+Comandos ejecutados desde el checkout principal:
+```powershell
+.venv/Scripts/python.exe -m pytest -o addopts='' -q --disable-warnings --basetemp=.pytest-tmp-007-convergence-approved --junitxml=.pytest-tmp-007-convergence-approved/backend.xml
+# Desde frontend (Vitest/build verificados durante esta correccion):
+npm run test
+npm run build
+./node_modules/.bin/playwright.cmd test image-analysis.classes.spec.ts --reporter=json
+./node_modules/.bin/playwright.cmd test image-analysis.plate-comparison.spec.ts image-analysis.plate-performance.spec.ts --reporter=json
+```
+
+T071-T075 corregidas. T061-T064/T070 siguen pendientes de medios privados autorizados, referencias independientes y evaluacion reservada; aceptacion real NOT_RUN, baseline-v1 sin cambios.
+
+## Corrección T076 verificada (2026-11-21)
+
+El evaluador separa configuración solicitada, política de selección, inventario congelado y dispositivos efectivos observados. Se registra el inventario de las GPU disponibles antes de inferir aunque el detector esté configurado en CPU, porque el localizador conserva su selección automática. Cada llamada de detector/localizador vincula el dispositivo del predictor realmente inicializado; OCR se acredita con las configuraciones finales entregadas a la fábrica Paddle y las identidades de sus tres predictores. La captura respeta y restaura el hook CPU existente, sin mover modelos ni cambiar pesos, umbrales o configuración de producción.
+
+Las observaciones se incorporan a una nueva instancia inmutable de EvaluationRun. El informe agrega dispositivo, identidad del acelerador y número de llamadas por etapa; distingue ejecutado, inicializado y no ejecutado, sin atribuir un dispositivo a un predictor perezoso que nunca se utilizó. Una discrepancia con la configuración, cambio de dispositivo/hardware, predictor reemplazado o procedencia no verificable invalida la corrida y evita emitir el informe. El rechazo queda retenido aunque el evaluador capture una excepción de una muestra.
+
+Pruebas primero en rojo:8 fallos nuevos del contexto y5 del CLI. Después de implementar:32 pruebas enfocadas PASS y253 pruebas backend PASS,0 fallos y7 advertencias existentes. Se comprobaron CPU/CPU, detector CPU/localizador CUDA automático, dispositivos ausentes/no disponibles, discrepancias y cambios posteriores; el CLI conserva run_id y referencias privados y nunca promueve la candidata. Se verificó el hook anidado con la función CPU real del adaptador y fábricas controladas. Los escenarios CUDA usan adaptadores e inventario simulados; no se cargaron pesos ni se ejecutó inferencia sobre placas reales.
+
+Comandos ejecutados desde el checkout principal:
+```powershell
+.venv/Scripts/python.exe -B -m pytest tests/unit/test_plate_evaluation_context.py tests/unit/test_plate_evaluation_cli_context.py tests/unit/test_plate_evaluation.py -q -o addopts='' --disable-warnings
+.venv/Scripts/python.exe -B -m pytest -o addopts='' -q --disable-warnings --basetemp=.pytest-tmp-007-t076 --junitxml=.pytest-tmp-007-t076/results.xml
+```
+
+Datos agregados: [t076-evidence.json](t076-evidence.json). El frontend y los cambios previos se conservan; T076 afecta exclusivamente al evaluador offline, sus pruebas y esta documentación. T061–T064/T070 continúan pendientes, exactitud real NOT_RUN y baseline-v1 activa. No se generó evaluation-summary.json real ni se creó un commit automático.

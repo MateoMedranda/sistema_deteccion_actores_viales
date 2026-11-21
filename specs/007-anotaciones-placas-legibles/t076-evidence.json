@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-21",
+  "task": "T076",
+  "status": "PASS",
+  "branch": "feature/007-anotaciones-placas-legibles",
+  "red_before_fix": {
+    "device_context_failures": 8,
+    "cli_failures": 5
+  },
+  "focused": {
+    "passed": 32,
+    "failed": 0
+  },
+  "backend": {
+    "passed": 253,
+    "failed": 0,
+    "errors": 0,
+    "warnings": 7
+  },
+  "checks": [
+    "CPU detector / automatic CUDA localizer",
+    "CPU-only observed execution",
+    "requested / observed device mismatch",
+    "unknown or unavailable device",
+    "device or GPU identity changes during a run",
+    "unexecuted lazy models",
+    "Paddle predictor construction with nested CPU compatibility hook",
+    "predictor replacement",
+    "immutable pre-inference inventory and settings",
+    "CLI aggregate privacy; no automatic promotion"
+  ],
+  "scope": "Controlled adapters and synthetic fixtures. No GPU or real OCR accuracy claim.",
+  "production_policy": "baseline-v1",
+  "actual_ocr_evaluation": "NOT_RUN",
+  "pending_external": [
+    "T061",
+    "T062",
+    "T063",
+    "T064",
+    "T070"
+  ]
+}
