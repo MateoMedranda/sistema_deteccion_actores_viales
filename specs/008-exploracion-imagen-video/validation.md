@@ -24,3 +24,11 @@ T028–T044 completadas como incremento de presentación. Paleta007 compartida, 
 ## US5
 Idempotencia opcional directa (hash incremental y UNIQUE por propietario), intención administrada HMAC y generación monotónica; recuperación explícita usa la misma intención. Un rechazo terminal permite nueva tentativa sin repetir detección. Polling y TTL independientes, medio nativo y conteo procesado.
 Backend completo:280 pruebas PASS (57.80s). Vitest focal:6 pruebas PASS; build PASS. Navegador:24 recorridos PASS (42.4s),8 casos en3 tamaños. Éxito/conteo usan gateway y upstream controlado reales; encoding/cero elegibles/503/recibo perdido/cancelado/TTL usan respuestas de navegador controladas. No equivalen a modelos reales. Etiqueta parcial por página se cierra con US6/T056.
+
+## Reserva adicional de cruces
+Antes de medir este caso se fija un séptimo clip opposing-crossing: dos trayectorias opuestas en la misma fila (x=8+2i y x=550-2i),150cuadros30FPS640×360, IDs/clases estables, más un control estacionario. El nombre dense-crossing del conjunto original no implica cruce geométrico: ese clip sigue siendo una escena densa de flujo, sin alterar sus raw/referencias ni las constantes del filtro. El nuevo caso se guarda como reserva adicional y se evalúa por separado antes de agregarlo al informe; no sustituye ni ajusta los seis casos ya observados.
+
+## US3 y US6: implementación y primera verificación
+SceneViewport comparte un escenario intrínseco con los contornos: fit/100/200/400%, pan local, ancla normalizada, teclado y supresión del clic derivado del arrastre. No repite análisis ni modifica recortes.
+Lista/ficha de video usa track_id real, página25, consulta abortable por identidad, TTL incluso oculta y referencias de evidencia validadas. Se sustituye página/ficha sin historial. Las referencias CFR i/fps se distinguen de currentTime; procedencia desconocida no se deduce de used_enhancement. No se consultan crops de imagen para video.
+Primera ejecución de zoom+fichas:6 recorridos PASS (23.4s),3 tamaños y texto200%; la medición final repetirá tras reforzar fixtures de éxito/selección y persistirá agregados de zoom en zoom-summary.json. Fichas recorren61 resultados en3 páginas y0POST/crops nuevos. Las tareas T065/T074 se cierran tras ese registro final. Propuesta de inspección pausada revisada en propuesta-inspeccion-video.md.

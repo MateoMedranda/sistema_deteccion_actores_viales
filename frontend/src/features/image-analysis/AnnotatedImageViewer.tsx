@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import {SceneViewport} from "./SceneViewport";
 import type { DetectionResponse } from "../../services/apiTypes";
 import { projectBox } from "../../utils/imageGeometry";
 import { classPresentation } from "./classPresentation";
@@ -9,7 +10,7 @@ export function AnnotatedImageViewer({source,url,selected,contextual,onSelect,on
  contextual?:{id:number;state:"focus"|"hover"|"selected"};
  onContext?:ContextHandler;state?:"idle"|"loading"|"ready"|"failed";onRetry?:()=>void;onFailure?:()=>void;
 }){
- return <div className="scene-frame">{url?<div className="scene-viewer">
+ return <div className="scene-frame">{url?<SceneViewport sourceId={source.request_id} width={source.image.width} height={source.image.height}>
   <img src={url} onError={onFailure} alt="Escena vial original con contornos de detección"/>
   {source.detections.map(d=>{
    const geometry=projectBox(d.bbox,source.image.width,source.image.height);
@@ -24,6 +25,6 @@ export function AnnotatedImageViewer({source,url,selected,contextual,onSelect,on
     onPointerEnter={()=>context("hover")} onPointerLeave={()=>context("leave")}
     onFocus={()=>context("focus")} onBlur={()=>context("blur")}/>;
   })}
- </div>:<div className="scene-placeholder"><div><p>{state==="failed"||state==="idle"?"La escena original no está disponible.":"Cargando escena original…"}</p>
+ </SceneViewport>:<div className="scene-placeholder"><div><p>{state==="failed"||state==="idle"?"La escena original no está disponible.":"Cargando escena original…"}</p>
  {state==="failed"&&<button onClick={onRetry}>Reintentar original</button>}</div></div>}</div>;
 }

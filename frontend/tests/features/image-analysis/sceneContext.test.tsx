@@ -13,7 +13,7 @@ it("describes the visual context with priority independent of selection",()=>{
 it("highlights a contextual box without changing selection or moving focus",()=>{
  const select=vi.fn(),props:any={source:detectionResponse(),url:"blob:scene",selected:1,onSelect:select,contextual:{id:2,state:"focus"}};
  const {rerender}=render(<AnnotatedImageViewer {...props}/>);
- const buttons=screen.getAllByRole("button");
+ const buttons=screen.getAllByRole("button").filter(b=>b.classList.contains("scene-contour"));
  expect(buttons[0]).toHaveAttribute("aria-pressed","true");
  expect(buttons[1]).toHaveAttribute("data-context","focus");
  expect(buttons[1]).not.toHaveFocus();expect(select).not.toHaveBeenCalled();
