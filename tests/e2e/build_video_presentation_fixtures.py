@@ -7,6 +7,46 @@ import numpy as np
 
 ROOT=Path(__file__).resolve().parents[2]
 DEST=ROOT/"frontend/e2e/fixtures/video-presentation"
+
+def append_crossing_fixture(manifest):
+    """Add a new held-out opposing-trajectory case; retain the original six fixtures."""
+    if any(c["id"]=="opposing-crossing" for c in manifest["clips"]):return manifest
+    name="opposing-crossing";path=DEST/(name+".mp4")
+    writer=cv2.VideoWriter(str(path.relative_to(Path.cwd())),cv2.VideoWriter_fourcc(*"mp4v"),30,(640,360))
+    if not writer.isOpened():raise RuntimeError("fixture_encoder_unavailable")
+    raw_frames=[];reference_frames=[]
+    for index in range(150):
+        image=np.full((360,640,3),35,np.uint8);raw=[];reference=[]
+        for actor in range(3):
+            x=(8+index*2 if actor==0 else 550-index*2 if actor==1 else 250);y=140 if actor<2 else 40
+            b=[x,y,x+76,y+44];jitter=2 if (index+actor)%2 else -2;size=2 if (index+actor)%3==0 else -1
+            item={"frame_index":index,"track_id":actor+1,"class_id":actor,"class_name":["car","truck","bus"][actor],"confidence":.9,"bbox":[x+jitter,y+jitter,x+76+jitter+size,y+44+jitter+size]}
+            raw.append(item);reference.append({**item,"bbox":b});cv2.rectangle(image,tuple(b[:2]),tuple(b[2:]),(90,120,180),-1)
+        writer.write(image);raw_frames.append(raw);reference_frames.append(reference)
+    writer.release();data=DEST/(name+".json");data.write_text(json.dumps({"raw":raw_frames,"reference":reference_frames}),encoding="utf-8")
+    manifest["clips"].append({"id":name,"file":path.name,"observations":data.name,"sha256":hashlib.sha256(path.read_bytes()).hexdigest(),"width":640,"height":360,"fps":30,"frames":150,"review_frames":list(range(0,150,3)),"segment":None,"split":"reserved-appendix"})
+    return manifest
+
+
+def append_crossing_fixture(manifest):
+    """Add a new held-out opposing-trajectory case; retain the original six fixtures."""
+    if any(c["id"]=="opposing-crossing" for c in manifest["clips"]):return manifest
+    name="opposing-crossing";path=DEST/(name+".mp4")
+    writer=cv2.VideoWriter(str(path.relative_to(Path.cwd())),cv2.VideoWriter_fourcc(*"mp4v"),30,(640,360))
+    if not writer.isOpened():raise RuntimeError("fixture_encoder_unavailable")
+    raw_frames=[];reference_frames=[]
+    for index in range(150):
+        image=np.full((360,640,3),35,np.uint8);raw=[];reference=[]
+        for actor in range(3):
+            x=(8+index*2 if actor==0 else 550-index*2 if actor==1 else 250);y=140 if actor<2 else 40
+            b=[x,y,x+76,y+44];jitter=2 if (index+actor)%2 else -2;size=2 if (index+actor)%3==0 else -1
+            item={"frame_index":index,"track_id":actor+1,"class_id":actor,"class_name":["car","truck","bus"][actor],"confidence":.9,"bbox":[x+jitter,y+jitter,x+76+jitter+size,y+44+jitter+size]}
+            raw.append(item);reference.append({**item,"bbox":b});cv2.rectangle(image,tuple(b[:2]),tuple(b[2:]),(90,120,180),-1)
+        writer.write(image);raw_frames.append(raw);reference_frames.append(reference)
+    writer.release();data=DEST/(name+".json");data.write_text(json.dumps({"raw":raw_frames,"reference":reference_frames}),encoding="utf-8")
+    manifest["clips"].append({"id":name,"file":path.name,"observations":data.name,"sha256":hashlib.sha256(path.read_bytes()).hexdigest(),"width":640,"height":360,"fps":30,"frames":150,"review_frames":list(range(0,150,3)),"segment":None,"split":"reserved-appendix"})
+    return manifest
+
 def generate():
     DEST.mkdir(parents=True,exist_ok=True)
     images=[]
@@ -47,6 +87,8 @@ def generate():
         data=DEST/(name+".json");data.write_text(json.dumps({"raw":observations,"reference":references}),encoding="utf-8")
         clips.append({"id":name,"file":path.name,"observations":data.name,"sha256":hashlib.sha256(path.read_bytes()).hexdigest(),"width":640,"height":360,"fps":30,"frames":150,"review_frames":list(range(0,150,3)),"segment":[0,149] if index<3 else None,"split":"adjustment" if index==0 else "reserved"})
     manifest={"version":1,"profile":"gated-ema-v1","origin":"synthetic","images":images,"clips":clips}
+    append_crossing_fixture(manifest)
+    append_crossing_fixture(manifest)
     (DEST/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n",encoding="utf-8")
     return manifest
 if __name__=="__main__":

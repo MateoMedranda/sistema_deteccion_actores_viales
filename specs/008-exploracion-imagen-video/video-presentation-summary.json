@@ -2,9 +2,9 @@
   "protocol": "008-v1",
   "profile": "gated-ema-v1",
   "kind": "synthetic-presentation",
-  "real_model_benchmark": false,
-  "full_model_gate": "pending",
-  "manifest_sha256": "543df6a7f1708973bf66f7b11e76eacf4bc2342da742359ffda4473472b6f8a9",
+  "real_model_benchmark": true,
+  "full_model_gate": "pending_auxiliary_measurements",
+  "manifest_sha256": "f2b44e25e2139ee1f0763cbc49cc4cf389c1365bb598f15ad965c88e44fa7c5c",
   "clips": [
     {
       "clip": "dense-flow",
@@ -248,7 +248,78 @@
         ],
         "fallback_count": 0,
         "pass": true
-      }
+      },
+      "presentation_pairs": [
+        {
+          "baseline": {
+            "seconds": 2.124534700065851,
+            "peak_rss": 628469760,
+            "parent_peak_rss": 517521408,
+            "encoder_peak_rss": 133865472,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "candidate": {
+            "seconds": 0.9642629000591114,
+            "peak_rss": 630640640,
+            "parent_peak_rss": 518840320,
+            "encoder_peak_rss": 134410240,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        },
+        {
+          "candidate": {
+            "seconds": 1.0409173000371084,
+            "peak_rss": 629895168,
+            "parent_peak_rss": 518803456,
+            "encoder_peak_rss": 133685248,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "baseline": {
+            "seconds": 2.1751655999105424,
+            "peak_rss": 630202368,
+            "parent_peak_rss": 518799360,
+            "encoder_peak_rss": 133971968,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        },
+        {
+          "baseline": {
+            "seconds": 2.042293200036511,
+            "peak_rss": 629870592,
+            "parent_peak_rss": 518676480,
+            "encoder_peak_rss": 133844992,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "candidate": {
+            "seconds": 1.0251807000022382,
+            "peak_rss": 629551104,
+            "parent_peak_rss": 518807552,
+            "encoder_peak_rss": 132960256,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        }
+      ],
+      "presentation_time_ratio": 0.4825436364821257,
+      "presentation_memory_ratio": 1.0006954464506232,
+      "presentation_cost_pass": true
     },
     {
       "clip": "dense-crossing",
@@ -492,7 +563,78 @@
         ],
         "fallback_count": 0,
         "pass": true
-      }
+      },
+      "presentation_pairs": [
+        {
+          "baseline": {
+            "seconds": 2.2686260000336915,
+            "peak_rss": 630177792,
+            "parent_peak_rss": 518778880,
+            "encoder_peak_rss": 133857280,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "candidate": {
+            "seconds": 1.0577862999634817,
+            "peak_rss": 630734848,
+            "parent_peak_rss": 518799360,
+            "encoder_peak_rss": 134696960,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        },
+        {
+          "candidate": {
+            "seconds": 1.0215163000393659,
+            "peak_rss": 630562816,
+            "parent_peak_rss": 518742016,
+            "encoder_peak_rss": 134000640,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "baseline": {
+            "seconds": 2.378903199918568,
+            "peak_rss": 631332864,
+            "parent_peak_rss": 518791168,
+            "encoder_peak_rss": 135340032,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        },
+        {
+          "baseline": {
+            "seconds": 2.241865099989809,
+            "peak_rss": 631595008,
+            "parent_peak_rss": 518922240,
+            "encoder_peak_rss": 135086080,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "candidate": {
+            "seconds": 1.0402351999655366,
+            "peak_rss": 631148544,
+            "parent_peak_rss": 519163904,
+            "encoder_peak_rss": 134856704,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        }
+      ],
+      "presentation_time_ratio": 0.45853093456131067,
+      "presentation_memory_ratio": 0.9992931166422392,
+      "presentation_cost_pass": true
     },
     {
       "clip": "occlusion",
@@ -527,7 +669,78 @@
         ],
         "fallback_count": 0,
         "pass": true
-      }
+      },
+      "presentation_pairs": [
+        {
+          "baseline": {
+            "seconds": 0.7856725000310689,
+            "peak_rss": 622137344,
+            "parent_peak_rss": 518975488,
+            "encoder_peak_rss": 125370368,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "candidate": {
+            "seconds": 0.6298420999664813,
+            "peak_rss": 630870016,
+            "parent_peak_rss": 519122944,
+            "encoder_peak_rss": 133877760,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        },
+        {
+          "candidate": {
+            "seconds": 0.634946999954991,
+            "peak_rss": 628822016,
+            "parent_peak_rss": 518823936,
+            "encoder_peak_rss": 132513792,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "baseline": {
+            "seconds": 0.7653507000068203,
+            "peak_rss": 626982912,
+            "parent_peak_rss": 518995968,
+            "encoder_peak_rss": 130134016,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        },
+        {
+          "baseline": {
+            "seconds": 0.680032099946402,
+            "peak_rss": 626503680,
+            "parent_peak_rss": 518762496,
+            "encoder_peak_rss": 130441216,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "candidate": {
+            "seconds": 0.5376055999659002,
+            "peak_rss": 625954816,
+            "parent_peak_rss": 519118848,
+            "encoder_peak_rss": 129228800,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        }
+      ],
+      "presentation_time_ratio": 0.822945742338602,
+      "presentation_memory_ratio": 1.0061996968746734,
+      "presentation_cost_pass": true
     },
     {
       "clip": "cut",
@@ -539,7 +752,78 @@
         "segments": [],
         "fallback_count": 0,
         "pass": true
-      }
+      },
+      "presentation_pairs": [
+        {
+          "baseline": {
+            "seconds": 0.7598753999918699,
+            "peak_rss": 631324672,
+            "parent_peak_rss": 519163904,
+            "encoder_peak_rss": 134598656,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "candidate": {
+            "seconds": 0.6530925000552088,
+            "peak_rss": 630415360,
+            "parent_peak_rss": 519163904,
+            "encoder_peak_rss": 134537216,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        },
+        {
+          "candidate": {
+            "seconds": 0.5508205998921767,
+            "peak_rss": 626274304,
+            "parent_peak_rss": 519393280,
+            "encoder_peak_rss": 129290240,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "baseline": {
+            "seconds": 0.698430799995549,
+            "peak_rss": 629493760,
+            "parent_peak_rss": 519229440,
+            "encoder_peak_rss": 132616192,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        },
+        {
+          "baseline": {
+            "seconds": 0.686909299925901,
+            "peak_rss": 630874112,
+            "parent_peak_rss": 519069696,
+            "encoder_peak_rss": 134254592,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "candidate": {
+            "seconds": 0.5941765999887139,
+            "peak_rss": 630398976,
+            "parent_peak_rss": 519241728,
+            "encoder_peak_rss": 134201344,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        }
+      ],
+      "presentation_time_ratio": 0.8507308096843673,
+      "presentation_memory_ratio": 0.9985596761217658,
+      "presentation_cost_pass": true
     },
     {
       "clip": "fast",
@@ -551,7 +835,78 @@
         "segments": [],
         "fallback_count": 0,
         "pass": true
-      }
+      },
+      "presentation_pairs": [
+        {
+          "baseline": {
+            "seconds": 0.7132411999627948,
+            "peak_rss": 650268672,
+            "parent_peak_rss": 519098368,
+            "encoder_peak_rss": 134455296,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "candidate": {
+            "seconds": 0.5669324001064524,
+            "peak_rss": 626294784,
+            "parent_peak_rss": 519086080,
+            "encoder_peak_rss": 129142784,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        },
+        {
+          "candidate": {
+            "seconds": 0.6238946000812575,
+            "peak_rss": 628977664,
+            "parent_peak_rss": 519208960,
+            "encoder_peak_rss": 132050944,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "baseline": {
+            "seconds": 0.8239785000914708,
+            "peak_rss": 652124160,
+            "parent_peak_rss": 519430144,
+            "encoder_peak_rss": 134008832,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        },
+        {
+          "baseline": {
+            "seconds": 0.8023087000474334,
+            "peak_rss": 631267328,
+            "parent_peak_rss": 521011200,
+            "encoder_peak_rss": 134246400,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "candidate": {
+            "seconds": 0.6802003999473527,
+            "peak_rss": 628744192,
+            "parent_peak_rss": 519282688,
+            "encoder_peak_rss": 132280320,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        }
+      ],
+      "presentation_time_ratio": 0.7776241240365114,
+      "presentation_memory_ratio": 0.9645059983669367,
+      "presentation_cost_pass": true
     },
     {
       "clip": "empty",
@@ -563,8 +918,837 @@
         "segments": [],
         "fallback_count": 0,
         "pass": true
-      }
+      },
+      "presentation_pairs": [
+        {
+          "baseline": {
+            "seconds": 0.512790200067684,
+            "peak_rss": 636878848,
+            "parent_peak_rss": 518930432,
+            "encoder_peak_rss": 118210560,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "candidate": {
+            "seconds": 0.5391920999391004,
+            "peak_rss": 651960320,
+            "parent_peak_rss": 521293824,
+            "encoder_peak_rss": 133853184,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        },
+        {
+          "candidate": {
+            "seconds": 0.5279000999871641,
+            "peak_rss": 653533184,
+            "parent_peak_rss": 520728576,
+            "encoder_peak_rss": 134242304,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "baseline": {
+            "seconds": 0.4937818000325933,
+            "peak_rss": 631570432,
+            "parent_peak_rss": 521142272,
+            "encoder_peak_rss": 133894144,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        },
+        {
+          "baseline": {
+            "seconds": 0.5584460999816656,
+            "peak_rss": 652427264,
+            "parent_peak_rss": 519974912,
+            "encoder_peak_rss": 133869568,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "candidate": {
+            "seconds": 0.48285239993128926,
+            "peak_rss": 631414784,
+            "parent_peak_rss": 520835072,
+            "encoder_peak_rss": 133955584,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        }
+      ],
+      "presentation_time_ratio": 1.0294660465771104,
+      "presentation_memory_ratio": 1.0016950855076467,
+      "presentation_cost_pass": true
+    },
+    {
+      "clip": "opposing-crossing",
+      "quality": {
+        "frames": 150,
+        "invalid_boxes": 0,
+        "iou_fraction": 1.0,
+        "max_abs_lag": 0,
+        "segments": [],
+        "fallback_count": 0,
+        "pass": true
+      },
+      "presentation_pairs": [
+        {
+          "baseline": {
+            "seconds": 0.7724401999730617,
+            "peak_rss": 629563392,
+            "parent_peak_rss": 520503296,
+            "encoder_peak_rss": 132837376,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "candidate": {
+            "seconds": 0.6309593999758363,
+            "peak_rss": 630276096,
+            "parent_peak_rss": 519303168,
+            "encoder_peak_rss": 132878336,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        },
+        {
+          "candidate": {
+            "seconds": 0.5841417999472469,
+            "peak_rss": 629456896,
+            "parent_peak_rss": 519221248,
+            "encoder_peak_rss": 132612096,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "baseline": {
+            "seconds": 0.7275766999227926,
+            "peak_rss": 649953280,
+            "parent_peak_rss": 519516160,
+            "encoder_peak_rss": 132288512,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        },
+        {
+          "baseline": {
+            "seconds": 0.8312587999971583,
+            "peak_rss": 631312384,
+            "parent_peak_rss": 520105984,
+            "encoder_peak_rss": 134238208,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          },
+          "candidate": {
+            "seconds": 0.5791287000756711,
+            "peak_rss": 650485760,
+            "parent_peak_rss": 519192576,
+            "encoder_peak_rss": 132780032,
+            "frames": 150,
+            "width": 640,
+            "height": 360,
+            "fps": 30
+          }
+        }
+      ],
+      "presentation_time_ratio": 0.756229155302402,
+      "presentation_memory_ratio": 1.0008192588858078,
+      "presentation_cost_pass": true
     }
   ],
-  "quality_pass": true
+  "complete_benchmark": {
+    "kind": "complete-real-detector-and-tracker",
+    "device": "cpu",
+    "platform": "Windows",
+    "clips": [
+      {
+        "clip": "dense-flow",
+        "pairs": [
+          {
+            "baseline": {
+              "seconds": 17.048966799979098,
+              "peak_rss": 636334080,
+              "parent_peak_rss": 526372864,
+              "encoder_peak_rss": 133636096,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "candidate": {
+              "seconds": 16.70691920001991,
+              "peak_rss": 637468672,
+              "parent_peak_rss": 527241216,
+              "encoder_peak_rss": 134197248,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          },
+          {
+            "candidate": {
+              "seconds": 16.702414000057615,
+              "peak_rss": 598654976,
+              "parent_peak_rss": 527634432,
+              "encoder_peak_rss": 126230528,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "baseline": {
+              "seconds": 16.694993300014175,
+              "peak_rss": 624369664,
+              "parent_peak_rss": 527511552,
+              "encoder_peak_rss": 120184832,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          },
+          {
+            "baseline": {
+              "seconds": 16.858136599999852,
+              "peak_rss": 620072960,
+              "parent_peak_rss": 527966208,
+              "encoder_peak_rss": 133685248,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "candidate": {
+              "seconds": 17.170380200026557,
+              "peak_rss": 619376640,
+              "parent_peak_rss": 527634432,
+              "encoder_peak_rss": 116772864,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          }
+        ],
+        "time_ratio": 0.9910300050611796,
+        "memory_ratio": 1.0017830130990313,
+        "geometry_pass": true,
+        "raw_parity": true,
+        "pass": true
+      },
+      {
+        "clip": "dense-crossing",
+        "pairs": [
+          {
+            "baseline": {
+              "seconds": 16.963750700000674,
+              "peak_rss": 637353984,
+              "parent_peak_rss": 527912960,
+              "encoder_peak_rss": 133971968,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "candidate": {
+              "seconds": 16.813816000008956,
+              "peak_rss": 620539904,
+              "parent_peak_rss": 528879616,
+              "encoder_peak_rss": 116682752,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          },
+          {
+            "candidate": {
+              "seconds": 17.094231500057504,
+              "peak_rss": 600469504,
+              "parent_peak_rss": 529997824,
+              "encoder_peak_rss": 126504960,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "baseline": {
+              "seconds": 16.584961500018835,
+              "peak_rss": 621621248,
+              "parent_peak_rss": 530124800,
+              "encoder_peak_rss": 117022720,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          },
+          {
+            "baseline": {
+              "seconds": 16.704744299990125,
+              "peak_rss": 621596672,
+              "parent_peak_rss": 530063360,
+              "encoder_peak_rss": 117178368,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "candidate": {
+              "seconds": 16.866460400051437,
+              "peak_rss": 640024576,
+              "parent_peak_rss": 530014208,
+              "encoder_peak_rss": 133767168,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          }
+        ],
+        "time_ratio": 1.0096808485755395,
+        "memory_ratio": 1.004190123647207,
+        "geometry_pass": true,
+        "raw_parity": true,
+        "pass": true
+      },
+      {
+        "clip": "occlusion",
+        "pairs": [
+          {
+            "baseline": {
+              "seconds": 16.78820780001115,
+              "peak_rss": 623652864,
+              "parent_peak_rss": 529997824,
+              "encoder_peak_rss": 117096448,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "candidate": {
+              "seconds": 16.848250799928792,
+              "peak_rss": 621670400,
+              "parent_peak_rss": 530120704,
+              "encoder_peak_rss": 127438848,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          },
+          {
+            "candidate": {
+              "seconds": 16.525484699988738,
+              "peak_rss": 642060288,
+              "parent_peak_rss": 529870848,
+              "encoder_peak_rss": 134225920,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "baseline": {
+              "seconds": 16.914103100076318,
+              "peak_rss": 640892928,
+              "parent_peak_rss": 529711104,
+              "encoder_peak_rss": 134139904,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          },
+          {
+            "baseline": {
+              "seconds": 16.81601739989128,
+              "peak_rss": 623824896,
+              "parent_peak_rss": 529940480,
+              "encoder_peak_rss": 117084160,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "candidate": {
+              "seconds": 17.17461430002004,
+              "peak_rss": 621002752,
+              "parent_peak_rss": 530223104,
+              "encoder_peak_rss": 114642944,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          }
+        ],
+        "time_ratio": 1.0019168272291226,
+        "memory_ratio": 1.0018214587008205,
+        "geometry_pass": true,
+        "raw_parity": true,
+        "pass": true
+      },
+      {
+        "clip": "cut",
+        "pairs": [
+          {
+            "baseline": {
+              "seconds": 16.961506900028326,
+              "peak_rss": 639934464,
+              "parent_peak_rss": 530030592,
+              "encoder_peak_rss": 133332992,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "candidate": {
+              "seconds": 16.921130100032315,
+              "peak_rss": 638287872,
+              "parent_peak_rss": 530079744,
+              "encoder_peak_rss": 134049792,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          },
+          {
+            "candidate": {
+              "seconds": 19.973409199970774,
+              "peak_rss": 637554688,
+              "parent_peak_rss": 530169856,
+              "encoder_peak_rss": 134606848,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "baseline": {
+              "seconds": 32.12643639999442,
+              "peak_rss": 640675840,
+              "parent_peak_rss": 529977344,
+              "encoder_peak_rss": 134160384,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          },
+          {
+            "baseline": {
+              "seconds": 31.64051549998112,
+              "peak_rss": 630259712,
+              "parent_peak_rss": 530272256,
+              "encoder_peak_rss": 126291968,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "candidate": {
+              "seconds": 30.637871099985205,
+              "peak_rss": 636375040,
+              "parent_peak_rss": 538001408,
+              "encoder_peak_rss": 129028096,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          }
+        ],
+        "time_ratio": 0.6312605494680608,
+        "memory_ratio": 0.9962727359907937,
+        "geometry_pass": true,
+        "raw_parity": true,
+        "pass": true
+      },
+      {
+        "clip": "fast",
+        "pairs": [
+          {
+            "baseline": {
+              "seconds": 31.334094600053504,
+              "peak_rss": 636743680,
+              "parent_peak_rss": 538574848,
+              "encoder_peak_rss": 133652480,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "candidate": {
+              "seconds": 31.637108900002204,
+              "peak_rss": 632455168,
+              "parent_peak_rss": 538472448,
+              "encoder_peak_rss": 125960192,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          },
+          {
+            "candidate": {
+              "seconds": 32.22727620007936,
+              "peak_rss": 629329920,
+              "parent_peak_rss": 533426176,
+              "encoder_peak_rss": 125931520,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "baseline": {
+              "seconds": 30.892240699962713,
+              "peak_rss": 639213568,
+              "parent_peak_rss": 535179264,
+              "encoder_peak_rss": 132861952,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          },
+          {
+            "baseline": {
+              "seconds": 30.908657599939033,
+              "peak_rss": 617336832,
+              "parent_peak_rss": 533954560,
+              "encoder_peak_rss": 134197248,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "candidate": {
+              "seconds": 31.825760500039905,
+              "peak_rss": 630161408,
+              "parent_peak_rss": 533749760,
+              "encoder_peak_rss": 123662336,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          }
+        ],
+        "time_ratio": 1.029671392137803,
+        "memory_ratio": 0.9894270079073165,
+        "geometry_pass": true,
+        "raw_parity": true,
+        "pass": true
+      },
+      {
+        "clip": "empty",
+        "pairs": [
+          {
+            "baseline": {
+              "seconds": 32.08072210010141,
+              "peak_rss": 615768064,
+              "parent_peak_rss": 533065728,
+              "encoder_peak_rss": 121548800,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "candidate": {
+              "seconds": 31.48378829995636,
+              "peak_rss": 660910080,
+              "parent_peak_rss": 529702912,
+              "encoder_peak_rss": 133828608,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          },
+          {
+            "candidate": {
+              "seconds": 31.9160467000911,
+              "peak_rss": 630521856,
+              "parent_peak_rss": 531734528,
+              "encoder_peak_rss": 124280832,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "baseline": {
+              "seconds": 31.626218699966557,
+              "peak_rss": 652292096,
+              "parent_peak_rss": 529477632,
+              "encoder_peak_rss": 123936768,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          },
+          {
+            "baseline": {
+              "seconds": 31.513513599988073,
+              "peak_rss": 648949760,
+              "parent_peak_rss": 531456000,
+              "encoder_peak_rss": 133910528,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "candidate": {
+              "seconds": 32.12000160000753,
+              "peak_rss": 662605824,
+              "parent_peak_rss": 531169280,
+              "encoder_peak_rss": 134012928,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          }
+        ],
+        "time_ratio": 1.009164168592967,
+        "memory_ratio": 1.015811517667079,
+        "geometry_pass": true,
+        "raw_parity": true,
+        "pass": true
+      },
+      {
+        "clip": "opposing-crossing",
+        "pairs": [
+          {
+            "baseline": {
+              "seconds": 32.1857077999739,
+              "peak_rss": 621101056,
+              "parent_peak_rss": 523083776,
+              "encoder_peak_rss": 132587520,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "candidate": {
+              "seconds": 30.522650300059468,
+              "peak_rss": 633765888,
+              "parent_peak_rss": 524402688,
+              "encoder_peak_rss": 132501504,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          },
+          {
+            "candidate": {
+              "seconds": 31.31668379995972,
+              "peak_rss": 623218688,
+              "parent_peak_rss": 524648448,
+              "encoder_peak_rss": 133320704,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "baseline": {
+              "seconds": 30.427286199992523,
+              "peak_rss": 631136256,
+              "parent_peak_rss": 524750848,
+              "encoder_peak_rss": 130052096,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          },
+          {
+            "baseline": {
+              "seconds": 30.85412150004413,
+              "peak_rss": 635207680,
+              "parent_peak_rss": 524898304,
+              "encoder_peak_rss": 133423104,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            },
+            "candidate": {
+              "seconds": 31.180150800035335,
+              "peak_rss": 625590272,
+              "parent_peak_rss": 525881344,
+              "encoder_peak_rss": 133783552,
+              "raw_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+              "geometry": {
+                "frames": 150,
+                "fps": 30.0,
+                "width": 640,
+                "height": 360
+              }
+            }
+          }
+        ],
+        "time_ratio": 1.0105667989928262,
+        "memory_ratio": 0.9977302037657984,
+        "geometry_pass": true,
+        "raw_parity": true,
+        "pass": true
+      }
+    ],
+    "pass": true,
+    "weights_sha256": "63bd56f75cfc33ec68029bb08db621fc53bbfa539d8ba475f13ea56af7bbe579",
+    "confidence_threshold": 0.25
+  },
+  "quality_pass": true,
+  "initial_six_manifest_sha256": "543df6a7f1708973bf66f7b11e76eacf4bc2342da742359ffda4473472b6f8a9",
+  "processing_cost_gate": "pass",
+  "pending": [
+    "gateway RSS and UI latency under active real-model workload",
+    "separate real enrichment cost",
+    "representative real-video enrichment: synthetic scenes produced no model tracks"
+  ]
 }

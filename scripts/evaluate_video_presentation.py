@@ -108,10 +108,90 @@ def render_measure(clip,folder,candidate):
             subprocess.run(["ffmpeg","-nostdin","-y","-i",str(raw),"-c:v","libx264","-movflags","+faststart",str(output)],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,check=True,timeout=60)
             elapsed=time.perf_counter()-started
         return {"seconds":elapsed,"peak_rss":rss.peak,"parent_peak_rss":rss.parent_peak,"encoder_peak_rss":rss.encoder_peak,"frames":index,"width":clip["width"],"height":clip["height"],"fps":clip["fps"]}
+
+
+def aggregate_paired_cost(pairs,clip):
+    """All three pairs and both arms must succeed; no dropped outliers or failed runs."""
+    if len(pairs)!=3:return {"pass":False,"reason":"incomplete_pairs"}
+    for pair in pairs:
+        for arm in ("baseline","candidate"):
+            run=pair.get(arm,{})
+            if "error" in run or not isinstance(run.get("seconds"),(int,float)) or not np.isfinite(run["seconds"]) or run["seconds"]<=0 or not isinstance(run.get("peak_rss"),(int,float)) or run["peak_rss"]<=0:return {"pass":False,"reason":"invalid_run"}
+    baseline=float(np.median([p["baseline"]["seconds"] for p in pairs]))
+    candidate=float(np.median([p["candidate"]["seconds"] for p in pairs]))
+    memory=max(p["candidate"]["peak_rss"] for p in pairs)/max(p["baseline"]["peak_rss"] for p in pairs)
+    geometry=True;parity=True
+    for pair in pairs:
+        for arm in ("baseline","candidate"):
+            g=pair[arm].get("geometry",pair[arm])
+            geometry=geometry and all(g.get(k)==clip[k] for k in ("frames","width","height")) and abs(g.get("fps",0)-clip["fps"])<1e-6
+        if "raw_sha256" in pair["baseline"] or "raw_sha256" in pair["candidate"]:parity=parity and pair["baseline"].get("raw_sha256")==pair["candidate"].get("raw_sha256")
+    return {"time_ratio":candidate/baseline,"memory_ratio":memory,"geometry_pass":geometry,"raw_parity":parity,"pass":candidate<=baseline*1.1 and memory<=1.1 and geometry and parity}
+
+def full_model_measure(clip,folder,candidate,detector,settings):
+    import shutil,logging
+    from app.domain.models import VideoMetadata
+    from app.services.video_job_store import VideoJobStore
+    from app.services.video_artifacts import VideoArtifactStore
+    from app.services.video_processing import VideoProcessor
+    import importlib.util
+    spec=importlib.util.spec_from_file_location("frozen_renderer_008",ROOT/"tests/fixtures/video_presentation/legacy_renderer.py")
+    legacy=importlib.util.module_from_spec(spec);spec.loader.exec_module(legacy)
+    logger=logging.getLogger("benchmark008");logger.handlers=[logging.NullHandler()];logger.propagate=False
+    with tempfile.TemporaryDirectory(prefix="full008-") as temporary:
+        root=Path(temporary);artifacts=VideoArtifactStore(root/"media");store=VideoJobStore(root/"jobs.sqlite",3600,2)
+        staged=artifacts.staged_input_path();shutil.copyfile(folder/clip["file"],staged)
+        metadata=VideoMetadata("video/mp4","mp4","mpeg4",staged.stat().st_size,clip["frames"]/clip["fps"],clip["width"],clip["height"],clip["fps"],clip["frames"])
+        job=store.create("benchmark",metadata,staged);job=store.dequeue()
+        processor=(VideoProcessor if candidate else legacy.VideoProcessor)(detector,store,artifacts,settings.ffmpeg_executable,settings.video_job_timeout_seconds,logger)
+        started=time.perf_counter()
+        try:
+            with RSSMonitor() as rss:processor.process(job)
+            elapsed=time.perf_counter()-started;finished=store.get(job.job_id,"benchmark")
+            if finished.status.value!="completed" or not finished.output_path:raise RuntimeError("benchmark_not_completed")
+            capture=cv2.VideoCapture(str(finished.output_path))
+            measured={"frames":int(capture.get(cv2.CAP_PROP_FRAME_COUNT)),"fps":capture.get(cv2.CAP_PROP_FPS),"width":int(capture.get(cv2.CAP_PROP_FRAME_WIDTH)),"height":int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))}
+            capture.release()
+            # Fingerprint raw rows only; IDs, timestamps and paths are excluded.
+            rows=store._connection.execute("SELECT frame_index,track_id,class_id,class_name,confidence,x_min,y_min,x_max,y_max FROM video_detections WHERE job_id=? ORDER BY frame_index,track_id,class_id",(job.job_id,)).fetchall()
+            digest=hashlib.sha256(json.dumps([tuple(r) for r in rows],separators=(",",":")).encode()).hexdigest()
+            return {"seconds":elapsed,"peak_rss":rss.peak,"parent_peak_rss":rss.parent_peak,"encoder_peak_rss":rss.encoder_peak,"raw_sha256":digest,"geometry":measured}
+        finally:store.release(job.job_id);store._connection.close();artifacts.close()
+
+def real_model_benchmark(manifest,folder):
+    import contextlib,io,platform
+    from app.core.config import Settings
+    from app.adapters.yolov10_detector import YOLOv10Detector
+    settings=Settings();result={"kind":"complete-real-detector-and-tracker","device":settings.inference_device,"platform":platform.system(),"clips":[],"pass":False}
+    try:
+        weights=settings.model_weights_path
+        result["weights_sha256"]=hashlib.sha256(weights.read_bytes()).hexdigest()
+        result["confidence_threshold"]=settings.model_confidence_threshold
+        with contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):
+            detector=YOLOv10Detector(weights,settings.model_confidence_threshold,settings.inference_device,settings.ultralytics_path)
+            detector.detect(np.zeros((360,640,3),np.uint8))
+        for clip in manifest["clips"]:
+            pairs=[]
+            for repeat in range(3):
+                pair={}
+                for arm in (["baseline","candidate"] if repeat%2==0 else ["candidate","baseline"]):
+                    with contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):
+                        detector.detect(np.zeros((360,640,3),np.uint8))
+                        pair[arm]=full_model_measure(clip,folder,arm=="candidate",detector,settings)
+                pairs.append(pair)
+                print(json.dumps({"clip":clip["id"],"pair":repeat+1,"benchmark":"complete"}),flush=True)
+            result["clips"].append({"clip":clip["id"],"pairs":pairs,**aggregate_paired_cost(pairs,clip)})
+        result["pass"]=len(result["clips"])==len(manifest["clips"]) and all(c["pass"] for c in result["clips"])
+    except Exception as error:
+        result["failure_type"]=type(error).__name__
+        result["incomplete"]=True
+    return result
+
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--manifest",type=Path,required=True);parser.add_argument("--output",type=Path,required=True)
     parser.add_argument("--benchmark",action="store_true")
+    parser.add_argument("--real-model-benchmark",action="store_true")
     args=parser.parse_args();manifest=json.loads(args.manifest.read_text(encoding="utf-8"))
     result={"protocol":"008-v1","profile":"gated-ema-v1","kind":"synthetic-presentation","real_model_benchmark":False,"full_model_gate":"pending","manifest_sha256":hashlib.sha256(args.manifest.read_bytes()).hexdigest(),"clips":[]}
     for clip in manifest["clips"]:
@@ -127,7 +207,12 @@ def main():
             item["pairs"]=pairs;item["time_ratio"]=candidate_time/baseline_time;item["rss_ratio"]=candidate_rss/baseline_rss
             item["presentation_cost_pass"]=item["time_ratio"]<=1.1 and item["rss_ratio"]<=1.1
         result["clips"].append(item)
+    if args.real_model_benchmark:
+        result["complete_benchmark"]=real_model_benchmark(manifest,args.manifest.parent)
+        result["real_model_benchmark"]=True
+        result["processing_cost_gate"]="pass" if result["complete_benchmark"]["pass"] else "failed_or_incomplete"
+        result["full_model_gate"]="pending_auxiliary_measurements"
     result["quality_pass"]=all(c["quality"]["pass"] for c in result["clips"])
     args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
-    print(json.dumps({"quality_pass":result["quality_pass"],"clips":len(result["clips"]),"full_model_gate":"pending"}))
+    print(json.dumps({"quality_pass":result["quality_pass"],"clips":len(result["clips"]),"full_model_gate":result["full_model_gate"]}))
 if __name__=="__main__":main()
