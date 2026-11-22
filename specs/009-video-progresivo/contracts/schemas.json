@@ -1,0 +1,900 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://observatorio-vial.invalid/specs/009-video-progresivo/contracts/schemas.json",
+  "$defs": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]{1,64}$"
+        },
+        "message": {
+          "type": "string"
+        },
+        "request_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "request_id"
+      ],
+      "additionalProperties": false
+    },
+    "BoundingBox": {
+      "type": "object",
+      "properties": {
+        "x_min": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "y_min": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "x_max": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "y_max": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "x_min",
+        "y_min",
+        "x_max",
+        "y_max"
+      ],
+      "additionalProperties": false
+    },
+    "SourceTimeline": {
+      "type": "object",
+      "properties": {
+        "timebase": {
+          "const": "source-pts"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "display_width": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "display_height": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "pixel_to_display": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 6,
+          "maxItems": 6
+        },
+        "duration_us": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duration_confirmed": {
+          "type": "boolean"
+        },
+        "pts_origin": {
+          "type": "string",
+          "pattern": "^-?[0-9]{1,20}$"
+        },
+        "time_base_num": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "time_base_den": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "playback_offset_us": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "timebase",
+        "width",
+        "height",
+        "display_width",
+        "display_height",
+        "pixel_to_display",
+        "duration_us",
+        "duration_confirmed",
+        "pts_origin",
+        "time_base_num",
+        "time_base_den",
+        "playback_offset_us"
+      ],
+      "additionalProperties": false
+    },
+    "MediaSource": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "pattern": "^/api/v1/video-jobs/[A-Za-z0-9_-]{1,128}/playback/source$"
+        },
+        "media_type": {
+          "const": "video/mp4"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "url",
+        "media_type",
+        "size_bytes"
+      ],
+      "additionalProperties": false
+    },
+    "EnrichmentSummary": {
+      "type": "object",
+      "properties": {
+        "revision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "status": {
+          "enum": [
+            "discovering",
+            "processing",
+            "complete",
+            "partial",
+            "failed",
+            "not_applicable"
+          ]
+        },
+        "source_closed": {
+          "type": "boolean"
+        },
+        "discovered_units": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "provisional_ready_units": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "terminal_units": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "total_units": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "revision",
+        "status",
+        "source_closed",
+        "discovered_units",
+        "provisional_ready_units",
+        "terminal_units",
+        "total_units"
+      ],
+      "additionalProperties": false
+    },
+    "PlaybackState": {
+      "type": "object",
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+        },
+        "generation": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "analysis_state": {
+          "enum": [
+            "queued",
+            "analyzing",
+            "complete",
+            "partial_failed"
+          ]
+        },
+        "export_state": {
+          "enum": [
+            "waiting",
+            "encoding",
+            "ready",
+            "failed"
+          ]
+        },
+        "frames_processed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "frames_published": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "available_until_us": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "last_frame_start_us": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "media_available": {
+          "type": "boolean"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MediaSource"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "timeline": {
+          "$ref": "#/$defs/SourceTimeline"
+        },
+        "buffer_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 30
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "enrichment": {
+          "$ref": "#/$defs/EnrichmentSummary"
+        }
+      },
+      "required": [
+        "job_id",
+        "generation",
+        "revision",
+        "analysis_state",
+        "export_state",
+        "frames_processed",
+        "frames_published",
+        "available_until_us",
+        "last_frame_start_us",
+        "media_available",
+        "source",
+        "timeline",
+        "buffer_seconds",
+        "expires_at",
+        "error_code",
+        "enrichment"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "media_available": {
+                "const": true
+              }
+            },
+            "required": [
+              "media_available"
+            ]
+          },
+          "then": {
+            "properties": {
+              "source": {
+                "$ref": "#/$defs/MediaSource"
+              },
+              "last_frame_start_us": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "frames_published": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "available_until_us": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Observation": {
+      "type": "object",
+      "properties": {
+        "ordinal": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "track_id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "class_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "class_name": {
+          "type": "string"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "raw_bbox": {
+          "$ref": "#/$defs/BoundingBox"
+        },
+        "display_bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BoundingBox"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "ordinal",
+        "track_id",
+        "class_id",
+        "class_name",
+        "confidence",
+        "raw_bbox",
+        "display_bbox"
+      ],
+      "additionalProperties": false
+    },
+    "FrameSlice": {
+      "type": "object",
+      "properties": {
+        "frame_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "start_us": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "end_us": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "pts": {
+          "type": "string",
+          "pattern": "^-?[0-9]{1,20}$"
+        },
+        "observation_offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "observation_total": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "observations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Observation"
+          },
+          "maxItems": 1000
+        }
+      },
+      "required": [
+        "frame_index",
+        "start_us",
+        "end_us",
+        "pts",
+        "observation_offset",
+        "observation_total",
+        "observations"
+      ],
+      "additionalProperties": false
+    },
+    "FramePage": {
+      "type": "object",
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+        },
+        "generation": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "snapshot": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "from_us": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "to_us": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "frames": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FrameSlice"
+          },
+          "minItems": 1,
+          "maxItems": 100
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,512}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "job_id",
+        "generation",
+        "snapshot",
+        "from_us",
+        "to_us",
+        "frames",
+        "next_cursor"
+      ],
+      "additionalProperties": false
+    },
+    "Attribute": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence_id": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "name",
+        "value",
+        "confidence",
+        "evidence_id"
+      ],
+      "additionalProperties": false
+    },
+    "Attributes": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "pending",
+            "completed",
+            "partial",
+            "failed",
+            "not_applicable"
+          ]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Attribute"
+          }
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "items",
+        "error_code"
+      ],
+      "additionalProperties": false
+    },
+    "Plate": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "pending",
+            "read",
+            "unreadable",
+            "not_detected",
+            "failed",
+            "not_applicable"
+          ]
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ocr_confidence": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "used_enhancement": {
+          "type": "boolean"
+        },
+        "policy_id": {
+          "type": "string"
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "maxItems": 20,
+          "uniqueItems": true
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "text",
+        "ocr_confidence",
+        "used_enhancement",
+        "policy_id",
+        "evidence_ids",
+        "error_code"
+      ],
+      "additionalProperties": false
+    },
+    "Evidence": {
+      "type": "object",
+      "properties": {
+        "evidence_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "frame_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "time_us": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "vehicle_bbox": {
+          "$ref": "#/$defs/BoundingBox"
+        },
+        "provisional": {
+          "type": "boolean"
+        },
+        "vehicle_url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^/api/v1/video-jobs/[A-Za-z0-9_-]+/playback/tracks/[1-9][0-9]*/evidence/[A-Za-z0-9_-]+/vehicle$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "plate_url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^/api/v1/video-jobs/[A-Za-z0-9_-]+/playback/tracks/[1-9][0-9]*/evidence/[A-Za-z0-9_-]+/plate$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "frame_index",
+        "time_us",
+        "vehicle_bbox",
+        "provisional",
+        "vehicle_url",
+        "plate_url",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "TrackResult": {
+      "type": "object",
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+        },
+        "generation": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "unit_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "track_id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "discovery_ordinal": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "class_name": {
+          "type": "string"
+        },
+        "first_seen_us": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "last_seen_us": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "state": {
+          "enum": [
+            "waiting_evidence",
+            "queued",
+            "processing",
+            "ready",
+            "partial",
+            "failed",
+            "not_applicable"
+          ]
+        },
+        "final": {
+          "type": "boolean"
+        },
+        "result_revision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "evidence_revision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "attributes": {
+          "$ref": "#/$defs/Attributes"
+        },
+        "plate": {
+          "$ref": "#/$defs/Plate"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "maxItems": 21
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "job_id",
+        "generation",
+        "unit_id",
+        "track_id",
+        "discovery_ordinal",
+        "class_name",
+        "first_seen_us",
+        "last_seen_us",
+        "state",
+        "final",
+        "result_revision",
+        "evidence_revision",
+        "attributes",
+        "plate",
+        "evidence",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "TrackPage": {
+      "type": "object",
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+        },
+        "generation": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "snapshot": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TrackResult"
+          },
+          "maxItems": 100
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,512}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "job_id",
+        "generation",
+        "snapshot",
+        "items",
+        "next_cursor"
+      ],
+      "additionalProperties": false
+    },
+    "VideoJobAccepted": {
+      "type": "object",
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+        },
+        "status": {
+          "const": "queued"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "job_id",
+        "status",
+        "created_at"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

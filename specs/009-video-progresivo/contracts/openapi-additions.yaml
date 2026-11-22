@@ -1,0 +1,482 @@
+openapi: 3.1.0
+info:
+  title: Video progresivo — adiciones 009
+  version: 0.1.0
+  description: Contrato de diseño, no API ya implementada. Combinar con API vigente sin sustituir sus operaciones.
+security:
+- ApiKey: []
+paths:
+  /api/v1/video-jobs:
+    post:
+      operationId: createProgressiveVideoJob
+      summary: Extensión opt-in del POST actual; ausencia del parámetro mantiene legacy
+      parameters:
+      - name: presentation
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - progressive
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - video
+              properties:
+                video:
+                  type: string
+                  format: binary
+      responses:
+        '202':
+          description: Aceptado con esquema legacy
+          content:
+            application/json:
+              schema:
+                $ref: ./schemas.json#/$defs/VideoJobAccepted
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '410':
+          $ref: '#/components/responses/Error'
+        '422':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+        '504':
+          $ref: '#/components/responses/Error'
+  /api/v1/video-jobs/{job_id}/playback:
+    parameters:
+    - name: job_id
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$
+    get:
+      operationId: getVideoPlayback
+      responses:
+        '200':
+          description: Estado progresivo, aun en cola
+          content:
+            application/json:
+              schema:
+                $ref: ./schemas.json#/$defs/PlaybackState
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '410':
+          $ref: '#/components/responses/Error'
+        '422':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+        '504':
+          $ref: '#/components/responses/Error'
+    delete:
+      operationId: withdrawVideoPlayback
+      responses:
+        '204':
+          description: Retirado; idempotente para el propietario conocido
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '410':
+          $ref: '#/components/responses/Error'
+        '422':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+        '504':
+          $ref: '#/components/responses/Error'
+  /api/v1/video-jobs/{job_id}/playback/source:
+    parameters:
+    - name: job_id
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$
+    get:
+      operationId: getVideoPlaybackSource
+      parameters:
+      - name: Range
+        in: header
+        schema:
+          type: string
+      - name: If-Range
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: MP4 original autorizado; la frontera temporal se aplica en el reproductor
+          headers:
+            Accept-Ranges:
+              schema:
+                const: bytes
+            Content-Range:
+              schema:
+                type: string
+            Content-Length:
+              schema:
+                type: integer
+                minimum: 0
+                maximum: 9007199254740991
+            ETag:
+              schema:
+                type: string
+            Last-Modified:
+              schema:
+                type: string
+            Cache-Control:
+              schema:
+                const: no-store
+          content:
+            video/mp4:
+              schema:
+                type: string
+                format: binary
+        '206':
+          description: MP4 original autorizado; la frontera temporal se aplica en el reproductor
+          headers:
+            Accept-Ranges:
+              schema:
+                const: bytes
+            Content-Range:
+              schema:
+                type: string
+            Content-Length:
+              schema:
+                type: integer
+                minimum: 0
+                maximum: 9007199254740991
+            ETag:
+              schema:
+                type: string
+            Last-Modified:
+              schema:
+                type: string
+            Cache-Control:
+              schema:
+                const: no-store
+          content:
+            video/mp4:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '410':
+          $ref: '#/components/responses/Error'
+        '416':
+          description: Range inválido o fuera del archivo
+          content:
+            application/json:
+              schema:
+                $ref: ./schemas.json#/$defs/Error
+        '422':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+        '504':
+          $ref: '#/components/responses/Error'
+    head:
+      operationId: headVideoPlaybackSource
+      responses:
+        '200':
+          description: Mismos metadatos de fuente sin cuerpo
+          headers:
+            Accept-Ranges:
+              schema:
+                const: bytes
+            Content-Range:
+              schema:
+                type: string
+            Content-Length:
+              schema:
+                type: integer
+                minimum: 0
+                maximum: 9007199254740991
+            ETag:
+              schema:
+                type: string
+            Last-Modified:
+              schema:
+                type: string
+            Cache-Control:
+              schema:
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '410':
+          $ref: '#/components/responses/Error'
+        '422':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+        '504':
+          $ref: '#/components/responses/Error'
+  /api/v1/video-jobs/{job_id}/playback/frames:
+    parameters:
+    - name: job_id
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$
+    get:
+      operationId: getVideoPlaybackFrames
+      parameters:
+      - name: from_us
+        in: query
+        required: true
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+      - name: to_us
+        in: query
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+      - name: snapshot
+        in: query
+        required: true
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+          pattern: ^[A-Za-z0-9_-]{1,512}$
+      responses:
+        '200':
+          description: Página de cuadros y observaciones sin truncar
+          content:
+            application/json:
+              schema:
+                $ref: ./schemas.json#/$defs/FramePage
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '410':
+          $ref: '#/components/responses/Error'
+        '422':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+        '504':
+          $ref: '#/components/responses/Error'
+  /api/v1/video-jobs/{job_id}/playback/tracks:
+    parameters:
+    - name: job_id
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$
+    get:
+      operationId: getVideoPlaybackTracks
+      parameters:
+      - name: snapshot
+        in: query
+        required: true
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+          pattern: ^[A-Za-z0-9_-]{1,512}$
+      responses:
+        '200':
+          description: Página ligada a enrichment_revision
+          content:
+            application/json:
+              schema:
+                $ref: ./schemas.json#/$defs/TrackPage
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '410':
+          $ref: '#/components/responses/Error'
+        '422':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+        '504':
+          $ref: '#/components/responses/Error'
+  /api/v1/video-jobs/{job_id}/playback/tracks/{track_id}:
+    parameters:
+    - name: job_id
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$
+    - name: track_id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+    get:
+      operationId: getVideoPlaybackTrack
+      responses:
+        '200':
+          description: Resultado vigente, incluido pending
+          content:
+            application/json:
+              schema:
+                $ref: ./schemas.json#/$defs/TrackResult
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '410':
+          $ref: '#/components/responses/Error'
+        '422':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+        '504':
+          $ref: '#/components/responses/Error'
+  /api/v1/video-jobs/{job_id}/playback/tracks/{track_id}/evidence/{evidence_id}/{kind}:
+    parameters:
+    - name: job_id
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$
+    - name: track_id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+    - name: evidence_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    - name: kind
+      in: path
+      required: true
+      schema:
+        enum:
+        - vehicle
+        - plate
+    get:
+      operationId: getVideoPlaybackEvidence
+      responses:
+        '200':
+          description: Recorte original privado referenciado por TrackResult
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '409':
+          $ref: '#/components/responses/Error'
+        '410':
+          $ref: '#/components/responses/Error'
+        '422':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+        '504':
+          $ref: '#/components/responses/Error'
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  responses:
+    Error:
+      description: Error seguro; código y semántica en README.md
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas.json#/$defs/Error

@@ -1,0 +1,218 @@
+[
+  {
+    "name": "playing_available_until_42",
+    "schema": "PlaybackState",
+    "value": {
+      "job_id": "11111111-1111-4111-8111-111111111111",
+      "generation": "22222222-2222-4222-8222-222222222222",
+      "revision": 84,
+      "analysis_state": "analyzing",
+      "export_state": "waiting",
+      "frames_processed": 1261,
+      "frames_published": 1260,
+      "available_until_us": 42000000,
+      "last_frame_start_us": 41966667,
+      "media_available": true,
+      "source": {
+        "url": "/api/v1/video-jobs/11111111-1111-4111-8111-111111111111/playback/source",
+        "media_type": "video/mp4",
+        "size_bytes": 20000000
+      },
+      "timeline": {
+        "timebase": "source-pts",
+        "width": 1920,
+        "height": 1080,
+        "display_width": 1920,
+        "display_height": 1080,
+        "pixel_to_display": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "duration_us": 120000000,
+        "duration_confirmed": true,
+        "pts_origin": "0",
+        "time_base_num": 1,
+        "time_base_den": 90000,
+        "playback_offset_us": 0
+      },
+      "buffer_seconds": 5,
+      "expires_at": "2026-11-22T23:00:00Z",
+      "error_code": null,
+      "enrichment": {
+        "revision": 6,
+        "status": "discovering",
+        "source_closed": false,
+        "discovered_units": 10,
+        "provisional_ready_units": 3,
+        "terminal_units": 0,
+        "total_units": null
+      }
+    }
+  },
+  {
+    "name": "technical_failure_preserves_prefix",
+    "schema": "PlaybackState",
+    "value": {
+      "job_id": "11111111-1111-4111-8111-111111111111",
+      "generation": "22222222-2222-4222-8222-222222222222",
+      "revision": 84,
+      "analysis_state": "partial_failed",
+      "export_state": "waiting",
+      "frames_processed": 1261,
+      "frames_published": 1260,
+      "available_until_us": 42000000,
+      "last_frame_start_us": 41966667,
+      "media_available": true,
+      "source": {
+        "url": "/api/v1/video-jobs/11111111-1111-4111-8111-111111111111/playback/source",
+        "media_type": "video/mp4",
+        "size_bytes": 20000000
+      },
+      "timeline": {
+        "timebase": "source-pts",
+        "width": 1920,
+        "height": 1080,
+        "display_width": 1920,
+        "display_height": 1080,
+        "pixel_to_display": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "duration_us": 120000000,
+        "duration_confirmed": true,
+        "pts_origin": "0",
+        "time_base_num": 1,
+        "time_base_den": 90000,
+        "playback_offset_us": 0
+      },
+      "buffer_seconds": 5,
+      "expires_at": "2026-11-22T23:00:00Z",
+      "error_code": "job_timeout",
+      "enrichment": {
+        "revision": 6,
+        "status": "processing",
+        "source_closed": true,
+        "discovered_units": 10,
+        "provisional_ready_units": 3,
+        "terminal_units": 0,
+        "total_units": 10
+      }
+    }
+  },
+  {
+    "name": "empty_frame_is_confirmed",
+    "schema": "FramePage",
+    "value": {
+      "job_id": "11111111-1111-4111-8111-111111111111",
+      "generation": "22222222-2222-4222-8222-222222222222",
+      "snapshot": 84,
+      "from_us": 1000000,
+      "to_us": 1033333,
+      "frames": [
+        {
+          "frame_index": 30,
+          "start_us": 1000000,
+          "end_us": 1033333,
+          "pts": "90000",
+          "observation_offset": 0,
+          "observation_total": 0,
+          "observations": []
+        }
+      ],
+      "next_cursor": null
+    }
+  },
+  {
+    "name": "track_pending_is_not_missing",
+    "schema": "TrackResult",
+    "value": {
+      "job_id": "11111111-1111-4111-8111-111111111111",
+      "generation": "22222222-2222-4222-8222-222222222222",
+      "unit_id": "33333333-3333-4333-8333-333333333333",
+      "track_id": 7,
+      "discovery_ordinal": 2,
+      "class_name": "car",
+      "first_seen_us": 10000000,
+      "last_seen_us": 12000000,
+      "state": "queued",
+      "final": false,
+      "result_revision": 1,
+      "evidence_revision": 1,
+      "attributes": {
+        "status": "pending",
+        "items": [],
+        "error_code": null
+      },
+      "plate": {
+        "status": "pending",
+        "text": null,
+        "ocr_confidence": null,
+        "used_enhancement": false,
+        "policy_id": "video-legacy-v1",
+        "evidence_ids": [],
+        "error_code": null
+      },
+      "evidence": [],
+      "expires_at": "2026-11-22T23:00:00Z"
+    }
+  },
+  {
+    "name": "one_pending_track",
+    "schema": "TrackPage",
+    "value": {
+      "job_id": "11111111-1111-4111-8111-111111111111",
+      "generation": "22222222-2222-4222-8222-222222222222",
+      "snapshot": 6,
+      "items": [
+        {
+          "job_id": "11111111-1111-4111-8111-111111111111",
+          "generation": "22222222-2222-4222-8222-222222222222",
+          "unit_id": "33333333-3333-4333-8333-333333333333",
+          "track_id": 7,
+          "discovery_ordinal": 2,
+          "class_name": "car",
+          "first_seen_us": 10000000,
+          "last_seen_us": 12000000,
+          "state": "queued",
+          "final": false,
+          "result_revision": 1,
+          "evidence_revision": 1,
+          "attributes": {
+            "status": "pending",
+            "items": [],
+            "error_code": null
+          },
+          "plate": {
+            "status": "pending",
+            "text": null,
+            "ocr_confidence": null,
+            "used_enhancement": false,
+            "policy_id": "video-legacy-v1",
+            "evidence_ids": [],
+            "error_code": null
+          },
+          "evidence": [],
+          "expires_at": "2026-11-22T23:00:00Z"
+        }
+      ],
+      "next_cursor": null
+    }
+  },
+  {
+    "name": "accepted_progressive_legacy_shape",
+    "schema": "VideoJobAccepted",
+    "value": {
+      "job_id": "11111111-1111-4111-8111-111111111111",
+      "status": "queued",
+      "created_at": "2026-11-22T22:00:00Z"
+    }
+  }
+]
