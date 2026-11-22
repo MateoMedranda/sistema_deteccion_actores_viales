@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from app.api.error_handlers import ApiError
+from app.services.job_intents import key_hash,source_fingerprint
 from app.core.config import Settings
 from app.domain.models import Detection, FrameDetection
 from app.services.enrichment_job_store import EnrichmentJobStore
@@ -13,13 +14,16 @@ class EnrichmentJobService:
         self.settings, self.jobs, self.images, self.video_jobs = settings, jobs, images, video_jobs
         self.processor = None
 
-    def create(self, kind: str, source_id: str, owner_key_id: str):
+    def create(self, kind: str, source_id: str, owner_key_id: str, idempotency_key: str | None = None):
         source = self.resolve(kind, source_id, owner_key_id)
         units = self.units_for_source(kind, source, owner_key_id)
+        hashed=key_hash(idempotency_key);fingerprint=source_fingerprint(kind,source_id) if hashed else None
+        replay=self.jobs.find_intent(owner_key_id,hashed,fingerprint)
+        if replay:return replay
         if self.processor is None or not self.processor.usable:
             raise ApiError(503, "enrichment_unavailable", "Enrichment is not available at this time.")
         if not units: raise ApiError(400, "no_eligible_vehicles", "The source has no eligible vehicle detections.")
-        return self.jobs.create(kind, source_id, owner_key_id, len(units), source.expires_at)
+        return self.jobs.create(kind,source_id,owner_key_id,len(units),source.expires_at,idempotency_key_hash=hashed,request_fingerprint=fingerprint)
 
     def resolve(self, kind: str, source_id: str, owner_key_id: str):
         if kind == "image": return self.images.get(source_id, owner_key_id)

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from pathlib import Path
+import hashlib
+from app.services.job_intents import key_hash
 
 from fastapi import UploadFile
 
@@ -17,11 +19,14 @@ class VideoJobService:
     def __init__(self, settings: Settings, probe: VideoProbe, store: VideoJobStore, artifacts: VideoArtifactStore) -> None:
         self.settings, self.probe, self.store, self.artifacts = settings, probe, store, artifacts
 
-    async def create(self, principal: Principal, upload: UploadFile) -> VideoJob:
+    async def create(self, principal: Principal, upload: UploadFile, idempotency_key: str | None = None) -> VideoJob:
         staged = self.artifacts.staged_input_path()
         try:
-            metadata = await VideoValidator(self.settings, self.probe).stage_and_validate(upload, staged)
-            return self.store.create(principal.key_id, metadata, staged)
+            hasher=hashlib.sha256(((upload.content_type or "").strip().lower()+"\0").encode()) if idempotency_key is not None else None
+            metadata=await VideoValidator(self.settings,self.probe).stage_and_validate(upload,staged,hasher)
+            job=self.store.create(principal.key_id,metadata,staged,idempotency_key_hash=key_hash(idempotency_key),request_fingerprint=hasher.hexdigest() if hasher else None)
+            if job.staged_path!=staged:self.artifacts.remove(staged)
+            return job
         except Exception:
             self.artifacts.remove(staged)
             raise

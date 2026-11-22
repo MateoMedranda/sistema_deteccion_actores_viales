@@ -1,3 +1,4 @@
+import type {WebPolicy} from "./managedTypes";
 import { parseImagePolicy, parsePlatePreviewMetadata, type PlatePreviewContext } from "./apiTypes";
 import { decodeImage } from "../utils/decodeImage";
 import type {
@@ -18,6 +19,7 @@ import {
 export type RequestOptions = {
   signal?: AbortSignal;
   intent?: string;
+  intentGeneration?: number;
   timeoutMs?: number;
   deadline?: number;
   expiresAt?: string | number;
@@ -56,6 +58,9 @@ export class ApiClient {
   private readonly origin: string;
   private controllers=new Set<AbortController>();
   private accepted=new Map<string,string>();
+  private intentSequence=0;
+  newVideoIntent(){return {intent:crypto.randomUUID(),intentGeneration:++this.intentSequence};}
+  get policy(){return this.web?.policy;}
   get managed(){return !!this.web;}
   get csrfToken(){return this.web?.csrf;}
   async shutdown(){
@@ -70,7 +75,7 @@ export class ApiClient {
   constructor(
     baseUrl: string,
     private readonly apiKey: string,
-    private readonly web?: {csrf:string;expiresAt:number;onRejected?:()=>void},
+    private readonly web?: {csrf:string;expiresAt:number;onRejected?:()=>void;policy?:WebPolicy},
   ) {
     const base = new URL(baseUrl);
     if (
@@ -120,7 +125,6 @@ export class ApiClient {
     if (remaining <= 0 || Number.isNaN(remaining))
       throw error("request_timeout");
     const controller = new AbortController();
-    this.controllers.add(controller);
     let timedOut = false,
       received = false,
       evidenceExpired = false;
@@ -128,6 +132,7 @@ export class ApiClient {
     const abort = () => controller.abort();
     if (options.signal?.aborted)
       throw new DOMException("Aborted", "AbortError");
+    this.controllers.add(controller);
     options.signal?.addEventListener("abort", abort, { once: true });
     let timer = Number.isFinite(remaining)
       ? setTimeout(() => {
@@ -147,7 +152,7 @@ export class ApiClient {
         redirect: "error",
         signal: controller.signal,
         credentials:this.web?"same-origin":"omit",
-        headers: { ...init.headers, ...(this.web?{"X-UI-Request":"1","X-UI-CSRF":this.web.csrf}:{"X-API-Key":this.apiKey}),...(options.intent?{"X-UI-Intent":options.intent}:{}) },
+        headers: { ...init.headers, ...(this.web?{"X-UI-Request":"1","X-UI-CSRF":this.web.csrf}:{"X-API-Key":this.apiKey}),...(options.intent?{"X-UI-Intent":options.intent}:{}),...(options.intentGeneration?{"X-UI-Intent-Generation":String(options.intentGeneration)}:{}) },
       });
       received = true;
       if(this.web&&[401,403].includes(response.status))this.web.onRejected?.();

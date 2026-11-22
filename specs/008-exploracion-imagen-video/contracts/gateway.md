@@ -77,6 +77,8 @@ El flujo nuevo de video exige UUID por tentativa y header X-UI-Intent en upload/
 
 La ausencia de X-UI-Intent en upload o enriquecimiento de video devuelve422 web_intent_required antes de reenviar o crear trabajo; UUID inválido devuelve422 web_intent_invalid. Enriquecimiento source.kind=image sin intención conserva su flujo previo. Estas guardas del gateway son independientes de Idempotency-Key, que sigue siendo opcional en la API directa de backend.
 
+La UI008 adjunta además X-UI-Intent-Generation, entero positivo monótono de la sesión. Es una guarda de orden consumida solo por el gateway: si está presente, una generación anterior a la intención corriente de esa fase devuelve409 web_intent_replaced sin reenviar; retry conserva UUID/generación. Se conserva compatibilidad del contrato base con UUID sin esa cabecera. Cada fase retiene únicamente UUID/generación corrientes; no se guarda historial de medios ni intenciones retiradas. Esta precisión de implementación evita que un POST atrasado sustituya la intención nueva manteniendo el límite de2 referencias.
+
 El upstream almacena la garantía en filas temporales según [backend-additions.md](backend-additions.md). Replay no extiende TTL. Reinicio/reset web invalida el contexto; no hay recuperación/historial entre sesiones.
 
 ## Acreditación requerida

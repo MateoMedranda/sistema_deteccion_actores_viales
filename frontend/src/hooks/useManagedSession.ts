@@ -13,7 +13,7 @@ export function useManagedSession(){
    const response=parseWebSession(await promise.current);
    if(!alive.current)return;
    if(response.status!=="ready"){setState(response.status);return;}
-   const next=new ApiClient(location.origin+"/web-api","",{csrf:response.csrf_token,expiresAt:Date.parse(response.expires_at),onRejected:reject});
+   const next=new ApiClient(location.origin+"/web-api","",{csrf:response.csrf_token,expiresAt:Date.parse(response.expires_at),onRejected:reject,policy:response.policy});
    current.current=next;setClient(next);setSession(response);setState("ready");
   }catch{if(alive.current)setState("upstream_unavailable");}
  },[reject]);

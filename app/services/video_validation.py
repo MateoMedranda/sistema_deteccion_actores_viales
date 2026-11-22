@@ -13,7 +13,7 @@ class VideoValidator:
     def __init__(self, settings: Settings, probe: FFprobeAdapter) -> None:
         self.settings, self.probe = settings, probe
 
-    async def stage_and_validate(self, upload: UploadFile, path: Path) -> VideoMetadata:
+    async def stage_and_validate(self, upload: UploadFile, path: Path, hasher=None) -> VideoMetadata:
         if upload.content_type != "video/mp4" or Path(upload.filename or "").suffix.lower() != ".mp4":
             raise ApiError(415, "unsupported_video", "Only MP4 videos are allowed.")
         size = 0
@@ -23,6 +23,7 @@ class VideoValidator:
                 if size > self.settings.max_video_upload_bytes:
                     output.close(); path.unlink(missing_ok=True)
                     raise ApiError(413, "file_too_large", "The video exceeds the configured size limit.")
+                if hasher is not None:hasher.update(chunk)
                 output.write(chunk)
         metadata = self.probe.probe(path, size)
         invalid = (metadata.codec != "h264" or "mp4" not in metadata.container or metadata.duration_seconds <= 0 or metadata.duration_seconds > self.settings.max_video_duration_seconds or metadata.width > self.settings.max_video_width or metadata.height > self.settings.max_video_height or metadata.fps > self.settings.max_video_fps or metadata.total_frames <= 0 or metadata.total_frames > self.settings.max_video_frames)

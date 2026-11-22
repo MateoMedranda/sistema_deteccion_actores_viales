@@ -44,24 +44,32 @@ class EnrichmentJobStore:
             unit_id TEXT NOT NULL, frame_index INTEGER, text TEXT, localizer_confidence REAL, ocr_confidence REAL,
             quality REAL, PRIMARY KEY(unit_id, frame_index, text));
         """)
+        columns={row[1] for row in self.connection.execute("PRAGMA table_info(enrichment_jobs)")}
+        for name in ("idempotency_key_hash","request_fingerprint"):
+            if name not in columns:self.connection.execute(f"ALTER TABLE enrichment_jobs ADD COLUMN {name} TEXT")
+        self.connection.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_enrichment_intent ON enrichment_jobs(owner_key_id,idempotency_key_hash) WHERE idempotency_key_hash IS NOT NULL")
         self.connection.commit(); self.recover()
 
-    def create(self, source_kind, source_id, owner_key_id, total_units, source_expires_at):
-        with self.lock, self.connection:
+    def find_intent(self,owner_key_id,key_hash,fingerprint):
+        if not key_hash:return None
+        with self.lock:
             self.cleanup()
-            queued = self.connection.execute("SELECT count(*) FROM enrichment_jobs WHERE status='queued'").fetchone()[0]
-            if queued >= self.max_queued:
-                raise ApiError(503, "queue_full", "The enrichment queue is currently full.")
-            now = self.clock()
-            expiry = min(source_expires_at, now + self.ttl)
-            if expiry <= now:
-                raise ApiError(410, "source_expired", "The requested source has expired.")
-            job_id = str(uuid4())
-            self.connection.execute("INSERT INTO enrichment_jobs VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", (
-                job_id, source_kind, source_id, owner_key_id, "queued", total_units, 0,
-                now.isoformat(), now.isoformat(), expiry.isoformat(), None, "[]"))
-            return self._row(self.connection.execute("SELECT * FROM enrichment_jobs WHERE enrichment_job_id=?", (job_id,)).fetchone())
-
+            row=self.connection.execute("SELECT * FROM enrichment_jobs WHERE owner_key_id=? AND idempotency_key_hash=?",(owner_key_id,key_hash)).fetchone()
+            if row:
+                if row["request_fingerprint"]!=fingerprint:raise ApiError(409,"idempotency_conflict","The request conflicts with an existing intent.")
+                return self._row(row)
+    def create(self,source_kind,source_id,owner_key_id,total_units,source_expires_at,*,idempotency_key_hash=None,request_fingerprint=None):
+        with self.lock,self.connection:
+            self.cleanup()
+            prior=self.find_intent(owner_key_id,idempotency_key_hash,request_fingerprint)
+            if prior:return prior
+            if self.connection.execute("SELECT count(*) FROM enrichment_jobs WHERE status='queued'").fetchone()[0]>=self.max_queued:raise ApiError(503,"queue_full","The enrichment queue is full.")
+            now=self.clock();expiry=min(source_expires_at,now+self.ttl)
+            if expiry<=now:raise ApiError(410,"source_expired","The source has expired.")
+            job_id=str(uuid4())
+            values={"enrichment_job_id":job_id,"source_kind":source_kind,"source_id":source_id,"owner_key_id":owner_key_id,"status":"queued","total_units":total_units,"processed_units":0,"created_at":now.isoformat(),"updated_at":now.isoformat(),"expires_at":expiry.isoformat(),"error_code":None,"results_json":"[]","idempotency_key_hash":idempotency_key_hash,"request_fingerprint":request_fingerprint}
+            self.connection.execute("INSERT INTO enrichment_jobs ("+",".join(values)+") VALUES ("+",".join("?" for _ in values)+")",tuple(values.values()))
+            return self._row(self.connection.execute("SELECT * FROM enrichment_jobs WHERE enrichment_job_id=?",(job_id,)).fetchone())
     def get(self, job_id, owner_key_id):
         with self.lock:
             self.cleanup()

@@ -104,6 +104,23 @@ class Proxy:
                     if not isinstance(payload,dict):raise RelayError(422,"web_json_invalid")
                     body=bytes(data);headers["Content-Type"]="application/json"
                 else:payload={}
+            is_video=kind=="video-upload" or (kind=="enrich" and isinstance(payload.get("source"),dict) and payload["source"].get("kind")=="video")
+            intent=request.headers.get("x-ui-intent")
+            if is_video and not intent:raise RelayError(422,"web_intent_required")
+            if intent:
+                try:intent=str(UUID(intent))
+                except ValueError:raise RelayError(422,"web_intent_invalid")
+                operation="video-upload" if kind=="video-upload" else "video-enrichment" if is_video else "image-enrichment"
+                if is_video:
+                    sequence=request.headers.get("x-ui-intent-generation")
+                    if sequence is not None and not re.fullmatch(r"[1-9][0-9]{0,8}",sequence):raise RelayError(422,"web_intent_invalid")
+                    generation=int(sequence) if sequence else None
+                    prior=session.intents.get(operation)
+                    if prior and generation is not None and prior["generation"] is not None:
+                        if generation<prior["generation"] or (generation==prior["generation"] and intent!=prior["uuid"]):raise RelayError(409,"web_intent_replaced")
+                        if intent==prior["uuid"] and generation!=prior["generation"]:raise RelayError(409,"web_intent_replaced")
+                    session.intents[operation]={"uuid":intent,"generation":generation}
+                headers["Idempotency-Key"]=self.sessions.upstream_key(token,operation,intent)
             if kind=="native":
                 range_value=request.headers.get("range")
                 if range_value and not re.fullmatch(r"bytes=(?:[0-9]{1,20}-[0-9]{0,20}|-[1-9][0-9]{0,19})",range_value):raise RelayError(416,"web_range_invalid")

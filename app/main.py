@@ -40,7 +40,7 @@ def create_app(settings: Settings | None = None, detector: Detector | None = Non
         allow_origins=settings.frontend_origin_list(),
         allow_credentials=False,
         allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
-        allow_headers=["Content-Type", "X-API-Key"],
+        allow_headers=["Content-Type", "X-API-Key", "Idempotency-Key"],
         expose_headers=["X-Plate-Preview-Metadata"],
     )
     app.include_router(health.router)

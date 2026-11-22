@@ -1,14 +1,14 @@
 from __future__ import annotations
 from typing import Annotated, Literal
-from fastapi import APIRouter, Depends, Path, Query, Request
+from fastapi import APIRouter, Depends, Path, Query, Request, Header
 from app.api.dependencies import Principal, require_api_key
 from app.domain.schemas import EnrichedVehiclePage, EnrichmentJobAccepted, EnrichmentJobCreateRequest, EnrichmentJobResponse
 
 router = APIRouter(prefix="/v1/enrichment-jobs", tags=["enrichment-jobs"])
 
 @router.post("", response_model=EnrichmentJobAccepted, status_code=202)
-def create_job(payload: EnrichmentJobCreateRequest, request: Request, principal: Principal = Depends(require_api_key)):
-    job = request.app.state.enrichment_job_service.create(payload.source.kind, payload.source.source_id, principal.key_id)
+def create_job(payload: EnrichmentJobCreateRequest, request: Request, principal: Principal = Depends(require_api_key), idempotency_key: str | None = Header(default=None)):
+    job = request.app.state.enrichment_job_service.create(payload.source.kind, payload.source.source_id, principal.key_id, idempotency_key)
     return EnrichmentJobAccepted(enrichment_job_id=job.enrichment_job_id, status="queued", created_at=job.created_at, expires_at=job.expires_at)
 
 @router.get("/{enrichmentJobId}", response_model=EnrichmentJobResponse)

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, File, Query, Request, UploadFile
+from fastapi import APIRouter, Depends, File, Query, Request, UploadFile, Header
 from fastapi.responses import FileResponse
 
 from app.api.dependencies import Principal, require_api_key
@@ -32,8 +32,8 @@ def public_job(job: VideoJob) -> VideoJobResponse:
 
 
 @router.post("", status_code=202, response_model=VideoJobAccepted)
-async def create_video_job(request: Request, video: UploadFile = File(...), principal: Principal = Depends(require_api_key)) -> VideoJobAccepted:
-    job = await request.app.state.video_job_service.create(principal, video)
+async def create_video_job(request: Request, video: UploadFile = File(...), principal: Principal = Depends(require_api_key), idempotency_key: str | None = Header(default=None)) -> VideoJobAccepted:
+    job = await request.app.state.video_job_service.create(principal, video, idempotency_key)
     return VideoJobAccepted(job_id=job.job_id, status="queued", created_at=job.created_at)
 
 
