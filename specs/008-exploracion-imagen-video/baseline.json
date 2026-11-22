@@ -1,0 +1,15 @@
+{
+  "commit": "c4857a16fa9f166adf65e490a17f3d35b4da312c",
+  "python": "3.12.15",
+  "platform": "Windows",
+  "machine": "AMD64",
+  "renderer_sha256": "57181594e9843af2e5a0adabbc86683206c085116727b6e13888a2ce30379302",
+  "versions": {
+    "fastapi": "0.115.14",
+    "opencv-python-headless": "4.14.0.94",
+    "pydantic": "2.14.1",
+    "httpx": "0.28.1",
+    "numpy": "2.3.5",
+    "psutil": "7.2.2"
+  }
+}

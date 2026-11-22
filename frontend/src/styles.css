@@ -284,3 +284,5 @@ pre {
     grid-template-columns: 1fr;
   }
 }
+
+[hidden]{display:none!important}.workspace-tabs{margin:1.5rem 0}.workspace-tabs [role=tablist]{display:inline-flex;border:1px solid #cad5e8;padding:4px;border-radius:12px;background:white;gap:4px}.workspace-tabs button{min-width:112px;min-height:48px;border:0;border-radius:8px;background:transparent;color:#193350}.workspace-tabs button[aria-selected=true]{background:#1e427a;color:white}.workspace-tabs button:focus-visible{outline:3px solid #d97706;outline-offset:3px}.video-workspace{min-width:0}.video-workspace>section{background:white;border:1px solid #d8e0ee;border-radius:16px;padding:24px;margin:20px 0}

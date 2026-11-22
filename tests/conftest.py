@@ -76,3 +76,9 @@ def enrichment_client(tmp_path, api_key, monkeypatch):
 def annotation_controls():
     from tests.annotation_fixtures import Clock,Barrier,CountedReader
     return {"clock":Clock(),"barrier":Barrier(),"reader":CountedReader(),"owners":("owner-alpha","owner-beta")}
+
+
+@pytest.fixture
+def exploration_controls():
+    from tests.fixtures_008 import Clock, Barrier, OWNERS
+    return {"clock":Clock(),"barrier":Barrier(),"owners":OWNERS}

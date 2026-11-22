@@ -1,14 +1,10 @@
 import { useMemo, useState } from "react";
 import { ApiClient } from "./services/apiClient";
-import type { Point } from "./services/apiTypes";
 import { normalizeApiUrl } from "./utils/urlValidation";
 import { SessionConfig } from "./components/SessionConfig";
-import { VideoJobPanel } from "./components/VideoJobPanel";
-import { LineEditor } from "./components/LineEditor";
-import { CountJobPanel } from "./components/CountJobPanel";
-import { EnrichmentPanel } from "./components/EnrichmentPanel";
+import { WorkspaceTabs } from "./components/WorkspaceTabs";
+import { VideoWorkspace } from "./features/video-analysis/VideoWorkspace";
 import { ImageWorkspace } from "./features/image-analysis/ImageWorkspace";
-import { useSessionLifecycle } from "./hooks/useSessionLifecycle";
 const initialUrl = "http://127.0.0.1:8000";
 export default function App() {
   const [baseUrl, setBaseUrl] = useState(initialUrl),
@@ -74,51 +70,8 @@ export default function App() {
   );
 }
 function SessionContent({ client }: { client?: ApiClient }) {
-  const [videoId, setVideoId] = useState<string>(),
-    [preview, setPreview] = useState(""),
-    [line, setLine] = useState<[Point, Point]>();
-  const lifecycle = useSessionLifecycle(client);
-  return (
-    <>
-      <ImageWorkspace client={client} />
-      <details className="legacy-tools">
-        <summary>Herramientas de video y conteo</summary>
-        <p className="muted">
-          Procesa videos y configura una línea de conteo. La exploración
-          interactiva de videos llegará en una siguiente iteración.
-        </p>
-        <VideoJobPanel
-          client={client}
-          onVideo={setVideoId}
-          onPreview={(url) => {
-            setPreview(url);
-            setLine(undefined);
-            setVideoId(undefined);
-          }}
-          lifecycle={lifecycle}
-        />
-        {preview && (
-          <LineEditor
-            key={preview}
-            videoUrl={preview}
-            onClear={() => setLine(undefined)}
-            onLine={(a, b) => setLine([a, b])}
-          />
-        )}
-        <CountJobPanel
-          key={"count:" + videoId + ":" + JSON.stringify(line)}
-          client={client}
-          videoId={videoId}
-          line={line}
-          lifecycle={lifecycle}
-        />
-        <EnrichmentPanel
-          key={"enrichment:" + videoId}
-          client={client}
-          videoId={videoId}
-          lifecycle={lifecycle}
-        />
-      </details>
-    </>
-  );
+ const [mode,setMode]=useState<"image"|"video">("image");
+ return <><WorkspaceTabs active={mode} onChange={setMode}/>
+ <div id="panel-image" role="tabpanel" aria-labelledby="tab-image" hidden={mode!=="image"}><ImageWorkspace client={client}/></div>
+ <div id="panel-video" role="tabpanel" aria-labelledby="tab-video" hidden={mode!=="video"}><VideoWorkspace client={client} active={mode==="video"}/></div></>;
 }
