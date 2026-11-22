@@ -346,7 +346,7 @@ paths:
           pattern: ^[A-Za-z0-9_-]{1,512}$
       responses:
         '200':
-          description: Página ligada a enrichment_revision
+          description: Página ligada a enrichment.revision
           content:
             application/json:
               schema:

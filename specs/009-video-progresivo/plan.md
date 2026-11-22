@@ -155,3 +155,9 @@ No hay violaciones que justificar. PyAV es la única dependencia nueva prevista 
 - Prerrequisitos Speckit resuelven la iteración 009 en el checkout principal.
 - Hooks after_plan revisados: no hay registrados.
 - No se ejecutaron modelos, benchmarks ni pruebas del producto porque esta etapa genera diseño; sus resultados permanecen pendientes para implementación. No se creó tasks.md.
+
+## Integración explícita y nombres públicos
+
+La composición de `backend/app/main.py` y `backend/app/core/lifespan.py` debe crear/injectar una sola instancia de store y servicio progresivos, registrar sus rutas y reutilizar los modelos existentes. El worker se incorpora al mismo ciclo de vida al implementar US3; se inicia una sola vez y se detiene antes de cerrar sus stores. No crear otra app global ni otro conjunto de modelos. Las pruebas de arranque/cierre con fakes verifican estas relaciones y la liberación de recursos; las reglas de conservación y retirada de resultados siguen el modelo de datos.
+
+Los nombres públicos canónicos son `PlaybackState.revision`, `PlaybackState.enrichment.status` y `PlaybackState.enrichment.revision`. El parámetro snapshot de tracks contiene el valor de enrichment.revision; no se añaden alias planos. Los modelos persistentes pueden usar nombres internos, pero el serializador y los ejemplos siguen exactamente schemas.json.

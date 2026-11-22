@@ -59,7 +59,7 @@ Una evidencia temprana provisional + K candidatas globales por (-confidence,fram
 
 ## Lecturas y cache
 
-El estado publica revision de cuadros y enrichment_revision separadas. Solicitudes de cuadros se atan a job/generation/snapshot y ventana temporal; cursor opaco vincula esos valores y continuación. Los cuadros son inmutables, permitiendo snapshots históricos mientras el trabajo siga vigente.
+El estado público PlaybackState publica revision de cuadros y enrichment.revision separadas. Solicitudes de cuadros se atan a job/generation/snapshot y ventana temporal; cursor opaco vincula esos valores y continuación. Los cuadros son inmutables, permitiendo snapshots históricos mientras el trabajo siga vigente.
 
 Paginación por presupuesto de bytes y observaciones. Un frame muy denso puede dividirse usando observation_offset/observation_total; el cliente reúne todas las partes antes de admitirlo. Vacío: total0, offset0 y lista vacía, no omitirlo. Una ventana no se declara completa hasta agotar su cursor y validar cobertura. No cortar cajas para cumplir el tamaño.
 

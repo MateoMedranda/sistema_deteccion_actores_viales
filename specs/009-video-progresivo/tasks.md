@@ -47,12 +47,12 @@ Las restricciones de data-model.md citadas en tareas son obligatorias, junto con
 **Prueba independiente**: Video controlado>=30s: primera vista<=2s desde cinco segundos confirmados; ningún cuadro fuera del prefijo; cola corta y vacío reproducibles.
 
 - [ ] T014 [P] [US1] Escribir contrato de opt-in, estado/source y modo legacy en `backend/tests/contract/test_progressive_api.py`, conforme a OpenAPI; mantener respuesta202 existente. Dep: T013.
-- [ ] T015 [P] [US1] Escribir integración de procesamiento por lotes sin esperar EOF en `backend/tests/integration/test_progressive_pipeline.py`, incluidos cuadros vacíos y generación. Dep: T013.
+- [ ] T015 [P] [US1] Escribir prueba de arranque real con fakes en `backend/tests/integration/test_progressive_pipeline.py`: crear app, inyectar servicios, publicar antes de EOF y cerrar recursos; comprobar modelos únicos y aislamiento. Dep: T013.
 - [ ] T016 [P] [US1] Escribir pruebas del estado play/pausa/espera y cola terminal en `frontend/tests/features/video-analysis/playbackReducer.test.ts`; no usar temporizadores reales para simular el análisis. Dep: T013.
 - [ ] T017 [US1] Implementar presentation=progressive e idempotencia por modo en `backend/app/services/video_job_service.py` y ruta de creación; ausencia mantiene legacy, query repetida/desconocida422. Dep: T014.
 - [ ] T018 [US1] Implementar estado/snapshots y páginas en `backend/app/services/video_progressive_service.py`: «from_us>=0», «to_us>from_us», ventana<=30.000.000us, snapshot>=0, cursor<=512; límites1MiB/1.000 observaciones/100 partes sin truncar, vacío confirmado. Dep: T010,T017.
 - [ ] T019 [US1] Implementar fuente MP4 protegida GET/HEAD y Range en `backend/app/services/progressive_media.py`, con TTL entre bloques, no-store y referencias en uso; no limitar bytes por segundo procesado. Dep: T011,T018.
-- [ ] T020 [US1] Crear `backend/app/api/routes/video_playback.py` y registrar rutas de estado/source/frames; validar consultas y errores401/404/409/410/416/422 sin datos privados. Dep: T018,T019.
+- [ ] T020 [US1] Registrar API y conectar store/servicio en `backend/app/main.py` y `backend/app/core/lifespan.py`; crear rutas en `backend/app/api/routes/video_playback.py`, inyección explícita y pruebas de arranque, sin inicializaciones globales nuevas. Dep: T018,T019.
 - [ ] T021 [US1] Ampliar `backend/app/web/proxy.py` y `backend/app/web/main.py` con descriptor progressive-source, preflight propio y CSRF para JSON; conservar completed de medios legacy. Dep: T020.
 - [ ] T022 [US1] Conectar único decode y lotes al `backend/app/services/video_processing.py`, sin lista ilimitada de detecciones, con PresentationFilter persistido y sin repetir carga de modelos. Dep: T008,T010,T015.
 - [ ] T023 [US1] Mantener exportación final y detecciones legacy en `backend/app/services/video_job_store.py`, consumiendo observaciones persistidas y separando análisis de exportación; no reinterpretar processed-cfr/conteo. Dep: T022.
@@ -97,7 +97,7 @@ Las restricciones de data-model.md citadas en tareas son obligatorias, junto con
 - [ ] T044 [P] [US3] Escribir pruebas de selección/revisiones en `frontend/tests/features/video-analysis/trackResults.test.tsx`. Dep: T031.
 - [ ] T045 [US3] Implementar unidades y revisiones en `backend/app/services/video_progressive_store.py`, con «unique(job_id,generation,track_id)» y total abierto, sin usar ordinal detection_id. Dep: T042.
 - [ ] T046 [US3] Capturar top-K/provisional antes de dibujar en `backend/app/services/progressive_evidence.py`, integrado al pipeline; conservar timestamps/bbox originales y límites por track. Dep: T043,T045.
-- [ ] T047 [US3] Implementar `backend/app/services/progressive_enrichment.py` reutilizando modelos/semáforos y recursos de `enrichment_processing.py`:32 referencias RAM, una unidad activa, máximoK+1 evaluaciones; evitar pools nuevos por unidad. Dep: T046.
+- [ ] T047 [US3] Implementar worker progresivo y su arranque/cierre único en `backend/app/services/progressive_enrichment.py` y `backend/app/core/lifespan.py`; reutilizar modelos/semáforos,32 referencias RAM, una unidad activa y máximoK+1; no duplicar pools. Dep: T046.
 - [ ] T048 [US3] Publicar ramas/resultados y agregado abierto en `backend/app/services/video_progressive_store.py`; «evaluación única por evidencia/política» y terminalización al cerrar fuente. Dep: T047.
 - [ ] T049 [US3] Añadir GET tracks/detail con snapshots a `backend/app/api/routes/video_playback.py`, validando identidad y revisiones; lecturas no lanzan trabajo. Dep: T048.
 - [ ] T050 [US3] Añadir PNG de evidencia autorizado a `backend/app/api/routes/video_playback.py`, con TTL, sin rutas privadas ni uso del plate-preview de imagen. Dep: T046,T049.
@@ -106,7 +106,7 @@ Las restricciones de data-model.md citadas en tareas son obligatorias, junto con
 - [ ] T053 [US3] Implementar consulta incremental en `frontend/src/features/video-analysis/useProgressiveTracks.ts`, snapshot estable, revisión monotónica y selección persistente. Dep: T049,T051.
 - [ ] T054 [US3] Crear `frontend/src/features/video-analysis/ProgressiveTrackResults.tsx` con ficha/evidencia, selección pausada y alternativa accesible a caja, sin confundir tiempo representativo con actual. Dep: T044,T053.
 - [ ] T055 [US3] Integrar enriquecimiento automático en `frontend/src/features/video-analysis/VideoWorkspace.tsx` sin POST duplicado ni espera al final para mostrar datos. Dep: T052,T054.
-- [ ] T056 [US3] Probar errores de ramas y cierre de unidades en `backend/tests/integration/test_progressive_enrichment.py`, preservando datos válidos y final top-K. Dep: T047–T052.
+- [ ] T056 [US3] Probar arranque/cierre del worker, modelos únicos y ramas en `backend/tests/integration/test_progressive_enrichment.py`; verificar inyección desde la app, top-K final y liberación de recursos sin hilos ni callbacks huérfanos. Dep: T047–T052.
 - [ ] T057 [US3] Añadir E2E de diez identidades y actualizaciones sin mover video en `frontend/e2e/video-progressive-tracks.spec.ts`. Dep: T055.
 - [ ] T058 [US3] Verificar presupuesto de evaluaciones y reutilización final en `backend/tests/unit/test_enrichment_reuse.py`; navegar no repite lecturas. Dep: T056.
 - [ ] T059 [US3] Registrar US3/SC004 y comparación de política en `specs/009-video-progresivo/validation.md`; no dar por acreditada precisión real con mocks. Dep: T057,T058.
@@ -201,6 +201,10 @@ No paralelizar cambios sobre el mismo store/reducer ni benchmark con otras carga
 - US4: T060 y T061 separan fallos de backend y recuperación del cliente tras US3.
 
 La ejecución en paralelo es opcional; los cambios que comparten archivo se realizan secuencialmente.
+
+## Integración de arranque
+
+T020 conecta los componentes al ciclo de vida de la app; T047 añade el worker al mismo contenedor de dependencias. T015 y T056 prueban el recorrido de arranque/cierre, sin cargar modelos reales ni duplicarlos. Los IDs se conservan.
 
 ## Trazabilidad
 

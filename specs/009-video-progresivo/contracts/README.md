@@ -24,7 +24,7 @@ Identificadores del trabajo conservan el formato existente de un segmento. gener
 
 ## Estado autoritativo
 
-PlaybackState separa analysis_state, export_state y enrichment_state. available_until_us es extremo exclusivo del prefijo confirmado, no una estimación; last_frame_start_us permite volver al último cuadro sin solicitar el extremo exclusivo. frames_processed puede superar frames_published por el lote en vuelo. duration_us solo se presenta como definitiva con duration_confirmed=true.
+PlaybackState separa analysis_state, export_state y enrichment.status. available_until_us es extremo exclusivo del prefijo confirmado, no una estimación; last_frame_start_us permite volver al último cuadro sin solicitar el extremo exclusivo. frames_processed puede superar frames_published por el lote en vuelo. duration_us solo se presenta como definitiva con duration_confirmed=true.
 
 source.url es relativa, emitida por servidor y coincide exactamente con la ruta de ese trabajo. media_available no debe ser true si no existe un prefijo consultable. expires_at no se amplía por polling, reproducción ni enriquecimiento.
 
@@ -34,7 +34,7 @@ frames exige from_us>=0, to_us>from_us, ventana<=30.000.000us y snapshot>=0; est
 
 Páginas <=1MiB, <=1.000 observaciones y <=100 fragmentos de cuadro. Si un cuadro requiere varias partes, observation_offset y observation_total permiten reconstruirlo sin truncar. FrameSlice con total0 y observaciones vacías confirma ausencia de vehículos. Cada observación tiene ordinal único en su cuadro. La ventana completa solo se admite después de agotar next_cursor y verificar continuidad, todas las partes e identidad. El rango solicitado puede cortar un intervalo: se devuelve el cuadro completo que lo intersecta, dentro del prefijo autorizado.
 
-tracks usa snapshot=enrichment_revision y cursor de continuación; máximo100 unidades/página en orden discovery_ordinal estable. Revisión de resultados por unidad independiente. Los snapshots necesarios para paginar son inmutables durante la consulta; si un snapshot ya no puede resolverse se devuelve409 snapshot_stale y el cliente reinicia la lectura, sin inferencia. No se mezcla una mitad vieja con otra nueva.
+tracks usa snapshot tomado del valor de enrichment.revision y cursor de continuación; máximo100 unidades/página en orden discovery_ordinal estable. Revisión de resultados por unidad independiente. Los snapshots necesarios para paginar son inmutables durante la consulta; si un snapshot ya no puede resolverse se devuelve409 snapshot_stale y el cliente reinicia la lectura, sin inferencia. No se mezcla una mitad vieja con otra nueva.
 
 ## Errores, privacidad y ciclo de vida
 
