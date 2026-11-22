@@ -14,7 +14,7 @@ test("three pages expose real track IDs and evidence without another inference",
    const n=Number(u.searchParams.get("page")),items=Array.from({length:n===3?11:25},(_,i)=>{const id=(n-1)*25+i+1;return {...vehicleResult(id),track_id:id*10,evidence_frame_indexes:[30],plate:{...vehicleResult(id).plate,evidence_frame_indexes:[60]}};});
    return route.fulfill({json:{items,page:n,page_size:25,total:61}});
   }
-  if(p.endsWith("/processed-video"))return route.fulfill({contentType:"video/mp4",body:await import("node:fs").then(fs=>fs.readFileSync(path.resolve("e2e/fixtures/controlled.mp4")))});
+  if(p.endsWith("/annotated-video/content"))return route.fulfill({contentType:"video/mp4",body:await import("node:fs").then(fs=>fs.readFileSync(path.resolve("e2e/fixtures/controlled.mp4")))});
   return route.fulfill({json:{enrichment_job_id:"tracks",status:"completed",source:{kind:"video",source_id:"video-tracks"},created_at:new Date().toISOString(),expires_at:expiresAt(),progress_percent:100,processed_units:61,total_units:61,results_ready:61}});
  });
  await page.getByRole("tab",{name:"Video",exact:true}).click();await page.locator('input[aria-label="Video"]').setInputFiles(path.resolve("e2e/fixtures/controlled.mp4"));await page.getByRole("button",{name:"Procesar video",exact:true}).click();
@@ -23,6 +23,8 @@ test("three pages expose real track IDs and evidence without another inference",
  await page.getByRole("button",{name:"Siguiente",exact:true}).click();await expect(page.getByText("Página 2 de 3")).toBeVisible();await expect(page.getByRole("heading",{name:"Trayectoria 10",exact:true})).toHaveCount(0);
  await page.getByRole("button",{name:"Siguiente",exact:true}).click();await expect(page.getByText("Página 3 de 3")).toBeVisible();await page.getByRole("button",{name:/Trayectoria 610\b/}).click();await expect(page.getByRole("heading",{name:"Trayectoria 610",exact:true})).toBeVisible();
  await page.getByRole("button",{name:"Anterior",exact:true}).click();await expect(page.getByText("Página 2 de 3")).toBeVisible();
+ await expect.poll(()=>page.locator("video.result-video").evaluate((v:HTMLVideoElement)=>v.readyState)).toBeGreaterThanOrEqual(1);
+ await page.locator("video.result-video").evaluate((v:HTMLVideoElement)=>{v.currentTime=Math.min(.2,v.duration);v.pause();});
  expect(mutations).toBe(before);expect(crops).toBe(0);
  await page.evaluate(()=>{document.documentElement.style.fontSize="200%";});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.screenshot({path:info.outputPath("tracks-200-text.png"),fullPage:true});
 });

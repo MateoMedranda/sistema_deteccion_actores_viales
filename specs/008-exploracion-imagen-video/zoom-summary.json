@@ -1,0 +1,29 @@
+{
+  "scene-viewport-ten-scenes--086de-h-bounded-local-interaction-desktop": {
+    "viewport": "desktop",
+    "scenes": 10,
+    "denseScenes": 3,
+    "pointsPerScenePerScale": 50,
+    "operations": 40,
+    "maxError": 0.021875000000022737,
+    "p95ms": 99.5
+  },
+  "scene-viewport-ten-scenes--086de-h-bounded-local-interaction-mobile": {
+    "viewport": "mobile",
+    "scenes": 10,
+    "denseScenes": 3,
+    "pointsPerScenePerScale": 50,
+    "operations": 40,
+    "maxError": 0.029166666666696983,
+    "p95ms": 105.5
+  },
+  "scene-viewport-ten-scenes--086de-h-bounded-local-interaction-tablet": {
+    "viewport": "tablet",
+    "scenes": 10,
+    "denseScenes": 3,
+    "pointsPerScenePerScale": 50,
+    "operations": 40,
+    "maxError": 0.0267333984375,
+    "p95ms": 100.10000002384186
+  }
+}

@@ -8,6 +8,5 @@ test("processed video has confirmed metadata and external class legend",async({p
  await expect(page.locator("video.result-video")).toBeVisible({timeout:20000});
  await expect(page.getByText("Video disponible",{exact:true})).toBeVisible();
  await expect(page.getByText("Clases detectadas",{exact:true})).toBeVisible();
- const aligned=await page.locator("video.result-video").evaluate((element:HTMLVideoElement)=>element.videoWidth>0&&element.videoHeight>0);
- expect(aligned).toBeTruthy();
+ await expect.poll(()=>page.locator("video.result-video").evaluate((element:HTMLVideoElement)=>element.videoWidth>0&&element.videoHeight>0)).toBeTruthy();
 });

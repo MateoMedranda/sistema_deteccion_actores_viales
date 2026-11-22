@@ -15,7 +15,7 @@ export async function mockScenario(page: Page, scenario: string) {
     created_at: new Date().toISOString(),
     expires_at: expiresAt(),
   };
-  await page.route("http://127.0.0.1:8767/api/**", async (route) => {
+  await page.route("**/web-api/api/**", async (route) => {
     const request = route.request(),
       url = new URL(request.url());
     const json = (body: unknown, status = 200) =>

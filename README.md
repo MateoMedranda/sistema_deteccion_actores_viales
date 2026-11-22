@@ -83,7 +83,7 @@ npm ci
 npm run dev -- --host 127.0.0.1
 ```
 
-Configura la sesión en la interfaz, selecciona JPEG/PNG y pulsa **Analizar imagen**. El flujo detecta y enriquece automáticamente. Selecciona un recuadro o su control equivalente en la lista para consultar atributos y recortes del vehículo y de la placa. Se utiliza **Detección N** para imagen estática; Track ID real en imágenes permanece como dependencia externa.
+Con el gateway de008 configurado, selecciona JPEG/PNG y pulsa **Analizar imagen**. El flujo detecta y enriquece automáticamente. Selecciona un recuadro o su control equivalente en la lista para consultar atributos y recortes del vehículo y de la placa. Se utiliza **Detección N** para imagen estática; Track ID real en imágenes permanece como dependencia externa.
 
 El original canónico PNG se obtiene mediante GET /api/v1/detections/{requestId}/original-image con la misma API key y propiedad que el análisis. La respuesta incluye original_image, source_expires_at y enrichment_eligible por detección. Original, anotación y resultados afectados usan Cache-Control: no-store. No hay endpoints nuevos de crop.
 
@@ -114,3 +114,18 @@ El GET autenticado `/api/v1/enrichment-jobs/{enrichmentJobId}/detections/{detect
 La lectura productiva conserva **baseline-v1**. La candidata de rescate y el evaluador están implementados, pero **todavía no se acredita mayor exactitud**: faltan referencias privadas verificadas y evaluación reservada. No se modificaron los modelos, pesos ni umbrales. Video y conteo mantienen sus flujos.
 
 Consultar [guía007](specs/007-anotaciones-placas-legibles/quickstart.md), [validación](specs/007-anotaciones-placas-legibles/validation.md), [auditoría](specs/007-anotaciones-placas-legibles/audit.md) y [decisión de política](specs/007-anotaciones-placas-legibles/policy-decision.md). Los pendientes006 conservan su estado independiente.
+
+## Exploración administrada de Imagen y Video (008)
+
+La cabecera alterna espacios sin perder evidencia vigente. URL y credencial del backend se configuran únicamente en el servidor: copiar .env.web.example a .env.web, editar los valores localmente y conservar ese archivo fuera de Git. Nunca usar VITE_ para secretos. Cada gateway representa un principal del backend.
+
+Desde raíz, terminal1: .venv/Scripts/python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000.
+Terminal2: npm --prefix frontend run build; después .venv/Scripts/python.exe -m uvicorn app.web.main:app --host 127.0.0.1 --port 4173.
+Abrir http://127.0.0.1:4173 con WEB_ORIGIN configurado para ese origen. Desarrollo: gateway4174 y Vite4173; comandos en [quickstart008](specs/008-exploracion-imagen-video/quickstart.md).
+Un despliegue remoto requiere HTTPS e ingreso privado autenticado existente; cookie/Origin no sustituyen esa autorización.
+
+Imagen ofrece Ajustar,100/200/400% y recorrido local por arrastre o flechas. Video procesa una sola vez y consulta automáticamente atributos/placas elegibles, con progreso separado y reproducción disponible antes de terminar el enriquecimiento. Las cajas usan la paleta compartida sin rótulos; el suavizado solo afecta presentación y conserva raw/conteo.
+
+Reanudar consulta recupera el mismo intento si se perdió la aceptación; Reintentar enriquecimiento tras fallo conocido conserva el video. Pausar/buscar/consultar fichas no inicia inferencias. La lista usa track IDs reales y páginas de25; i/fps identifica evidencia del video procesado, distinta del instante visible. La sesión tiene900s por defecto y nunca amplía la menor vigencia. Reiniciar retira ambos espacios y conserva la configuración del operador.
+
+La selección directa en un contorno pausado queda para la [propuesta siguiente](specs/008-exploracion-imagen-video/propuesta-inspeccion-video.md). No se añaden recortes de video, historial ni políticas OCR. Resultados medidos, coste y pendientes: [validación008](specs/008-exploracion-imagen-video/validation.md).

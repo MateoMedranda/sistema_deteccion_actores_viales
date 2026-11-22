@@ -1,5 +1,6 @@
 import {test,expect} from "@playwright/test";
 import path from "node:path";
+import {readFileSync} from "node:fs";
 import {connect} from "./helpers";
 test("one action processes, enriches and keeps native playback available",async({page})=>{
  const posts:string[]=[];page.on("request",r=>{if(r.method()==="POST")posts.push(r.url());});
@@ -12,6 +13,7 @@ test("one action processes, enriches and keeps native playback available",async(
  await page.getByRole("tab",{name:"Imagen",exact:true}).click();await page.getByRole("tab",{name:"Video",exact:true}).click();
  expect(posts.filter(u=>u.endsWith("/api/v1/video-jobs"))).toHaveLength(1);
  expect(posts.filter(u=>u.endsWith("/api/v1/enrichment-jobs"))).toHaveLength(1);
+ await expect.poll(()=>page.locator("video.result-video").evaluate((v:HTMLVideoElement)=>v.readyState)).toBeGreaterThanOrEqual(1);
  const before=posts.length;
  await page.locator("video.result-video").evaluate(async(v:HTMLVideoElement)=>{v.currentTime=Math.min(.2,v.duration||0);v.pause();});
  expect(posts).toHaveLength(before);
@@ -29,7 +31,7 @@ test("count uses processed video geometry and source replacement clears the line
  await expect(page.locator(".line-handle")).toHaveCount(0);
 });
 
-for(const scenario of ["encoding","no-eligible","unavailable","lost-receipt","cancelled","expired"]){
+for(const scenario of ["encoding","no-eligible","unavailable","lost-receipt","cancelled","expired","partial"]){
  test("video recovery and independent phases: "+scenario,async({page})=>{
   await connect(page);
   let gets=0,enrichPosts=0;const intents:string[]=[];
@@ -51,7 +53,12 @@ for(const scenario of ["encoding","no-eligible","unavailable","lost-receipt","ca
     if(req.method()==="DELETE")return route.fulfill({json:{status:"cancelled"}});
     return route.fulfill({json:{enrichment_job_id:"controlled-enrichment",status:scenario==="cancelled"?"cancelled":"completed",source:{kind:"video",source_id:"controlled-video"},created_at:new Date().toISOString(),expires_at:until(),progress_percent:100,processed_units:1,total_units:1,results_ready:0}});
    }
-   if(p.endsWith("/results"))return route.fulfill({json:{items:[],page:1,page_size:25,total:0}});
+   if(p.endsWith("/results")){
+    const base=(await import("../tests/fixtures/imageAnalysis")).vehicleResult();
+    const items=scenario==="partial"?[{...base,track_id:42,attributes_status:"failed",attributes:[],plate_status:"failed",plate:{...base.plate,status:"failed",text:null}}]:[];
+    return route.fulfill({json:{items,page:1,page_size:25,total:items.length}});
+   }
+   if(p.endsWith("/annotated-video/content"))return route.fulfill({contentType:"video/mp4",body:readFileSync(path.resolve("e2e/fixtures/controlled.mp4"))});
    return route.fulfill({status:404,json:{code:"not_found",message:"Not found"}});
   });
   await page.getByRole("tab",{name:"Video",exact:true}).click();
@@ -70,6 +77,8 @@ for(const scenario of ["encoding","no-eligible","unavailable","lost-receipt","ca
    await expect(page.getByText("Conexión interrumpida",{exact:true})).toBeVisible();
    await page.getByRole("button",{name:"Reanudar consulta",exact:true}).click();await expect(page.getByText("Enriquecimiento completado",{exact:true})).toBeVisible();expect(intents[0]).toBe(intents[1]);
   }else if(scenario==="cancelled"){await expect(page.getByText("Cancelado",{exact:true})).toBeVisible();await expect(page.locator("video.result-video")).toBeVisible();}
+  else if(scenario==="partial"){await expect(page.getByText(/Resultados parciales en esta página/)).toBeVisible();await page.getByRole("button",{name:/Trayectoria 42/}).click();await expect(page.getByText("Los atributos no están disponibles.")).toBeVisible();}
+  else if(scenario==="partial"){await expect(page.getByText(/Resultados parciales en esta página/)).toBeVisible();await page.getByRole("button",{name:/Trayectoria 42/}).click();await expect(page.getByText("Los atributos no están disponibles.")).toBeVisible();}
   else{await page.getByRole("tab",{name:"Imagen",exact:true}).click();await page.waitForTimeout(750);await page.getByRole("tab",{name:"Video",exact:true}).click();await expect(page.locator("video.result-video")).toHaveCount(0);}
  });
 }

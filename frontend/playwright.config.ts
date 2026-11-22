@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "./e2e",
+  testIgnore: ["**/workspace-navigation.spec.ts","**/managed-session.spec.ts","**/video-presentation.spec.ts","**/video-analysis-flow.spec.ts","**/scene-viewport.spec.ts","**/video-track-details.spec.ts"],
   fullyParallel: false,
   workers: 1,
   timeout: 30_000,

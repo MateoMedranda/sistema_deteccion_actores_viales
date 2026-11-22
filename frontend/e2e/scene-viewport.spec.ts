@@ -5,8 +5,8 @@ import {connect,scene} from "./helpers";
 import {detectionResponse,expiresAt,vehicleResult} from "../tests/fixtures/imageAnalysis";
 const root=path.resolve("e2e/fixtures/video-presentation"),manifest=JSON.parse(readFileSync(path.join(root,"manifest.json"),"utf8"));
 test("ten scenes keep contours aligned at every zoom with bounded local interaction",async({page},info)=>{
- await connect(page);let current:any=manifest.images[0],posts=0;
- page.on("request",r=>{if(r.method()==="POST")posts++;});
+ await connect(page);let current:any=manifest.images[0],posts=0,previews=0;
+ page.on("request",r=>{if(r.method()==="POST")posts++;if(r.url().includes("plate-preview"))previews++;});
  await page.route("**/web-api/api/v1/**",async route=>{
   const req=route.request(),u=new URL(req.url()),p=u.pathname;
   if(p.endsWith("/images")){
@@ -16,6 +16,7 @@ test("ten scenes keep contours aligned at every zoom with bounded local interact
    source.original_image.url="/api/v1/detections/"+source.request_id+"/original-image";source.annotated_image.url="/api/v1/detections/"+source.request_id+"/annotated-image";
    return route.fulfill({json:source});
   }
+  if(p.endsWith("plate-preview"))return route.fulfill({status:422,json:{code:"plate_not_applicable",message:"Not applicable"}});
   if(p.endsWith("original-image"))return route.fulfill({contentType:"image/png",body:readFileSync(path.join(root,current.file))});
   if(req.method()==="POST")return route.fulfill({json:{enrichment_job_id:"scene-job",status:"queued",created_at:new Date().toISOString(),expires_at:expiresAt()}});
   if(p.endsWith("/results"))return route.fulfill({json:{page:1,page_size:50,total:current.boxes.length,items:current.boxes.map((b:any)=>vehicleResult(b.id))}});
@@ -30,7 +31,8 @@ test("ten scenes keep contours aligned at every zoom with bounded local interact
   await expect(stage.locator("img")).toHaveJSProperty("naturalWidth",image.width);
   await page.locator(".detection-list button").last().click();
   await expect(page.locator(".vehicle-details h3")).toHaveText("Detección "+image.boxes.at(-1).id);
-  const before=posts;
+  await expect(page.locator(".preview-status")).toHaveText("El tratamiento no es aplicable a esta placa.");
+  const before=posts,previewBefore=previews;
   for(const zoom of ["Ajustar","100%","200%","400%"]){
    const start=await page.evaluate(()=>performance.now());
    await page.getByRole("button",{name:zoom,exact:true}).click();await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
@@ -45,7 +47,7 @@ test("ten scenes keep contours aligned at every zoom with bounded local interact
    },image);
    errors.push(measured);expect(measured).toBeLessThanOrEqual(1);
   }
-  expect(posts).toBe(before);await expect(page.locator(".vehicle-details h3")).toHaveText("Detección "+image.boxes.at(-1).id);
+  expect(posts).toBe(before);expect(previews).toBe(previewBefore);await expect(page.locator(".vehicle-details h3")).toHaveText("Detección "+image.boxes.at(-1).id);
  }
  const sorted=[...times].sort((a,b)=>a-b),p95=sorted[Math.ceil(sorted.length*.95)-1];
  writeFileSync(info.outputPath("zoom-metrics.json"),JSON.stringify({viewport:info.project.name,scenes:10,denseScenes:3,pointsPerScenePerScale:50,operations:times.length,maxError:Math.max(...errors),p95ms:p95}));

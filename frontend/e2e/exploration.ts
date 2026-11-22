@@ -10,7 +10,7 @@ export async function serveScenes(page: Page, chosen: any[]) {
   const sources = new Map<string, any>(),
     jobs = new Map<string, any>();
   const pages: number[] = [];
-  await page.route("http://127.0.0.1:8767/api/**", async (route) => {
+  await page.route("**/web-api/api/**", async (route) => {
     const req = route.request(),
       url = new URL(req.url());
     const json = (body: any, status = 200) =>
@@ -44,7 +44,7 @@ export async function serveScenes(page: Page, chosen: any[]) {
       url.pathname.endsWith("original-image") ||
       url.pathname.endsWith("annotated-image")
     ) {
-      const source = sources.get(url.pathname.split("/")[4]);
+      const source = sources.get(url.pathname.replace("/web-api","").split("/")[4]);
       return route.fulfill({
         contentType: "image/png",
         body: readFileSync(path.join(root, source.scene.name + ".png")),
@@ -66,7 +66,7 @@ export async function serveScenes(page: Page, chosen: any[]) {
         202,
       );
     }
-    const id = url.pathname.split("/")[4],
+    const id = url.pathname.replace("/web-api","").split("/")[4],
       job = jobs.get(id);
     if (url.pathname.endsWith("/results")) {
       const page = Number(url.searchParams.get("page")),

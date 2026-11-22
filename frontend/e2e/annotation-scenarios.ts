@@ -8,7 +8,7 @@ export async function serveAnnotation(page:Page, scene:any){
  const annotated=readFileSync(path.resolve("e2e/fixtures/annotations/"+scene.name+"-annotated.png"));
  const calls={annotations:0,posts:0};
  const accepted={enrichment_job_id:"synthetic-job",status:"queued",created_at:new Date().toISOString(),expires_at:expiresAt()};
- await page.route("http://127.0.0.1:8767/api/**",async route=>{
+ await page.route("**/web-api/api/**",async route=>{
   const req=route.request(),u=new URL(req.url());
   if(u.pathname.endsWith("/image-policy"))return route.continue();
   if(u.pathname.endsWith("/images")){calls.posts++;return route.fulfill({json:{...detectionResponse(),image:{width:scene.width,height:scene.height,media_type:"image/png"},detections:scene.detections}});}

@@ -1,19 +1,19 @@
 # Quickstart de validación —008
 
-**Estado**: guía para la futura implementación. Actualmente existen los documentos de diseño; app.web, política protegida y tests008 se crearán en implement. No ejecutar estos comandos como prueba de una función ya entregada.
+**Estado**: funciones implementadas; resultados efectivos en validation.md y audit.md. Los gates pendientes no equivalen a aceptación integral.
 
 ## Requisitos
 
 Checkout principal en feature/008-exploracion-imagen-video, Python3.12/.venv y frontend/node_modules existentes, FFmpeg/ffprobe disponibles y modelos/credenciales privados ya aprobados. Conservar configuración y archivos previos. No usar VITE_* para la API key. [Gateway](contracts/gateway.md) fija la frontera local/privada.
 
-## Arranque previsto después de implementar
+## Arranque
 
 Desde raíz, terminal del backend:
 ~~~powershell
 .venv/Scripts/python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ~~~
 
-Configurar .env.web privado a partir de .env.web.example futuro. Variables: WEB_BACKEND_URL=http://127.0.0.1:8000, WEB_BACKEND_API_KEY con el secreto aprobado editado localmente, WEB_ORIGIN=http://127.0.0.1:4173. Nunca pegar el secreto en comandos guardados, commits, capturas o documentación.
+Configurar .env.web privado a partir de .env.web.example. Variables: WEB_BACKEND_URL=http://127.0.0.1:8000, WEB_BACKEND_API_KEY con el secreto aprobado editado localmente, WEB_ORIGIN=http://127.0.0.1:4173. Nunca pegar el secreto en comandos guardados, commits, capturas o documentación.
 
 Producción local:
 ~~~powershell
@@ -41,25 +41,28 @@ La web se abre en127.0.0.1:4173 y no pide URL/key. Los accesos remotos requieren
 
 ## Comandos de pruebas
 
-Suites existentes, ejecutables hoy, y ampliadas durante implement:
+Suites de regresión:
 ~~~powershell
 .venv/Scripts/python.exe -B -m pytest -o addopts='' -q
 npm --prefix frontend run test
 npm --prefix frontend run build
 # Desde frontend:
-./node_modules/.bin/playwright.cmd test --reporter=json
+./node_modules/.bin/playwright.cmd test
+./node_modules/.bin/playwright.cmd test --config=playwright.008.config.ts
 ~~~
 
-Comandos previstos de nuevos artefactos, no ejecutables hasta implement:
+Fixtures controlados y evaluador:
 ~~~powershell
 .venv/Scripts/python.exe tests/e2e/build_video_presentation_fixtures.py
 .venv/Scripts/python.exe scripts/evaluate_video_presentation.py --manifest frontend/e2e/fixtures/video-presentation/manifest.json --output specs/008-exploracion-imagen-video/video-presentation-summary.json
 ~~~
 
-El generador creará solo fixtures sintéticos en carpeta008 propia, sin reemplazar fixtures anteriores. El evaluador seguirá [validation-protocol.md](validation-protocol.md), conservará todos los resultados y nunca tendrá acceso remoto para publicar medios.
+El generador crea solo fixtures sintéticos en carpeta008 propia, sin reemplazar fixtures anteriores. El evaluador sigue [validation-protocol.md](validation-protocol.md), conservará todos los resultados y no publica medios.
 
 ## Resultado esperado y límites
 
 Contratos/privacidad/lifecycle verificados; UI360/768/1440 y200%; zoom<=1px y p95<=200ms; video limpio con gates de fluidez/IoU/lag y tiempo/RSS<=110% baseline. Medidas que aún no se ejecuten se declaran pendientes. Fallar un gate impide cierre integral, no habilita modificar métricas o modelos.
 
-Cada etapa confirma solo sus archivos pertinentes en un commit. Tras este plan, generar tareas; no se crea tasks.md ni se implementa producto aquí. No se cierran006/T067–T068 ni007/T061–T064/T070.
+Cada incremento confirma solo sus archivos pertinentes en un commit. Revisar auditoría y ejecutar converge antes de declarar aceptación integral. No se cierran006/T067–T068 ni007/T061–T064/T070.
+
+--benchmark mide solo presentación sobre raw sintético. --real-model-benchmark añade3 pares AB/BA con detector/tracker y pesos locales, encoder y publicación; conserva fallos. Enriquecimiento y RSS del gateway se reportan por separado. No iniciar ambos arneses Playwright juntos: usan4173/4174/8767.
