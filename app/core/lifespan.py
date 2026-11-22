@@ -97,7 +97,7 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
             video_worker = VideoWorker(
                 VideoProcessor(
                     detector, video_jobs, video_artifacts, settings.ffmpeg_executable,
-                    settings.video_job_timeout_seconds, logger,
+                    settings.video_job_timeout_seconds, logger, settings.vehicle_class_set(),
                 ),
                 video_jobs,
                 logger,
@@ -118,7 +118,7 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         preview_store=PlatePreviewStore()
         app.state.plate_preview_store=preview_store
         app.state.plate_preview_service=PlatePreviewService(enrichment_jobs,image_sources,preview_store)
-        janitor = PeriodicCleanup((image_sources, enrichment_jobs, artifacts, video_jobs, count_jobs, preview_store), logger)
+        janitor = PeriodicCleanup((image_sources, enrichment_jobs, artifacts, app.state.video_job_service, count_jobs, preview_store), logger)
         app.state.temporary_cleanup = janitor
         janitor.start()
         yield

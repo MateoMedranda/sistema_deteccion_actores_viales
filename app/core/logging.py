@@ -14,6 +14,8 @@ class JsonFormatter(logging.Formatter):
             "request_id",
             "source_type",
             "status",
+            "outcome",
+            "elapsed_ms",
             "validation_ms",
             "inference_ms",
             "annotation_ms",

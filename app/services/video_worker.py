@@ -16,7 +16,9 @@ class VideoWorker:
 
     def close(self) -> None:
         self._stop.set()
-        self._thread.join(timeout=3)
+        with self.store._lock,self.store._connection:
+            self.store._connection.execute("UPDATE video_jobs SET status='cancelled',processing_phase='cancelled' WHERE status='processing'")
+        self._thread.join()
 
     def _run(self) -> None:
         while not self._stop.wait(0.25):
@@ -26,14 +28,18 @@ class VideoWorker:
             try:
                 self.processor.process(job)
             except VideoProcessingError as exc:
-                self.store.fail(job.job_id, str(exc))
+                if not self.store.is_cancelled(job.job_id):
+                    self.store.fail(job.job_id,str(exc))
+                    self.logger.info("video_job_failed",extra={"job_id":job.job_id,"error_code":str(exc)})
                 self.processor.artifacts.remove(job.staged_path)
-                self.logger.info("video_job_failed", extra={"job_id": job.job_id, "error_code": str(exc)})
             except Exception as exc:
                 self.store.fail(job.job_id, "processing_failed")
                 self.processor.artifacts.remove(job.staged_path)
-                self.logger.exception("video_job_failed", extra={
+                self.logger.error("video_job_failed", extra={
                     "job_id": job.job_id,
                     "error_code": "processing_failed",
                     "exception_type": type(exc).__name__,
                 })
+
+            finally:
+                self.store.release(job.job_id)

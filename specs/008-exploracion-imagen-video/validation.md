@@ -17,3 +17,6 @@ T001–T012 completadas. Vitest:2 pruebas nuevas PASS (tabs/TTL oculto), build P
 
 ## US2
 T013–T027 completadas. Gateway separado con sesiones RAM/CSRF/allowlist/cotas/Range y web-policy autenticada; cliente directo conservado.11 pruebas backend de gateway/política PASS;2 pruebas de transporte/reset frontend PASS y build PASS. Playwright009:9 recorridos de sesión/imagen/navegación PASS en3tamaños, sin X-API-Key en solicitudes del navegador. Los límites de streams/ingreso local/privado se conservan; despliegue público no habilitado.
+
+## US4
+T028–T044 completadas como incremento de presentación. Paleta007 compartida, filtro gated-ema-v1 solo visual, raw preservado, EOF real, metadata confirmada y fases encoding/publishing. Supervisor FFmpeg cancelable retiene worker hasta reap; janitor conserva rutas purgadas mientras estén en uso.11 pruebas seleccionadas de filtro/store/encoder/publicación/evaluador PASS,2 pruebas frontend nuevas PASS y build PASS. Video controlado real: navegador en3tamaños PASS. Evaluador sintético6clips: quality_pass=true con IoU/lag/jitter por segmento en video-presentation-summary.json. Esto no acredita precisión del detector/OCR ni SC-006 con modelos reales, que permanece pendiente en T077.

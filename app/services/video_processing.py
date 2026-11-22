@@ -59,114 +59,91 @@ class IoUTracker:
 
 
 class VideoProcessor:
-    def __init__(
-        self,
-        detector: Detector,
-        store: VideoJobStore,
-        artifacts: VideoArtifactStore,
-        ffmpeg_executable: str,
-        timeout_seconds: int,
-        logger,
-    ) -> None:
-        self.detector = detector
-        self.store = store
-        self.artifacts = artifacts
-        self.ffmpeg_executable = ffmpeg_executable
-        self.timeout_seconds = timeout_seconds
-        self.logger = logger
+    def __init__(self,detector,store,artifacts,ffmpeg_executable,timeout_seconds,logger,eligible_classes=()):
+        self.detector,self.store,self.artifacts=detector,store,artifacts
+        self.ffmpeg_executable,self.timeout_seconds,self.logger=ffmpeg_executable,timeout_seconds,logger
+        self.eligible_classes=set(eligible_classes);self.encoder_peak_rss=0
 
-    def process(self, job: VideoJob) -> None:
-        if job.staged_path is None:
-            raise VideoProcessingError("missing_input")
-        capture = cv2.VideoCapture(str(job.staged_path))
-        if not capture.isOpened():
-            raise VideoProcessingError("invalid_video")
-        temporary = self.artifacts.annotated_output_path().with_suffix(".raw.mp4")
-        output = self.artifacts.annotated_output_path()
-        writer = cv2.VideoWriter(
-            str(temporary), cv2.VideoWriter_fourcc(*"mp4v"), job.metadata.fps,
-            (job.metadata.width, job.metadata.height),
-        )
-        if not writer.isOpened():
-            capture.release()
-            raise VideoProcessingError("output_initialization_failed")
-        model_tracker = self.detector.create_video_tracker() if hasattr(self.detector, "create_video_tracker") else None
-        tracker = IoUTracker()
-        started = perf_counter()
-        detections: list[FrameDetection] = []
-        frame_index = 0
-        cancelled = False
+    def process(self,job):
+        from app.services.video_presentation import PresentationFilter,draw_box
+        import os
+        if job.staged_path is None:raise VideoProcessingError("missing_input")
+        capture=cv2.VideoCapture(os.path.relpath(job.staged_path))
+        if not capture.isOpened():raise VideoProcessingError("invalid_video")
+        temporary=self.artifacts.annotated_output_path().with_suffix(".raw.mp4")
+        output=self.artifacts.annotated_output_path()
+        self.store.register_path(job.job_id,temporary);self.store.register_path(job.job_id,output)
+        writer=cv2.VideoWriter(os.path.relpath(temporary),cv2.VideoWriter_fourcc(*"mp4v"),job.metadata.fps,(job.metadata.width,job.metadata.height))
+        started=perf_counter();outcome="failed";frame_index=0;detections=[];self.encoder_peak_rss=0
+        display=PresentationFilter();tracker=IoUTracker()
+        model_tracker=self.detector.create_video_tracker() if hasattr(self.detector,"create_video_tracker") else None
+        def cancelled():return self.store.is_cancelled(job.job_id)
+        def stop_check():
+            if cancelled():raise VideoProcessingError("job_cancelled")
+            if perf_counter()-started>=self.timeout_seconds:raise VideoProcessingError("job_timeout")
         try:
+            if not writer.isOpened():raise VideoProcessingError("output_initialization_failed")
             while True:
-                if self.store.is_cancelled(job.job_id):
-                    cancelled = True
-                    break
-                if perf_counter() - started > self.timeout_seconds:
-                    raise VideoProcessingError("job_timeout")
-                ok, frame = capture.read()
-                if not ok:
-                    break
-                frame_started = perf_counter()
+                stop_check();ok,frame=capture.read()
+                if not ok:break
+                if frame.shape[:2]!=(job.metadata.height,job.metadata.width):raise VideoProcessingError("video_geometry_invalid")
+                frame_started=perf_counter()
                 if model_tracker is not None:
-                    try:
-                        pairs = model_tracker.track(frame)
+                    try:pairs=model_tracker.track(frame)
                     except ModuleNotFoundError as exc:
-                        # Some local Ultralytics tracker variants load SciPy lazily.  Keep the
-                        # accepted job available while recording that the evaluated tracker was
-                        # not available; deployments should install scipy to enable ByteTrack.
-                        if exc.name != "scipy":
-                            raise
-                        model_tracker = None
-                        self.logger.warning("video_tracker_fallback", extra={
-                            "job_id": job.job_id, "error_code": "bytetrack_dependency_unavailable",
-                            "tracker": "iou-fallback",
-                        })
+                        if exc.name!="scipy":raise
+                        model_tracker=None
+                        self.logger.warning("video_tracker_fallback",extra={"job_id":job.job_id,"error_code":"bytetrack_dependency_unavailable"})
                 if model_tracker is None:
-                    raw = self.detector.detect(frame)
-                    pairs = list(zip(raw, tracker.assign(raw), strict=True))
-                for detection, track_id in pairs:
-                    self._annotate(frame, detection, track_id)
-                    detections.append(FrameDetection(
-                        frame_index, track_id, detection.class_id, detection.class_name,
-                        detection.confidence, detection.x_min, detection.y_min,
-                        detection.x_max, detection.y_max,
-                    ))
-                writer.write(frame)
-                frame_index += 1
-                self.store.progress(job.job_id, frame_index)
-                self.logger.info("video_frame_processed", extra={
-                    "job_id": job.job_id, "progress": frame_index,
-                    "frame_ms": round((perf_counter() - frame_started) * 1000),
-                    "memory_mb": round(psutil.Process().memory_info().rss / 1024 / 1024, 2),
-                    "tracker": "iou-fallback",
-                })
+                    raw=self.detector.detect(frame);pairs=list(zip(raw,tracker.assign(raw),strict=True))
+                observations=[{"track_id":tid,"class_name":d.class_name,"bbox":(d.x_min,d.y_min,d.x_max,d.y_max)} for d,tid in pairs]
+                boxes=display.present(frame,frame_index,observations)
+                for detection,track_id in pairs:
+                    if track_id in boxes:draw_box(frame,boxes[track_id],detection.class_name)
+                    detections.append(FrameDetection(frame_index,track_id,detection.class_id,detection.class_name,detection.confidence,detection.x_min,detection.y_min,detection.x_max,detection.y_max))
+                writer.write(frame);frame_index+=1;self.store.progress(job.job_id,frame_index)
+                self.logger.info("video_frame_processed",extra={"job_id":job.job_id,"progress":frame_index,"frame_ms":round((perf_counter()-frame_started)*1000),"memory_mb":round(psutil.Process().memory_info().rss/1024**2,2),"tracker":"model" if model_tracker is not None else "iou-fallback"})
+            capture.release();writer.release()
+            stop_check()
+            if frame_index<=0:raise VideoProcessingError("invalid_video")
+            self.store.phase(job.job_id,"encoding",frame_index)
+            self._encode_h264(temporary,output,cancelled,started+self.timeout_seconds,job.expires_at)
+            stop_check();self.store.phase(job.job_id,"publishing")
+            outcome=self.store.finish(job.job_id,output,detections,actual_frame_count=frame_index,eligible_classes=self.eligible_classes,owner_key_id=job.owner_key_id)
+            return outcome
         finally:
-            capture.release()
-            writer.release()
-        if cancelled or self.store.is_cancelled(job.job_id):
-            temporary.unlink(missing_ok=True)
-            return
-        self._encode_h264(temporary, output)
-        temporary.unlink(missing_ok=True)
-        self.store.finish(job.job_id, output, detections)
-        # Keep the original input private until the video TTL expires: enrichment uses its
-        # already computed detections and this source, never the road-actor detector again.
-
-    def _encode_h264(self, source: Path, destination: Path) -> None:
+            capture.release();writer.release();temporary.unlink(missing_ok=True)
+            if outcome!="completed":output.unlink(missing_ok=True)
+            if outcome!="completed":
+                try:outcome=self.store.get(job.job_id,job.owner_key_id).status.value
+                except Exception:outcome="expired"
+                if outcome=="processing":outcome="failed"
+            self.store.release(job.job_id)
+            self.logger.info("video_job_outcome",extra={"job_id":job.job_id,"outcome":outcome,"elapsed_ms":round((perf_counter()-started)*1000),"progress":frame_index,"memory_mb":round((psutil.Process().memory_info().rss+self.encoder_peak_rss)/1024**2,2)})
+    def _encode_h264(self,source,destination,cancelled=lambda:False,deadline=None,expires_at=None):
+        import time
+        from datetime import UTC,datetime
+        process=None
+        end=min(perf_counter()+60,deadline or float("inf"))
         try:
-            subprocess.run(
-                [self.ffmpeg_executable, "-y", "-i", str(source), "-c:v", "libx264", "-movflags", "+faststart", str(destination)],
-                check=True, capture_output=True, timeout=60,
-            )
-        except (FileNotFoundError, subprocess.SubprocessError, OSError) as exc:
-            destination.unlink(missing_ok=True)
+            process=subprocess.Popen([self.ffmpeg_executable,"-nostdin","-y","-i",str(source),"-c:v","libx264","-movflags","+faststart",str(destination)],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+            while process.poll() is None:
+                if cancelled() or (expires_at and datetime.now(UTC)>=expires_at):raise VideoProcessingError("job_cancelled")
+                if perf_counter()>=end:raise VideoProcessingError("video_encoding_failed")
+                try:self.encoder_peak_rss=max(self.encoder_peak_rss,psutil.Process(process.pid).memory_info().rss)
+                except psutil.Error:pass
+                time.sleep(.05)
+            if process.returncode!=0:raise VideoProcessingError("video_encoding_failed")
+        except (OSError,subprocess.SubprocessError) as exc:
             raise VideoProcessingError("video_encoding_failed") from exc
+        finally:
+            if process is not None and process.poll() is None:
+                process.terminate()
+                try:process.wait(timeout=1)
+                except subprocess.TimeoutExpired:process.kill();process.wait()
+            if process is None or process.returncode!=0 or cancelled():destination.unlink(missing_ok=True)
 
     @staticmethod
-    def _annotate(frame: np.ndarray, detection: Detection, track_id: int) -> None:
-        cv2.rectangle(frame, (detection.x_min, detection.y_min), (detection.x_max, detection.y_max), (0, 200, 0), 2)
-        cv2.putText(
-            frame, f"{detection.class_name} #{track_id} {detection.confidence:.2f}",
-            (detection.x_min, max(20, detection.y_min - 6)), cv2.FONT_HERSHEY_SIMPLEX,
-            0.55, (0, 200, 0), 2, cv2.LINE_AA,
-        )
+    def _annotate(frame,detection,track_id):
+        from app.services.video_presentation import draw_box
+        draw_box(frame,(detection.x_min,detection.y_min,detection.x_max,detection.y_max),detection.class_name)

@@ -83,6 +83,12 @@ class VideoJobResponse(BaseModel):
     expires_at: datetime
     error: ErrorResponse | None = None
 
+    processing_phase: Literal["queued","frames","encoding","publishing","ready","failed","cancelled"] | None = None
+    frame_total_confirmed: bool = False
+    video_metadata: dict | None = None
+    eligible_track_count: int | None = Field(default=None,ge=0)
+    classes_present: list[str] | None = None
+
 
 class VideoClassSummary(BaseModel):
     class_name: str

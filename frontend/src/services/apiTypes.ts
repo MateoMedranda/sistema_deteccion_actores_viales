@@ -376,3 +376,6 @@ export function parseImagePolicy(value: unknown): ImagePolicy {
 
 export {parseWebSession} from "./managedTypes";
 export type {WebSessionReady,WebPolicy} from "./managedTypes";
+
+export {parseVideoJob} from "../features/video-analysis/videoTypes";
+export type {VideoJob,VideoMetadata} from "../features/video-analysis/videoTypes";

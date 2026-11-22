@@ -7,11 +7,13 @@ export function VideoJobPanel({
   onVideo,
   onPreview,
   lifecycle,
+  onStatus,
 }: {
   client?: ApiClient;
   onVideo: (id: string) => void;
   onPreview: (url: string) => void;
   lifecycle?: SessionLifecycle;
+  onStatus?: (job:any)=>void;
 }) {
   const [file, setFile] = useState<File>(),
     [videoUrl, setVideoUrl] = useState(""),
@@ -40,6 +42,7 @@ export function VideoJobPanel({
     poll: (id, options) => client!.video(id, options),
     cancel: (id) => client!.cancelVideo(id),
   });
+  useEffect(()=>{if(job)onStatus?.(job);},[job,onStatus]);
   useEffect(
     () => () => {
       for (const url of urls.current) URL.revokeObjectURL(url);

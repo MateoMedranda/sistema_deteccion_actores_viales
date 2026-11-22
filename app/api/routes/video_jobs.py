@@ -22,7 +22,8 @@ router = APIRouter(prefix="/v1/video-jobs", tags=["video-jobs"])
 def public_job(job: VideoJob) -> VideoJobResponse:
     return VideoJobResponse(
         job_id=job.job_id, status=job.status.value,
-        progress_percent=round(job.processed_frames * 100 / job.metadata.total_frames),
+        processing_phase=job.processing_phase,frame_total_confirmed=job.frame_total_confirmed,video_metadata=job.video_metadata,eligible_track_count=job.eligible_track_count,classes_present=job.classes_present,
+        progress_percent=min(100,round(job.processed_frames * 100 / max(1,job.metadata.total_frames))),
         processed_frames=job.processed_frames, total_frames=job.metadata.total_frames,
         created_at=job.created_at, updated_at=job.updated_at, expires_at=job.expires_at,
         error={"code": job.error_code, "message": "The video job could not be completed.", "request_id": "job"}

@@ -30,10 +30,12 @@ class VideoJobService:
 
     def cancel(self, job_id: str, principal: Principal) -> VideoJob:
         job = self.store.cancel(job_id, principal.key_id)
-        self.artifacts.remove(job.staged_path)
-        self.artifacts.remove(job.output_path)
+        for path in (job.staged_path,job.output_path):
+            if path and not self.store.in_use(path):self.artifacts.remove(path)
         return job
 
     def cleanup(self) -> None:
         for path in self.store.cleanup():
-            self.artifacts.remove(path)
+            if not self.store.in_use(path):
+                try:self.artifacts.remove(path);self.store._purged.discard(path)
+                except PermissionError:pass

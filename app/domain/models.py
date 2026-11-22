@@ -108,6 +108,12 @@ class VideoJob:
     processed_frames: int = 0
     error_code: str | None = None
 
+    processing_phase: str | None = None
+    frame_total_confirmed: bool = False
+    video_metadata: dict | None = None
+    eligible_track_count: int | None = None
+    classes_present: list[str] | None = None
+
 
 @dataclass(frozen=True)
 class FrameDetection:
