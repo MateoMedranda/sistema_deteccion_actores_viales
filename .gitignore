@@ -30,3 +30,9 @@ metricas/.ultima-actividad
 metricas/salidas/
 
 *.log
+
+# Private web gateway environment; example only is publishable
+!.env.web.example
+node_modules/
+*.swp
+*.tmp

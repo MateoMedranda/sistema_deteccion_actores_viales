@@ -354,3 +354,24 @@ class ImageUploadPolicy(BaseModel):
     media_types: list[Literal["image/jpeg", "image/png"]]
     max_upload_bytes: int = Field(gt=0)
     max_image_pixels: int = Field(gt=0)
+
+
+class WebVideoPolicy(BaseModel):
+    media_types: list[str]
+    max_upload_bytes: int = Field(gt=0)
+    max_duration_seconds: float = Field(gt=0)
+    max_width: int = Field(gt=0)
+    max_height: int = Field(gt=0)
+    max_fps: float = Field(gt=0)
+    max_frames: int = Field(gt=0)
+
+class WebCapabilities(BaseModel):
+    image_detection: bool
+    video_analysis: bool
+    attributes: bool
+    plates: bool
+
+class WebPolicy(BaseModel):
+    image: ImageUploadPolicy
+    video: WebVideoPolicy
+    capabilities: WebCapabilities

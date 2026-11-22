@@ -1,0 +1,175 @@
+"""Closed streaming relay. Backend authorization remains authoritative."""
+from __future__ import annotations
+import asyncio,json,re
+from datetime import UTC,datetime
+from time import monotonic
+from uuid import UUID
+import httpx
+from starlette.responses import JSONResponse,Response,StreamingResponse
+
+ID=r"[A-Za-z0-9][A-Za-z0-9_-]{0,127}"
+ROUTES=[
+ ("GET",r"/api/v1/web-policy","json"),
+ ("GET",r"/health/(?:live|ready|video-ready|enrichment-ready|image-policy)","json"),
+ ("POST",r"/api/v1/detections/images","image-upload"),
+ ("GET",rf"/api/v1/detections/{ID}/(?:original-image|annotated-image)","image"),
+ ("POST",r"/api/v1/video-jobs","video-upload"),
+ ("GET|DELETE",rf"/api/v1/video-jobs/{ID}","json"),
+ ("GET",rf"/api/v1/video-jobs/{ID}/(?:detections|summary|annotated-video)","json"),
+ ("GET",rf"/api/v1/video-jobs/{ID}/annotated-video/content","native"),
+ ("POST",r"/api/v1/enrichment-jobs","enrich"),
+ ("GET|DELETE",rf"/api/v1/enrichment-jobs/{ID}","json"),
+ ("GET",rf"/api/v1/enrichment-jobs/{ID}/results","json"),
+ ("GET",rf"/api/v1/enrichment-jobs/{ID}/detections/[1-9][0-9]*/plate-preview","plate"),
+ ("POST",rf"/api/v1/video-jobs/{ID}/count-jobs","json"),
+ ("GET|DELETE",rf"/api/v1/count-jobs/{ID}","json"),
+ ("GET",rf"/api/v1/count-jobs/{ID}/events","json"),
+ ("GET",rf"/api/v1/count-jobs/{ID}/annotated-video","native"),
+]
+def safe_error(status,code,headers=None):
+    return JSONResponse({"code":code,"message":"No se pudo completar la solicitud."},status_code=status,headers={"Cache-Control":"no-store",**(headers or {})})
+class RelayError(Exception):
+    def __init__(self,status,code):self.status,self.code=status,code
+
+def classify(method,path,raw_path,query):
+    if b"%" in raw_path or "//" in path or ".." in path:raise RelayError(404,"web_route_invalid")
+    kind=next((kind for verbs,pattern,kind in ROUTES if method in verbs.split("|") and re.fullmatch(pattern,path)),None)
+    if not kind:raise RelayError(404,"web_route_invalid")
+    pairs=list(query.multi_items());keys=[key for key,_ in pairs]
+    if len(keys)!=len(set(keys)):raise RelayError(422,"web_query_invalid")
+    allowed={"page","page_size"} if path.endswith(("/detections","/results","/events")) else {"profile"} if kind=="plate" else set()
+    if not set(keys)<=allowed:raise RelayError(422,"web_query_invalid")
+    for key,value in pairs:
+        if key=="profile":
+            if value!="display-contrast-v1":raise RelayError(422,"web_query_invalid")
+        elif not re.fullmatch(r"[1-9][0-9]{0,8}",value) or (key=="page_size" and int(value)>100):raise RelayError(422,"web_query_invalid")
+    return kind
+
+async def limited_json(response,deadline):
+    data=bytearray()
+    async for block in response.aiter_bytes(65536):
+        if monotonic()>=deadline:raise RelayError(504,"web_timeout")
+        data.extend(block)
+        if len(data)>2*1024*1024:raise RelayError(502,"web_response_too_large")
+    try:return json.loads(data)
+    except (ValueError,UnicodeError):raise RelayError(502,"web_invalid_response")
+
+class Proxy:
+    def __init__(self,settings,sessions,client):
+        self.settings,self.sessions,self.client=settings,sessions,client
+        self.active=0;self.uploads=0
+    async def handle(self,request,session,token,kind):
+        upload=kind.endswith("-upload")
+        if self.active>=16 or (upload and self.uploads>=2):return safe_error(429,"web_capacity",{"Retry-After":"1"})
+        self.active+=1
+        if upload:self.uploads+=1
+        owned=True;response=None
+        def release():
+            self.active-=1
+            if upload:self.uploads-=1
+        ttl=(session.expires_at-self.sessions.clock()).total_seconds()
+        budget={"image-upload":120,"video-upload":180,"image":30,"plate":10,"native":60}.get(kind,10 if request.method=="GET" else 15)
+        deadline=monotonic()+min(budget,ttl)
+        path=request.url.path.removeprefix("/web-api")
+        headers={"X-API-Key":self.settings.backend_api_key.get_secret_value(),"Accept-Encoding":"identity"}
+        body=None
+        try:
+            if ttl<=0:raise RelayError(401,"web_session_expired")
+            length=request.headers.get("content-length")
+            if length and (not length.isdigit() or int(length)>2**40):raise RelayError(413,"web_body_too_large")
+            if upload:
+                content_type=request.headers.get("content-type","")
+                if not content_type.lower().startswith("multipart/form-data;"):raise RelayError(422,"web_upload_invalid")
+                maximum=session.policy["image" if kind=="image-upload" else "video"]["max_upload_bytes"]+65536
+                headers["Content-Type"]=content_type
+                if length and int(length)>maximum:raise RelayError(413,"web_body_too_large")
+                async def bounded_input():
+                    size=0
+                    async for block in request.stream():
+                        if not self.sessions.get(token) or monotonic()>=deadline:raise RelayError(401,"web_session_expired")
+                        size+=len(block)
+                        if size>maximum:raise RelayError(413,"web_body_too_large")
+                        if monotonic()>=deadline or not self.sessions.get(token):raise RelayError(401,"web_session_expired")
+                        for offset in range(0,len(block),65536):yield block[offset:offset+65536]
+                body=bounded_input()
+            else:
+                data=bytearray()
+                async for block in request.stream():
+                    data.extend(block)
+                    if len(data)>16384:raise RelayError(413,"web_body_too_large")
+                if request.method in ("GET","DELETE") and data:raise RelayError(422,"web_body_not_allowed")
+                if data:
+                    try:payload=json.loads(data)
+                    except ValueError:raise RelayError(422,"web_json_invalid")
+                    if not isinstance(payload,dict):raise RelayError(422,"web_json_invalid")
+                    body=bytes(data);headers["Content-Type"]="application/json"
+                else:payload={}
+            if kind=="native":
+                range_value=request.headers.get("range")
+                if range_value and not re.fullmatch(r"bytes=(?:[0-9]{1,20}-[0-9]{0,20}|-[1-9][0-9]{0,19})",range_value):raise RelayError(416,"web_range_invalid")
+                if range_value:headers["Range"]=range_value
+                if value:=request.headers.get("if-range"):
+                    if len(value)>256 or any(ord(c)<32 for c in value):raise RelayError(416,"web_range_invalid")
+                    headers["If-Range"]=value
+                job_path=path.split("/annotated-video")[0]
+                async with asyncio.timeout(max(.001,deadline-monotonic())):
+                    check=await self.client.send(self.client.build_request("GET",self.settings.backend_url.rstrip("/")+job_path,headers={"X-API-Key":headers["X-API-Key"],"Accept-Encoding":"identity"}),stream=True)
+                    try:
+                        if check.status_code!=200:raise RelayError(check.status_code if check.status_code in (401,404,410) else 409,"web_media_unavailable")
+                        metadata=await limited_json(check,deadline)
+                    finally:await check.aclose()
+                if metadata.get("status")!="completed":raise RelayError(409,"web_media_unavailable")
+                expiry=datetime.fromisoformat(metadata["expires_at"].replace("Z","+00:00"))
+                deadline=min(deadline,monotonic()+(expiry-self.sessions.clock()).total_seconds())
+            target=self.settings.backend_url.rstrip("/")+path
+            if request.url.query:target+="?"+request.url.query
+            async with asyncio.timeout(max(.001,deadline-monotonic())):
+                response=await self.client.send(self.client.build_request(request.method,target,headers=headers,content=body),stream=True)
+                if 300<=response.status_code<400:raise RelayError(502,"web_redirect_rejected")
+                if response.headers.get("content-encoding","identity")!="identity":raise RelayError(502,"web_encoding_invalid")
+                if response.status_code>=400:
+                    code="web_upstream_failure"
+                    if "application/json" in response.headers.get("content-type",""):
+                        detail=await limited_json(response,deadline)
+                        if isinstance(detail,dict) and re.fullmatch(r"[a-z0-9_]{1,64}",str(detail.get("code",""))):code=detail["code"]
+                    return safe_error(response.status_code,code,{"Retry-After":"1"} if response.status_code==429 else None)
+                if response.status_code==204:return Response(status_code=204,headers={"Cache-Control":"no-store"})
+                if kind in ("json","enrich","image-upload","video-upload"):
+                    payload=await limited_json(response,deadline)
+                    if not self.sessions.get(token):raise RelayError(401,"web_session_expired")
+                    return JSONResponse(payload,status_code=response.status_code,headers={"Cache-Control":"no-store"})
+            maximum={"native":2*1024**3,"image":64*1024**2,"plate":2*1024**2}[kind]
+            content_length=response.headers.get("content-length")
+            content_range=response.headers.get("content-range","")
+            total=re.search(r"/([0-9]+)$",content_range)
+            if (content_length and (not content_length.isdigit() or int(content_length)>maximum)) or (total and int(total[1])>maximum):raise RelayError(502,"web_response_too_large")
+            output_headers={"Cache-Control":"no-store","Cross-Origin-Resource-Policy":"same-origin"}
+            for key in ("content-type","content-length","content-range","accept-ranges","etag","last-modified","x-plate-preview-metadata"):
+                if value:=response.headers.get(key):
+                    if key=="x-plate-preview-metadata" and (len(value)>2048 or not value.isascii()):raise RelayError(502,"web_metadata_invalid")
+                    output_headers[key]=value
+            upstream=response
+            async def stream():
+                size=0;iterator=upstream.aiter_bytes(65536).__aiter__()
+                try:
+                    while True:
+                        if not self.sessions.get(token):raise RelayError(401,"web_session_expired")
+                        left=deadline-monotonic()
+                        if left<=0:raise RelayError(504,"web_timeout")
+                        try:block=await asyncio.wait_for(anext(iterator),left)
+                        except StopAsyncIteration:break
+                        if not self.sessions.get(token) or monotonic()>=deadline:raise RelayError(401,"web_session_expired")
+                        size+=len(block)
+                        if size>maximum:raise RelayError(502,"web_response_too_large")
+                        yield block
+                finally:
+                    await upstream.aclose();release()
+            owned=False
+            return StreamingResponse(stream(),status_code=response.status_code,headers=output_headers)
+        except RelayError as exc:return safe_error(exc.status,exc.code)
+        except (TimeoutError,httpx.TimeoutException):return safe_error(504,"web_timeout")
+        except (httpx.HTTPError,ValueError,KeyError):return safe_error(502,"web_upstream_unavailable")
+        finally:
+            if owned:
+                if response:await response.aclose()
+                release()

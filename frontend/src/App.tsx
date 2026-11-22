@@ -1,77 +1,18 @@
-import { useMemo, useState } from "react";
-import { ApiClient } from "./services/apiClient";
-import { normalizeApiUrl } from "./utils/urlValidation";
-import { SessionConfig } from "./components/SessionConfig";
-import { WorkspaceTabs } from "./components/WorkspaceTabs";
-import { VideoWorkspace } from "./features/video-analysis/VideoWorkspace";
-import { ImageWorkspace } from "./features/image-analysis/ImageWorkspace";
-const initialUrl = "http://127.0.0.1:8000";
-export default function App() {
-  const [baseUrl, setBaseUrl] = useState(initialUrl),
-    [apiKey, setApiKey] = useState(""),
-    [generation, setGeneration] = useState(0),
-    [message, setMessage] = useState("");
-  const client = useMemo(() => {
-    try {
-      return apiKey
-        ? new ApiClient(normalizeApiUrl(baseUrl), apiKey)
-        : undefined;
-    } catch {
-      return undefined;
-    }
-  }, [baseUrl, apiKey]);
-  const changeBase = (v: string) => {
-      setBaseUrl(v);
-      setGeneration((g) => g + 1);
-    },
-    changeKey = (v: string) => {
-      setApiKey(v);
-      setGeneration((g) => g + 1);
-    };
-  const reset = () => {
-    setApiKey("");
-    setBaseUrl(initialUrl);
-    setGeneration((g) => g + 1);
-    setMessage("Sesión reiniciada.");
-  };
-  return (
-    <main>
-      <header className="app-header">
-        <div className="brand">
-          <div className="brand-mark" aria-hidden="true">
-            V
-          </div>
-          <div>
-            <h1>Observatorio Vial</h1>
-            <p>Inteligencia visual · Análisis de vehículos</p>
-          </div>
-        </div>
-        <span className="session-badge">
-          {client ? "Sesión configurada" : "Sesión privada"}
-        </span>
-      </header>
-      <SessionConfig
-        baseUrl={baseUrl}
-        apiKey={apiKey}
-        onBaseUrl={changeBase}
-        onApiKey={changeKey}
-        onReset={reset}
-      />
-      {message && (
-        <p className="app-message" role="status">
-          {message}
-        </p>
-      )}
-      <SessionContent key={generation} client={client} />
-      <footer className="app-footer">
-        Evidencia temporal · Resultados sujetos a la calidad de la imagen
-      </footer>
-    </main>
-  );
+import {useState} from "react";
+import type {ApiClient} from "./services/apiClient";
+import {WorkspaceTabs} from "./components/WorkspaceTabs";
+import {ConnectionStatus} from "./components/ConnectionStatus";
+import {ImageWorkspace} from "./features/image-analysis/ImageWorkspace";
+import {VideoWorkspace} from "./features/video-analysis/VideoWorkspace";
+import {useManagedSession} from "./hooks/useManagedSession";
+export default function App(){
+ const connection=useManagedSession();
+ return <main><header className="app-header"><div className="brand"><div className="brand-mark" aria-hidden="true">V</div><div><h1>Observatorio Vial</h1><p>Inteligencia visual · Análisis de vehículos</p></div></div><span className="session-badge">Sesión privada</span></header>
+ <ConnectionStatus state={connection.state} onRetry={()=>void connection.connect()} onReset={()=>void connection.reset()}/>
+ <SessionContent key={connection.session?.epoch??"disconnected"} client={connection.client}/>
+ <footer className="app-footer">Evidencia temporal · Resultados sujetos a la calidad de la fuente</footer></main>;
 }
-function SessionContent({ client }: { client?: ApiClient }) {
+function SessionContent({client}:{client?:ApiClient}){
  const [mode,setMode]=useState<"image"|"video">("image");
- return <><WorkspaceTabs active={mode} onChange={setMode}/>
- <div id="panel-image" role="tabpanel" aria-labelledby="tab-image" hidden={mode!=="image"}><ImageWorkspace client={client}/></div>
- <div id="panel-video" role="tabpanel" aria-labelledby="tab-video" hidden={mode!=="video"}><VideoWorkspace client={client} active={mode==="video"}/></div></>;
+ return <><WorkspaceTabs active={mode} onChange={setMode}/><div id="panel-image" role="tabpanel" aria-labelledby="tab-image" hidden={mode!=="image"}><ImageWorkspace client={client}/></div><div id="panel-video" role="tabpanel" aria-labelledby="tab-video" hidden={mode!=="video"}><VideoWorkspace client={client} active={mode==="video"}/></div></>;
 }

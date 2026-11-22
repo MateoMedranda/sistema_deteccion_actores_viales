@@ -17,6 +17,7 @@ import {
 
 export type RequestOptions = {
   signal?: AbortSignal;
+  intent?: string;
   timeoutMs?: number;
   deadline?: number;
   expiresAt?: string | number;
@@ -53,9 +54,23 @@ export const imageTimeouts = {
 export class ApiClient {
   private readonly baseUrl: string;
   private readonly origin: string;
+  private controllers=new Set<AbortController>();
+  private accepted=new Map<string,string>();
+  get managed(){return !!this.web;}
+  get csrfToken(){return this.web?.csrf;}
+  async shutdown(){
+    for(const c of this.controllers)c.abort();
+    await Promise.allSettled([...this.accepted.values()].map(path=>this.json(path,{method:"DELETE"},{timeoutMs:5000})));
+    this.accepted.clear();
+  }
+  nativeVideo(id:string,count=false){
+    if(!this.web)throw error("managed_transport_required");
+    return this.url(count?"/api/v1/count-jobs/"+encodeURIComponent(id)+"/annotated-video":"/api/v1/video-jobs/"+encodeURIComponent(id)+"/annotated-video/content");
+  }
   constructor(
     baseUrl: string,
     private readonly apiKey: string,
+    private readonly web?: {csrf:string;expiresAt:number;onRejected?:()=>void},
   ) {
     const base = new URL(baseUrl);
     if (
@@ -80,6 +95,7 @@ export class ApiClient {
     }
     if (target.origin !== this.origin || target.username || target.password)
       throw error("unsafe_artifact_url");
+    if(this.web&&!target.pathname.startsWith(new URL(this.baseUrl).pathname+"/"))throw error("unsafe_artifact_url");
     return target.href;
   }
 
@@ -89,6 +105,7 @@ export class ApiClient {
     init: RequestInit = {},
     options: RequestOptions = {},
   ): Promise<T> {
+    if(this.web)options={...options,expiresAt:Math.min(this.web.expiresAt,typeof options.expiresAt==="number"?options.expiresAt:options.expiresAt?Date.parse(options.expiresAt):Infinity)};
     const url = this.url(path);
     let remaining = options.timeoutMs ?? Infinity;
     if (options.deadline !== undefined)
@@ -103,6 +120,7 @@ export class ApiClient {
     if (remaining <= 0 || Number.isNaN(remaining))
       throw error("request_timeout");
     const controller = new AbortController();
+    this.controllers.add(controller);
     let timedOut = false,
       received = false,
       evidenceExpired = false;
@@ -128,9 +146,11 @@ export class ApiClient {
         ...init,
         redirect: "error",
         signal: controller.signal,
-        headers: { ...init.headers, "X-API-Key": this.apiKey },
+        credentials:this.web?"same-origin":"omit",
+        headers: { ...init.headers, ...(this.web?{"X-UI-Request":"1","X-UI-CSRF":this.web.csrf}:{"X-API-Key":this.apiKey}),...(options.intent?{"X-UI-Intent":options.intent}:{}) },
       });
       received = true;
+      if(this.web&&[401,403].includes(response.status))this.web.onRejected?.();
       if (!response.ok) {
         if ([401, 404, 410].includes(response.status)) {
           controller.abort();
@@ -163,6 +183,7 @@ export class ApiClient {
       if (cause instanceof ClientError) throw cause;
       throw error(received ? "invalid_response" : "network_unavailable");
     } finally {
+      this.controllers.delete(controller);
       if (timer !== undefined) clearTimeout(timer);
       options.signal?.removeEventListener("abort", abort);
     }
@@ -173,13 +194,16 @@ export class ApiClient {
     init?: RequestInit,
     options?: RequestOptions,
   ): Promise<T> {
-    return this.consume(
-      path,
-      (response) => response.json() as Promise<T>,
-      init,
-      options,
-    );
+    const result=await this.consume<T>(path,(response)=>response.json() as Promise<T>,init,options);
+    if(this.web&&init?.method==="POST"&&result&&typeof result==="object"){
+      const value=result as Record<string,unknown>;
+      const entry=typeof value.job_id==="string"?["video","/api/v1/video-jobs/"+value.job_id]:typeof value.count_job_id==="string"?["count","/api/v1/count-jobs/"+value.count_job_id]:typeof value.enrichment_job_id==="string"?["enrichment","/api/v1/enrichment-jobs/"+value.enrichment_job_id]:undefined;
+      if(entry){let kind=entry[0];if(kind==="enrichment"&&typeof init.body==="string"){try{kind+=":"+JSON.parse(init.body).source.kind;}catch{}}this.accepted.set(kind,entry[1]);}
+    }
+    if(init?.method==="DELETE")for(const [key,value] of this.accepted)if(value===path)this.accepted.delete(key);
+    return result;
   }
+
   blob(path: string, options?: RequestOptions) {
     return this.consume(path, (response) => response.blob(), {}, options);
   }

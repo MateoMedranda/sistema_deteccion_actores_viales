@@ -4,6 +4,7 @@ from uuid import uuid4
 
 from fastapi import FastAPI, Request
 from fastapi.openapi.utils import get_openapi
+from app.api.routes import web_policy
 from app.domain.schemas import PlatePreviewMetadata
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import Response
@@ -43,6 +44,7 @@ def create_app(settings: Settings | None = None, detector: Detector | None = Non
         expose_headers=["X-Plate-Preview-Metadata"],
     )
     app.include_router(health.router)
+    app.include_router(web_policy.router, prefix="/api")
     app.include_router(detections.router, prefix="/api")
     app.include_router(video_jobs.router, prefix="/api")
     app.include_router(count_jobs.router, prefix="/api")

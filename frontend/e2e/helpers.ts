@@ -3,10 +3,7 @@ import path from "node:path";
 export const scene = path.resolve("e2e/fixtures/scene.jpg");
 export async function connect(page: Page) {
   await page.goto("/");
-  await page.getByText("Configurar sesión", { exact: true }).click();
-  await page.getByLabel("URL backend").fill("http://127.0.0.1:8767");
-  await page.getByLabel("API key", { exact: true }).fill("ui-synthetic-key");
-  await page.getByText("Configurar sesión", { exact: true }).click();
+  await expect(page.getByText("Servicio conectado", {exact:true})).toBeVisible();
 }
 export async function analyze(page: Page) {
   await connect(page);

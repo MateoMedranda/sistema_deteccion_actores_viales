@@ -33,6 +33,7 @@ export default defineConfig({
     },
   ],
   webServer: [
+ {command:'".venv/Scripts/python.exe" -m uvicorn tests.e2e.serve_managed_gateway:app --host 127.0.0.1 --port 4174',cwd:"..",url:"http://127.0.0.1:4174/health/live",reuseExistingServer:false,timeout:30000},
     {
       command:
         '".venv/Scripts/python.exe" -m uvicorn tests.e2e.serve_frontend_test_api:app --host 127.0.0.1 --port 8767',

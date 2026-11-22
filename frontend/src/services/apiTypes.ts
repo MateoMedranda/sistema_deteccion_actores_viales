@@ -373,3 +373,6 @@ export function parseImagePolicy(value: unknown): ImagePolicy {
     max_image_pixels: integer(r.max_image_pixels, 1),
   };
 }
+
+export {parseWebSession} from "./managedTypes";
+export type {WebSessionReady,WebPolicy} from "./managedTypes";
