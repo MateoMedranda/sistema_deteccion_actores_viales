@@ -219,6 +219,42 @@
           "request_id": "synthetic-request"
         }
       }
+    },
+    {
+      "schema": "VideoJobResponse",
+      "value": {
+        "job_id": "synthetic-video",
+        "status": "completed",
+        "progress_percent": 100,
+        "processed_frames": 300,
+        "total_frames": 300,
+        "created_at": "2040-01-01T00:00:00Z",
+        "updated_at": "2040-01-01T00:00:01Z",
+        "expires_at": "2040-01-01T01:00:00Z",
+        "processing_phase": null,
+        "frame_total_confirmed": false,
+        "video_metadata": null,
+        "eligible_track_count": null,
+        "classes_present": null
+      }
+    },
+    {
+      "schema": "VideoJobResponse",
+      "value": {
+        "job_id": "synthetic-video",
+        "status": "processing",
+        "progress_percent": 40,
+        "processed_frames": 120,
+        "total_frames": 300,
+        "created_at": "2040-01-01T00:00:00Z",
+        "updated_at": "2040-01-01T00:00:01Z",
+        "expires_at": "2040-01-01T01:00:00Z",
+        "processing_phase": "frames",
+        "frame_total_confirmed": false,
+        "video_metadata": null,
+        "eligible_track_count": null,
+        "classes_present": null
+      }
     }
   ],
   "invalid": [
@@ -355,6 +391,41 @@
     {
       "schema": "IdempotencyHeader",
       "value": "bad/../key"
+    },
+    {
+      "schema": "VideoJobResponse",
+      "value": {
+        "job_id": "synthetic-video",
+        "status": "completed",
+        "progress_percent": 100,
+        "processed_frames": 300,
+        "total_frames": 300,
+        "created_at": "2040-01-01T00:00:00Z",
+        "updated_at": "2040-01-01T00:00:01Z",
+        "expires_at": "2040-01-01T01:00:00Z",
+        "processing_phase": null,
+        "frame_total_confirmed": null,
+        "video_metadata": null,
+        "eligible_track_count": null,
+        "classes_present": null
+      }
+    },
+    {
+      "schema": "VideoJobResponse",
+      "value": {
+        "job_id": "synthetic-video",
+        "status": "completed",
+        "progress_percent": 100,
+        "processed_frames": 300,
+        "total_frames": 300,
+        "created_at": "2040-01-01T00:00:00Z",
+        "updated_at": "2040-01-01T00:00:01Z",
+        "expires_at": "2040-01-01T01:00:00Z",
+        "processing_phase": null,
+        "video_metadata": null,
+        "eligible_track_count": null,
+        "classes_present": null
+      }
     }
   ]
 }

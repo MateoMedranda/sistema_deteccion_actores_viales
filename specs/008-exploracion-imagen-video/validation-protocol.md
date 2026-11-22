@@ -61,6 +61,12 @@ Idempotencia: dos POST concurrentes, recibo perdido, replay tras completed/fallo
 
 Fases: retrasar encoder/publicación con barreras;100% de cuadros no es etapa terminada. Cancelar/vencer dentro de FFmpeg y en finish, comprobar que no aparecen MP4/detecciones tardíos y que no se libera el cupo antes del proceso real.
 
+### Casos aclarados tras analyze
+
+- Gateway: falta de X-UI-Intent en upload/enriquecimiento de video devuelve422 web_intent_required, UUID inválido422 web_intent_invalid, antes de upstream/cola. Imagen sin intención conserva compatibilidad; probar aparte Idempotency-Key opcional de API directa.
+- Históricos: respuesta008 incluye frame_total_confirmed=false y los cuatro campos desconocidos en null; migración repetida conserva false, no transforma estimaciones en confirmaciones. Respuesta de API anterior sin flag se normaliza a false; null explícito se rechaza. ready requiere true y metadatos confirmados.
+- Leyenda: clases mezcladas elegibles/no elegibles/desconocidas muestran todas las clases y el aviso general exacto del contrato UI, sin etiquetas de elegibilidad por clase ni configuración duplicada. Cubrir classes_present=null/[]/no vacía, fallback/indicador desconocido y eligible_track_count=null/0/>0 sin inferir de nombre/color ni ausencia de ficha.
+
 ## 6. Entrega y evidencias
 
 Implementará scripts/evaluate_video_presentation.py y fixtures descritos en el plan. Resumen agregado propuesto: protocolo/profile/huellas, condiciones, conteos/segmentos, J_center/J_size por segmento, IoU/lag/fallback, tiempos/RSS por par y gate_pass con causas. No incluir imágenes privadas, OCR, rutas, cookies o claves.

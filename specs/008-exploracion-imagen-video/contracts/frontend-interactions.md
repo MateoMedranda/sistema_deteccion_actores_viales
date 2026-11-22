@@ -35,13 +35,15 @@ Cada análisis tiene identidad completa y una intención por tentativa:
 
 Progreso presenta dos regiones con etiquetas y estados independientes. Conteos de cuadros pueden indicar total estimado; no comparar100% de cuadros con finalización del archivo. Conteos de enriquecimiento son unidades reales/track; completar con errores se etiqueta parcial, sin fingir lectura exitosa.
 
+Compatibilidad de metadatos: respuestas008 incluyen frame_total_confirmed booleano, false para históricos/no confirmado. Un servidor anterior puede omitirlo: el parser lo normaliza a false sin derivar metadata; null explícito es respuesta inválida.
+
 ## Medio y conteo
 
 VideoPlayer usa src relativa al gateway nativo autenticado, Range y metadata confirmada; no crea otro MP4 Blob completo. TTL conocido y epoch retiran src al vencer incluso pausado. Un error de medio consulta estado seguro para aplicar401/404/410; no crea otro job.
 
 LineEditor/CountJobPanel permanecen dentro de VideoWorkspace, ligados a videoJobId. La línea de análisis usa la presentación procesada y su geometría, no un preview con orientación distinta. Cambiar fuente invalida línea/count. El artefacto contado mantiene contrato003 y no reemplaza silenciosamente al video de análisis.
 
-Leyenda usa clases presentes y catálogo compartido; no inferir elegibilidad desde nombre/color ni llamar “vehículos” a summary.detections. No implementar clicks de contornos de video ni seguimiento visual de una ficha en esta etapa.
+Leyenda usa clases presentes y catálogo compartido; no inferir elegibilidad desde nombre/color ni llamar “vehículos” a summary.detections. Con classes_present confirmada no vacía, mostrar todas las clases y el aviso general: «El enriquecimiento se aplica a vehículos elegibles según la configuración del servicio; otras detecciones pueden aparecer sin ficha.». Ese aviso cubre escenas mixtas sin atribuir elegibilidad individual; no se añaden campos de elegibilidad por clase. Desconocidas muestran su nombre escapado, fallback007 y «Clase no reconocida», sin deducir su capacidad de enriquecimiento. classes_present=null muestra «Clases todavía no confirmadas» y [] muestra «Sin clases detectadas». eligible_track_count=0 muestra no aplicable para la fuente; null conserva espera/desconocido. No implementar clicks de contornos de video ni seguimiento visual de una ficha en esta etapa.
 
 ## Lista y ficha
 

@@ -46,6 +46,8 @@ Reset/fuente nueva -> fit/scroll inicial. Zoom no modifica selección/crops/dato
 
 app/domain/class_presentation.json será fuente única: version1, classes con13 claves y {label,color}; fallback_color=#64748B. Los valores/copias de007 se conservan byte-semánticamente. Clave=class_name.trim().toLowerCase(); desconocida conserva nombre como texto escapado. No contiene elegibilidad ni identidad. Paquete Python incluye el JSON; frontend importa el mismo activo. Pruebas de paridad contra el contrato007.
 
+La leyenda muestra todas las classes_present y, cuando la lista confirmada no está vacía, el aviso general: «El enriquecimiento se aplica a vehículos elegibles según la configuración del servicio; otras detecciones pueden aparecer sin ficha.». No asigna elegibilidad por clase: eligible_track_count solo informa del total elegible de la fuente. Nombre desconocido usa fallback y texto «Clase no reconocida», sin concluir si puede enriquecerse. Si classes_present es null, mostrar «Clases todavía no confirmadas»; si está vacía, mostrar «Sin clases detectadas». Si eligible_track_count=0, indicar enriquecimiento no aplicable a esa fuente; null significa todavía no confirmado.
+
 ## 6. RawObservation y PresentedBox
 
 RawObservation reutiliza FrameDetection sin cambios: job_id, frame_index0-based, track_id>=1, class_id/name, confidence y bbox half-open entera en el cuadro canónico. Persiste para conteo y selección de evidencia.
@@ -64,17 +66,17 @@ Candidato: combinación EMA de(cx,cy,w,h) con alphas[.65,.8,.9,1], en ese orden.
 
 ## 7. VideoJob — adiciones compatibles
 
-Se conserva status=queued|processing|completed|failed|cancelled y todas las rutas/campos existentes. Añadir, nullable para registros históricos:
+Se conserva status=queued|processing|completed|failed|cancelled y todas las rutas/campos existentes. Añadir campos compatibles: processing_phase, video_metadata, eligible_track_count y classes_present admiten null histórico; frame_total_confirmed es booleano no nullable.
 
 | Campo público | Semántica |
 |---|---|
 | processing_phase | queued|frames|encoding|publishing|ready|failed|cancelled, o null si histórica/desconocida. |
-| frame_total_confirmed | bool; true solo después de EOF real. |
+| frame_total_confirmed | bool no nullable; false significa conteo no confirmado, también en históricos; true solo después de EOF real. |
 | video_metadata | null hasta ready; objeto de salida confirmada descrito abajo. |
 | eligible_track_count | null antes de ready, luego número de track IDs elegibles distintos según configuración del servidor. |
 | classes_present | null antes de ready, luego lista única de nombres observados, sin confundir observaciones con vehículos. |
 
-processing_phase=frames/encoding/publishing exige status=processing. ready exige completed, metadatos confirmados y conteo/clases presentes. Fases terminales coherentes con status. Migración de registros antiguos conserva null; no fabricar metadatos desde un total antiguo forzado.
+processing_phase=frames/encoding/publishing exige status=processing. ready exige completed, metadatos confirmados y conteo/clases presentes. Fases terminales coherentes con status. Migración de registros antiguos conserva null en los cuatro campos que lo admiten y asigna frame_total_confirmed=false (columna NOT NULL DEFAULT 0). La API008 incluye siempre el booleano; el parser admite ausencia de ese campo en una respuesta de API anterior y la normaliza a false, pero rechaza null explícito. No fabricar metadatos desde un total antiguo forzado.
 
 video_metadata={width,height,fps,frame_count,duration_seconds,timebase:"processed-cfr"}. frame_count es número real de cuadros escritos; duration=frame_count/fps. Son propiedades del MP4 generado, no PTS exactos del original. Históricos sin confirmación no reciben timestamps inferidos.
 

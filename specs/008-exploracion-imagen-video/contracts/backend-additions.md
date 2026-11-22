@@ -18,7 +18,7 @@ queued -> frames -> encoding -> publishing -> ready.
 - frames/encoding/publishing corresponden a processing.
 - ready solo con completed/metadata confirmada.
 - failed/cancelled son terminales y no publican un resultado tardío.
-- registros históricos pueden tener fase/metadata null; se usan estados históricos sin inventar precisión temporal.
+- registros históricos mantienen processing_phase/video_metadata/eligible_track_count/classes_present en null y frame_total_confirmed=false; no se inventa precisión temporal. La API008 siempre incluye ese booleano no nullable; el parser de compatibilidad normaliza ausencia de API anterior a false y rechaza null explícito.
 
 processed_frames cuenta cuadros realmente leídos/escritos, no se fuerza al total de ffprobe. total_frames es estimado hasta EOF; luego se confirma/corrige al conteo real y frame_total_confirmed=true. progress_percent histórico es porcentaje saturado0..100 de cuadros, no finalización integral. Durante encoding/publishing la UI usa estado indeterminado, aunque el campo histórico sea100. No se cambia su tipo/rango.
 
@@ -26,7 +26,7 @@ Al completar, video_metadata describe el MP4 CFR: width/height/fps/frame_count/d
 
 El janitor debe entregar las rutas purgadas al servicio de artefactos, sin perder referencias al eliminar filas. Los recursos en uso quedan bajo su dueño activo hasta cierre seguro; el worker retira parciales y el janitor reintenta eliminación, sin publicar ni ampliar TTL. Probar Windows y ausencia de archivos huérfanos tras cancelación/expiry/cierre.
 
-Migraciones SQLite con PRAGMA/ALTER idempotentes para processing_phase, actual_frame_count y columnas de idempotencia. INSERT de columnas explícitas en código/fixtures. Los objetos históricos sin conteo confirmado no adquieren un video_metadata inventado. La metadata pública nunca incluye paths.
+Migraciones SQLite con PRAGMA/ALTER idempotentes para processing_phase, actual_frame_count y columnas de idempotencia. frame_total_confirmed se migra como NOT NULL DEFAULT 0 (false), sin tratar los totales históricos como confirmados. INSERT de columnas explícitas en código/fixtures. Los objetos históricos sin conteo confirmado no adquieren un video_metadata inventado. La metadata pública nunca incluye paths.
 
 ## Publicación y proceso externo
 

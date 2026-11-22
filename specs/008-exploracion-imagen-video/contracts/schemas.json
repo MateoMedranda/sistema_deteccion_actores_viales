@@ -272,7 +272,8 @@
           ]
         },
         "frame_total_confirmed": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Non-null boolean. API008 always emits false for historical or unconfirmed totals; true only after real EOF. Legacy API omission is normalized to false by the client; explicit null is invalid."
         },
         "video_metadata": {
           "anyOf": [
@@ -507,6 +508,18 @@
                 "const": true
               }
             }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "processing_phase"
+            ]
+          },
+          "then": {
+            "required": [
+              "frame_total_confirmed"
+            ]
           }
         }
       ]

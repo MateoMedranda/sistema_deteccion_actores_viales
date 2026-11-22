@@ -131,9 +131,9 @@ SceneViewport mantiene dimensiones naturales*escala y scroll local. Botones Ajus
 
 ### C. Presentación del video y finalización
 
-Tabla única de clases mantiene exactamente007, sin inferir elegibilidad. Helper puro filtra solo cajas actuales por track/class; dibuja contornos con color y trazos auxiliares, sin putText. Raw FrameDetection se almacena íntegra y sigue alimentando conteo/evidencia. La temporalidad del MP4 se conserva en CFR; no se incorpora una capa interactiva temporal al reproductor.
+Tabla única de clases mantiene exactamente007, sin inferir elegibilidad. Leyenda de todas las clases con aviso general de elegibilidad del servidor y etiqueta de clase desconocida; no requiere una matriz de elegibilidad por clase ni campos API adicionales. Helper puro filtra solo cajas actuales por track/class; dibuja contornos con color y trazos auxiliares, sin putText. Raw FrameDetection se almacena íntegra y sigue alimentando conteo/evidencia. La temporalidad del MP4 se conserva en CFR; no se incorpora una capa interactiva temporal al reproductor.
 
-Fase explícita encoding/publishing con progreso indeterminado. Corregir total al EOF real, conservar contador real y confirmar metadatos de salida solo para nuevas ejecuciones. Cancelar/vencer durante FFmpeg detiene el proceso antes de liberar worker; parciales se eliminan y finish publica atómicamente solo mientras processing/vigente. Métricas usan ese desenlace, no solo éxito de transformación.
+Fase explícita encoding/publishing con progreso indeterminado. Corregir total al EOF real, conservar contador real y confirmar metadatos de salida solo para nuevas ejecuciones. Históricos conservan null en fase/metadata/conteo elegible/clases, con frame_total_confirmed=false no nullable; ausencia de API anterior se normaliza a false y null explícito se rechaza. Cancelar/vencer durante FFmpeg detiene el proceso antes de liberar worker; parciales se eliminan y finish publica atómicamente solo mientras processing/vigente. Métricas usan ese desenlace, no solo éxito de transformación.
 
 ### D. Idempotencia y enriquecimiento
 
@@ -175,6 +175,16 @@ Contratos nuevos se validan con JSON Schema y ejemplos; implement agregará prue
 ## Complexity Tracking
 
 Sin violaciones ni excepciones solicitadas. El gateway separado evita cargar modelos dos veces y permite proteger la clave sin cambiar la autenticación de la API; exige dos procesos Python, no otra base de datos/cola. Se aceptan únicamente migraciones aditivas de las filas temporales actuales. La selección interactiva pausada, nuevos medios, identidades persistentes y rediseño VFR quedan fuera.
+
+## Aclaraciones aprobadas tras analyze
+
+I1: X-UI-Intent es obligatorio en el gateway para upload/enriquecimiento de video (ausencia422 web_intent_required, UUID inválido422 web_intent_invalid); opcional en imagen. Idempotency-Key de API directa conserva compatibilidad opcional.
+
+I2: frame_total_confirmed es booleano no nullable, false para históricos/no confirmado, NOT NULL DEFAULT 0; ausencia legacy se normaliza a false y null explícito se rechaza. Los demás cuatro campos aditivos conservan sus null autorizados.
+
+U1: la leyenda muestra todas las clases y el aviso general definido en el contrato UI; clase desconocida tiene indicador propio. No se atribuye elegibilidad individual ni se añaden campos API/configuración al frontend. Casos mixtos, null/vacío y total elegible0 quedan en T039/T041.
+
+Se conservan82 tareas/439PTS; T029/T032/T039/T040/T041/T047/T051/T075 incorporan las aclaraciones. Contratos revisados:16 definiciones,13 ejemplos válidos y9 inválidos comprobados con jsonschema4.23.0 en entorno aislado. Las cifras11/7 siguientes corresponden a la verificación original de plan; las actuales son13/9. No se ejecutó código de producto.
 
 ## Verificación de esta etapa
 

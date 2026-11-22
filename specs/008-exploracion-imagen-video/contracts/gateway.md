@@ -30,12 +30,12 @@ Allowlist cerrada, IDs de un segmento [A-Za-z0-9][A-Za-z0-9_-]{0,127}; rechazar 
 | GET | /health/image-policy; /health/live; /health/ready; /health/video-ready; /health/enrichment-ready | ninguna |
 | POST | /api/v1/detections/images | ninguna; multipart image |
 | GET | /api/v1/detections/{id}/original-image; /api/v1/detections/{id}/annotated-image | ninguna |
-| POST | /api/v1/video-jobs | ninguna; multipart video, intención opcional |
+| POST | /api/v1/video-jobs | ninguna; multipart video, X-UI-Intent UUID obligatorio |
 | GET/DELETE | /api/v1/video-jobs/{id} | ninguna |
 | GET | /api/v1/video-jobs/{id}/detections | page/page_size |
 | GET | /api/v1/video-jobs/{id}/summary; /annotated-video | ninguna |
 | GET | /api/v1/video-jobs/{id}/annotated-video/content | ninguna; medio nativo |
-| POST | /api/v1/enrichment-jobs | JSON source, intención opcional |
+| POST | /api/v1/enrichment-jobs | JSON source; X-UI-Intent UUID obligatorio si source.kind=video, opcional si source.kind=image |
 | GET/DELETE | /api/v1/enrichment-jobs/{id} | ninguna |
 | GET | /api/v1/enrichment-jobs/{id}/results | page/page_size |
 | GET | /api/v1/enrichment-jobs/{id}/detections/{positiveInt}/plate-preview | profile ausente o display-contrast-v1 |
@@ -74,6 +74,8 @@ Accept-Encoding:identity upstream; contenido inesperadamente comprimido no se re
 ## Intención y backend propietario
 
 El flujo nuevo de video exige UUID por tentativa y header X-UI-Intent en upload/enriquecimiento de video. Enriquecimiento de imagen previo puede omitir intención y conserva su comportamiento; no ocupa los dos registros de intención de video. Gateway exige la sesión vigente y deriva Idempotency-Key upstream con HMAC(secreto efímero,session_id+operación+UUID), sin guardar cuerpo ni revelar secreto. Para cada sesión conserva la última intención por fase, incluso si llegó una respuesta upstream que el navegador pudiera haber perdido, hasta reemplazo explícito o TTL; no reutiliza una ya reemplazada y nunca crea nueva automáticamente tras respuesta perdida.
+
+La ausencia de X-UI-Intent en upload o enriquecimiento de video devuelve422 web_intent_required antes de reenviar o crear trabajo; UUID inválido devuelve422 web_intent_invalid. Enriquecimiento source.kind=image sin intención conserva su flujo previo. Estas guardas del gateway son independientes de Idempotency-Key, que sigue siendo opcional en la API directa de backend.
 
 El upstream almacena la garantía en filas temporales según [backend-additions.md](backend-additions.md). Replay no extiende TTL. Reinicio/reset web invalida el contexto; no hay recuperación/historial entre sesiones.
 
