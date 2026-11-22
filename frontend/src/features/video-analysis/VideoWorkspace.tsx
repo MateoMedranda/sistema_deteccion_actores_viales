@@ -6,11 +6,14 @@ import {LineEditor} from "../../components/LineEditor";
 import {CountJobPanel} from "../../components/CountJobPanel";
 import {VideoProgress} from "./VideoProgress";
 import {VideoLegend} from "./VideoLegend";
+import {VideoTrackResults} from "./VideoTrackResults";
 import {VideoPlayer} from "./VideoPlayer";
 import {useVideoAnalysis} from "./useVideoAnalysis";
 export function VideoWorkspace({client,active=true}:{client?:ApiClient;active?:boolean}){
  const analysis=useVideoAnalysis(client),s=analysis.state;
  const root=useRef<HTMLElement>(null),[line,setLine]=useState<[Point,Point]>();
+ const [lineVersion,setLineVersion]=useState(0);
+ const changeLine=(next?:[Point,Point])=>{setLine(next);setLineVersion(v=>v+1);};
  const lifecycle=useSessionLifecycle(client),policy=client?.policy?.video;
  const ready=s.processing==="ready"&&s.video;
  const busy=["uploading","checking","queued","processing"].includes(s.processing);
@@ -28,8 +31,8 @@ export function VideoWorkspace({client,active=true}:{client?:ApiClient;active?:b
  <VideoProgress video={s.video} processingState={s.processing==="idle"?undefined:s.processing} enrichment={s.enriched} enrichmentState={s.enrichment}/>
  <div className="video-stage-actions">{busy&&<button onClick={()=>void analysis.cancel("processing")}>Cancelar procesamiento</button>}{["submitting","queued","processing"].includes(s.enrichment)&&<button onClick={()=>void analysis.cancel("enrichment")}>Cancelar enriquecimiento</button>}{(s.processing==="interrupted"||s.enrichment==="interrupted")&&<button onClick={()=>void analysis.resume()}>Reanudar consulta</button>}{["failed","cancelled","expired"].includes(s.enrichment)&&ready&&<button onClick={()=>void analysis.retryEnrichment()}>Reintentar enriquecimiento</button>}</div>
  {ready&&client&&<><VideoPlayer key={s.generation+":"+s.video!.job_id} client={client} job={s.video!} active={active} onUnavailable={analysis.discard}/><VideoLegend classes={s.video!.classes_present} eligible={s.video!.eligible_track_count}/>
- <details className="video-count-tools"><summary>Conteo por línea</summary><LineEditor key={s.video!.job_id} videoUrl={client.nativeVideo(s.video!.job_id)} onClear={()=>setLine(undefined)} onLine={(a,b)=>setLine([a,b])}/><CountJobPanel key={s.generation+":"+s.video!.job_id+":"+JSON.stringify(line)} client={client} videoId={s.video!.job_id} line={line} lifecycle={lifecycle}/></details>
- {s.enriched?.status==="completed"&&<section className="video-result-summary"><h3>Vehículos analizados</h3><p>{s.enriched.results_ready} resultados disponibles.</p></section>}
+ <details className="video-count-tools"><summary>Conteo por línea</summary><LineEditor key={s.video!.job_id} videoUrl={client.nativeVideo(s.video!.job_id)} dimensions={s.video!.video_metadata??undefined} onClear={()=>changeLine()} onLine={(a,b)=>changeLine([a,b])}/><CountJobPanel key={s.generation+":"+s.video!.job_id+":"+lineVersion} client={client} videoId={s.video!.job_id} line={line} lifecycle={lifecycle}/></details>
+ {s.enriched?.status==="completed"&&<VideoTrackResults client={client} video={s.video!} job={s.enriched} generation={s.generation}/>}
  </>}
  </section>;
 }

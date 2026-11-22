@@ -68,7 +68,8 @@ export type VehicleResult = {
   class_id: number;
   class_name: string;
   attributes_status: "completed" | "failed";
-  attributes: { name: string; label: string; confidence: number }[];
+  evidence_frame_indexes?: number[];
+  attributes: { name: string; label: string; confidence: number; evidence_frame_index?: number|null }[];
   plate_status: PlateStatus;
   plate: {
     status: PlateStatus;
@@ -76,6 +77,7 @@ export type VehicleResult = {
     bbox_relative?: Box;
     localizer_confidence?: number;
     ocr_confidence?: number;
+    evidence_frame_indexes?: number[];
     used_enhancement: boolean;
     provenance?:PlateProvenance;
   };
@@ -311,6 +313,7 @@ export function parseEnrichmentPage(value: unknown): EnrichmentPage {
     seen.add(id);
     const plateText = state === "read" ? text(p.text) : null;
     return {
+      evidence_frame_indexes: frameIndexes(v.evidence_frame_indexes),
       vehicle_key: text(v.vehicle_key),
       detection_id: id,
       track_id: v.track_id == null ? null : integer(v.track_id, 1),
@@ -320,6 +323,7 @@ export function parseEnrichmentPage(value: unknown): EnrichmentPage {
       attributes: array(v.attributes).map((value) => {
         const a = obj(value);
         return {
+          evidence_frame_index: a.evidence_frame_index==null?undefined:integer(a.evidence_frame_index),
           name: text(a.name),
           label: text(a.label),
           confidence: num(a.confidence, 0, 1),
@@ -327,6 +331,7 @@ export function parseEnrichmentPage(value: unknown): EnrichmentPage {
       }),
       plate_status: state as PlateStatus,
       plate: {
+        evidence_frame_indexes: frameIndexes(p.evidence_frame_indexes),
         status: state as PlateStatus,
         text: plateText,
         bbox_relative:
@@ -379,3 +384,20 @@ export type {WebSessionReady,WebPolicy} from "./managedTypes";
 
 export {parseVideoJob} from "../features/video-analysis/videoTypes";
 export type {VideoJob,VideoMetadata} from "../features/video-analysis/videoTypes";
+
+function frameIndexes(value:unknown):number[]|undefined{
+ if(value==null)return undefined;
+ const indexes=array(value).map(v=>integer(v));
+ if(indexes.length>20||new Set(indexes).size!==indexes.length)throw Error("invalid_evidence");
+ return indexes;
+}
+export function parseVideoEnrichmentPage(value:unknown,frameCount?:number):EnrichmentPage{
+ const page=parseEnrichmentPage(value),tracks=new Set<number>();
+ for(const item of page.items){
+  if(item.track_id===null||tracks.has(item.track_id))throw Error("invalid_video_track");
+  tracks.add(item.track_id);
+  const refs=[...(item.evidence_frame_indexes??[]),...(item.plate.evidence_frame_indexes??[]),...item.attributes.flatMap(a=>a.evidence_frame_index==null?[]:[a.evidence_frame_index])];
+  if(frameCount!==undefined&&refs.some(i=>i>=frameCount))throw Error("invalid_evidence");
+ }
+ return page;
+}

@@ -1,3 +1,4 @@
+import {StrictMode} from "react";
 import {renderHook,act,waitFor} from "@testing-library/react";
 import {it,expect,vi} from "vitest";
 import {useVideoAnalysis} from "../../src/features/video-analysis/useVideoAnalysis";
@@ -30,4 +31,16 @@ it("expires the source and drops media even without leaving its workspace",async
  await act(async()=>result.current.start());expect(result.current.state.video?.job_id).toBe("video");
  await act(async()=>vi.advanceTimersByTime(101));expect(result.current.state.video).toBeUndefined();expect(result.current.state.processing).toBe("expired");expect(result.current.state.file).toBeUndefined();
  }finally{vi.useRealTimers();}
+});
+
+it("rejects late real status after replacing a source under StrictMode",async()=>{
+ let resolve!: (value:any)=>void;
+ const c={newVideoIntent:()=>({intent:crypto.randomUUID()}),uploadVideo:vi.fn(async()=>({job_id:"video"})),video:vi.fn(()=>new Promise(r=>resolve=r)),enrich:vi.fn(),cancelVideo:vi.fn(async()=>({})),cancelEnrichment:vi.fn(async()=>({}))};
+ const {result}=renderHook(()=>useVideoAnalysis(c as any),{wrapper:StrictMode});
+ act(()=>result.current.choose(new File(["a"],"first.mp4")));
+ let pending!:Promise<void>;act(()=>{pending=result.current.start();});
+ await waitFor(()=>expect(c.video).toHaveBeenCalledOnce());
+ act(()=>result.current.choose(new File(["b"],"next.mp4")));
+ await act(async()=>{resolve(job);await pending;});
+ expect(result.current.state.file?.name).toBe("next.mp4");expect(result.current.state.video).toBeUndefined();expect(c.enrich).not.toHaveBeenCalled();
 });

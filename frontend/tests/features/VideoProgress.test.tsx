@@ -6,3 +6,9 @@ it("keeps encoding indeterminate after all frames and enrichment independent",()
  expect(screen.getByText("Preparando video")).toBeVisible();expect(screen.getByText(/Enriquecimiento/)).toBeVisible();
  expect(screen.getAllByRole("progressbar")[0]).not.toHaveAttribute("aria-valuenow","100");
 });
+
+it("marks the frame bar complete only when the published video is available",()=>{
+ const video={job_id:"v",status:"completed",processing_phase:"ready",processed_frames:10,total_frames:10,frame_total_confirmed:true} as any;
+ render(<VideoProgress video={video}/>);
+ expect(screen.getByRole("progressbar",{name:"Cuadros procesados"})).toHaveAttribute("aria-valuenow","100");
+});

@@ -4,9 +4,9 @@ export type VideoJob={job_id:string;status:"queued"|"processing"|"completed"|"fa
 export function parseVideoJob(value:unknown):VideoJob{
  if(!value||typeof value!=="object")throw Error("invalid_video");
  const v=value as Record<string,any>,phases:ProcessingPhase[]=["queued","frames","encoding","publishing","ready","failed","cancelled"];
- if(typeof v.job_id!=="string"||!v.job_id||v.job_id.length>128||!["queued","processing","completed","failed","cancelled"].includes(v.status)||!Number.isFinite(Date.parse(v.expires_at)))throw Error("invalid_video");
+ if(typeof v.job_id!=="string"||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(v.job_id)||!["queued","processing","completed","failed","cancelled"].includes(v.status)||!Number.isFinite(Date.parse(v.expires_at)))throw Error("invalid_video");
  for(const k of ["processed_frames","total_frames"])if(!Number.isInteger(v[k])||v[k]<0)throw Error("invalid_video");
- if(typeof v.progress_percent!=="number"||v.progress_percent<0||v.progress_percent>100)throw Error("invalid_video");
+ if(!Number.isFinite(v.progress_percent)||v.progress_percent<0||v.progress_percent>100)throw Error("invalid_video");
  if(v.frame_total_confirmed!==undefined&&typeof v.frame_total_confirmed!=="boolean")throw Error("invalid_video");
  const phase=v.processing_phase??null;
  if(phase!==null&&!phases.includes(phase))throw Error("invalid_phase");

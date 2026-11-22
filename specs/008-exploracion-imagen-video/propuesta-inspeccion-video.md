@@ -1,7 +1,7 @@
-# Propuesta inicial: inspección de enriquecimiento en video
+# Propuesta revisada: inspección de enriquecimiento en video
 
 **Iteración**: [008 — Exploración de imágenes y video](spec.md)
-**Estado**: Propuesta de experiencia, pendiente de contrastar al cierre. No es una función implementada ni amplía el alcance de FR-025.
+**Estado**: Revisada contra el código de008 y sus recorridos controlados. No es una función implementada ni amplía el alcance de FR-025.
 
 ## Interacción propuesta
 
@@ -31,4 +31,6 @@ Consultar o pausar utiliza resultados ya calculados, sin ejecutar detector ni OC
 
 ## Entrega de008 frente a propuesta
 
-008 entrega navegación, configuración administrada, zoom de escena, presentación de video, enriquecimiento automático, progreso y consulta por lista/ficha junto al reproductor. Esta propuesta añade después la selección directa sobre un cuadro pausado y su resolución temporal. Debe revisarse al cierre de008 para describir las dependencias reales que sigan pendientes.
+008 entrega navegación, configuración administrada, zoom de escena, presentación de video, enriquecimiento automático, progreso y consulta por lista/ficha junto al reproductor. Esta propuesta añade después la selección directa sobre un cuadro pausado y su resolución temporal. La entrega real usa reproducción nativa autenticada por Range, lista paginada de25 y ficha por track_id, con evidencia i/fps cuando la metadata CFR está confirmada. No hay endpoint de recorte de video ni índice temporal de contornos presentados.
+
+Se recomienda añadir después un índice autorizado y acotado (videoJobId,frame_index,track_id,bbox_presentada), consultable por intervalo y purgado con el mínimo TTL, asociado a la observación raw. Al pausar/buscar se consultará sin inferencia; el tiempo se convertirá al cuadro CFR tras seek completado. La ficha explicitará el cuadro de evidencia de cada campo. Enter/Espacio y lista equivalente de44px evitarán depender de cajas pequeñas. En móvil se propone un panel inferior con devolución de foco al cerrar. Una generación temporal descartará respuestas de búsquedas anteriores. Estas son dependencias futuras, no rutas de008.
