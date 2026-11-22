@@ -51,7 +51,7 @@ export function ImageWorkspace({ client }: { client?: ApiClient }) {
       />
       {!client && (
         <p className="connection-note">
-          Configura la URL del servicio y tu credencial para comenzar.
+          Preparando el análisis automáticamente…
         </p>
       )}
       <AnalysisProgress state={state} />
@@ -92,12 +92,12 @@ export function ImageWorkspace({ client }: { client?: ApiClient }) {
             <ClassLegend source={source}/>
             {state.expiresAt && (
               <p className="muted">
-                Disponible hasta{" "}
+                Imagen y resultados disponibles hasta{" "}
                 {new Date(state.expiresAt).toLocaleTimeString([], {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
-                . Al vencer se retirará la evidencia.
+                . Por privacidad, después se retirarán de esta vista.
               </p>
             )}
 

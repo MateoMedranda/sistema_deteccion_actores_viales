@@ -6,7 +6,7 @@ export function SceneViewport({sourceId,width,height,children}:{sourceId:string;
  const [mode,setMode]=useState<"fit"|"intrinsic">("fit"),[intrinsic,setIntrinsic]=useState(1);
  const [size,setSize]=useState({width:0,height:0}),anchor=useRef<Anchor>({x:.5,y:.5});
  const drag=useRef<Drag>(),suppress=useRef(false),suppressionTimer=useRef<ReturnType<typeof setTimeout>>();
- const fit=fitScale(width,height,size.width,size.height),scale=mode==="fit"?fit:intrinsic;
+ const fit=fitScale(width,height,size.width,size.height),scale=mode==="fit"?fit:Math.max(fit,intrinsic);
  const remember=()=>{const v=viewport.current;if(v&&v.clientWidth&&v.clientHeight)anchor.current=normalizedAnchor(v.scrollLeft,v.scrollTop,v.clientWidth,v.clientHeight,width*scale,height*scale);};
  const release=()=>{const d=drag.current,v=viewport.current;if(d&&v?.hasPointerCapture?.(d.id))v.releasePointerCapture(d.id);drag.current=undefined;};
  useLayoutEffect(()=>{setMode("fit");setIntrinsic(1);anchor.current={x:.5,y:.5};suppress.current=false;release();},[sourceId,width,height]);
@@ -18,13 +18,13 @@ export function SceneViewport({sourceId,width,height,children}:{sourceId:string;
  },[]);
  useLayoutEffect(()=>{const v=viewport.current;if(!v||!v.clientWidth||!v.clientHeight)return;const p=scrollForAnchor(anchor.current,v.clientWidth,v.clientHeight,width*scale,height*scale);v.scrollLeft=p.left;v.scrollTop=p.top;},[scale,width,height,size]);
  useEffect(()=>{window.addEventListener("blur",release);return()=>{window.removeEventListener("blur",release);release();if(suppressionTimer.current)clearTimeout(suppressionTimer.current);};},[]);
- const zoom=(value:number|"fit")=>{remember();if(value==="fit"){anchor.current={x:.5,y:.5};setMode("fit");}else if(validScale(value)){setIntrinsic(value);setMode("intrinsic");}};
+ const zoom=(value:number|"fit")=>{remember();if(value==="fit"){anchor.current={x:.5,y:.5};setMode("fit");}else if(validScale(value)){const bounded=Math.max(fit,value);setIntrinsic(bounded);setMode(bounded<=fit?"fit":"intrinsic");}};
  const finish=(cancel=false)=>{if(drag.current?.dragged&&!cancel){suppress.current=true;if(suppressionTimer.current)clearTimeout(suppressionTimer.current);suppressionTimer.current=setTimeout(()=>{suppress.current=false;},0);}release();};
  return <div ref={root} className="scene-viewport">
  <div className="scene-toolbar" role="group" aria-label="Zoom de la escena">
  <button onClick={()=>zoom("fit")} aria-pressed={mode==="fit"}>Ajustar</button>
  {[1,2,4].map(n=><button key={n} aria-pressed={mode==="intrinsic"&&intrinsic===n} onClick={()=>zoom(n)}>{n*100}%</button>)}
- <button aria-label="Alejar imagen" onClick={()=>zoom(Math.max(.0625,scale/1.5))}>−</button>
+ <button aria-label="Alejar imagen" disabled={scale<=fit+1e-8} onClick={()=>zoom(Math.max(fit,scale/1.5))}>−</button>
  <button aria-label="Acercar imagen" onClick={()=>zoom(Math.min(4,scale*1.5))}>+</button>
  <button onClick={()=>zoom("fit")}>Restablecer</button><output aria-live="polite">{Math.round(scale*100)}%</output>
  </div>

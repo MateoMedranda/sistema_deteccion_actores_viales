@@ -24,3 +24,13 @@ it("captures only a drag, suppresses its click and releases on cancel or blur",(
  fireEvent.keyDown(port,{key:"ArrowRight"});expect(port.scrollLeft).toBe(8);
  vi.unstubAllGlobals();
 });
+
+it("never shrinks the scene below its fitted view",()=>{
+ render(<SceneViewport sourceId="floor" width={1200} height={600}><span>Scene</span></SceneViewport>);
+ const minus=screen.getByRole("button",{name:"Alejar imagen"});
+ expect(minus).toBeDisabled();
+ fireEvent.click(screen.getByRole("button",{name:"400%"}));
+ for(let i=0;i<20;i++)fireEvent.click(minus);
+ expect(minus).toBeDisabled();expect(screen.getByTestId("scene-stage").style.width).toBe("1200px");
+ expect(screen.getByRole("button",{name:"Ajustar"})).toHaveAttribute("aria-pressed","true");
+});

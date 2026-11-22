@@ -46,13 +46,13 @@ export function ImageUpload({
             onChange={(e) => onChoose(e.target.files?.[0])}
           />
         </label>
-        <small>JPEG o PNG · Evidencia temporal y privada</small>
+        <small>JPEG o PNG · Archivos temporales y privados</small>
         <small>
           {policy
             ? `Máximo ${new Intl.NumberFormat("es", { maximumFractionDigits: 2 }).format(policy.max_upload_bytes / 1024 / 1024)} MiB y ${new Intl.NumberFormat("es", { maximumFractionDigits: 2 }).format(policy.max_image_pixels / 1000000)} MP (${policy.max_image_pixels.toLocaleString("es")} píxeles).`
             : policyFailed
               ? "No se pudieron consultar los límites; el servicio validará el archivo."
-              : "Los límites se consultarán al configurar la sesión."}
+              : "Preparando los límites de carga automáticamente…"}
         </small>
       </div>
       {preview && (

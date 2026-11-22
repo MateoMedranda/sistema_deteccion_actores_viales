@@ -3,7 +3,7 @@ import path from "node:path";
 export const scene = path.resolve("e2e/fixtures/scene.jpg");
 export async function connect(page: Page) {
   await page.goto("/");
-  await expect(page.getByText("Servicio conectado", {exact:true})).toBeVisible();
+  await expect(page.locator("main")).toHaveAttribute("data-session-state","ready");
 }
 export async function analyze(page: Page) {
   await connect(page);

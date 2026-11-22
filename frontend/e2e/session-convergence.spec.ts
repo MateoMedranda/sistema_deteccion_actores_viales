@@ -14,7 +14,7 @@ test("reset aborts an upload before its job ID exists and ignores its late recei
 for(const status of [401,403])test("managed access rejection "+status+" withdraws both workspaces",async({page})=>{
  await connect(page);await page.route("**/api/v1/video-jobs",route=>route.fulfill({status,json:{code:"access_rejected",message:"Denied"}}));
  await page.getByRole("tab",{name:"Video",exact:true}).click();await page.locator('input[aria-label="Video"]').setInputFiles(path.resolve("e2e/fixtures/controlled.mp4"));await page.getByRole("button",{name:"Procesar video",exact:true}).click();
- await expect(page.getByText("Acceso rechazado. Contacta al responsable del servicio.",{exact:true})).toBeVisible();await expect(page.locator("video")).toHaveCount(0);await expect(page.getByLabel("API key",{exact:true})).toHaveCount(0);
+ await expect(page.locator("main")).toHaveAttribute("data-session-state","access_rejected");await expect(page.locator("video")).toHaveCount(0);await expect(page.getByLabel("API key",{exact:true})).toHaveCount(0);
 });
 test("failed remote cancellation still clears the session immediately",async({page})=>{
  let cancelled=false;
@@ -29,5 +29,5 @@ test("native media rejection is checked by authorized GET and withdraws evidence
  await page.route("**/api/v1/video-jobs/active-job",r=>{gets++;return gets>1?r.fulfill({status:401,json:{code:"invalid_api_key",message:"Denied"}}):r.fulfill({json:{...processing(),status:"completed",progress_percent:100}});});
  await page.route("**/api/v1/video-jobs/active-job/annotated-video/content",r=>r.fulfill({status:401,json:{code:"invalid_api_key",message:"Denied"}}));
  await connect(page);await page.getByRole("tab",{name:"Video",exact:true}).click();await page.locator('input[aria-label="Video"]').setInputFiles(path.resolve("e2e/fixtures/controlled.mp4"));await page.getByRole("button",{name:"Procesar video",exact:true}).click();
- await expect(page.getByText("Acceso rechazado. Contacta al responsable del servicio.",{exact:true})).toBeVisible();await expect(page.locator("video")).toHaveCount(0);
+ await expect(page.locator("main")).toHaveAttribute("data-session-state","access_rejected");await expect(page.locator("video")).toHaveCount(0);
 });
