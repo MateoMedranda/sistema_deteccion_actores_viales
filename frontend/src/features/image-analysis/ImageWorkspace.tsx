@@ -31,8 +31,7 @@ export function ImageWorkspace({ client }: { client?: ApiClient }) {
     <section className="image-workspace media-workspace" aria-labelledby="image-heading">
       <div className="workspace-heading">
         <div>
-          <span className="eyebrow">ANÁLISIS DE IMÁGENES</span>
-          <h2 id="image-heading">De la escena al detalle.</h2>
+          <h3 id="image-heading" className="eyebrow">ANÁLISIS DE IMÁGENES</h3>
           <p>Detecta, selecciona y conoce cada vehículo en un solo lugar.</p>
         </div>
         <span className="workspace-tag">Imagen ↗</span>
