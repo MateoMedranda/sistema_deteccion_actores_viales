@@ -18,7 +18,7 @@ Para una instalación nueva:
 
 ~~~powershell
 cd backend
-uv sync --extra dev
+uv sync --python 3.12 --extra dev
 uv run uvicorn app.main:app --host 127.0.0.1 --port 8000
 ~~~
 
@@ -37,3 +37,5 @@ Si instalaste un entorno nuevo con uv sync, usa uv run pytest.
 Speckit permanece en la raíz: .specify/, .agents/, specs/ y metricas/. Ejecuta allí sus comandos con SPECIFY_FEATURE_DIRECTORY=specs/008-exploracion-imagen-video. Los documentos históricos conservan sus rutas originales; app/, tests/ y scripts/ de esas referencias corresponden ahora a backend/app/, backend/tests/ y backend/scripts/.
 
 Consulta la [guía general](../README.md) para el frontend, los contratos y los flujos de análisis.
+
+Python está fijado en 3.12 mediante .python-version. El script de arranque descarta entornos incompatibles o sin dependencias y reutiliza el entorno válido de la raíz. Desde backend también puedes iniciar con ../.venv/Scripts/python.exe -m uvicorn app.main:app --reload.

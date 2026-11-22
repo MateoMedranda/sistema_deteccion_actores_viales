@@ -10,9 +10,17 @@ $candidates = @(
     (Join-Path $backendRoot ".venv/Scripts/python.exe"),
     (Join-Path $projectRoot ".venv/Scripts/python.exe")
 )
-$python = $candidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+$python = $null
+foreach ($candidate in $candidates) {
+    if (-not (Test-Path -LiteralPath $candidate)) { continue }
+    & $candidate -c "import sys, fastapi, uvicorn, pydantic_settings, httpx; assert sys.version_info[:2] in ((3, 12), (3, 13))" 2>$null
+    if ($LASTEXITCODE -eq 0) {
+        $python = $candidate
+        break
+    }
+}
 if (-not $python) {
-    throw "No hay entorno Python. En backend ejecuta: uv sync --extra dev"
+    throw "No hay un entorno compatible con las dependencias instaladas. En backend ejecuta: uv sync --python 3.12 --extra dev"
 }
 if ($Port -eq 0) { $Port = if ($Service -eq "api") { 8000 } else { 4174 } }
 $application = if ($Service -eq "api") { "app.main:app" } else { "app.web.main:app" }
