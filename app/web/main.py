@@ -54,10 +54,13 @@ def create_web_app(settings:WebSettings|None=None,*,transport=None,clock=None):
     @app.post("/web/session")
     async def bootstrap(request:Request):
         guard(request,javascript=True,mutation=True)
-        body=bytearray()
-        async for block in request.stream():
-            body.extend(block)
-            if len(body)>16384:raise RelayError(413,"web_body_too_large")
+        body=bytearray();deadline=monotonic()+15
+        try:
+            async with asyncio.timeout(max(.001,deadline-monotonic())):
+                async for block in request.stream():
+                    body.extend(block)
+                    if len(body)>16384:raise RelayError(413,"web_body_too_large")
+        except TimeoutError:return safe_error(504,"web_timeout")
         try:
             if json.loads(body)!= {}:raise ValueError()
         except ValueError:raise RelayError(422,"web_json_invalid")
@@ -66,14 +69,14 @@ def create_web_app(settings:WebSettings|None=None,*,transport=None,clock=None):
         if not error:
             try:
                 proxy=app.state.proxy
-                async with asyncio.timeout(15):
+                async with asyncio.timeout(max(.001,deadline-monotonic())):
                     response=await proxy.client.send(proxy.client.build_request("GET",settings.backend_url.rstrip("/")+"/api/v1/web-policy",headers={"X-API-Key":settings.backend_api_key.get_secret_value(),"Accept-Encoding":"identity"}),stream=True)
                     try:
                         if response.status_code==401:error="access_rejected"
                         elif response.status_code!=200:error="upstream_unavailable"
                         else:
                             from app.domain.schemas import WebPolicy
-                            policy=WebPolicy.model_validate(await limited_json(response,monotonic()+15)).model_dump()
+                            policy=WebPolicy.model_validate(await limited_json(response,deadline)).model_dump()
                     finally:await response.aclose()
             except Exception:error="upstream_unavailable"
         if error:return JSONResponse({"status":error,"code":"web_"+error,"message":"La conexión del servicio no está disponible."},status_code=401 if error=="access_rejected" else 503,headers={"Cache-Control":"no-store"})

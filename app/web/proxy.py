@@ -94,9 +94,11 @@ class Proxy:
                 body=bounded_input()
             else:
                 data=bytearray()
-                async for block in request.stream():
-                    data.extend(block)
-                    if len(data)>16384:raise RelayError(413,"web_body_too_large")
+                async with asyncio.timeout(max(.001,deadline-monotonic())):
+                    async for block in request.stream():
+                        if not self.sessions.get(token):raise RelayError(401,"web_session_expired")
+                        data.extend(block)
+                        if len(data)>16384:raise RelayError(413,"web_body_too_large")
                 if request.method in ("GET","DELETE") and data:raise RelayError(422,"web_body_not_allowed")
                 if data:
                     try:payload=json.loads(data)
