@@ -71,3 +71,7 @@ Contenedor hasta1920px con márgenes fluidos, escena prioritaria y ficha288px en
 
 ## Tarjeta de carga compacta
 Miniatura y nombre agrupados en la columna de acciones, encima de Analizar/Limpiar; icono SVG de imagen y texto resumido. En escritorio la tarjeta seleccionada queda por debajo de200px; miniatura visible también tras analizar. Diseño de acciones adaptable a texto200% y móvil. Build PASS,3 pruebas focales de carga/política PASS y comprobación aislada360/768/1440 a100/200% sin desborde. Solo frontend; metadatos previos restaurados y backend intacto.
+
+## Consistencia visual de Imagen y Video
+Los dos modos comparten MediaUpload y su CSS: mismos encabezados, fuente, tamaños, pesos, colores, interlineado, selector, acciones y distribución compacta. Video usa workspace-heading igual que Imagen; su icono mantiene el mismo estilo lineal. Los encabezados y textos de progreso siguen la escala de AnalysisProgress. Se conserva el procesamiento y su recuperación; el archivo seleccionado puede limpiarse con el mismo patrón visual.
+Build PASS y10pruebas focales de imagen/video PASS. Navegador aislado en360/768/1440 y100/200%: igualdad de estilos calculados para título, introducción, título/copia de carga, selector y acción; sin desborde horizontal. Se comprobó seleccionar/limpiar video. Captura revisada por agente; backend, credenciales y gates anteriores sin cambios.

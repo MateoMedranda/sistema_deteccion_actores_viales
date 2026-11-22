@@ -28,7 +28,7 @@ export function ImageWorkspace({ client }: { client?: ApiClient }) {
   const busy = ["detecting", "enriching"].includes(state.phase),
     source = state.response;
   return (
-    <section className="image-workspace" aria-labelledby="image-heading">
+    <section className="image-workspace media-workspace" aria-labelledby="image-heading">
       <div className="workspace-heading">
         <div>
           <span className="eyebrow">ANÁLISIS DE IMÁGENES</span>

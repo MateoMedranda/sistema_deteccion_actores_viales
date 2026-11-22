@@ -1,3 +1,4 @@
+import {MediaUpload} from "../../components/MediaUpload";
 import {useEffect,useRef,useState} from "react";
 import type {ApiClient} from "../../services/apiClient";
 import type {Point} from "../../services/apiTypes";
@@ -23,10 +24,10 @@ export function VideoWorkspace({client,active=true}:{client?:ApiClient;active?:b
   analysis.choose(file);
   if(file&&((policy&&!policy.media_types.includes(file.type))||(policy&&file.size>policy.max_upload_bytes)))analysis.rejectFile("Selecciona un MP4 que respete el tamaño permitido.");
  };
- return <section ref={root} className="video-workspace" aria-labelledby="video-heading">
- <div className="workspace-intro"><p className="eyebrow">ANÁLISIS DE VIDEO</p><h2 id="video-heading">El movimiento, en contexto.</h2><p>Analiza una escena, reproduce el resultado y conoce cada vehículo.</p></div>
- <section className="video-upload-card" aria-label="Carga de video"><div className="upload-symbol" aria-hidden="true">↑</div><div><h3>Tu video, una escena completa</h3><p>Contornos claros y consulta automática de atributos y placas.</p><label className="file-picker">Seleccionar video<input key={s.generation} aria-label="Video" type="file" accept={policy?.media_types.join(",")??"video/mp4"} onChange={e=>select(e.target.files?.[0])}/></label><p className="muted">{policy?"MP4 · hasta "+Math.round(policy.max_upload_bytes/1024/1024)+" MB · "+policy.max_duration_seconds+" segundos":"MP4 · evidencia temporal y privada"}</p></div>
- <div className="upload-actions"><p>{s.file?.name??"Ningún archivo seleccionado"}</p><button className="primary" disabled={!client||!s.file||busy||s.processing==="ready"} onClick={()=>void (["failed","cancelled"].includes(s.processing)?analysis.retryVideo():analysis.start())}>{["failed","cancelled"].includes(s.processing)?"Reintentar video":"Procesar video"}</button></div></section>
+ return <section ref={root} className="video-workspace media-workspace" aria-labelledby="video-heading">
+ <div className="workspace-heading"><div><span className="eyebrow">ANÁLISIS DE VIDEO</span><h2 id="video-heading">El movimiento, en contexto.</h2><p>Analiza una escena, reproduce el resultado y conoce cada vehículo.</p></div><span className="workspace-tag">Video ↗</span></div>
+ <MediaUpload kind="video" title="Tu video, una escena completa" description="Vehículos, atributos y placas a lo largo de la escena." inputLabel="Video" selectLabel="Seleccionar video" actionLabel={["failed","cancelled"].includes(s.processing)?"Reintentar video":"Procesar video"} clearLabel="Limpiar video" accept={policy?.media_types.join(",")??"video/mp4"} disabled={!client||busy||s.processing==="ready"} file={s.file} generation={s.generation} compact={!!ready} onChoose={select} onAnalyze={()=>void (["failed","cancelled"].includes(s.processing)?analysis.retryVideo():analysis.start())} onReset={()=>analysis.choose()}
+ hint={<><small>MP4 · Archivos temporales y privados</small><small>{policy?"Máximo "+new Intl.NumberFormat("es",{maximumFractionDigits:2}).format(policy.max_upload_bytes/1024/1024)+" MiB y "+policy.max_duration_seconds+" segundos.":"Preparando los límites de carga automáticamente…"}</small></>}/>
  <p role="status" className="video-message">{s.message}</p>
  <VideoProgress video={s.video} processingState={s.processing==="idle"?undefined:s.processing} enrichment={s.enriched} enrichmentState={s.enrichment}/>
  <div className="video-stage-actions">{busy&&<button onClick={()=>void analysis.cancel("processing")}>Cancelar procesamiento</button>}{["submitting","queued","processing"].includes(s.enrichment)&&<button onClick={()=>void analysis.cancel("enrichment")}>Cancelar enriquecimiento</button>}{(s.processing==="interrupted"||s.enrichment==="interrupted")&&<button onClick={()=>void analysis.resume()}>Reanudar consulta</button>}{["failed","cancelled","expired"].includes(s.enrichment)&&ready&&<button onClick={()=>void analysis.retryEnrichment()}>Reintentar enriquecimiento</button>}</div>
