@@ -2,12 +2,26 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
+from app.core.paths import BACKEND_ROOT, backend_path
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(env_file=BACKEND_ROOT / ".env", extra="ignore")
+
+    @model_validator(mode="after")
+    def resolve_backend_paths(self) -> "Settings":
+        for name in (
+            "model_weights_path", "ultralytics_path", "temp_artifact_dir",
+            "video_job_db_path", "video_temp_dir", "count_job_db_path", "count_temp_dir",
+            "attribute_model_weights_path", "attribute_model_manifest_path",
+            "plate_model_weights_path", "enrichment_job_db_path", "enrichment_temp_dir",
+        ):
+            value = getattr(self, name)
+            if value is not None:
+                setattr(self, name, backend_path(value))
+        return self
 
     model_weights_path: Path | None = None
     ultralytics_path: Path | None = None

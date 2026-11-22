@@ -21,7 +21,8 @@ def test_metrics_include_unaccepted_and_false_accepts_and_gate():
  assert normalize_plate("ａｂ c-01")=="ABC01" and normalize_plate("O0I1")=="O0I1"
 
 def test_end_to_end_evaluator_keeps_every_failure_and_public_report_aggregate(tmp_path):
- import json,cv2,numpy as np
+ import json,numpy as np
+ from PIL import Image
  from app.core.config import Settings
  from tests.conftest import FakeDetector
  from tests.enrichment_fixtures import FakeLocalizer,FakeReader
@@ -30,7 +31,7 @@ def test_end_to_end_evaluator_keeps_every_failure_and_public_report_aggregate(tm
  for sample in m["samples"]:
   sample["vehicle_bbox"]=[5,5,30,30]
   sample["image"]=str(tmp_path/(sample["id"]+".png"))
-  cv2.imwrite(sample["image"],np.indices((40,40)).sum(axis=0).astype(np.uint8))
+  Image.fromarray(np.indices((40,40)).sum(axis=0).astype(np.uint8)).save(sample["image"])
  m["samples"][0]["detection_id"]=999
  result=evaluate(m,tmp_path/"private.json",Settings(_env_file=None),FakeDetector(),FakeLocalizer(),FakeReader())
  assert result["test_samples"]==60 and not result["gate_pass"]

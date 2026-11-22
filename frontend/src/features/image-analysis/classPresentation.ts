@@ -1,4 +1,4 @@
-import registry from "../../../../app/domain/class_presentation.json" with {type:"json"};
+import registry from "../../../../backend/app/domain/class_presentation.json" with {type:"json"};
 /** Presentation only. Eligibility and identities always come from the server. */
 export const classRegistry:Record<string,{label:string;color:string}>=registry.classes;
 export function classPresentation(name:string){

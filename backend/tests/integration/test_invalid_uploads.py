@@ -1,3 +1,4 @@
+from tests.conftest import isolated_settings
 import logging
 
 from tests.conftest import image_bytes
@@ -22,7 +23,7 @@ def test_large_dimensions_rejected(tmp_path, api_key):
     from app.main import create_app
     from tests.conftest import FakeDetector
 
-    settings = Settings(api_key=api_key, max_image_pixels=100, temp_artifact_dir=tmp_path / "a")
+    settings = isolated_settings(tmp_path, api_key=api_key, max_image_pixels=100, temp_artifact_dir=tmp_path / "a")
     with TestClient(create_app(settings, FakeDetector())) as app_client:
         response = app_client.post(
             "/api/v1/detections/images",

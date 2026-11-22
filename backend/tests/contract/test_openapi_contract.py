@@ -9,7 +9,7 @@ from tests.conftest import FakeDetector
 
 def test_generated_openapi_matches_documented_routes_and_security():
     documented = yaml.safe_load(
-        Path("specs/001-deteccion-imagen-vial/contracts/openapi.yaml").read_text(encoding="utf-8")
+        (Path(__file__).resolve().parents[3] / "specs/001-deteccion-imagen-vial/contracts/openapi.yaml").read_text(encoding="utf-8")
     )
     generated = create_app(Settings(api_key="test"), FakeDetector()).openapi()
     for path in documented["paths"]:
@@ -19,7 +19,7 @@ def test_generated_openapi_matches_documented_routes_and_security():
 
 def test_generated_openapi_matches_counting_routes_and_security():
     documented = yaml.safe_load(
-        Path("specs/003-conteo-por-linea/contracts/openapi.yaml").read_text(encoding="utf-8")
+        (Path(__file__).resolve().parents[3] / "specs/003-conteo-por-linea/contracts/openapi.yaml").read_text(encoding="utf-8")
     )
     generated = create_app(Settings(api_key="test"), FakeDetector()).openapi()
     for path in documented["paths"]:
@@ -39,7 +39,7 @@ def test_006_operations_expose_required_extensions_and_capabilities():
     assert {"200", "503"} <= set(health)
     schema = generated["components"]["schemas"]["EnrichmentReadinessResponse"]
     assert "capabilities" in schema["required"]
-    documented = yaml.safe_load(Path("specs/006-mejoras-frontend/contracts/openapi-additions.yaml").read_text(encoding="utf-8"))
+    documented = yaml.safe_load((Path(__file__).resolve().parents[3] / "specs/006-mejoras-frontend/contracts/openapi-additions.yaml").read_text(encoding="utf-8"))
     def walk(node):
         if isinstance(node, dict):
             for key, value in node.items():

@@ -1,3 +1,4 @@
+from tests.conftest import isolated_settings
 from tests.conftest import image_bytes
 
 
@@ -19,7 +20,7 @@ def test_empty_detection_response_is_successful(tmp_path, api_key):
     from app.main import create_app
     from tests.conftest import FakeDetector
 
-    with TestClient(create_app(Settings(api_key=api_key, temp_artifact_dir=tmp_path / "a"), FakeDetector([]))) as app_client:
+    with TestClient(create_app(isolated_settings(tmp_path, api_key=api_key, temp_artifact_dir=tmp_path / "a"), FakeDetector([]))) as app_client:
         response = app_client.post(
             "/api/v1/detections/images",
             headers={"X-API-Key": api_key},

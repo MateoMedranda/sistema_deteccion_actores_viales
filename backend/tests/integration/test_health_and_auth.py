@@ -1,3 +1,4 @@
+from tests.conftest import isolated_settings
 from fastapi.testclient import TestClient
 
 from app.core.config import Settings
@@ -23,8 +24,8 @@ def test_video_upload_is_rejected_before_multipart_parsing(client):
 
 
 def test_service_without_model_is_not_ready(tmp_path):
-    settings = Settings(
-        api_key="test",
+    settings = isolated_settings(
+        tmp_path, api_key="test",
         model_weights_path=tmp_path / "missing-model.pt",
         temp_artifact_dir=tmp_path / "artifacts",
     )

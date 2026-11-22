@@ -6,9 +6,37 @@ temporal y publica un MP4 anotado cuando concluye. Incluye conteo por línea, en
 atributos y placas e interfaz web. La iteración 006 incorpora exploración interactiva de imágenes;
 cámara e historial permanente siguen fuera de alcance.
 
+## Organización del proyecto
+
+- `backend/`: API, gateway, pruebas Python, scripts, dependencias y configuración privada.
+- `frontend/`: aplicación web, pruebas de interfaz y dependencias Node.
+- `.specify/`, `.agents/`, `specs/` y `metricas/`: Speckit y documentación compartida en la raíz.
+
+Arranque con el entorno existente, desde la raíz, en tres terminales:
+
+```powershell
+./backend/start.ps1 -Service api
+```
+
+```powershell
+./backend/start.ps1 -Service gateway
+```
+
+```powershell
+npm --prefix frontend run dev
+```
+
+Configura `backend/.env` y `backend/.env.web`. Para el Vite predeterminado, `WEB_ORIGIN=http://localhost:5173`; debe coincidir exactamente con la URL que abres. La API key permanece en el gateway, fuera del navegador.
+
+El entorno `.venv/` existente se conserva para reutilizar los paquetes instalados. Una instalación nueva con `uv sync` desde `backend/` crea `backend/.venv/`; el script de arranque prefiere ese entorno si existe. Consulta [backend/README.md](backend/README.md).
+
+Los comandos Speckit siguen ejecutándose desde la raíz con `SPECIFY_FEATURE_DIRECTORY=specs/008-exploracion-imagen-video`. Las referencias históricas a `app/`, `tests/`, `scripts/` y los archivos `.env` corresponden ahora a sus ubicaciones dentro de `backend/`.
+
 ## Configuración
 
-1. Use Python 3.12 y cree un entorno virtual.
+Para una instalación nueva, ejecuta estos pasos desde `backend/`:
+
+1. Use Python 3.12. Desde `backend/`, cree un entorno virtual.
 2. Instale las dependencias: `uv sync --extra dev`.
 3. Copie `.env.example` a `.env` y configure `MODEL_WEIGHTS_PATH` y `API_KEY` con valores privados.
 4. Inicie el servicio: `uv run uvicorn app.main:app --reload`.
@@ -69,7 +97,7 @@ eliminan al vencer `VIDEO_RESULT_TTL_SECONDS` o al detener limpiamente el servic
 - No registre ni comparta `API_KEY`, pesos del modelo o imágenes de usuarios.
 - Despliegue detrás de TLS y un proxy con límites de solicitud.
 - Los archivos y anotaciones se almacenan temporalmente y se eliminan al vencer el TTL.
-- Ejecute `uv run pytest` antes de entregar cambios.
+- Ejecute `uv run --project backend pytest backend/tests` antes de entregar cambios.
 - La procedencia aprobada del modelo es `yolov10s_best.pt` evaluado en
   `Vehicle_Detection_System`; cambiar pesos, clases o umbral exige una nueva evaluación.
 
@@ -90,7 +118,7 @@ El original canónico PNG se obtiene mediante GET /api/v1/detections/{requestId}
 GET /health/enrichment-ready devuelve disponibilidad independiente de atributos, localización y OCR. Una disponibilidad parcial puede responder 503 en health y aun permitir enriquecimiento útil; una rama ausente no oculta las válidas. El janitor purga fuentes/resultados vencidos sin necesitar tráfico nuevo.
 
 ```powershell
-uv run pytest
+uv run --project backend pytest backend/tests
 npm --prefix frontend run build
 npm --prefix frontend run test
 Set-Location -LiteralPath './frontend'
@@ -117,10 +145,10 @@ Consultar [guía007](specs/007-anotaciones-placas-legibles/quickstart.md), [vali
 
 ## Exploración administrada de Imagen y Video (008)
 
-La cabecera alterna espacios sin perder evidencia vigente. URL y credencial del backend se configuran únicamente en el servidor: copiar .env.web.example a .env.web, editar los valores localmente y conservar ese archivo fuera de Git. Nunca usar VITE_ para secretos. Cada gateway representa un principal del backend.
+La cabecera alterna espacios sin perder evidencia vigente. URL y credencial del backend se configuran únicamente en el servidor: copiar backend/.env.web.example a backend/.env.web, editar los valores localmente y conservar ese archivo fuera de Git. Nunca usar VITE_ para secretos. Cada gateway representa un principal del backend.
 
-Desde raíz, terminal1: .venv/Scripts/python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000.
-Terminal2: npm --prefix frontend run build; después .venv/Scripts/python.exe -m uvicorn app.web.main:app --host 127.0.0.1 --port 4173.
+Desde raíz, terminal1: ./backend/start.ps1 -Service api.
+Terminal2: npm --prefix frontend run build; después ./backend/start.ps1 -Service gateway -Port 4173.
 Abrir http://127.0.0.1:4173 con WEB_ORIGIN configurado para ese origen. Desarrollo: gateway4174 y Vite4173; comandos en [quickstart008](specs/008-exploracion-imagen-video/quickstart.md).
 Un despliegue remoto requiere HTTPS e ingreso privado autenticado existente; cookie/Origin no sustituyen esa autorización.
 

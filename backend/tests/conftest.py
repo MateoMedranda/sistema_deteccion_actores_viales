@@ -11,6 +11,22 @@ from app.domain.models import Detection
 from app.main import create_app
 
 
+def isolated_settings(root, **overrides):
+    """Keep test lifespans away from the running service's durable files."""
+    values = {
+        "_env_file": None,
+        "temp_artifact_dir": root / "artifacts",
+        "video_job_db_path": root / "video-jobs.sqlite3",
+        "video_temp_dir": root / "video-jobs",
+        "count_job_db_path": root / "count-jobs.sqlite3",
+        "count_temp_dir": root / "count-jobs",
+        "enrichment_job_db_path": root / "enrichment-jobs.sqlite3",
+        "enrichment_temp_dir": root / "enrichment",
+    }
+    values.update(overrides)
+    return Settings(**values)
+
+
 class FakeDetector:
     model_name = "fake-yolov10s.pt"
 

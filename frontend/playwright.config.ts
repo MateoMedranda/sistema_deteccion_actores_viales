@@ -1,3 +1,4 @@
+import { backendPython } from "./playwright.backend";
 import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "./e2e",
@@ -34,11 +35,11 @@ export default defineConfig({
     },
   ],
   webServer: [
- {command:'".venv/Scripts/python.exe" -m uvicorn tests.e2e.serve_managed_gateway:app --host 127.0.0.1 --port 4174',cwd:"..",url:"http://127.0.0.1:4174/health/live",reuseExistingServer:false,timeout:30000},
+ {command:`${backendPython} -m uvicorn tests.e2e.serve_managed_gateway:app --host 127.0.0.1 --port 4174`,cwd:"../backend",url:"http://127.0.0.1:4174/health/live",reuseExistingServer:false,timeout:30000},
     {
       command:
-        '".venv/Scripts/python.exe" -m uvicorn tests.e2e.serve_frontend_test_api:app --host 127.0.0.1 --port 8767',
-      cwd: "..",
+        `${backendPython} -m uvicorn tests.e2e.serve_frontend_test_api:app --host 127.0.0.1 --port 8767`,
+      cwd: "../backend",
       url: "http://127.0.0.1:8767/health/live",
       reuseExistingServer: false,
       timeout: 60_000,

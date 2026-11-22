@@ -6,7 +6,7 @@ from app.domain.schemas import VideoJobResponse
 from app.api.routes.video_jobs import public_job
 from app.services.video_job_store import VideoJobStore
 from tests.unit.test_video_job_store import metadata
-ROOT=Path(__file__).resolve().parents[2]
+ROOT=Path(__file__).resolve().parents[3]
 SCHEMA=json.loads((ROOT/"specs/008-exploracion-imagen-video/contracts/schemas.json").read_text(encoding="utf-8"))
 EXAMPLES=json.loads((ROOT/"specs/008-exploracion-imagen-video/contracts/examples.json").read_text(encoding="utf-8"))
 def validator(name):

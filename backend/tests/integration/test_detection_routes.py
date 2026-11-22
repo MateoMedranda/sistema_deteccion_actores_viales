@@ -1,3 +1,4 @@
+from tests.conftest import isolated_settings
 from tests.conftest import FakeDetector, image_bytes
 
 
@@ -21,7 +22,7 @@ def test_valid_image_can_return_no_detections(tmp_path, api_key):
     from app.core.config import Settings
     from app.main import create_app
 
-    with TestClient(create_app(Settings(api_key=api_key, temp_artifact_dir=tmp_path / "a"), FakeDetector([]))) as app_client:
+    with TestClient(create_app(isolated_settings(tmp_path, api_key=api_key, temp_artifact_dir=tmp_path / "a"), FakeDetector([]))) as app_client:
         response = app_client.post(
             "/api/v1/detections/images",
             headers={"X-API-Key": api_key},

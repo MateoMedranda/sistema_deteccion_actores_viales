@@ -18,7 +18,7 @@ class AnnotationDetector(SceneDetector):
         COUNTS["detection"]+=1
         if image.shape[:2]==(600,960) and int(image[-1,-1,0])==7 and int(image[-1,-1,2])==7:
             index=int(image[-1,-1,1])
-            root=Path(__file__).resolve().parents[2]/"frontend/e2e/fixtures/annotations/manifest.json"
+            root=Path(__file__).resolve().parents[3]/"frontend/e2e/fixtures/annotations/manifest.json"
             scene=json.loads(root.read_text())[index]
             return [Detection(d["class_id"],d["class_name"],d["confidence"],**d["bbox"]) for d in scene["detections"]]
         return super().detect(image)

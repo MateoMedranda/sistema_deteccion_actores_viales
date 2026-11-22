@@ -2,7 +2,7 @@
 from pathlib import Path
 import json
 from PIL import Image,ImageDraw
-ROOT=Path(__file__).resolve().parents[2]/"frontend"/"e2e"/"fixtures"/"exploration"
+ROOT=Path(__file__).resolve().parents[3]/"frontend"/"e2e"/"fixtures"/"exploration"
 def build(name,index,boxes):
     image=Image.new("RGB",(640,400),(232,238,244));draw=ImageDraw.Draw(image)
     detections=[];results=[];expected=[]

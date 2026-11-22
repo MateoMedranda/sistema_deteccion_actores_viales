@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 from PIL import Image, ImageDraw
-ROOT = Path(__file__).resolve().parents[2] / "frontend/e2e/fixtures/annotations"
+ROOT = Path(__file__).resolve().parents[3] / "frontend/e2e/fixtures/annotations"
 CLASSES = "car truck bus van pickup suv sedan hatchback mpv estate person bicycle motorcycle unknown".split()
 def main():
     ROOT.mkdir(parents=True, exist_ok=True)
