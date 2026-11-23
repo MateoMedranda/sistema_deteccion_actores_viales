@@ -174,6 +174,11 @@ Como usuario, quiero aprovechar los tramos confirmados ante un fallo posterior y
 El usuario aprobó implementar detección/seguimiento primero, enriquecimiento solo al seleccionar y conteo opcional. Esta decisión sustituye el automatismo de la historia3 para el nuevo frontend, conservando clientes anteriores. No se altera modelo, muestreo ni calidad de detección; la prueba larga sigue diferida.
 
 - **FR-024**: El panel lateral de Video MUST conservar la jerarquía visual de Imagen: ficha, clase/Track ID, recorte de vehículo, atributos, placa y recorte de placa. La lista no precede a la ficha: existe una alternativa compacta para vehículos del fotograma actual debajo del reproductor.
-- **FR-025**: El usuario MUST poder activar/desactivar conteo por línea en una sección inferior, eligiendo dos puntos en un fotograma confirmado mediante toque/puntero o controles de teclado, sin iniciar otra detección.
+- **FR-025**: El usuario MUST poder activar/desactivar conteo por línea en una sección inferior, con el primer fotograma confirmado cargado automáticamente y arrastre de extremos o línea completa mediante toque/puntero, además de teclado, sin iniciar otra detección.
 - **FR-026**: La línea configurada MUST aparecer sobre el video principal y el contador en su esquina superior derecha. El acumulado corresponde al instante reproducido, no al prefijo futuro ya analizado. Retroceder/repetir un tramo no duplica eventos. La dirección y regla de un cruce por Track ID conservan el conteo existente; cambios de línea recalculan a partir de trayectorias persistidas.
 - **AC adicional**: Antes de seleccionar, un clip con vehículos no ejecuta atributos/localización/OCR. Seleccionar uno habilita sus recortes y datos; repetir selección utiliza caché. Dibujar una línea, ir antes/después de un cruce y retroceder muestra0/1/0 sin otra subida ni inferencia.
+
+
+### Corrección aprobada por reporte del usuario: identidad y editor
+
+El vehículo seleccionado debe conservar su identidad física entre cuadros; no se acepta reciclar el Track ID según el orden de detección. El editor usa por defecto el primer fotograma, permite dibujar arrastrando, mover ambos extremos y trasladar toda la línea sin cambiar su longitud cuando sea posible dentro de los bordes. Las coordenadas precisas y el uso de otro fotograma quedan como opciones secundarias; el contador principal sigue sincronizado.

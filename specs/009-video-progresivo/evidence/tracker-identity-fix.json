@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-22",
+  "cause": "tracking callbacks captured persist=false and restarted tracker per prediction",
+  "corrected_design": "per-job BYTETracker over shared raw detector predictions",
+  "real_clip_frames_checked": 40,
+  "previous_track10_class_runs_in_same_40_frames": [
+    "Car",
+    "Big Truck",
+    "Car",
+    "Van",
+    "Car",
+    "Big Truck",
+    "Van",
+    "Car"
+  ],
+  "corrected_track10_class_runs": [
+    "Car"
+  ],
+  "corrected_tracks_observed": 21,
+  "limitations": [
+    "Short diagnostic, not full identity ground truth",
+    "Truck/Big Truck class fluctuations still observed",
+    "Long paired performance comparison remains deferred"
+  ],
+  "weights_or_threshold_changed": false
+}

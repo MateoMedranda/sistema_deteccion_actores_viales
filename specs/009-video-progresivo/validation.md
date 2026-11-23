@@ -63,3 +63,18 @@ La consulta bajo demanda fija hastaK recortes disponibles al primer clic; se reu
 **Límites pendientes**: no se acredita un nuevo FPS real ni el gate de coste/memoria de la política automática original; cambiar política exige reportar condiciones comparables. T039/T074–T077 y las tareas de convergencia T085–T088/T090–T091 siguen abiertas. No se simula prueba humana ni se relajan umbrales. T081–T084/T089/T092 cuentan con corrección/regresión relacionada en esta entrega.
 
 **Arranque**: reiniciar API y gateway para cargar el parámetro y las rutas nuevas, y recargar la página para renovar sesión. Un proceso antiguo sin reload puede seguir devolviendo422 durante la subida. Los comandos están en quickstart.md; `start.ps1 -CheckEnvironment` no inicia servicios.
+
+
+## Corrección de regresiones reportadas: identidad y editor — 2026-11-22
+
+Causa confirmada del recorte incorrecto: model.track registraba callbacks con persist=False; el código instalado captura ese valor y recreaba ByteTrack en cada predicción. El mismo ID local se reasignaba según detecciones de cada cuadro, mezclando evidencia de Car/Truck/Van. No era una consulta aleatoria de la ficha: la clave Track ID ya estaba corrupta antes de seleccionar.
+
+Corrección: tracker BYTETracker propio por video, predicción raw del mismo modelo/umbral/dispositivo y configuración bytetrack.yaml anterior. Imágenes intercaladas no mutan seguimiento de video. Regresiones invierten orden de detecciones, intercalan predicción de imágenes y reinician un trabajo sin recargar pesos.
+
+Diagnóstico real acotado:40cuadros del mismo video autorizado, sin OCR ni benchmark largo. Antes, Track ID10 alternó Car→Big Truck→Car→Van→Car→Big Truck→Van→Car; corregido, Track ID10 permaneció Car. Persisten fluctuaciones de clase entre Truck/Big Truck en otros tracks; no se afirma identidad perfecta ni aceptación del video completo. No se guardaron medios/lecturas privadas en Git. Agregados en evidence/tracker-identity-fix.json.
+
+Editor restaurado: primer cuadro confirmado automático (preview acotada a1280px, mismo decoder/orientación), dibujo arrastrando, extremos con captura de puntero y teclado, traslación de toda la línea acotada a la imagen. Las coordenadas y otro fotograma son secundarios, plegados. Borrar retira también conteo activo. No se repite detección al editar.
+
+Pruebas efectivas:333 backend,125 frontend y compilación aprobados; caso E2E de inspección/conteo aprobado en escritorio/tablet/móvil, con primer fotograma automático; verificación adicional de arrastre completo con12movimientos reales y desplazamiento esperado de ambos extremos en escritorio. La prueba unitaria verifica creación, traslación, extremo, teclado y borrado. No se ejecutó comparación larga ni prueba humana.
+
+Despliegue local: reiniciar la API para crear modelos/trackers limpios y analizar el video otra vez. Un trabajo anterior ya tiene IDs/evidencias mezclados; no se corrige al recargar la página ni se reescribe automáticamente. Los gates de rendimiento/usabilidad previos continúan pendientes.

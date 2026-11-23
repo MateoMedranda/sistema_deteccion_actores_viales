@@ -1,14 +1,45 @@
-import {useRef,useState,type RefObject} from "react";
+import {useEffect,useRef,useState,type RefObject,type PointerEvent} from "react";
 import type {CountLine,Point} from "./useProgressiveCount";
-export function ProgressiveCountTools({source,pause,enabled,onApply,onDisable,message,position}:{source:RefObject<HTMLCanvasElement>;pause:()=>void;enabled:boolean;onApply:(line:CountLine)=>Promise<void>;onDisable:()=>Promise<void>;message:string;position:string}){
- const editor=useRef<HTMLCanvasElement>(null),[prepared,setPrepared]=useState(false),[points,setPoints]=useState<Point[]>([]),[busy,setBusy]=useState(false),[capturedAt,setCapturedAt]=useState("");
- const capture=()=>{pause();const original=source.current,c=editor.current;if(!original||!c||original.dataset.frameIndex===undefined)return;c.width=original.width;c.height=original.height;c.getContext("2d")?.drawImage(original,0,0);setCapturedAt(position);setPrepared(true);setPoints([])};
+type Drag={kind:"point"|"line";index:number;start:Point;initial:Point[]};
+const clamp=(n:number)=>Math.max(0,Math.min(1,n));
+export function ProgressiveCountTools({firstFrame,source,pause,enabled,onApply,onDisable,message,position}:{firstFrame?:HTMLCanvasElement;source:RefObject<HTMLCanvasElement>;pause:()=>void;enabled:boolean;onApply:(line:CountLine)=>Promise<void>;onDisable:()=>Promise<void>;message:string;position:string}){
+ const editor=useRef<HTMLCanvasElement>(null),area=useRef<HTMLDivElement>(null),drag=useRef<Drag>();
+ const [prepared,setPrepared]=useState(false),[points,setPoints]=useState<Point[]>([]),[busy,setBusy]=useState(false),[capturedAt,setCapturedAt]=useState("0:00");
+ const copy=(image:HTMLCanvasElement)=>{const c=editor.current;if(!c)return;c.width=image.width;c.height=image.height;c.getContext("2d")?.drawImage(image,0,0);setPrepared(true)};
+ useEffect(()=>{if(firstFrame){copy(firstFrame);setCapturedAt("0:00")}},[firstFrame]);
+ const capture=()=>{pause();const original=source.current;if(!original||original.dataset.frameIndex===undefined)return;copy(original);setCapturedAt(position)};
+ const point=(e:PointerEvent<HTMLDivElement>)=>{const b=e.currentTarget.getBoundingClientRect();return {x:clamp((e.clientX-b.left)/b.width),y:clamp((e.clientY-b.top)/b.height)}};
+ const down=(e:PointerEvent<HTMLDivElement>)=>{
+  if(!prepared||busy||e.button!==0)return;e.preventDefault();e.currentTarget.setPointerCapture(e.pointerId);
+  const start=point(e),button=(e.target as Element).closest<HTMLButtonElement>("[data-endpoint]");
+  if(button){drag.current={kind:"point",index:Number(button.dataset.endpoint),start,initial:points};return}
+  if(points.length===2){
+   const rect=e.currentTarget.getBoundingClientRect(),a=points[0],b=points[1],vx=(b.x-a.x)*rect.width,vy=(b.y-a.y)*rect.height;
+   const wx=(start.x-a.x)*rect.width,wy=(start.y-a.y)*rect.height,length=vx*vx+vy*vy,t=length?clamp((wx*vx+wy*vy)/length):0;
+   if(length&&Math.hypot(wx-t*vx,wy-t*vy)<=14){drag.current={kind:"line",index:0,start,initial:points};return}
+   if(a.x===b.x&&a.y===b.y){const next=[a,start];setPoints(next);drag.current={kind:"point",index:1,start,initial:next};return}
+  }
+  const next=[start,start];setPoints(next);drag.current={kind:"point",index:1,start,initial:next};
+ };
+ const move=(e:PointerEvent<HTMLDivElement>)=>{
+  const d=drag.current;if(!d)return;const current=point(e);
+  if(d.kind==="line"){
+   const dx=Math.max(-Math.min(...d.initial.map(p=>p.x)),Math.min(1-Math.max(...d.initial.map(p=>p.x)),current.x-d.start.x));
+   const dy=Math.max(-Math.min(...d.initial.map(p=>p.y)),Math.min(1-Math.max(...d.initial.map(p=>p.y)),current.y-d.start.y));
+   setPoints(d.initial.map(p=>({x:p.x+dx,y:p.y+dy})));
+  }else setPoints(old=>old.map((p,i)=>i===d.index?current:p));
+ };
+ const end=(e:PointerEvent<HTMLDivElement>)=>{drag.current=undefined;if(e.currentTarget.hasPointerCapture?.(e.pointerId))e.currentTarget.releasePointerCapture(e.pointerId)};
  const apply=async()=>{if(points.length!==2)return;setBusy(true);try{await onApply({point_a:points[0],point_b:points[1]})}finally{setBusy(false)}};
- return <section className="progressive-count-tools" aria-label="Conteo por línea"><div className="count-tools-heading"><div><span className="eyebrow">CONTEO OPCIONAL</span><h3>Cuenta los cruces en la escena</h3><p className="muted">Dibuja una línea sobre un fotograma. El contador del video sigue el instante que reproduces.</p></div>{enabled&&<button className="secondary-button" onClick={()=>void onDisable()} disabled={busy}>Desactivar conteo</button>}</div>
- <button className="secondary-button" onClick={capture} disabled={busy}>Usar fotograma actual para la línea</button>
- <div className={"count-frame-editor"+(prepared?" is-prepared":"")} hidden={!prepared} onPointerDown={e=>{if(!prepared)return;const b=e.currentTarget.getBoundingClientRect(),point={x:Math.max(0,Math.min(1,(e.clientX-b.left)/b.width)),y:Math.max(0,Math.min(1,(e.clientY-b.top)/b.height))};setPoints(old=>old.length>=2?[point]:[...old,point])}}>
- <canvas ref={editor} aria-label="Fotograma para configurar la línea de conteo"/><svg viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true">{points.length===2&&<line x1={points[0].x} y1={points[0].y} x2={points[1].x} y2={points[1].y}/>} {points.map((p,i)=><circle key={i} cx={p.x} cy={p.y} r=".012"/>)}</svg></div>
- {prepared&&<><p className="muted">Fotograma capturado en {capturedAt}. Marca dos puntos o ajusta sus coordenadas con el teclado.</p><button className="secondary-button" onClick={()=>setPoints([{x:.15,y:.5},{x:.85,y:.5}])}>Crear línea horizontal</button><div className="count-coordinate-fields">{points.map((p,i)=><fieldset key={i}><legend>Punto {i===0?"A":"B"}</legend>{(["x","y"] as const).map(axis=><label key={axis}>{axis==="x"?"Horizontal":"Vertical"}<input type="range" min="0" max="1" step="0.01" aria-label={"Punto "+(i===0?"A":"B")+" "+(axis==="x"?"horizontal":"vertical")} value={p[axis]} onChange={e=>{const n=Number(e.target.value);setPoints(old=>old.map((v,j)=>j===i?{...v,[axis]:n}:v))}}/></label>)}</fieldset>)}</div><button disabled={busy||points.length!==2||(points[0].x===points[1].x&&points[0].y===points[1].y)} onClick={()=>void apply()}>{busy?"Activando conteo…":enabled?"Aplicar nueva línea":"Activar conteo"}</button></>}
- {message&&<p role="status">{message}</p>}
- </section>;
+ const valid=points.length===2&&(points[0].x!==points[1].x||points[0].y!==points[1].y);
+ return <section className="progressive-count-tools" aria-label="Conteo por línea">
+ <div className="count-tools-heading"><div><span className="eyebrow">CONTEO OPCIONAL</span><h3>Línea de conteo</h3><p className="muted">En el primer fotograma, pulsa y arrastra para dibujar. Arrastra los extremos amarillos o el centro de la línea para ajustarla.</p></div>{enabled&&<button className="secondary-button" onClick={()=>void onDisable()} disabled={busy}>Desactivar conteo</button>}</div>
+ {!prepared&&<p role="status">Preparando el primer fotograma analizado…</p>}
+ <div ref={area} className={"count-frame-editor"+(prepared?" is-prepared":"")} hidden={!prepared} onPointerDown={down} onPointerMove={move} onPointerUp={end} onPointerCancel={end} onLostPointerCapture={()=>{drag.current=undefined}}>
+ <canvas ref={editor} aria-label="Primer fotograma para configurar la línea de conteo"/>
+ <svg viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true">{valid&&<line x1={points[0].x} y1={points[0].y} x2={points[1].x} y2={points[1].y}/>}</svg>
+ {points.map((p,i)=><button key={i} type="button" data-endpoint={i} className="line-handle count-line-handle" aria-label={"Extremo "+(i+1)} style={{left:p.x*100+"%",top:p.y*100+"%"}} onKeyDown={e=>{const delta:Record<string,Point>={ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0},ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1}};const v=delta[e.key];if(!v)return;e.preventDefault();e.stopPropagation();const step=e.shiftKey?.05:.01;setPoints(old=>old.map((n,j)=>i===j?{x:clamp(n.x+v.x*step),y:clamp(n.y+v.y*step)}:n))}}/>)}</div>
+ {prepared&&<><p className="muted">Fotograma de {capturedAt}. El contador del video principal sigue el instante que reproduces.</p><div className="count-editor-actions"><button disabled={busy||!valid} onClick={()=>void apply()}>{busy?"Activando conteo…":enabled?"Aplicar nueva línea":"Activar conteo"}</button><button className="secondary-button" disabled={busy||!points.length} onClick={()=>{setPoints([]);drag.current=undefined;if(enabled)void onDisable()}}>Borrar línea</button></div>
+ <details className="count-advanced"><summary>Opciones de ajuste</summary><button className="secondary-button" onClick={()=>{if(firstFrame){copy(firstFrame);setCapturedAt("0:00")}}}>Volver al primer fotograma</button><button className="secondary-button" onClick={capture} disabled={busy}>Usar fotograma actual para la línea</button><button className="secondary-button" onClick={()=>setPoints([{x:.15,y:.5},{x:.85,y:.5}])}>Crear línea horizontal</button><div className="count-coordinate-fields">{points.map((p,i)=><fieldset key={i}><legend>Punto {i===0?"A":"B"}</legend>{(["x","y"] as const).map(axis=><label key={axis}>{axis==="x"?"Horizontal":"Vertical"}<input type="range" min="0" max="1" step="0.01" aria-label={"Punto "+(i===0?"A":"B")+" "+(axis==="x"?"horizontal":"vertical")} value={p[axis]} onChange={e=>{const n=Number(e.target.value);setPoints(old=>old.map((v,j)=>j===i?{...v,[axis]:n}:v))}}/></label>)}</fieldset>)}</div></details></>}
+ {message&&<p role="status">{message}</p>}</section>;
 }

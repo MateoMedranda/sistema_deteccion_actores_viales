@@ -183,3 +183,12 @@ POST playback/tracks/{track_id}/enrich solicita consulta idempotente. PUT/GET/DE
 Frontend: la ficha lateral comparte estilos de Imagen; una lista compacta del fotograma queda plegada debajo de controles. ProgressiveCountTools captura un canvas confirmado y admite dos puntos por toque/puntero o rangos de teclado. useProgressiveCount consulta acumulados y descarta respuestas fuera de contexto; el canvas principal dibuja la línea y su esquina superior derecha muestra el contador. No se monta el editor legacy duplicado para clientes managed. Imágenes y conteo final legacy permanecen.
 
 Esta modificación reduce trabajo automático, no constituye una medición de nuevos FPS. Los gates reales previos siguen abiertos y requieren distinguir políticas al comparar; no se presenta una corrida con enriquecimiento deshabilitado como equivalencia del protocolo automático original.
+
+
+### Corrección del seguimiento y restauración de edición
+
+El adaptador registraba model.track con persist=False en el primer cuadro. La versión instalada captura ese valor en callbacks; on_predict_start vuelve a crear el tracker en cada predicción. Se sustituye esa integración por predicción raw con los mismos pesos/umbral/dispositivo y BYTETracker independiente por trabajo usando bytetrack.yaml existente. No se añaden callbacks de seguimiento al modelo compartido, por lo que imágenes intercaladas no avanzan su tracker. Reset inicia una nueva sesión sin recargar el detector.
+
+La primera muestra confirmada se copia desde VideoFrame a un canvas de preview acotado a1280px de ancho, con la misma orientación. No hay otro decode. El editor lo muestra automáticamente, con captura de puntero y arrastre de extremos o segmento completo, traslación acotada, teclado y ajustes secundarios plegados. Se mantiene el conteo progresivo previamente implementado.
+
+La corrección modifica identidades previamente incorrectas; no se fuerza equivalencia con las asociaciones defectuosas de la referencia. El ensayo corto de40cuadros y las regresiones de orden/imagen intercalada son evidencia de esta corrección, no aceptación de toda la precisión ni del benchmark pendiente.

@@ -316,3 +316,13 @@ La instrucción del usuario sustituye el enriquecimiento automático del nuevo f
 ### Cierre del cambio aprobado: detección primero — 2026-11-22
 
 T093–T099 entregan la política selectiva, ficha y conteo. Se cierran además T081–T084/T089/T092 con sus regresiones relacionadas; T085–T088/T090–T091 y los gates originales aún abiertos no se declaran completados. La comparación larga y la prueba humana no se ejecutan. La disponibilidad de los cambios exige reiniciar API y gateway; el frontend de desarrollo recarga sus recursos. Véase validation.md para resultados y límites.
+
+
+## Phase 10: Corrección de identidad y restauración del editor
+
+Corrección solicitada por el usuario: seleccionar un camión mostraba evidencia de otro vehículo; restaurar fondo automático del primer fotograma y arrastre suave.
+
+- [X] T100 Aislar BYTETracker por trabajo sin callbacks persist=False del modelo compartido; mantener detector/pesos/umbrales y probar identidades ante cambio de orden, reset de trabajo e inferencia de imágenes intercalada.
+- [X] T101 Restaurar primer fotograma confirmado automático del editor y arrastre con puntero/toque de extremos y línea completa, con captura de puntero, límites y alternativa de teclado; conservar contador en el video principal.
+- [X] T102 Añadir regresiones de identidad y edición, ejecutar pruebas pertinentes y validación breve real sin comparación larga ni OCR masivo.
+- [X] T103 Documentar la causa y corrección, advertir que trabajos ya analizados necesitan nuevo análisis, y confirmar la entrega conservando la rama y los cambios.

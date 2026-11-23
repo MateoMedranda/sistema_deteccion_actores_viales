@@ -85,6 +85,9 @@ Dentro de frontend, usar `npm run dev` (sin otro --prefix). `backend/start.ps1 -
 
 Procesar un video mantiene solo detección/seguimiento automáticos. Pausar y pulsar una caja solicita ese Track ID; la ficha lateral muestra crop original, atributos, placa y su recorte autorizado cuando existe. Volver a seleccionarlo reutiliza la consulta. «Vehículos de este fotograma» despliega la alternativa accesible debajo de los controles, sin lista sobre la ficha.
 
-En «Conteo opcional», usar el fotograma actual, marcar dos puntos o crear una línea horizontal y ajustar coordenadas con teclado. Activar conteo dibuja la línea en el video principal y muestra cruces arriba a la derecha. Retroceder consulta acumulados históricos; no suma otra vez ni ejecuta detección. Una línea nueva recalcula trayectorias ya disponibles y Desactivar retira el contador. La regla de lado/dirección y un cruce por Track ID conservan el conteo anterior.
+En «Conteo opcional», el primer fotograma aparece automáticamente. Pulsa y arrastra para dibujar; arrastra los extremos amarillos o el centro para ajustar toda la línea. Las flechas ajustan un extremo enfocado; «Opciones de ajuste» conserva coordenadas precisas y otro fotograma. Activar conteo dibuja la línea en el video principal y muestra cruces arriba a la derecha. Retroceder consulta acumulados históricos; no suma otra vez ni ejecuta detección. Una línea nueva recalcula trayectorias ya disponibles y Desactivar retira el contador. La regla de lado/dirección y un cruce por Track ID conservan el conteo anterior.
 
 La solicitud selectiva fija hasta K recortes disponibles al pedirla; evidencia posterior no vuelve a ejecutar OCR automáticamente. La reducción del número de consultas no acredita por sí sola una tasa de FPS en videos reales. No se ejecuta la comparación larga diferida.
+
+
+Tras la corrección de identidad, reiniciar la API y crear un análisis nuevo del video. Un trabajo anterior ya contiene asociaciones y recortes por Track ID mezclados; recargar el navegador no repara esos datos históricos. No se borran ni se sobrescriben automáticamente.

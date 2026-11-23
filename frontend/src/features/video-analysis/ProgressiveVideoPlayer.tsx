@@ -41,6 +41,7 @@ export function ProgressiveVideoPlayer({
     [phase, setPhase] = useState("Preparando el primer tramo…"),
     [selected, setSelected] = useState<number>(),
     [boxes, setBoxes] = useState<Observation[]>([]);
+  const [firstFrame,setFirstFrame]=useState<HTMLCanvasElement>();
   const [fullscreen, setFullscreen] = useState(false);
   const [canPlay, setCanPlay] = useState(false);
   const tracks = useProgressiveTracks(client, state, active, playback.retire);
@@ -153,7 +154,7 @@ export function ProgressiveVideoPlayer({
     };
     void d
       .initialize()
-      .then(() => {
+      .then(async () => {
         if (closed) return;
         const t = d.timeline!,
           rotated = t.rotation === 90 || t.rotation === 270;
@@ -167,7 +168,20 @@ export function ProgressiveVideoPlayer({
         ready = true;
         setCanPlay(true);
         c.dataset.decoder = "webcodecs";
-        return d.fill(0);
+        await d.fill(0);
+        if(closed)return;
+        const first=d.frame(0);
+        if(first){
+          const poster=document.createElement("canvas");
+          poster.width=Math.min(1280,s.timeline.width);poster.height=Math.round(poster.width*s.timeline.height/s.timeline.width);
+          const px=poster.getContext("2d");
+          if(px){
+            px.scale(poster.width/s.timeline.width,poster.height/s.timeline.height);
+            const rw=t.config.codedWidth!,rh=t.config.codedHeight!;
+            if(t.rotation===90){px.translate(0,rw);px.rotate(-Math.PI/2)}else if(t.rotation===180){px.translate(rw,rh);px.rotate(Math.PI)}else if(t.rotation===270){px.translate(rh,0);px.rotate(Math.PI/2)}
+            px.drawImage(first,0,0,rw,rh);setFirstFrame(poster);
+          }
+        }
       })
       .catch(fail);
     const draw = (f: Frame) => {
@@ -496,7 +510,7 @@ export function ProgressiveVideoPlayer({
         onClose={()=>{selectedRef.current=undefined;setSelected(undefined);setRequestMessage("")}}
         requestMessage={requestMessage}
       />
-      {state?.media_available&&<ProgressiveCountTools source={canvas} pause={pause} enabled={!!count.result?.enabled} onApply={count.configure} onDisable={count.disable} message={count.message} position={clock(position)}/>}
+      {state?.media_available&&<ProgressiveCountTools firstFrame={firstFrame} source={canvas} pause={pause} enabled={!!count.result?.enabled} onApply={count.configure} onDisable={count.disable} message={count.message} position={clock(position)}/>}
     </section>
   );
 }
