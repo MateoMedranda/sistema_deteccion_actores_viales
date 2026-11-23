@@ -99,6 +99,7 @@ test("plays the confirmed prefix, blocks future seeks and inspects ten stable tr
   await expect(
     page.getByRole("heading", { name: "Vehículo #3", exact: true }),
   ).toBeVisible();
+  await page.locator(".progressive-vehicles summary").click();
   for (let i = 0; i < 10; i++) {
     await page.locator(".progressive-track-list button").nth(i).click();
     await expect(

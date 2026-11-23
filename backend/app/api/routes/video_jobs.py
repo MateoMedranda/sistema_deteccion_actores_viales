@@ -33,10 +33,11 @@ def public_job(job: VideoJob) -> VideoJobResponse:
 
 
 @router.post("", status_code=202, response_model=VideoJobAccepted)
-async def create_video_job(request: Request, video: UploadFile = File(...), principal: Principal = Depends(require_api_key), idempotency_key: str | None = Header(default=None), presentation: Literal["progressive"] | None = Query(default=None)) -> VideoJobAccepted:
+async def create_video_job(request: Request, video: UploadFile = File(...), principal: Principal = Depends(require_api_key), idempotency_key: str | None = Header(default=None), presentation: Literal["progressive"] | None = Query(default=None), enrichment: Literal["on-demand"] | None = Query(default=None)) -> VideoJobAccepted:
     keys=[k for k,v in request.query_params.multi_items()]
-    if len(keys)!=len(set(keys)) or set(keys)-{"presentation"}:raise ApiError(422,"query_invalid","Invalid query.")
-    job = await request.app.state.video_job_service.create(principal, video, idempotency_key, progressive=presentation=="progressive")
+    if len(keys)!=len(set(keys)) or set(keys)-{"presentation","enrichment"}:raise ApiError(422,"query_invalid","Invalid query.")
+    if enrichment and presentation != "progressive":raise ApiError(422,"query_invalid","Invalid query.")
+    job = await request.app.state.video_job_service.create(principal, video, idempotency_key, progressive=presentation=="progressive", on_demand=enrichment=="on-demand")
     return VideoJobAccepted(job_id=job.job_id, status="queued", created_at=job.created_at)
 
 

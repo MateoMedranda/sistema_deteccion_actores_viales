@@ -49,12 +49,17 @@ class ProgressiveStore:
             CREATE INDEX IF NOT EXISTS p_evidence_track ON p_evidence(job,track,confidence DESC,idx);
             CREATE INDEX IF NOT EXISTS p_evidence_queue ON p_evidence(claimed,job,idx);
             """)
+            if "on_demand" not in {r[1] for r in self.db.execute("PRAGMA table_info(p_video)")}:
+                self.db.execute("ALTER TABLE p_video ADD COLUMN on_demand INTEGER NOT NULL DEFAULT 0")
+            if "requested" not in {r[1] for r in self.db.execute("PRAGMA table_info(p_evidence)")}:
+                self.db.execute("ALTER TABLE p_evidence ADD COLUMN requested INTEGER NOT NULL DEFAULT 0")
+            self.db.execute("CREATE TABLE IF NOT EXISTS p_enrichment_requests(job TEXT,track INTEGER,PRIMARY KEY(job,track))")
             self.db.execute(
                 "UPDATE p_video SET analysis='partial_failed',closed=1,error='processing_interrupted' WHERE analysis='analyzing'"
             )
             self.db.execute("UPDATE p_evidence SET claimed=0 WHERE claimed=1 AND result IS NULL")
 
-    def create(self, job, owner, source, metadata, expires):
+    def create(self, job, owner, source, metadata, expires, on_demand=False):
         timeline = dict(
             timebase="source-pts",
             width=metadata["width"],
@@ -71,8 +76,8 @@ class ProgressiveStore:
         )
         with self.lock, self.db:
             self.db.execute(
-                "INSERT OR IGNORE INTO p_video(job,owner,generation,timeline,source,expires) VALUES(?,?,?,?,?,?)",
-                (job, owner, str(uuid4()), dump(timeline), str(source), expires.isoformat()),
+                "INSERT OR IGNORE INTO p_video(job,owner,generation,timeline,source,expires,on_demand) VALUES(?,?,?,?,?,?,?)",
+                (job, owner, str(uuid4()), dump(timeline), str(source), expires.isoformat(), int(on_demand)),
             )
         return self.snapshot(job, owner)
 
@@ -202,9 +207,12 @@ class ProgressiveStore:
             json.loads(x[0])
             for x in self.db.execute("SELECT payload FROM p_tracks WHERE job=?", (row["job"],))
         ]
+        discovered = len(units)
+        if row["on_demand"]:
+            units = [u for u in units if u["state"] != "not_requested"]
         terminal = sum(u["final"] for u in units)
         ready = sum(u["state"] in ("ready", "partial") for u in units)
-        closed = bool(row["closed"])
+        closed = bool(row["closed"]) or bool(row["on_demand"])
         status = (
             "discovering"
             if not closed
@@ -219,8 +227,8 @@ class ProgressiveStore:
         return dict(
             revision=row["enrichment_revision"],
             status=status,
-            source_closed=closed,
-            discovered_units=len(units),
+            source_closed=bool(row["closed"]),
+            discovered_units=discovered,
             provisional_ready_units=ready,
             terminal_units=terminal,
             total_units=len(units) if closed else None,
@@ -417,6 +425,10 @@ class ProgressiveStore:
                 self.db.execute("DELETE FROM p_frames WHERE job=?", (row["job"],))
                 self.db.execute("DELETE FROM p_tracks WHERE job=?", (row["job"],))
                 self.db.execute("DELETE FROM p_evidence WHERE job=?", (row["job"],))
+                self.db.execute("DELETE FROM p_enrichment_requests WHERE job=?", (row["job"],))
+                for table in ("p_count_state", "p_count_events"):
+                    if self.db.execute("SELECT 1 FROM sqlite_master WHERE name=?", (table,)).fetchone():
+                        self.db.execute("DELETE FROM " + table + " WHERE job=?", (row["job"],))
                 if self.db.execute(
                     "SELECT 1 FROM sqlite_master WHERE name='p_track_versions'"
                 ).fetchone():

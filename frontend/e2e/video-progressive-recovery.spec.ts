@@ -115,3 +115,20 @@ test("unsupported frame callbacks never expose native playback", async ({
 test.afterEach(async ({ request }) => {
   await request.post("http://127.0.0.1:9415/test-only/release");
 });
+
+
+test("natural completion stays ended and explicit replay starts at the beginning",async({page,request})=>{
+ await start(page,request,"empty","short");
+ if(!(await page.evaluate(()=>typeof VideoDecoder==="function"))){await expect(page.getByText(/La reproducción progresiva no es compatible/)).toBeVisible();return}
+ const canvas=page.locator(".progressive-surface canvas"),status=page.locator(".progressive-viewer [role=status]");
+ await expect(status).toContainText("Fin del tramo disponible",{timeout:10000});const last=await canvas.getAttribute("data-frame-index");await page.waitForTimeout(700);await expect(status).toContainText("Fin del tramo disponible");await expect(canvas).toHaveAttribute("data-frame-index",last!);
+ await page.getByRole("button",{name:"Reproducir",exact:true}).click();await expect.poll(async()=>Number(await canvas.getAttribute("data-frame-index"))).toBeLessThan(Number(last));
+ await page.getByRole("button",{name:"Limpiar video",exact:true}).click();
+});
+
+test("a transient source read retries instead of reporting codec incompatibility",async({page,request})=>{
+ let failed=false;await page.route("**/playback/source",route=>{if(!failed){failed=true;return route.abort("failed")}return route.continue()});
+ await start(page,request,"empty","short");
+ if(!(await page.evaluate(()=>typeof VideoDecoder==="function"))){await expect(page.getByText(/La reproducción progresiva no es compatible/)).toBeVisible();return}
+ const canvas=page.locator(".progressive-surface canvas");await expect.poll(()=>canvas.getAttribute("data-frame-index"),{timeout:10000}).not.toBeNull();expect(failed).toBe(true);await expect(page.getByText(/La reproducción progresiva no es compatible/)).toHaveCount(0);await page.getByRole("button",{name:"Limpiar video",exact:true}).click();
+});

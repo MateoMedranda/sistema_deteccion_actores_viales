@@ -80,7 +80,7 @@ class ProgressiveEvidence:
             class_name=ob["class_name"],
             first_seen_us=time,
             last_seen_us=time,
-            state="waiting_evidence"
+            state=("not_requested" if row["on_demand"] else "waiting_evidence")
             if ob["class_name"].lower() in self.classes
             else "not_applicable",
             final=False,
@@ -183,7 +183,7 @@ class ProgressiveEvidence:
                     ids,
                 )
             for loser in self.store.db.execute(
-                "SELECT id,path FROM p_evidence WHERE job=? AND track=? AND candidate=0 AND provisional=0 AND result IS NULL AND claimed=0",
+                "SELECT id,path FROM p_evidence WHERE job=? AND track=? AND candidate=0 AND provisional=0 AND requested=0 AND result IS NULL AND claimed=0",
                 (job.job_id, tid),
             ).fetchall():
                 Path(loser["path"]).unlink(missing_ok=True)
@@ -195,6 +195,37 @@ class ProgressiveEvidence:
             self.store.db.execute(
                 "CREATE TABLE IF NOT EXISTS p_track_versions(job TEXT,track INTEGER,revision INTEGER,payload TEXT,PRIMARY KEY(job,track,revision))"
             )
+
+    def request(self, job, owner, tid):
+        """An explicit request freezes current top-K; repeat selection is idempotent."""
+        with self.store.lock, self.store.db:
+            row = self.store.row(job, owner)
+            unit = self.track(job, owner, tid)
+            if not row["on_demand"]:
+                return unit
+            if self.store.db.execute("SELECT 1 FROM p_enrichment_requests WHERE job=? AND track=?", (job, tid)).fetchone():
+                return unit
+            unit = self.track(job,owner,tid)
+            if unit["state"] == "not_applicable":
+                unit.update(final=True)
+                unit["attributes"]["status"] = unit["plate"]["status"] = "not_applicable"
+                self._version(job,tid,unit)
+                return unit
+            records = self.store.db.execute("SELECT * FROM p_evidence WHERE job=? AND track=? AND candidate=1 ORDER BY confidence DESC,idx LIMIT ?", (job, tid, self.maximum)).fetchall()
+            if not records:
+                raise ApiError(409, "evidence_not_ready", "The evidence is not ready.")
+            self.store.db.execute("INSERT INTO p_enrichment_requests VALUES(?,?)", (job,tid))
+            self.store.db.executemany("UPDATE p_evidence SET requested=1 WHERE id=?", [(r["id"],) for r in records])
+            unit.update(state="queued", final=False)
+            unit["evidence"] = []
+            for rec in records:
+                meta=json.loads(rec["payload"])
+                base=f"/api/v1/video-jobs/{job}/playback/tracks/{tid}/evidence/{rec['id']}"
+                unit["evidence"].append(dict(evidence_id=rec["id"],frame_index=rec["idx"],time_us=meta["time_us"],vehicle_bbox=meta["vehicle_bbox"],provisional=True,vehicle_url=base+"/vehicle",plate_url=None,expires_at=row["expires"]))
+            unit["evidence_revision"] += 1
+            unit["result_revision"] += 1
+            self._version(job, tid, unit)
+            return unit
 
     def track(self, job, owner, tid):
         with self.store.lock:

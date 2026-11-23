@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-22",
+  "policy": "on-demand-frozen-top-k",
+  "backend_tests_passed": 331,
+  "frontend_tests_passed": 124,
+  "browser_matrix_passed": 25,
+  "additional_browser_regressions_passed": 4,
+  "fixture_only": true,
+  "real_performance_comparison": "deferred_by_user",
+  "human_usability": "pending",
+  "before_selection_enrichment_calls": 0,
+  "count_history": [
+    0,
+    5,
+    0,
+    5
+  ],
+  "video_uploads_in_scenario": 1,
+  "webkit_windows": "safe_incompatibility_only"
+}

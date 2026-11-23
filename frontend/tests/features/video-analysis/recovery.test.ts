@@ -1,3 +1,4 @@
+import {useProgressiveTracks} from "../../../src/features/video-analysis/useProgressiveTracks";
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, it, expect, vi } from "vitest";
 import { useProgressivePlayback } from "../../../src/features/video-analysis/useProgressivePlayback";
@@ -99,4 +100,15 @@ describe("progressive recovery", () => {
     });
     expect(retire).not.toHaveBeenCalled();
   });
+});
+
+it("retries a failed track snapshot even when the enrichment revision is unchanged",async()=>{
+ vi.useFakeTimers();
+ const s={...state(),enrichment:{revision:7}} as any;
+ const item={job_id:"a",generation:"g",track_id:1,evidence:[]};
+ const json=vi.fn().mockRejectedValueOnce(new ClientError(0,{code:"network_unavailable",message:"network"})).mockResolvedValue({job_id:"a",generation:"g",snapshot:7,items:[item],next_cursor:null});
+ const client={json} as unknown as ApiClient;const unavailable=vi.fn();
+ const hook=renderHook(()=>useProgressiveTracks(client,s,true,unavailable));
+ await act(async()=>{await Promise.resolve()});expect(json).toHaveBeenCalledTimes(1);
+ await act(async()=>{await vi.advanceTimersByTimeAsync(1000)});expect(hook.result.current).toHaveLength(1);expect(json).toHaveBeenCalledTimes(2);hook.unmount();
 });

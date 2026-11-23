@@ -63,7 +63,7 @@ Como usuario, quiero pausar, seleccionar un vehículo y consultar datos y eviden
 
 **Acceptance Scenarios**:
 
-1. **Given** un vehículo elegible con evidencia confirmada, **When** el video todavía se está analizando, **Then** su enriquecimiento comienza automáticamente y su ficha indica el estado real.
+1. **Given** un vehículo elegible con evidencia confirmada, **When** el video todavía se está analizando, **Then** se permite solicitar su enriquecimiento al seleccionarlo, y la ficha indica el estado real sin consultar los otros vehículos.
 2. **Given** un video pausado, **When** se selecciona una caja o su alternativa en la lista, **Then** se identifica el mismo Track ID real y se muestran clase, atributos, estado de placa y evidencia autorizada disponible.
 3. **Given** una ficha pendiente, **When** llega un resultado de ese vehículo, **Then** se actualiza sin mover el video, cambiar la selección o asociarlo a otra identidad.
 4. **Given** atributos parciales, ausencia de placa o lectura fallida, **When** se consulta la ficha, **Then** se distinguen de una espera activa y se conservan los datos válidos y la reproducción.
@@ -116,11 +116,11 @@ Como usuario, quiero aprovechar los tramos confirmados ante un fallo posterior y
 - **FR-009**: La reproducción MUST conservar velocidad normal de 1x, orden, proporciones, duración y correspondencia temporal de la fuente. No debe saltar cuadros ni variar la velocidad para ocultar retrasos.
 - **FR-010**: Las cajas MUST corresponder al instante y Track ID reproducidos, conservar colores sólidos por clase y legibilidad, sin numeraciones que tapen vehículos. Un salto temporal debe retirar las cajas anteriores hasta disponer de las correctas.
 - **FR-011**: Reproducción y navegación MUST funcionar durante el enriquecimiento y sin esperar una exportación completa del video anotado. El resultado final y el conteo existentes deben conservar su disponibilidad y significado.
-- **FR-012**: El sistema MUST iniciar automáticamente enriquecimiento de vehículos elegibles con evidencia confirmada durante el análisis, identificando trabajo, Track ID, instante de evidencia y estado independiente.
-- **FR-013**: El enriquecimiento MUST reutilizar evidencia y resultados vigentes del mismo vehículo. Selección, pausa y navegación no deben generar análisis duplicados; cualquier refinamiento por nueva evidencia debe respetar un límite operativo documentado de evidencias por vehículo y justificar su coste y utilidad.
+- **FR-012**: El nuevo frontend MUST iniciar enriquecimiento únicamente al seleccionar explícitamente un vehículo elegible, durante una pausa o pausando la reproducción al seleccionarlo. No se consultan automáticamente los demás vehículos. La solicitud identifica trabajo/Track ID/evidencia y mantiene su estado independiente.
+- **FR-013**: El enriquecimiento solicitado MUST reutilizar resultados vigentes del vehículo. La primera solicitud congela hasta K evidencias confirmadas disponibles; repetir selección no vuelve a evaluar ni refina automáticamente con evidencias futuras. Se conserva el modo automático de los clientes previos que no opten por la política bajo demanda.
 - **FR-014**: El usuario MUST poder pausar y seleccionar un vehículo mediante su caja o alternativa accesible para consultar clase, Track ID, atributos, placa y evidencia disponible. Seleccionar durante la reproducción debe pausarla para inspección.
 - **FR-015**: Las fichas MUST distinguir pendiente, disponible, parcial, no aplicable, fallido y vencido. Actualizarlas no debe mover el video, cambiar la selección, inventar datos o presentar evidencia representativa como si perteneciera al cuadro actual.
-- **FR-016**: El progreso MUST separar análisis y enriquecimiento, expresar unidades reales y distinguir duración máxima del archivo, tiempo permitido para procesarlo y tramo reproducible.
+- **FR-016**: La interfaz MUST separar avance del análisis, disponibilidad reproducible y estado de consulta del vehículo seleccionado. No muestra barra global de enriquecimiento en el modo bajo demanda. Duración máxima del archivo, tiempo permitido de procesamiento y tramo reproducible son conceptos distintos; el conteo opcional ocupa la sección inferior.
 - **FR-017**: Tras una desconexión recuperable, el usuario MUST poder consultar el mismo trabajo vigente y sus resultados confirmados sin crear un nuevo análisis. No se debe prometer reanudación de inferencia cuando solo se recupera una consulta.
 - **FR-018**: Fallo técnico o agotamiento del tiempo MUST detener el avance y conservar los tramos publicados todavía autorizados y vigentes como resultado parcial. Las lecturas restantes deben terminar o alcanzar un estado terminal explícito; no deben quedar pendientes indefinidamente. Un fallo de exportación final no retira por sí solo esos tramos.
 - **FR-019**: Cancelación explícita, limpieza, cambio de archivo, rechazo de acceso y vencimiento MUST retirar la evidencia afectada y bloquear su restauración por respuestas tardías. Conservar un resultado parcial no amplía su retención ni concede acceso a otro propietario.
@@ -167,3 +167,13 @@ Como usuario, quiero aprovechar los tramos confirmados ante un fallo posterior y
 - Ante un fallo se recupera lo confirmado, sin prometer reanudar automáticamente inferencia desde el cuadro interrumpido tras reiniciar el servicio. Recuperar una consulta vigente no equivale a reiniciar procesamiento.
 - La selección de vehículos pausados en video incorpora ahora la interacción propuesta en 008. No se incluyen búsqueda por placa, exportación de informes, análisis de audio ni nuevas políticas de reconocimiento.
 - Se conserva backend/ y frontend/, con .specify/, .agents/, specs/ y metricas/ en la raíz. La iteración no cambia el estado de aceptación ni cierra pendientes de 006, 007 u 008.
+
+
+## Cambio de alcance aprobado — 2026-11-22
+
+El usuario aprobó implementar detección/seguimiento primero, enriquecimiento solo al seleccionar y conteo opcional. Esta decisión sustituye el automatismo de la historia3 para el nuevo frontend, conservando clientes anteriores. No se altera modelo, muestreo ni calidad de detección; la prueba larga sigue diferida.
+
+- **FR-024**: El panel lateral de Video MUST conservar la jerarquía visual de Imagen: ficha, clase/Track ID, recorte de vehículo, atributos, placa y recorte de placa. La lista no precede a la ficha: existe una alternativa compacta para vehículos del fotograma actual debajo del reproductor.
+- **FR-025**: El usuario MUST poder activar/desactivar conteo por línea en una sección inferior, eligiendo dos puntos en un fotograma confirmado mediante toque/puntero o controles de teclado, sin iniciar otra detección.
+- **FR-026**: La línea configurada MUST aparecer sobre el video principal y el contador en su esquina superior derecha. El acumulado corresponde al instante reproducido, no al prefijo futuro ya analizado. Retroceder/repetir un tramo no duplica eventos. La dirección y regla de un cruce por Track ID conservan el conteo existente; cambios de línea recalculan a partir de trayectorias persistidas.
+- **AC adicional**: Antes de seleccionar, un clip con vehículos no ejecuta atributos/localización/OCR. Seleccionar uno habilita sus recortes y datos; repetir selección utiliza caché. Dibujar una línea, ir antes/después de un cruce y retroceder muestra0/1/0 sin otra subida ni inferencia.

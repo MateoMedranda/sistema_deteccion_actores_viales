@@ -15,6 +15,8 @@ ROUTES=[
  ("GET",rf"/api/v1/detections/{ID}/(?:original-image|annotated-image)","image"),
  ("POST",r"/api/v1/video-jobs","video-upload"),
  ("GET|DELETE",rf"/api/v1/video-jobs/{ID}/playback","json"),
+ ("POST",rf"/api/v1/video-jobs/{ID}/playback/tracks/[1-9][0-9]{{0,15}}/enrich","json"),
+ ("GET|PUT|DELETE",rf"/api/v1/video-jobs/{ID}/playback/count","json"),
  ("GET|HEAD",rf"/api/v1/video-jobs/{ID}/playback/source","progressive-source"),
  ("GET",rf"/api/v1/video-jobs/{ID}/playback/(?:frames|tracks)","json"),
  ("GET",rf"/api/v1/video-jobs/{ID}/playback/tracks/[1-9][0-9]{{0,15}}","json"),
@@ -43,16 +45,19 @@ def classify(method,path,raw_path,query):
     pairs=list(query.multi_items());keys=[key for key,_ in pairs]
     if len(keys)!=len(set(keys)):raise RelayError(422,"web_query_invalid")
     allowed={"page","page_size"} if path.endswith(("/detections","/results","/events")) else {"profile"} if kind=="plate" else set()
-    if kind=="video-upload":allowed={"presentation"}
+    if kind=="video-upload":allowed={"presentation","enrichment"}
+    elif path.endswith("/playback/count"):allowed={"at_us"} if method=="GET" else set()
     elif path.endswith("/playback/frames"):allowed={"from_us","to_us","snapshot","cursor"}
     elif path.endswith("/playback/tracks"):allowed={"snapshot","cursor"}
     if not set(keys)<=allowed:raise RelayError(422,"web_query_invalid")
     for key,value in pairs:
-        if key=="presentation":
+        if key=="enrichment":
+            if value!="on-demand" or query.get("presentation")!="progressive":raise RelayError(422,"web_query_invalid")
+        elif key=="presentation":
             if value!="progressive":raise RelayError(422,"web_query_invalid")
         elif key=="cursor":
             if not re.fullmatch(r"[A-Za-z0-9_-]{1,512}",value):raise RelayError(422,"web_query_invalid")
-        elif key in ("from_us","to_us","snapshot"):
+        elif key in ("from_us","to_us","snapshot","at_us"):
             if not re.fullmatch(r"(?:0|[1-9][0-9]{0,15})",value) or int(value)>2**53-1:raise RelayError(422,"web_query_invalid")
         elif key=="profile":
             if value!="display-contrast-v1":raise RelayError(422,"web_query_invalid")

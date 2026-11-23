@@ -19,17 +19,18 @@ class VideoJobService:
     def __init__(self, settings: Settings, probe: VideoProbe, store: VideoJobStore, artifacts: VideoArtifactStore) -> None:
         self.settings, self.probe, self.store, self.artifacts = settings, probe, store, artifacts
 
-    async def create(self, principal: Principal, upload: UploadFile, idempotency_key: str | None = None, progressive: bool = False) -> VideoJob:
+    async def create(self, principal: Principal, upload: UploadFile, idempotency_key: str | None = None, progressive: bool = False, on_demand: bool = False) -> VideoJob:
         staged = self.artifacts.staged_input_path()
         try:
             hasher=hashlib.sha256(((upload.content_type or "").strip().lower()+"\0").encode()) if idempotency_key is not None else None
             if hasher is not None and progressive:hasher.update(b"progressive\0")
+            if hasher is not None and on_demand:hasher.update(b"on-demand\0")
             metadata=await VideoValidator(self.settings,self.probe).stage_and_validate(upload,staged,hasher)
             with self.store._lock:
                 job=self.store.create(principal.key_id,metadata,staged,idempotency_key_hash=key_hash(idempotency_key),request_fingerprint=hasher.hexdigest() if hasher else None)
                 if progressive:
                     self.progressive.create(job.job_id,principal.key_id,job.staged_path,
-                        dict(width=metadata.width,height=metadata.height,fps=metadata.fps,duration=metadata.duration_seconds),job.expires_at)
+                        dict(width=metadata.width,height=metadata.height,fps=metadata.fps,duration=metadata.duration_seconds),job.expires_at,on_demand=on_demand)
             if job.staged_path!=staged:self.artifacts.remove(staged)
             return job
         except Exception:

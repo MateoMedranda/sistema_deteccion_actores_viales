@@ -33,7 +33,7 @@ class ProgressiveEnrichment:
             rec = self.store.db.execute(
                 """SELECT e.* FROM p_evidence e JOIN p_video v ON e.job=v.job
               WHERE v.retired=0 AND v.expires>? AND e.result IS NULL AND e.claimed=0
-              AND ((v.closed=0 AND e.provisional=1) OR (v.closed=1 AND e.candidate=1))
+              AND ((v.on_demand=1 AND e.requested=1) OR (v.on_demand=0 AND ((v.closed=0 AND e.provisional=1) OR (v.closed=1 AND e.candidate=1))))
               ORDER BY e.provisional DESC,e.idx LIMIT 1""",
                 (now().isoformat(),),
             ).fetchone()
@@ -46,6 +46,11 @@ class ProgressiveEnrichment:
             rec = self.claim()
             if rec:
                 try:
+                    with self.store.lock, self.store.db:
+                        unit = self.evidence.track(rec["job"], self.store.row(rec["job"])["owner"], rec["track"])
+                        if unit["state"] == "queued":
+                            unit["state"] = "processing"
+                            self.evidence._version(rec["job"], rec["track"], unit)
                     self.evaluate(rec)
                 except ApiError:
                     pass  # Withdrawal/expiry won the race; no result may be revived.
@@ -132,16 +137,18 @@ class ProgressiveEnrichment:
                     "SELECT * FROM p_tracks WHERE job=?", (row["job"],)
                 ).fetchall():
                     unit = json.loads(unitrow["payload"])
+                    if row["on_demand"] and not self.store.db.execute("SELECT 1 FROM p_enrichment_requests WHERE job=? AND track=?", (row["job"], unitrow["track"])).fetchone():
+                        continue
                     records = [
                         dict(x)
                         for x in self.store.db.execute(
                             "SELECT * FROM p_evidence WHERE job=? AND track=? AND "
-                            + ("candidate=1" if row["closed"] else "provisional=1")
+                            + ("requested=1" if row["on_demand"] else "candidate=1" if row["closed"] else "provisional=1")
                             + " ORDER BY confidence DESC,idx",
                             (row["job"], unitrow["track"]),
                         )
                     ]
-                    complete = bool(row["closed"]) and all(x["result"] is not None for x in records)
+                    complete = (bool(row["closed"]) or bool(row["on_demand"])) and all(x["result"] is not None for x in records)
                     ready = [x for x in records if x["result"]]
                     if not ready and not complete:
                         continue

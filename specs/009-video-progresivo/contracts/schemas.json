@@ -770,6 +770,7 @@
         },
         "state": {
           "enum": [
+            "not_requested",
             "waiting_evidence",
             "queued",
             "processing",

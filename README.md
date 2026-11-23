@@ -161,8 +161,11 @@ La selección directa en un contorno pausado queda para la [propuesta siguiente]
 
 ## Video progresivo — iteración009
 
-La interfaz permite explorar el video mientras se analiza: inicia con un prefijo confirmado de5s, bloquea avance pendiente y permite retroceder sin repetir modelos. Pausa y selecciona una caja/lista para consultar atributos, placa y recortes representativos que se enriquecen progresivamente. Análisis, enriquecimiento y exportación tienen estados independientes.
+La interfaz permite explorar el video mientras se analiza: inicia con un prefijo confirmado de5s, bloquea avance pendiente y permite retroceder sin repetir modelos. Pausa y selecciona una caja para solicitar atributos, placa y recortes solo de ese Track ID. La ficha lateral comparte el diseño de Imagen; la alternativa compacta de vehículos queda debajo del reproductor. Repetir selección reutiliza la consulta, sin enriquecimiento automático de los demás vehículos. Análisis, enriquecimiento y exportación tienen estados independientes.
 
 El frontend requiere WebCodecs/AVC compatible; si falta, informa incompatibilidad y conserva la consulta de datos. No muestra el video crudo como alternativa. Imágenes, exportación final y conteo conservan sus contratos. Node>=20.8.1; nuevas dependencias fijadas: av19.0.2 y mp4box2.6.0.
 
 Ver [quickstart009](specs/009-video-progresivo/quickstart.md) y [validación efectiva](specs/009-video-progresivo/validation.md). La entrega funcional tiene pruebas automáticas; la comparación real larga fue diferida por el usuario y la prueba de cinco participantes sigue pendiente. Esto no acredita todavía todos los gates de rendimiento/usabilidad.
+
+
+En el flujo progresivo actual, **Conteo opcional** permite capturar un fotograma, dibujar una línea por toque/puntero o teclado y activar un contador sobre la esquina superior derecha del video principal. El acumulado sigue el instante reproducido; retroceder no duplica cruces y no hace otra inferencia. Cambiar la línea recalcula trayectorias existentes. Los clientes anteriores sin la opción `enrichment=on-demand` conservan su política automática y conteo final. Reiniciar API y gateway tras actualizar código; el selector de `backend/start.ps1` admite entornos inválidos y puede comprobarse con `-CheckEnvironment`.

@@ -65,3 +65,26 @@ $evaluationRoot = Join-Path .runtime ("evaluate-009-" + (Get-Date -Format "yyyyM
 El arnés ejecuta tres pares AB/BA, conserva todos los resultados y comprueba el fingerprint de código. No reutilizar una carpeta parcial ni presentar ensayos de otro candidato como resultados finales. Su RSS actual cubre backend/OCR/encoder; completar también medición de gateway activo y reproductor según validation-plan.md.
 
 MAX_VIDEO_DURATION_SECONDS limita duración admitida; VIDEO_JOB_TIMEOUT_SECONDS limita cómputo. El arnés usa su timeout idéntico en ambos brazos sin editar .env. Aumentar duración admitida no acelera el análisis ni equivale a tiempo real.
+
+
+## Inspección bajo demanda y conteo opcional
+
+Después de actualizar código, detener/reiniciar API y gateway desde sus propias terminales; un gateway antiguo sin --reload seguirá rechazando los parámetros nuevos. Desde la raíz, usar tres terminales:
+
+~~~powershell
+.\backend\start.ps1 -Service api
+~~~
+~~~powershell
+.\backend\start.ps1 -Service gateway
+~~~
+~~~powershell
+npm --prefix frontend run dev
+~~~
+
+Dentro de frontend, usar `npm run dev` (sin otro --prefix). `backend/start.ps1 -CheckEnvironment` verifica el Python elegido sin iniciar servicios; un primer entorno inválido permite fallback al compatible de la raíz. No es necesario cambiar .env ni aumentar timeout para activar estas funciones. Reiniciar la página renueva la sesión del gateway.
+
+Procesar un video mantiene solo detección/seguimiento automáticos. Pausar y pulsar una caja solicita ese Track ID; la ficha lateral muestra crop original, atributos, placa y su recorte autorizado cuando existe. Volver a seleccionarlo reutiliza la consulta. «Vehículos de este fotograma» despliega la alternativa accesible debajo de los controles, sin lista sobre la ficha.
+
+En «Conteo opcional», usar el fotograma actual, marcar dos puntos o crear una línea horizontal y ajustar coordenadas con teclado. Activar conteo dibuja la línea en el video principal y muestra cruces arriba a la derecha. Retroceder consulta acumulados históricos; no suma otra vez ni ejecuta detección. Una línea nueva recalcula trayectorias ya disponibles y Desactivar retira el contador. La regla de lado/dirección y un cruce por Track ID conservan el conteo anterior.
+
+La solicitud selectiva fija hasta K recortes disponibles al pedirla; evidencia posterior no vuelve a ejecutar OCR automáticamente. La reducción del número de consultas no acredita por sí sola una tasa de FPS en videos reales. No se ejecuta la comparación larga diferida.

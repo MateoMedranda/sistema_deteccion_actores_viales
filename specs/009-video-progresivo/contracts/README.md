@@ -50,3 +50,14 @@ tracks usa snapshot tomado del valor de enrichment.revision y cursor de continua
 ## Ejemplos de comportamiento
 
 Fuente120s, límite42s y posición18s: se admiten10s y30s, ir a42s muestra el último inicio de cuadro anterior al extremo, y60s se bloquea sin dibujar un cuadro pendiente. Al pasar el límite a55s la posición no se mueve. Fallo al segundo42 conserva ese tramo como parcial y permite consumir su cola aunque sea menor al margen de5s.
+
+
+## Política bajo demanda aprobada (2026-11-22)
+
+- `POST /api/v1/video-jobs?presentation=progressive&enrichment=on-demand`: mismo recibo202, modo persistente separado en idempotencia. Omitir enrichment conserva modo automático. El valor on-demand sin progressive, duplicados y valores desconocidos se rechazan.
+- `POST /api/v1/video-jobs/{job}/playback/tracks/{track}/enrich`:202 TrackResult, propietario/CSRF, sin cuerpo ni query; primera solicitud congela top-K disponible, publica crop raw y pone en cola solo esa unidad; repetición devuelve la consulta cacheada, sin otra inferencia ni refinamiento automático. Para unidades no solicitadas `state=not_requested`. GET de fichas no solicita trabajo. La evidencia mantiene sus timestamps/TTL y `final` indica fin de la consulta congelada en este modo.
+- `PUT /api/v1/video-jobs/{job}/playback/count`: cuerpo point_a/point_b con x/y normalizados0..1, distintos y finitos.200 con estado privado de conteo. Repetir misma línea no reinicia eventos; cambiarla recalcula trayectorias persistidas y aumenta revisión.
+- `GET .../playback/count?at_us=0`:200 `{job_id,generation,enabled,line,revision,at_us,available_until_us,total,a_to_b,b_to_a}`. at_us es entero seguro no negativo dentro del prefijo confirmado;409 si no está disponible. Conteo hasta ese instante source-PTS inclusive; retroceder no crea eventos. No hace inferencia ni decodifica.
+- `DELETE .../playback/count`:204 idempotente, retira línea/eventos y aumenta revisión de configuración existente.
+
+Las nuevas rutas requieren autenticación/propiedad, sesión/CSRF en gateway para consultas y mutaciones, no-store, sin URL arbitraria. Vencimiento/retiro devuelve410 al propietario y404 a otros; cleanup retira datos de conteo y solicitudes. No se cambia el conteo final legacy ni se permite ver cuadros fuera del prefijo.

@@ -18,3 +18,10 @@ Los tipos públicos están en domain/progressive.py; los servicios se separaron 
 Pendientes explícitos: T039 (historial expulsado y memoria prolongada), T074 (completar instrumentación del protocolo con gateway activo), T075 (tres pares reales finales), T076 (medición exhaustiva y plataformas incompatibles) y T077 (cinco participantes). No se declara aceptación completa mientras permanezcan abiertos.
 
 Las métricas públicas contienen solo números agregados de corpus sintético y paridad de píxeles. Los videos autorizados y los ensayos diagnósticos detallados permanecen fuera de Git. La referencia congelada sigue siendo431b6dfccea3fcaccf80feab9039c254604c0718.
+
+
+## Adenda: cambio aprobado a consulta selectiva y conteo
+
+La nueva instrucción del usuario sustituye el enriquecimiento automático del frontend por selección por Track ID (T093). El modo automático anterior permanece para clientes sin enrichment=on-demand; no se modifica ni se cierra retroactivamente su benchmark pendiente. T094 reutiliza observaciones source-PTS para conteo privado opcional, sin modelos; T095–T096 incorporan ficha de Imagen y editor/contador en el video principal. T097 repara observabilidad, recuperación, finalización y selección de Python; T098 valida con fixtures y T099 actualiza documentación/commit.
+
+Evidencia: test_progressive_demand_count, test_progressive_operational_metrics, test_start_environment, contrato de gateway, progressiveCount/recovery/trackResults y E2E video-progressive-demand. Ver validation.md. Las lecturas y conteos mantienen propiedad, TTL y revocación; no se incorporaron medios privados, secretos ni pesos a la entrega. Las correcciones restantes y gates diferidos continúan abiertos.

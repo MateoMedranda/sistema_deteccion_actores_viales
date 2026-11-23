@@ -45,3 +45,21 @@ Los tests usan bases/archivos temporales y puertos9413/9414/9415. La preparació
 GET no inicia modelos; navegar/seleccionar tampoco. La creación sin presentation conserva modo legacy; idempotencia separa modos. El fallo técnico conserva prefijo autorizado hasta su TTL, mientras DELETE/limpieza/vencimiento lo retiran. La recuperación no reinfiere una generación interrumpida.
 
 Compatibilidad de vista progresiva: AVC/WebCodecs, MP4 no fragmentado, una edición normal y orientación ortogonal. Los demás casos informan incompatibilidad y conservan datos consultables. No se acredita calidad OCR real con fixtures ni usabilidad humana con screenshots.
+
+
+## Entrega de inspección selectiva y conteo opcional — 2026-11-22
+
+Cambio aprobado por el usuario: detección/seguimiento sin enriquecimiento automático en el frontend nuevo, consulta por selección y conteo opcional. Se conservaron imágenes, exportación final, modo automático de clientes anteriores y conteo legacy. No se ejecutó la comparación larga ni modelos reales de rendimiento en esta entrega.
+
+- Backend: **331 pruebas aprobadas** en suite completa. Nuevos casos: cero evaluaciones antes de seleccionar, solo el Track ID solicitado, primera evidencia raw disponible antes de OCR, repetición sin evaluación adicional, propiedad/retiro, línea idempotente, cambio de línea, consulta histórica0→1→0 sin duplicados, rutas y parámetros, métricas por cuadro y memoria, y selector de Python compatible sin iniciar servicios.
+- Frontend: **124 pruebas aprobadas** (suite actual), incluida recuperación con revisión de enriquecimiento constante, identidad de diez fichas, estados distintos de fallido/parcial/no aplicable y recuperación de una configuración de conteo aceptada cuya respuesta se perdió, sin repetir PUT.
+- Compilación TypeScript/Vite aprobada. No se cambiaron dependencias, modelos, pesos, muestreo ni .env.
+- Navegadores: matriz de **25 escenarios aprobados** (Chromium escritorio/tablet/móvil, Firefox y WebKit Windows) y **4 regresiones adicionales aprobadas** de fin natural/reproducción explícita y fallo transitorio de fuente en escritorio/móvil. WebKit Windows solo acredita salida segura cuando falta WebCodecs; no se presenta como reproducción/conteo soportados.
+- En los cuatro entornos con WebCodecs del caso nuevo, atributos/OCR tuvieron cero llamadas antes de seleccionar, la consulta elegida usó hastaK evidencias y repetirla no añadió evaluaciones. Con una sola subida, dibujo por puntero/toque y ajustes de teclado, el contador mostró **0→5→0→5** al navegar Home/End/Home/End, y Desactivar retiró el contador. Texto200% sin overflow de página. Los recortes y placas de estas pruebas son sintéticos.
+- Se inspeccionó la captura del flujo de escritorio: ficha lateral sin lista encima, recortes con sus etiquetas, línea sobre la escena, contador superior derecho y editor inferior. Se corrigió la superposición de la ficha con controles inferiores; también se aisló la pausa de las pruebas fuera del recurso del modelo y se retiraron trabajos sintéticos entre escenarios.
+
+La consulta bajo demanda fija hastaK recortes disponibles al primer clic; se reutiliza mientras dure la autorización del trabajo y no se refina automáticamente con evidencia futura. Pausar detiene el reproductor, no la detección del backend. El conteo usa las reglas existentes de lado/dirección y un cruce por Track ID; la geometría representa la línea de conteo según esas reglas.
+
+**Límites pendientes**: no se acredita un nuevo FPS real ni el gate de coste/memoria de la política automática original; cambiar política exige reportar condiciones comparables. T039/T074–T077 y las tareas de convergencia T085–T088/T090–T091 siguen abiertas. No se simula prueba humana ni se relajan umbrales. T081–T084/T089/T092 cuentan con corrección/regresión relacionada en esta entrega.
+
+**Arranque**: reiniciar API y gateway para cargar el parámetro y las rutas nuevas, y recargar la página para renovar sesión. Un proceso antiguo sin reload puede seguir devolviendo422 durante la subida. Los comandos están en quickstart.md; `start.ps1 -CheckEnvironment` no inicia servicios.

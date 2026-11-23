@@ -17,7 +17,10 @@ export function useProgressiveTracks(
   useEffect(() => {
     if (!state || !active) return;
     const c = new AbortController();
-    void (async () => {
+    let timer: ReturnType<typeof setTimeout>;
+    let failures = 0;
+    const load = async () => {
+    try {
       let cursor: string | undefined;
       const all: Track[] = [];
       const seen = new Set<string>();
@@ -57,15 +60,18 @@ export function useProgressiveTracks(
         }
       } while (cursor && !c.signal.aborted);
       if (!c.signal.aborted) setTracks(all);
-    })().catch((e) => {
+    } catch (e) {
       if (
         !c.signal.aborted &&
         e instanceof ClientError &&
         [401, 403, 404, 410].includes(e.status)
       )
-        onUnavailable();
-    });
-    return () => c.abort();
+        { onUnavailable(); return; }
+      if (!c.signal.aborted) timer = setTimeout(load, Math.min(8000,1000 * 2 ** failures++));
+    }
+    };
+    void load();
+    return () => {c.abort();clearTimeout(timer);};
   }, [client, id, generation, revision, active]);
   return tracks;
 }

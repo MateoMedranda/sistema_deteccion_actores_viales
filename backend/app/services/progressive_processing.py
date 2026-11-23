@@ -3,6 +3,7 @@
 from time import perf_counter
 import os
 import cv2
+import psutil
 from app.adapters.timed_video_decoder import TimedVideoDecoder
 from app.services.video_presentation import PresentationFilter, draw_box
 
@@ -63,6 +64,7 @@ class ProgressiveProcessor:
 
         try:
             for frame in decoder:
+                frame_started = perf_counter()
                 metrics["decode_ms"] += (perf_counter() - previous) * 1000
                 check()
                 image = frame.image
@@ -149,6 +151,7 @@ class ProgressiveProcessor:
                     or batch[-1]["end_us"] - batch[0]["start_us"] >= p.progressive_batch_us
                 ):
                     publish()
+                p.logger.info("video_frame_processed", extra={"job_id":job.job_id,"source_type":"video","progress":count,"frame_ms":round((perf_counter()-frame_started)*1000,3),"memory_mb":round(psutil.Process().memory_info().rss/1024**2,2),"tracker":"model" if model is not None else "iou-fallback"})
                 previous = perf_counter()
             publish()
             if count == 0:
@@ -239,5 +242,6 @@ class ProgressiveProcessor:
                     "elapsed_ms": round((perf_counter() - started) * 1000),
                     "inference_ms": round(metrics["inference_ms"]),
                     "output_ms": round(metrics["publish_ms"]),
+                    "memory_mb":round(psutil.Process().memory_info().rss/1024**2,2),
                 },
             )

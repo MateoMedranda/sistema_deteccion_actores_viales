@@ -29,3 +29,10 @@ Se valida VideoDecoder.isConfigSupported para el AVC concreto. MP4 fragmentado, 
 ## Verificación
 
 Ver validation.md y evidence/browser-metrics.json. Las pruebas con cuarenta segundos sintéticos verifican primer buffer, píxeles, treinta saltos, una ventana de5s a1x, JS ocupado, estados y respuesta tardía. Esto no reemplaza medición prolongada con modelos reales, historial expulsado ni la prueba con cinco participantes.
+
+
+## Inspección selectiva y conteo
+
+La selección pausa y hace POST idempotente para ese Track ID; repetir una selección reusa la misma solicitud. La ficha a la derecha mantiene jerarquía de Imagen y separa estados de consulta y validez de placa. La alternativa a las cajas es un desplegable de vehículos del fotograma debajo de los controles, sin lista sobre la ficha. No hay barra global de enriquecimiento.
+
+La sección inferior captura únicamente un canvas confirmado; el usuario dibuja dos puntos o usa rangos etiquetados de teclado. La línea confirmada se dibuja en el plano del canvas principal y el contador superior derecho consulta acumulados del instante reproducido. Saltar invalida el contador anterior hasta recuperar el correspondiente; no se muestra el total de un instante futuro. Desactivar elimina la línea y el contador. El editor no reproduce un segundo video ni ejecuta otra detección.

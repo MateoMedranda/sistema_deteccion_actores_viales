@@ -5,6 +5,7 @@ from app.api.dependencies import Principal, require_api_key
 from app.api.error_handlers import ApiError
 from app.domain.progressive import PlaybackState, FramePage, TrackPage, TrackResult
 from app.services.progressive_media import media
+from app.domain.progressive_count import CountLine, ProgressiveCountState
 
 router = APIRouter(prefix="/v1/video-jobs", tags=["progressive-video"])
 
@@ -102,3 +103,26 @@ def evidence(
         "image/png",
         16 * 1024**2,
     )
+
+
+@router.post("/{job_id}/playback/tracks/{track_id}/enrich", status_code=202, response_model=TrackResult)
+def enrich_track(job_id: str, request: Request, track_id: int = PathParam(ge=1,le=9007199254740991), principal: Principal = Depends(require_api_key)):
+    query(request, [])
+    return request.app.state.progressive_evidence.request(job_id,principal.key_id,track_id)
+
+
+@router.put("/{job_id}/playback/count", response_model=ProgressiveCountState)
+def configure_count(job_id: str, body: CountLine, request: Request, principal: Principal = Depends(require_api_key)):
+    query(request, [])
+    return request.app.state.progressive_count.configure(job_id,principal.key_id,body.model_dump())
+
+@router.get("/{job_id}/playback/count", response_model=ProgressiveCountState)
+def get_count(job_id: str, request: Request, at_us: int = Query(default=0,ge=0,le=9007199254740991), principal: Principal = Depends(require_api_key)):
+    query(request, ["at_us"])
+    return request.app.state.progressive_count.snapshot(job_id,principal.key_id,at_us)
+
+@router.delete("/{job_id}/playback/count", status_code=204)
+def disable_count(job_id: str, request: Request, principal: Principal = Depends(require_api_key)):
+    query(request, [])
+    request.app.state.progressive_count.disable(job_id,principal.key_id)
+    return Response(status_code=204)

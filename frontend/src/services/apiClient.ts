@@ -92,6 +92,9 @@ export class ApiClient {
       if(this.accepted.get("video")==="/api/v1/video-jobs/"+id)this.accepted.delete("video");
     });
   }
+  disableProgressiveCount(id:string,options:RequestOptions={}){
+    return this.consume("/api/v1/video-jobs/"+encodeURIComponent(id)+"/playback/count",async()=>undefined,{method:"DELETE"},{timeoutMs:10000,...options});
+  }
   nativeVideo(id:string,count=false){
     if(!this.web)throw error("managed_transport_required");
     return this.url(count?"/api/v1/count-jobs/"+encodeURIComponent(id)+"/annotated-video":"/api/v1/video-jobs/"+encodeURIComponent(id)+"/annotated-video/content");
@@ -370,7 +373,7 @@ export class ApiClient {
     const body = new FormData();
     body.append("video", file);
     return this.json<any>(
-      "/api/v1/video-jobs"+(progressive?"?presentation=progressive":""),
+      "/api/v1/video-jobs"+(progressive?"?presentation=progressive&enrichment=on-demand":""),
       { method: "POST", body },
       options,
     );

@@ -6,7 +6,9 @@ import { clampSeek, terminal } from "./progressiveTypes";
 import { classPresentation } from "../image-analysis/classPresentation";
 import { useProgressivePlayback } from "./useProgressivePlayback";
 import { useProgressiveTracks } from "./useProgressiveTracks";
-import { ProgressiveTrackResults } from "./ProgressiveTrackResults";
+import {ProgressiveCountTools} from "./ProgressiveCountTools";
+import {useProgressiveCount} from "./useProgressiveCount";
+import { ProgressiveTrackList, ProgressiveTrackResults } from "./ProgressiveTrackResults";
 import { VideoTimeline, clock } from "./VideoTimeline";
 import { SourceDecoder } from "./sourceDecoder";
 import { playbackDecision } from "./playbackPolicy";
@@ -42,6 +44,15 @@ export function ProgressiveVideoPlayer({
   const [fullscreen, setFullscreen] = useState(false);
   const [canPlay, setCanPlay] = useState(false);
   const tracks = useProgressiveTracks(client, state, active, playback.retire);
+  const [requestMessage,setRequestMessage]=useState("");
+  const count=useProgressiveCount(client,id,state,position,active,playback.retire);
+  const lineRef=useRef(count.result?.line);lineRef.current=count.result?.line;
+  useEffect(()=>{
+    if(selected===undefined||!state)return;
+    const c=new AbortController();let timer:ReturnType<typeof setTimeout>,attempt=0;
+    const request=async()=>{try{setRequestMessage("Consultando el vehículo seleccionado…");await client.json("/api/v1/video-jobs/"+id+"/playback/tracks/"+selected+"/enrich",{method:"POST"},{signal:c.signal,timeoutMs:10000,expiresAt:state.expires_at});if(!c.signal.aborted)setRequestMessage("")}catch(e){if(c.signal.aborted)return;if(e instanceof ClientError&&[401,403,404,410].includes(e.status)){playback.retire();return}setRequestMessage("Recuperando la consulta del vehículo…");timer=setTimeout(request,Math.min(8000,1000*2**attempt++))}};
+    void request();return()=>{c.abort();clearTimeout(timer)};
+  },[client,id,selected,state?.generation]);
   const pause = () => {
     wantPlay.current = false;
     running.current = undefined;
@@ -62,11 +73,14 @@ export function ProgressiveVideoPlayer({
     const version = ++seekVersion.current,
       target = clampSeek(us, s);
     running.current = undefined;
+    count.refresh(target);
     setBoxes([]);
     forcePaint.current++;
     const surface = canvas.current;
-    if (surface)
+    if (surface){
       surface.getContext("2d")?.clearRect(0, 0, surface.width, surface.height);
+      delete surface.dataset.frameIndex;delete surface.dataset.timeUs;
+    }
     positionRef.current = target;
     setPosition(target);
     setPhase("Preparando el instante seleccionado…");
@@ -108,15 +122,17 @@ export function ProgressiveVideoPlayer({
     }
     const abort = new AbortController(),
       d = new SourceDecoder(
-        (start, end) =>
-          client.sourceRange(
-            id,
-            s.generation,
-            s.source!.size_bytes,
-            start,
-            end,
-            { signal: abort.signal, expiresAt: s.expires_at },
-          ),
+        async (start,end)=>{
+          let attempt=0;
+          while(true){
+            try{return await client.sourceRange(id,s.generation,s.source!.size_bytes,start,end,{signal:abort.signal,expiresAt:s.expires_at})}
+            catch(e){
+              if(abort.signal.aborted||!(e instanceof ClientError)||!([0,408,429].includes(e.status)||e.status>=500))throw e;
+              setPhase("Recuperando el video automáticamente…");
+              await new Promise<void>((resolve,reject)=>{const stop=()=>{clearTimeout(timer);reject(new DOMException("Aborted","AbortError"))};const timer=setTimeout(()=>{abort.signal.removeEventListener("abort",stop);resolve()},Math.min(8000,1000*2**attempt++));abort.signal.addEventListener("abort",stop,{once:true})});
+            }
+          }
+        },
         s.source.size_bytes,
         abort.signal,
       );
@@ -180,7 +196,7 @@ export function ProgressiveVideoPlayer({
         ":" +
         c.height +
         ":" +
-        forcePaint.current;
+        forcePaint.current+":"+JSON.stringify(lineRef.current);
       if (signature !== painted) {
         const width = s.timeline.width,
           height = s.timeline.height;
@@ -234,6 +250,8 @@ export function ProgressiveVideoPlayer({
             );
           }
         }
+        const line=lineRef.current;
+        if(line){ctx.beginPath();ctx.moveTo(line.point_a.x*width,line.point_a.y*height);ctx.lineTo(line.point_b.x*width,line.point_b.y*height);ctx.strokeStyle="#10203d";ctx.lineWidth=7*scale;ctx.stroke();ctx.strokeStyle="#ffd166";ctx.lineWidth=3*scale;ctx.stroke();}
         ctx.restore();
         c.dataset.frameIndex = String(f.frame_index);
         c.dataset.timeUs = String(f.start_us);
@@ -267,6 +285,7 @@ export function ProgressiveVideoPlayer({
           target = current.last_frame_start_us ?? 0;
           positionRef.current = target;
           running.current = undefined;
+          if(terminal(current))wantPlay.current=false;
           setPhase(
             terminal(current)
               ? "Fin del tramo disponible"
@@ -393,6 +412,9 @@ export function ProgressiveVideoPlayer({
                 height={state.timeline.height}
                 aria-label={"Video analizado, instante " + clock(position)}
               />
+              {count.result?.enabled&&<div className="progressive-count-overlay" aria-label="Contador de cruces" data-count-time-us={count.result.at_us}>
+                <span>Cruces · {clock(position)}</span><strong>{count.result.at_us>=0&&count.result.at_us<=position&&position-count.result.at_us<1_000_000?count.result.total:"…"}</strong><small>A → B: {count.result.at_us>=0&&count.result.at_us<=position?count.result.a_to_b:"…"} · B → A: {count.result.at_us>=0&&count.result.at_us<=position?count.result.b_to_a:"…"}</small>
+              </div>}
               <div className="progressive-hitboxes">
                 {boxes
                   .filter((o) => o.display_bbox)
@@ -428,6 +450,7 @@ export function ProgressiveVideoPlayer({
               <button
                 disabled={!canPlay}
                 onClick={() => {
+                  if(state&&terminal(state)&&positionRef.current>=(state.last_frame_start_us??0))void seek(0);
                   wantPlay.current = true;
                   setPhase("Preparando reproducción…");
                 }}
@@ -461,34 +484,8 @@ export function ProgressiveVideoPlayer({
               : "El reproductor aparecerá al confirmar los primeros cuadros."}
           </p>
         )}
-        {state && (
-          <section aria-label="Progreso de enriquecimiento progresivo">
-            <h3>Enriquecimiento</h3>
-            <progress
-              aria-label="Vehículos con resultado final"
-              max={Math.max(
-                1,
-                state.enrichment.total_units ??
-                  state.enrichment.discovered_units,
-              )}
-              value={
-                state.enrichment.total_units === null
-                  ? undefined
-                  : state.enrichment.terminal_units
-              }
-            />
-            <p className="muted">
-              {state.enrichment.terminal_units} finales de{" "}
-              {state.enrichment.total_units ??
-                state.enrichment.discovered_units}{" "}
-              vehículos{" "}
-              {state.enrichment.total_units === null
-                ? "descubiertos hasta ahora"
-                : ""}
-              . Los datos se actualizan sin detener el análisis.
-            </p>
-          </section>
-        )}
+        {state&&<details className="progressive-vehicles"><summary>Vehículos de este fotograma ({last.current?.observations.length??0})</summary><ProgressiveTrackList observations={last.current?.observations??[]} selected={selected} onSelect={select}/></details>}
+
       </div>
       <ProgressiveTrackResults
         client={client}
@@ -496,7 +493,10 @@ export function ProgressiveVideoPlayer({
         selected={selected}
         onSelect={select}
         onUnavailable={playback.retire}
+        onClose={()=>{selectedRef.current=undefined;setSelected(undefined);setRequestMessage("")}}
+        requestMessage={requestMessage}
       />
+      {state?.media_available&&<ProgressiveCountTools source={canvas} pause={pause} enabled={!!count.result?.enabled} onApply={count.configure} onDisable={count.disable} message={count.message} position={clock(position)}/>}
     </section>
   );
 }

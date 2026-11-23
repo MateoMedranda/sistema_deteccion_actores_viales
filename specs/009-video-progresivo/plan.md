@@ -172,3 +172,14 @@ La cronología de PyAV conserva el perfil de conversión BGR de OpenCV (ITU601/B
 Pruebas consolidadas usan test_progressive_api/store/lifecycle/race/security/workers, test_progressive_topk/color, playbackReducer/progressive/recovery/trackResults y los dos archivos E2E video-progressive-navigation/recovery. Sus nombres sustituyen archivos separados previstos, conservando la trazabilidad de tareas.
 
 El usuario solicitó cerrar la entrega funcional y diferir la comparación larga. No se rebajan SC007/010 ni se toma un resultado parcial o de otro candidato como aceptación. También quedan pendientes la prueba humana y las verificaciones exhaustivas indicadas en validation.md.
+
+
+## Enmienda aprobada: inspección bajo demanda y conteo opcional
+
+El nuevo frontend envía `presentation=progressive&enrichment=on-demand`. Sin enrichment se conserva el modo automático existente. La migración aditiva guarda p_video.on_demand y solicitudes/evidencias fijadas por Track ID; la cola solo reclama evidencias solicitadas en ese modo. Cada solicitud toma hasta K evidencias confirmadas y termina aunque la fuente continúe abierta. Repeticiones reutilizan la solicitud y sus resultados; no hay OCR por GET, seek o conteo. Los recortes siguen siendo PNG originales y mantienen autorización/TTL. `final` en este modo identifica final de la consulta congelada, no del análisis completo.
+
+POST playback/tracks/{track_id}/enrich solicita consulta idempotente. PUT/GET/DELETE playback/count configura, consulta al instante at_us o desactiva conteo. ProgressiveCountService usa p_frames/raw_bbox y los criterios existentes de lado/dirección, sin decoder/modelos, persiste último lado y un evento por track y permite backfill al dibujar tarde. Los eventos llevan source-PTS. Cambio de línea incrementa revisión y recalcula; navegación solo consulta acumulados históricos. Son derivados privados del mismo recurso; retirada y TTL los invalidan y limpian.
+
+Frontend: la ficha lateral comparte estilos de Imagen; una lista compacta del fotograma queda plegada debajo de controles. ProgressiveCountTools captura un canvas confirmado y admite dos puntos por toque/puntero o rangos de teclado. useProgressiveCount consulta acumulados y descarta respuestas fuera de contexto; el canvas principal dibuja la línea y su esquina superior derecha muestra el contador. No se monta el editor legacy duplicado para clientes managed. Imágenes y conteo final legacy permanecen.
+
+Esta modificación reduce trabajo automático, no constituye una medición de nuevos FPS. Los gates reales previos siguen abiertos y requieren distinguir políticas al comparar; no se presenta una corrida con enriquecimiento deshabilitado como equivalencia del protocolo automático original.

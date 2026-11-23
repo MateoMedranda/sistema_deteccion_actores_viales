@@ -55,6 +55,8 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         app.state.progressive_store=progressive
         app.state.progressive=ProgressiveService(progressive,video_jobs)
         app.state.progressive_evidence=evidence
+        from app.services.progressive_counting import ProgressiveCountService
+        app.state.progressive_count=ProgressiveCountService(progressive)
         def source_guard(job,owner):
             if progressive.exists(job):
                 with progressive.lock:progressive.row(job,owner)

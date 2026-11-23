@@ -8,53 +8,58 @@ security:
 paths:
   /api/v1/video-jobs:
     post:
-      operationId: createProgressiveVideoJob
-      summary: Extensión opt-in del POST actual; ausencia del parámetro mantiene legacy
+      tags:
+      - video-jobs
+      summary: Create Video Job
+      operationId: create_video_job_api_v1_video_jobs_post
+      security:
+      - ApiKeyAuth: []
       parameters:
       - name: presentation
         in: query
         required: false
         schema:
-          type: string
-          enum:
-          - progressive
+          anyOf:
+          - const: progressive
+            type: string
+          - type: 'null'
+          title: Presentation
+      - name: enrichment
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - const: on-demand
+            type: string
+          - type: 'null'
+          title: Enrichment
+      - name: idempotency-key
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Idempotency-Key
       requestBody:
         required: true
         content:
           multipart/form-data:
             schema:
-              type: object
-              required:
-              - video
-              properties:
-                video:
-                  type: string
-                  format: binary
+              $ref: '#/components/schemas/Body_create_video_job_api_v1_video_jobs_post'
       responses:
         '202':
-          description: Aceptado con esquema legacy
+          description: Successful Response
           content:
             application/json:
               schema:
-                $ref: ./schemas.json#/$defs/VideoJobAccepted
-        '401':
-          $ref: '#/components/responses/Error'
-        '403':
-          $ref: '#/components/responses/Error'
-        '404':
-          $ref: '#/components/responses/Error'
-        '409':
-          $ref: '#/components/responses/Error'
-        '410':
-          $ref: '#/components/responses/Error'
+                $ref: '#/components/schemas/VideoJobAccepted'
         '422':
-          $ref: '#/components/responses/Error'
-        '429':
-          $ref: '#/components/responses/Error'
-        '503':
-          $ref: '#/components/responses/Error'
-        '504':
-          $ref: '#/components/responses/Error'
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
   /api/v1/video-jobs/{job_id}/playback:
     parameters:
     - name: job_id
@@ -467,6 +472,135 @@ paths:
           $ref: '#/components/responses/Error'
         '504':
           $ref: '#/components/responses/Error'
+  /api/v1/video-jobs/{job_id}/playback/tracks/{track_id}/enrich:
+    post:
+      tags:
+      - progressive-video
+      summary: Enrich Track
+      operationId: enrich_track_api_v1_video_jobs__job_id__playback_tracks__track_id__enrich_post
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Job Id
+      - name: track_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          maximum: 9007199254740991
+          minimum: 1
+          title: Track Id
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackResult'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/video-jobs/{job_id}/playback/count:
+    put:
+      tags:
+      - progressive-video
+      summary: Configure Count
+      operationId: configure_count_api_v1_video_jobs__job_id__playback_count_put
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Job Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CountLine'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgressiveCountState'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - progressive-video
+      summary: Get Count
+      operationId: get_count_api_v1_video_jobs__job_id__playback_count_get
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Job Id
+      - name: at_us
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 9007199254740991
+          minimum: 0
+          default: 0
+          title: At Us
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgressiveCountState'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - progressive-video
+      summary: Disable Count
+      operationId: disable_count_api_v1_video_jobs__job_id__playback_count_delete
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Job Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
 components:
   securitySchemes:
     ApiKey:
@@ -480,3 +614,427 @@ components:
         application/json:
           schema:
             $ref: ./schemas.json#/$defs/Error
+  schemas:
+    Body_create_video_job_api_v1_video_jobs_post:
+      properties:
+        video:
+          type: string
+          format: binary
+          title: Video
+      type: object
+      required:
+      - video
+      title: Body_create_video_job_api_v1_video_jobs_post
+    VideoJobAccepted:
+      properties:
+        job_id:
+          type: string
+          title: Job Id
+        status:
+          type: string
+          const: queued
+          title: Status
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - job_id
+      - status
+      - created_at
+      title: VideoJobAccepted
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    TrackResult:
+      properties:
+        job_id:
+          type: string
+          pattern: ^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$
+          title: Job Id
+        generation:
+          type: string
+          format: uuid
+          title: Generation
+        unit_id:
+          type: string
+          format: uuid
+          title: Unit Id
+        track_id:
+          type: integer
+          maximum: 9007199254740991.0
+          minimum: 1.0
+          title: Track Id
+        discovery_ordinal:
+          type: integer
+          maximum: 9007199254740991.0
+          minimum: 1.0
+          title: Discovery Ordinal
+        class_name:
+          type: string
+          title: Class Name
+        first_seen_us:
+          type: integer
+          maximum: 9007199254740991.0
+          minimum: 0.0
+          title: First Seen Us
+        last_seen_us:
+          type: integer
+          maximum: 9007199254740991.0
+          minimum: 0.0
+          title: Last Seen Us
+        state:
+          type: string
+          enum:
+          - not_requested
+          - waiting_evidence
+          - queued
+          - processing
+          - ready
+          - partial
+          - failed
+          - not_applicable
+          title: State
+        final:
+          type: boolean
+          title: Final
+        result_revision:
+          type: integer
+          maximum: 9007199254740991.0
+          minimum: 0.0
+          title: Result Revision
+        evidence_revision:
+          type: integer
+          maximum: 9007199254740991.0
+          minimum: 0.0
+          title: Evidence Revision
+        attributes:
+          $ref: '#/components/schemas/Attributes'
+        plate:
+          $ref: '#/components/schemas/Plate'
+        evidence:
+          items:
+            $ref: '#/components/schemas/Evidence'
+          type: array
+          maxItems: 21
+          title: Evidence
+        expires_at:
+          type: string
+          format: date-time
+          title: Expires At
+      additionalProperties: false
+      type: object
+      required:
+      - job_id
+      - generation
+      - unit_id
+      - track_id
+      - discovery_ordinal
+      - class_name
+      - first_seen_us
+      - last_seen_us
+      - state
+      - final
+      - result_revision
+      - evidence_revision
+      - attributes
+      - plate
+      - evidence
+      - expires_at
+      title: TrackResult
+    Attributes:
+      properties:
+        status:
+          type: string
+          enum:
+          - pending
+          - completed
+          - partial
+          - failed
+          - not_applicable
+          title: Status
+        items:
+          items:
+            $ref: '#/components/schemas/Attribute'
+          type: array
+          title: Items
+        error_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Code
+      additionalProperties: false
+      type: object
+      required:
+      - status
+      - items
+      - error_code
+      title: Attributes
+    Attribute:
+      properties:
+        name:
+          type: string
+          title: Name
+        value:
+          type: string
+          title: Value
+        confidence:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Confidence
+        evidence_id:
+          type: string
+          format: uuid
+          title: Evidence Id
+      additionalProperties: false
+      type: object
+      required:
+      - name
+      - value
+      - confidence
+      - evidence_id
+      title: Attribute
+    Plate:
+      properties:
+        status:
+          type: string
+          enum:
+          - pending
+          - read
+          - unreadable
+          - not_detected
+          - failed
+          - not_applicable
+          title: Status
+        text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Text
+        ocr_confidence:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Ocr Confidence
+        used_enhancement:
+          type: boolean
+          title: Used Enhancement
+        policy_id:
+          type: string
+          title: Policy Id
+        evidence_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          maxItems: 20
+          title: Evidence Ids
+        error_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Code
+      additionalProperties: false
+      type: object
+      required:
+      - status
+      - text
+      - ocr_confidence
+      - used_enhancement
+      - policy_id
+      - evidence_ids
+      - error_code
+      title: Plate
+    Evidence:
+      properties:
+        evidence_id:
+          type: string
+          format: uuid
+          title: Evidence Id
+        frame_index:
+          type: integer
+          maximum: 9007199254740991.0
+          minimum: 0.0
+          title: Frame Index
+        time_us:
+          type: integer
+          maximum: 9007199254740991.0
+          minimum: 0.0
+          title: Time Us
+        vehicle_bbox:
+          $ref: '#/components/schemas/app__domain__progressive__BoundingBox'
+        provisional:
+          type: boolean
+          title: Provisional
+        vehicle_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Vehicle Url
+        plate_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Plate Url
+        expires_at:
+          type: string
+          format: date-time
+          title: Expires At
+      additionalProperties: false
+      type: object
+      required:
+      - evidence_id
+      - frame_index
+      - time_us
+      - vehicle_bbox
+      - provisional
+      - vehicle_url
+      - plate_url
+      - expires_at
+      title: Evidence
+    app__domain__progressive__BoundingBox:
+      properties:
+        x_min:
+          type: integer
+          maximum: 9007199254740991.0
+          minimum: 0.0
+          title: X Min
+        y_min:
+          type: integer
+          maximum: 9007199254740991.0
+          minimum: 0.0
+          title: Y Min
+        x_max:
+          type: integer
+          maximum: 9007199254740991.0
+          minimum: 1.0
+          title: X Max
+        y_max:
+          type: integer
+          maximum: 9007199254740991.0
+          minimum: 1.0
+          title: Y Max
+      additionalProperties: false
+      type: object
+      required:
+      - x_min
+      - y_min
+      - x_max
+      - y_max
+      title: BoundingBox
+    CountLine:
+      properties:
+        point_a:
+          $ref: '#/components/schemas/CountPoint'
+        point_b:
+          $ref: '#/components/schemas/CountPoint'
+      additionalProperties: false
+      type: object
+      required:
+      - point_a
+      - point_b
+      title: CountLine
+    CountPoint:
+      properties:
+        x:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: X
+        y:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Y
+      additionalProperties: false
+      type: object
+      required:
+      - x
+      - y
+      title: CountPoint
+    ProgressiveCountState:
+      properties:
+        job_id:
+          type: string
+          title: Job Id
+        generation:
+          type: string
+          format: uuid
+          title: Generation
+        enabled:
+          type: boolean
+          title: Enabled
+        line:
+          anyOf:
+          - $ref: '#/components/schemas/CountLine'
+          - type: 'null'
+        revision:
+          type: integer
+          maximum: 9007199254740991.0
+          minimum: 0.0
+          title: Revision
+        at_us:
+          type: integer
+          maximum: 9007199254740991.0
+          minimum: 0.0
+          title: At Us
+        available_until_us:
+          type: integer
+          maximum: 9007199254740991.0
+          minimum: 0.0
+          title: Available Until Us
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+        a_to_b:
+          type: integer
+          minimum: 0.0
+          title: A To B
+        b_to_a:
+          type: integer
+          minimum: 0.0
+          title: B To A
+      additionalProperties: false
+      type: object
+      required:
+      - job_id
+      - generation
+      - enabled
+      - line
+      - revision
+      - at_us
+      - available_until_us
+      - total
+      - a_to_b
+      - b_to_a
+      title: ProgressiveCountState

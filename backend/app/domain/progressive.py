@@ -180,7 +180,7 @@ class TrackResult(BaseModel):
     first_seen_us: int = Field(ge=0, le=9007199254740991)
     last_seen_us: int = Field(ge=0, le=9007199254740991)
     state: Literal[
-        "waiting_evidence", "queued", "processing", "ready", "partial", "failed", "not_applicable"
+        "not_requested", "waiting_evidence", "queued", "processing", "ready", "partial", "failed", "not_applicable"
     ]
     final: bool
     result_revision: int = Field(ge=0, le=9007199254740991)

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { it, expect, vi } from "vitest";
-import { ProgressiveTrackResults } from "../../../src/features/video-analysis/ProgressiveTrackResults";
+import { ProgressiveTrackList, ProgressiveTrackResults } from "../../../src/features/video-analysis/ProgressiveTrackResults";
 import type { Track } from "../../../src/features/video-analysis/progressiveTypes";
 import type { ApiClient } from "../../../src/services/apiClient";
 const uuid = (i: number) =>
@@ -67,6 +67,7 @@ it("binds ten identities to their own crops and keeps selection across result re
     return (
       <>
         <p>Posición de reproducción: 0:00</p>
+        <ProgressiveTrackList observations={Array.from({length:10},(_,i)=>track(i+1,revision))} selected={selected} onSelect={choose}/>
         <ProgressiveTrackResults
           client={client}
           tracks={Array.from({ length: 10 }, (_, i) => track(i + 1, revision))}
@@ -101,4 +102,16 @@ it("binds ten identities to their own crops and keeps selection across result re
   expect(
     screen.getByText("Posición de reproducción: 0:00"),
   ).toBeInTheDocument();
+});
+
+it.each([
+ ["failed","failed","failed","No se pudo completar la consulta"],
+ ["not_applicable","not_applicable","not_applicable","Enriquecimiento no aplicable"],
+ ["partial","completed","failed","Datos parciales"],
+ ["queued","pending","pending","Consulta en cola"],
+])("distinguishes %s from pending and unavailable branches",(state,attributesStatus,plateStatus,label)=>{
+ const value=track(1);value.state=state;value.final=state!=="queued";value.attributes={status:attributesStatus,items:[],error_code:null};value.plate={...value.plate,status:plateStatus,text:null};value.evidence=[];
+ render(<ProgressiveTrackResults client={{} as ApiClient} tracks={[value]} selected={1} onSelect={()=>{}} onUnavailable={()=>{}}/>);
+ expect(screen.getByRole("status")).toHaveTextContent(label);
+ expect(screen.queryByText("Datos finales")).not.toBeInTheDocument();
 });
