@@ -1,43 +1,31 @@
 # Reproductor — contrato de interacción 009
 
-## Salida visible
+## Salida visible y decisión corregida durante implementación
 
-Video fuente silenciado como decodificador, sin controles nativos, foco, PiP, cast ni fullscreen propios. Mantenerlo decodificando de manera compatible con los navegadores objetivo; no asumir que display:none conserva callbacks. Solo el canvas visible dibuja video y cajas juntos. Nunca mostrar el video crudo para remediar un fallo del canvas; informar indisponibilidad de reproducción y mantener resultados consultables.
+Solo canvas dibuja píxeles y cajas. La prueba bajo carga mostró que mediaTime de un video nativo podía corresponder a una textura distinta al copiarla al canvas. Se sustituyó esa estrategia por VideoDecoder/WebCodecs con VideoFrame inmutable y lectura MP4 acotada mediante mp4box 2.6.0. No se expone un video original como alternativa visible.
 
-En requestVideoFrameCallback, tomar mediaTime y resolver el intervalo confirmado. Solo dibujar si job/generation siguen vigentes, el cuadro pertenece al prefijo autorizado y sus anotaciones se reconstruyeron completas. Píxeles, cajas, hit targets y etiqueta temporal se actualizan juntos. Una callback tardía fuera del prefijo no dibuja; pausa el decoder, conserva el último cuadro válido y entra en espera. Un bloqueo de JS congela salida, no deja visible un cuadro futuro.
+El lector obtiene por Range los metadatos y muestras AVC; no descarga el archivo completo para iniciar. Ordena las muestras por CTS, aplica una única edición normal a velocidad1 y asigna una identidad de presentación estable a cada muestra. El timestamp interno del chunk codifica esa identidad; no es el reloj de reproducción. Antes de dibujar se exige identidad exacta del VideoFrame, frame_index publicado y coincidencia del PTS relativo con start_us (tolerancia de redondeo1us). El reloj visible siempre usa los intervalos de la API de origen, incluso para VFR.
 
-No repetir suavizado tras un salto. Las coordenadas de presentation bbox se transforman con la misma geometría/rotación y object-fit usada para los píxeles. Canvas tiene descripción accesible y una lista DOM de vehículos ofrece alternativa de foco, teclado y toque; no construir cientos de botones sobre vehículos pequeños si reduce la legibilidad.
+Un cuadro solo se dibuja con sus anotaciones completas, dentro del prefijo confirmado y de la generación vigente. Canvas congela la salida ante JS ocupado. Al navegar se retiran imagen/cajas anteriores hasta recuperar el cuadro correcto. La transformación de orientación y las coordenadas de cajas/hit targets comparten el plano publicado. Se conservan colores sólidos y la lista DOM accesible.
 
-## Estado
+## Reloj, controles y recuperación
 
-Separar userIntent=play|pause de phase=initial|playing|waiting-analysis|loading-annotations|manual-pause|partial-terminal|retired. También guardar posición admitida, watermark autoritativo, cobertura local, generación, activeMode y motivo de espera.
+Separar intención manual de reproducir/pausar del reloj que puede avanzar. Inicio y reanudación automática exigen buffer_seconds (5s predeterminados); una fuente terminal permite su cola corta. Se conserva 1x y se detiene el reloj cuando faltan cuadros/anotaciones o se alcanza el límite. Una pausa manual nunca se revoca por crecimiento del prefijo.
 
-- Inicio: botón reproducir habilitado tras5s disponibles; tail terminal permite menos. El primer clic satisface la política de reproducción del navegador.
-- Llegada de límite: no cambia posición ni selección. Se pueden obtener por anticipado las siguientes páginas, sin superar presupuestos de caché.
-- Espera automática con userIntent=play: pausa decoder; reanudar al existir5s desde la posición, o tail terminal. Un clic en pausa cambia intención y bloquea reanudación automática.
-- Seek dentro del prefijo: validar destino antes de asignar currentTime, pausar, limpiar cajas anteriores, invalidar fetch obsoletos, recuperar todas las partes del intervalo, dibujar destino y restaurar intención previa. No repetir inferencia.
-- Seek al extremo exclusivo: usar last_frame_start_us del cuadro final, no el número available_until_us como si fuera un cuadro reproducible.
-- Seek fuera: clamping al último cuadro permitido y anuncio discreto de que falta análisis; la barra y etiqueta nunca adelantan la posición visible.
-- Cambiar de modo pausa el decoder; volver conserva posición e intención, pero no reanuda hasta que el modo esté activo y el usuario no haya pausado. Cambiar archivo o limpiar destruye estado y retira fuente.
-- Clic en caja/lista pausa e identifica (job,generation,track_id). Cerrar ficha no deshace la pausa manual; actualización de datos no modifica posición.
-- Error técnico conserva prefix/ficha válidos, indica parcial y permite reproducir tail. Cancelar/revocar/expirar borra canvas, src, blobs de evidencia, caché y selección e invalida callbacks.
+La barra muestra posición, duración estimada/confirmada y cobertura disponible/pendiente. Su extremo autorizado es last_frame_start_us, no el final exclusivo del último intervalo. Home, End, flechas, PageUp/PageDown, toque y acciones MediaSession usan el mismo clamp. Fullscreen pertenece al contenedor con controles propios.
 
-## Controles
+Desconexiones recuperables reconsultan el mismo trabajo con backoff1/2/4/8s, sin POST adicional. Poll visible500ms con una petición de estado en vuelo. Ocultar el modo pausa; el vencimiento sigue activo aunque esté oculto. 401/403/404/410, limpieza o sustitución abortan lecturas, liberan frames/URLs y retiran la vista; respuestas tardías no la restauran.
 
-Barra con posición, tramo disponible y zona pendiente; duración confirmada/estimada, tiempo de análisis y estado de enriquecimiento diferenciados. Teclado: espacio play/pause, flechas salto corto dentro del límite, Home inicio, End último cuadro disponible; no interceptar escritura en otros controles. Slider ARIA min0/max duración/value posición y texto accesible que explique límite disponible. Táctil y200% conservan todas las acciones sin scroll horizontal de página.
+## Límites de memoria y formato
 
-Fullscreen aplica al contenedor canvas/controles/ficha, nunca al decoder. Si no hay soporte, usar vista ampliada dentro de página con salida accesible; no abrir fullscreen nativo del video. No ofrecer PiP, velocidad distinta de1x ni controles de reproducción remota en esta iteración. Si el navegador fuerza una presentación del decoder fuera del contenedor, detenerlo antes de continuar; no considerarlo una frontera de seguridad contra herramientas externas.
+- Anotaciones:16MiB y30s acumulados, ensamblado completo de partes y hasta4 ventanas en vuelo.
+- Bytes MP4:8MiB LRU por bloques; metadatos recibidos para parsing<=16MiB.
+- Posters de navegación:<=4 y<=16MiB estimados de píxeles.
+- Cuadros activos:<=28, más los posters; todos los VideoFrame se cierran al expulsar o retirar.
+- Cada lectura de fuente<=8MiB y requiere Range206, Content-Range exacto y ETag de la generación.
 
-Sin requestVideoFrameCallback compatible, no activar una versión visible con garantías distintas: mostrar indisponibilidad de reproducción progresiva y conservar resultados/resultado final. La aceptación requiere probar los navegadores objetivo soportados, incluida la recepción de callbacks con decoder no visible.
+Se valida VideoDecoder.isConfigSupported para el AVC concreto. MP4 fragmentado, múltiples ediciones no vacías, cambios de velocidad y matrices no ortogonales se rechazan para esta vista. Se informa incompatibilidad y se mantienen consultables los datos. WebKit de prueba en Windows no ofrece VideoDecoder: se comprobó esa salida segura, no se acredita reproducción en ese entorno.
 
-## Caché y recuperación
+## Verificación
 
-LRU de ventanas, máximo16MiB de JSON decodificado estimado y30s acumulados; selección aparte con una sola ficha. Cuatro páginas de anotación en vuelo como máximo, una de estado; cancelar obsoletas. Expulsar anotaciones sin perder cursor/estado del trabajo; retroceder recupera datos del servidor.
-
-snapshot y generation de cada respuesta se validan. Frames partidos se agrupan por frame_index y observation_offset hasta observation_total; no dibujar medias cajas. Vacíos confirmados dibujan el cuadro sin cajas y hacen avanzar cobertura. 409 por snapshot exige releer manifest y reiniciar la ventana, sin POST. Duplicados no agrandan caché ni devuelven selección antigua.
-
-Errores de medio se diagnostican por GET autenticado: 401/403/404/410 retiran; 409 espera; 5xx/red interrumpe recuperación manteniendo solo salida ya validada. Se muestra un estado terminal, no un spinner infinito, si la reproducción no puede recuperarse.
-
-## Gates observables
-
-Con límite42s de120s: permitir10/30 y último frame anterior a42, bloquear60/final por todas las vías expuestas; al crecer a55 conservar la posición. Medir desfase con marcadores de cuadro y captura de salida canvas, incluyendo tareas JS largas, VFR, pausa, saltos, resize y fullscreen. La tolerancia máxima es un intervalo de cuadro; callbacks best-effort por sí solos no acreditan el gate.
+Ver validation.md y evidence/browser-metrics.json. Las pruebas con cuarenta segundos sintéticos verifican primer buffer, píxeles, treinta saltos, una ventana de5s a1x, JS ocupado, estados y respuesta tardía. Esto no reemplaza medición prolongada con modelos reales, historial expulsado ni la prueba con cinco participantes.

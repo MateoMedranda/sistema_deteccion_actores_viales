@@ -45,6 +45,12 @@ class EnrichmentWorker:
             return "expired"
 
     def _process(self,job):
+        cached=getattr(self.service,"cached_results",lambda j:None)(job)
+        if cached is not None:
+            if self._continue(job):
+                self.jobs.progress(job.enrichment_job_id,len(cached))
+                self.jobs.finish(job.enrichment_job_id,cached)
+            return
         with InferenceMetrics(self.logger,"enrichment_job",request_id=job.source_id,
                               job_id=job.enrichment_job_id,source_type=job.source_kind) as metrics:
             if not self._continue(job):

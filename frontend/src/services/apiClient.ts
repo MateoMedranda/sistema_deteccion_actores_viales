@@ -68,6 +68,30 @@ export class ApiClient {
     await Promise.allSettled([...this.accepted.values()].map(path=>this.json(path,{method:"DELETE"},{timeoutMs:5000})));
     this.accepted.clear();
   }
+
+  sourceRange(id:string,generation:string,size:number,start:number,end:number,options:RequestOptions={}){
+    if(![size,start,end].every(Number.isSafeInteger)||start<0||end<start||end>=size||end-start+1>8*1024*1024)throw error("invalid_media_range");
+    const etag='"'+generation+'-'+size+'"';
+    return this.consume("/api/v1/video-jobs/"+encodeURIComponent(id)+"/playback/source",async response=>{
+      if(response.status!==206||response.headers.get("Content-Range")!=="bytes "+start+"-"+end+"/"+size||response.headers.get("ETag")!==etag)throw error("invalid_media_range");
+      const reader=response.body?.getReader();if(!reader)throw error("invalid_media_range");
+      const bytes=new Uint8Array(end-start+1);let offset=0;
+      try{
+        while(true){const part=await reader.read();if(part.done)break;if(offset+part.value.byteLength>bytes.byteLength)throw error("media_response_too_large");bytes.set(part.value,offset);offset+=part.value.byteLength;}
+        if(offset!==bytes.byteLength)throw error("media_response_incomplete");
+        return bytes.buffer;
+      }finally{reader.releaseLock();}
+    },{headers:{Range:"bytes="+start+"-"+end,"If-Range":etag}},{timeoutMs:10000,...options});
+  }
+  nativeSource(id:string){
+    if(!this.web)throw error("managed_transport_required");
+    return this.url("/api/v1/video-jobs/"+encodeURIComponent(id)+"/playback/source");
+  }
+  withdrawPlayback(id:string){
+    return this.consume("/api/v1/video-jobs/"+encodeURIComponent(id)+"/playback",async()=>undefined,{method:"DELETE"},{timeoutMs:5000}).then(()=>{
+      if(this.accepted.get("video")==="/api/v1/video-jobs/"+id)this.accepted.delete("video");
+    });
+  }
   nativeVideo(id:string,count=false){
     if(!this.web)throw error("managed_transport_required");
     return this.url(count?"/api/v1/count-jobs/"+encodeURIComponent(id)+"/annotated-video":"/api/v1/video-jobs/"+encodeURIComponent(id)+"/annotated-video/content");
@@ -342,11 +366,11 @@ export class ApiClient {
   }
 
   // Existing video/count callers retain their signatures and have no image timeout defaults.
-  uploadVideo(file: File, options?: RequestOptions) {
+  uploadVideo(file: File, options?: RequestOptions, progressive=false) {
     const body = new FormData();
     body.append("video", file);
     return this.json<any>(
-      "/api/v1/video-jobs",
+      "/api/v1/video-jobs"+(progressive?"?presentation=progressive":""),
       { method: "POST", body },
       options,
     );

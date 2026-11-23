@@ -95,3 +95,12 @@ Fecha: 2026-11-22. Investigación de código y fuentes primarias, sin ejecutar m
 ## Resultado Phase 0
 
 Decisiones técnicas resueltas. La dependencia nueva, los riesgos de cronología/canvas y los límites de coste tienen decisiones concretas y gates de implementación; no son resultados ya acreditados. No hay preguntas técnicas pendientes para escribir el diseño de Phase 1.
+
+
+## Evidencia de implementación y decisión corregida
+
+La copia desde video nativo produjo una discrepancia de píxeles frente a su marcador de tiempo bajo carga. La solución final admite VideoFrame inmutable por identidad y PTS; no se conserva la alternativa nativa visible. WebCodecs conserva los timestamps de chunks en los cuadros decodificados; el registro AVC define avcC como descripción del decoder. Fuentes primarias: https://www.w3.org/TR/webcodecs/ y https://www.w3.org/TR/webcodecs-avc-codec-registration/. El demux usa la API pública de https://github.com/gpac/mp4box.js/ (versión fijada2.6.0).
+
+El decoder de referencia OpenCV usa swscale con contexto propio; su conversión del corpus no coincidía con los valores predeterminados de PyAV para video etiquetado BT.709. Se fijó el perfil compatible ITU601/BICUBIC, no un nuevo tratamiento de imagen. La comparación efectiva de3.611 cuadros dio cero diferencias. Fuente de contraste: https://github.com/opencv/opencv/blob/4.x/modules/videoio/src/cap_ffmpeg_impl.hpp. El resultado medido local, y no la fuente por sí sola, acredita paridad de este corpus.
+
+WebKit Windows carece de VideoDecoder en el entorno evaluado. Los tests acreditan aviso/retirada segura y consulta de datos, sin acreditar reproducción allí. Formatos MP4 fragmentados o ediciones complejas permanecen incompatibles con la vista progresiva de esta entrega.

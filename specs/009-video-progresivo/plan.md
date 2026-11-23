@@ -14,7 +14,7 @@ El resultado progresivo tiene estados independientes del trabajo/exportación le
 
 **Language/Version**: Python 3.12, TypeScript 5.6, React 18; se conserva backend/.python-version y el entorno compatible existente.
 
-**Primary Dependencies**: FastAPI 0.115, Pydantic Settings, SQLite, OpenCV, FFmpeg/ffprobe, Ultralytics/Torch y adaptadores aprobados de atributos/placa. Incorporar durante implementación únicamente PyAV av==19.0.2 y su resolución en uv.lock para PTS durante el decode. Frontend reutiliza Vite, canvas, video y requestVideoFrameCallback; sin dependencia de streaming ni nuevo servicio.
+**Primary Dependencies**: FastAPI 0.115, Pydantic Settings, SQLite, OpenCV, FFmpeg/ffprobe, Ultralytics/Torch y adaptadores aprobados de atributos/placa. Incorporar durante implementación únicamente PyAV av==19.0.2 y su resolución en uv.lock para PTS durante el decode. Frontend usa Vite, canvas, WebCodecs/VideoFrame y mp4box2.6.0 para demux MP4; no añade servicio de streaming. Véase la enmienda de implementación.
 
 **Storage**: Tablas aditivas en backend/.runtime/video-jobs.sqlite3 para prefijo, cuadros, observaciones, unidades y revisiones. Fuente aceptada y recortes privados con recibos de propiedad/vencimiento; directorio backend/.runtime/video-progressive/. Archivos cerrados antes de publicar referencias. No historial permanente.
 
@@ -161,3 +161,14 @@ No hay violaciones que justificar. PyAV es la única dependencia nueva prevista 
 La composición de `backend/app/main.py` y `backend/app/core/lifespan.py` debe crear/injectar una sola instancia de store y servicio progresivos, registrar sus rutas y reutilizar los modelos existentes. El worker se incorpora al mismo ciclo de vida al implementar US3; se inicia una sola vez y se detiene antes de cerrar sus stores. No crear otra app global ni otro conjunto de modelos. Las pruebas de arranque/cierre con fakes verifican estas relaciones y la liberación de recursos; las reglas de conservación y retirada de resultados siguen el modelo de datos.
 
 Los nombres públicos canónicos son `PlaybackState.revision`, `PlaybackState.enrichment.status` y `PlaybackState.enrichment.revision`. El parámetro snapshot de tracks contiene el valor de enrichment.revision; no se añaden alias planos. Los modelos persistentes pueden usar nombres internos, pero el serializador y los ejemplos siguen exactamente schemas.json.
+
+
+## Enmienda de implementación — 2026-11-22
+
+Las pruebas de píxeles bajo carga descartaron la copia de HTMLVideoElement mediante requestVideoFrameCallback. La salida final usa VideoFrame inmutable de WebCodecs, con identidad de muestra y PTS contrastados con cada cuadro publicado. mp4box2.6.0 lee metadatos por rangos; @types/node22 se usa solo al probar fixtures. No cambia el contrato API ni se expone video original como fallback. El contrato actualizado está en contracts/player.md.
+
+La cronología de PyAV conserva el perfil de conversión BGR de OpenCV (ITU601/BICUBIC) mediante reformatter persistente. Se verificaron los3.611 cuadros reales sin diferencias de píxeles. Publicación de sightings por lote, ranking top-K ligero y refresco de resultados solo ante cambios evitan trabajo SQLite repetido; no cambian modelo, umbrales, tracking ni selección final.
+
+Pruebas consolidadas usan test_progressive_api/store/lifecycle/race/security/workers, test_progressive_topk/color, playbackReducer/progressive/recovery/trackResults y los dos archivos E2E video-progressive-navigation/recovery. Sus nombres sustituyen archivos separados previstos, conservando la trazabilidad de tareas.
+
+El usuario solicitó cerrar la entrega funcional y diferir la comparación larga. No se rebajan SC007/010 ni se toma un resultado parcial o de otro candidato como aceptación. También quedan pendientes la prueba humana y las verificaciones exhaustivas indicadas en validation.md.

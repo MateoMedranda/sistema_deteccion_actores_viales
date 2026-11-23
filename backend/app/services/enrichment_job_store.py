@@ -79,6 +79,7 @@ class EnrichmentJobStore:
                 if expired:
                     raise ApiError(410, "job_expired", "The enrichment job has expired.")
                 raise ApiError(404, "job_not_found", "No accessible enrichment job was found.")
+            if row["source_kind"]=="video":getattr(self,"source_guard",lambda *a:None)(row["source_id"],owner_key_id)
             return self._row(row)
 
     def dequeue(self):

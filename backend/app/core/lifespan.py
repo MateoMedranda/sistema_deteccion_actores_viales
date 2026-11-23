@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from contextlib import asynccontextmanager
 import subprocess
+import threading
 
 from fastapi import FastAPI
 
@@ -15,6 +16,10 @@ from app.adapters.video_probe import FFprobeAdapter
 from app.services.video_artifacts import VideoArtifactStore
 from app.services.video_job_store import VideoJobStore
 from app.services.video_processing import VideoProcessor
+from app.services.video_progressive_store import ProgressiveStore
+from app.services.video_progressive_service import ProgressiveService
+from app.services.progressive_evidence import ProgressiveEvidence
+from app.services.progressive_enrichment import ProgressiveEnrichment
 from app.services.video_worker import VideoWorker
 from app.services.video_job_service import VideoJobService
 from app.services.count_annotation_service import CountAnnotationService
@@ -44,10 +49,22 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         video_artifacts = VideoArtifactStore(settings.video_temp_dir)
         count_artifacts = VideoArtifactStore(settings.count_temp_dir)
         video_jobs = VideoJobStore(settings.video_job_db_path, settings.video_result_ttl_seconds, settings.max_queued_video_jobs)
+        progressive=ProgressiveStore(settings.video_job_db_path,video_jobs,settings.video_progressive_buffer_seconds)
+        evidence=ProgressiveEvidence(progressive,settings.video_temp_dir/"progressive-evidence",settings.vehicle_class_set(),settings.max_evidence_frames_per_track)
+        evidence.initialize()
+        app.state.progressive_store=progressive
+        app.state.progressive=ProgressiveService(progressive,video_jobs)
+        app.state.progressive_evidence=evidence
+        def source_guard(job,owner):
+            if progressive.exists(job):
+                with progressive.lock:progressive.row(job,owner)
+        video_artifacts.retained=progressive.retained
         count_jobs = CountJobStore(settings.count_job_db_path, settings.count_result_ttl_seconds, settings.max_queued_count_jobs)
         enrichment_artifacts = SourceArtifactStore(settings.enrichment_temp_dir)
         image_sources = ImageDetectionStore(enrichment_artifacts, settings.artifact_ttl_seconds)
         enrichment_jobs = EnrichmentJobStore(settings.enrichment_job_db_path, settings.enrichment_result_ttl_seconds, settings.max_queued_enrichment_jobs)
+        count_jobs.source_guard=source_guard
+        enrichment_jobs.source_guard=source_guard
         detector = injected_detector
         if detector is None and not settings.runtime_errors():
             try:
@@ -68,6 +85,7 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         app.state.video_artifacts = video_artifacts
         app.state.video_jobs = video_jobs
         app.state.video_job_service = VideoJobService(settings, app.state.video_probe, video_jobs, video_artifacts)
+        app.state.video_job_service.progressive=progressive
         app.state.count_jobs = count_jobs
         app.state.count_job_service = CountJobService(settings, count_jobs, video_jobs, count_artifacts, logger)
         app.state.video_tools_ready = _video_tools_available(settings)
@@ -89,9 +107,14 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         enrichment_processor = EnrichmentProcessor(attributes, localizer, reader, settings.plate_ocr_retry_threshold, settings.plate_ocr_accept_threshold, settings.max_concurrent_attribute_inferences, settings.max_concurrent_plate_inferences)
         enrichment_processor.logger = logger
         app.state.enrichment_job_service.processor = enrichment_processor
+        app.state.enrichment_job_service.progressive=evidence
         app.state.enrichment_models_ready = all(value == "ready" for value in enrichment_processor.capabilities.values())
         enrichment_worker = EnrichmentWorker(enrichment_jobs, app.state.enrichment_job_service, enrichment_processor, logger)
         enrichment_worker.start(); app.state.enrichment_worker = enrichment_worker
+        progressive_slots=threading.Lock()
+        progressive_worker=ProgressiveEnrichment(evidence,enrichment_processor,logger,progressive_slots)
+        progressive_worker.start()
+        app.state.progressive_worker=progressive_worker
         video_worker = None
         if detector is not None:
             video_worker = VideoWorker(
@@ -102,6 +125,11 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
                 video_jobs,
                 logger,
             )
+            video_worker.processor.progressive_inference_slots=progressive_slots
+            video_worker.processor.progressive=progressive
+            video_worker.processor.evidence=evidence
+            video_worker.processor.progressive_batch_frames=settings.video_progressive_batch_frames
+            video_worker.processor.progressive_batch_us=round(settings.video_progressive_batch_seconds*1e6)
             video_worker.start()
         app.state.video_worker = video_worker
         count_workers = [
@@ -118,7 +146,7 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         preview_store=PlatePreviewStore()
         app.state.plate_preview_store=preview_store
         app.state.plate_preview_service=PlatePreviewService(enrichment_jobs,image_sources,preview_store)
-        janitor = PeriodicCleanup((image_sources, enrichment_jobs, artifacts, app.state.video_job_service, count_jobs, preview_store), logger)
+        janitor = PeriodicCleanup((progressive,evidence,image_sources, enrichment_jobs, artifacts, app.state.video_job_service, count_jobs, preview_store), logger)
         app.state.temporary_cleanup = janitor
         janitor.start()
         yield
@@ -130,12 +158,15 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         enrichment_worker.close()
         if video_worker is not None:
             video_worker.close()
+        progressive_worker.close()
+        enrichment_processor.close()
+        progressive.close()
         artifacts.close()
+        video_artifacts.close()
         video_jobs.close()
         count_jobs.close()
         enrichment_jobs.close()
         enrichment_artifacts.close()
-        video_artifacts.close()
         count_artifacts.close()
 
     return lifespan

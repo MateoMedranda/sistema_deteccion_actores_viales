@@ -28,4 +28,4 @@ class VideoArtifactStore:
     def close(self) -> None:
         for root in (self.input_root, self.output_root):
             for path in root.glob("*"):
-                path.unlink(missing_ok=True)
+                if not getattr(self,"retained",lambda p:False)(path):path.unlink(missing_ok=True)

@@ -50,7 +50,11 @@ class VideoJobStore:
         with self._lock:
             self.cleanup()
             row=self._connection.execute("SELECT * FROM video_jobs WHERE job_id=? AND owner_key_id=?",(job_id,owner_key_id)).fetchone()
-            if row:return self._row(row)
+            if row:
+                if self._connection.execute("SELECT 1 FROM sqlite_master WHERE name='p_video'").fetchone():
+                    retired=self._connection.execute("SELECT retired FROM p_video WHERE job=?",(job_id,)).fetchone()
+                    if retired and retired[0]:raise ApiError(410,"job_expired","No accessible video job was found.")
+                return self._row(row)
             expired=self._connection.execute("SELECT 1 FROM expired_video_jobs WHERE job_id=? AND owner_key_id=?",(job_id,owner_key_id)).fetchone()
             raise ApiError(410 if expired else 404,"job_expired" if expired else "job_not_found","No accessible video job was found.")
     def cancel(self,job_id,owner_key_id):
@@ -128,6 +132,8 @@ class VideoJobStore:
             return {row["class_name"]:row["total"] for row in self._connection.execute("SELECT class_name,count(*) AS total FROM video_detections WHERE job_id=? GROUP BY class_name ORDER BY class_name",(job_id,))}
     def recover(self):
         with self._lock,self._connection:
+            if self._connection.execute("SELECT 1 FROM sqlite_master WHERE name='p_video'").fetchone():
+                self._connection.execute("UPDATE video_jobs SET status='failed',processing_phase='failed',error_code='processing_interrupted' WHERE status='processing' AND job_id IN (SELECT job FROM p_video)")
             rows=self._connection.execute("SELECT job_id,output_path FROM video_jobs WHERE status='processing'").fetchall()
             for row in rows:
                 self._connection.execute("DELETE FROM video_detections WHERE job_id=?",(row["job_id"],))

@@ -2,7 +2,7 @@ from app.core.config import Settings
 
 
 def test_video_defaults_are_conservative() -> None:
-    settings = Settings(api_key="test-key", model_weights_path=None)
+    settings = Settings(_env_file=None, api_key="test-key", model_weights_path=None)
     assert settings.max_video_upload_bytes == 104857600
     assert settings.max_video_duration_seconds == 120
     assert (settings.max_video_width, settings.max_video_height) == (1920, 1080)

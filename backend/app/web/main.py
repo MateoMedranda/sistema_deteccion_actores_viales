@@ -94,7 +94,7 @@ def create_web_app(settings:WebSettings|None=None,*,transport=None,clock=None):
     @app.api_route("/web-api/{suffix:path}",methods=["GET","POST","DELETE","PUT","PATCH","HEAD","OPTIONS"])
     async def relay(request:Request,suffix:str):
         kind=classify(request.method,"/"+suffix,request.scope["raw_path"],request.query_params)
-        session,token=context(request,native=kind=="native")
+        session,token=context(request,native=kind in ("native","progressive-source"))
         return await app.state.proxy.handle(request,session,token,kind)
     if settings.static_dir.is_dir():app.mount("/",StaticFiles(directory=settings.static_dir,html=True),name="frontend")
     return app

@@ -30,7 +30,7 @@ Configura `backend/.env` y `backend/.env.web`. Para el Vite predeterminado, `WEB
 
 El entorno `.venv/` existente se conserva para reutilizar los paquetes instalados. Una instalación nueva con `uv sync` desde `backend/` crea `backend/.venv/`; el script de arranque prefiere ese entorno si existe. Consulta [backend/README.md](backend/README.md).
 
-Los comandos Speckit siguen ejecutándose desde la raíz con `SPECIFY_FEATURE_DIRECTORY=specs/008-exploracion-imagen-video`. Las referencias históricas a `app/`, `tests/`, `scripts/` y los archivos `.env` corresponden ahora a sus ubicaciones dentro de `backend/`.
+Los comandos Speckit siguen ejecutándose desde la raíz con `SPECIFY_FEATURE_DIRECTORY=specs/009-video-progresivo`. Las referencias históricas a `app/`, `tests/`, `scripts/` y los archivos `.env` corresponden ahora a sus ubicaciones dentro de `backend/`.
 
 ## Configuración
 
@@ -157,3 +157,12 @@ Imagen ofrece Ajustar,100/200/400% y recorrido local por arrastre o flechas. Vid
 Reanudar consulta recupera el mismo intento si se perdió la aceptación; Reintentar enriquecimiento tras fallo conocido conserva el video. Pausar/buscar/consultar fichas no inicia inferencias. La lista usa track IDs reales y páginas de25; i/fps identifica evidencia del video procesado, distinta del instante visible. La sesión tiene900s por defecto y nunca amplía la menor vigencia. Reiniciar retira ambos espacios y conserva la configuración del operador.
 
 La selección directa en un contorno pausado queda para la [propuesta siguiente](specs/008-exploracion-imagen-video/propuesta-inspeccion-video.md). No se añaden recortes de video, historial ni políticas OCR. Resultados medidos, coste y pendientes: [validación008](specs/008-exploracion-imagen-video/validation.md).
+
+
+## Video progresivo — iteración009
+
+La interfaz permite explorar el video mientras se analiza: inicia con un prefijo confirmado de5s, bloquea avance pendiente y permite retroceder sin repetir modelos. Pausa y selecciona una caja/lista para consultar atributos, placa y recortes representativos que se enriquecen progresivamente. Análisis, enriquecimiento y exportación tienen estados independientes.
+
+El frontend requiere WebCodecs/AVC compatible; si falta, informa incompatibilidad y conserva la consulta de datos. No muestra el video crudo como alternativa. Imágenes, exportación final y conteo conservan sus contratos. Node>=20.8.1; nuevas dependencias fijadas: av19.0.2 y mp4box2.6.0.
+
+Ver [quickstart009](specs/009-video-progresivo/quickstart.md) y [validación efectiva](specs/009-video-progresivo/validation.md). La entrega funcional tiene pruebas automáticas; la comparación real larga fue diferida por el usuario y la prueba de cinco participantes sigue pendiente. Esto no acredita todavía todos los gates de rendimiento/usabilidad.

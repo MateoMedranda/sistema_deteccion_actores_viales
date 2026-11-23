@@ -65,6 +65,10 @@ class VideoProcessor:
         self.eligible_classes=set(eligible_classes);self.encoder_peak_rss=0
 
     def process(self,job):
+        progressive=getattr(self,"progressive",None)
+        if progressive is not None and progressive.exists(job.job_id):
+            from app.services.progressive_processing import ProgressiveProcessor
+            return ProgressiveProcessor(self,progressive,getattr(self,'evidence',None)).process(job)
         from app.services.video_presentation import PresentationFilter,draw_box
         import os
         if job.staged_path is None:raise VideoProcessingError("missing_input")

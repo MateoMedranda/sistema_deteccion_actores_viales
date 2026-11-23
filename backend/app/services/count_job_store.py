@@ -97,6 +97,7 @@ class CountJobStore:
             if expired:
                 raise ApiError(410, "count_job_expired", "The count result has expired.")
             raise ApiError(404, "count_job_not_found", "No accessible count job was found.")
+        getattr(self,"source_guard",lambda *a:None)(row["source_video_job_id"],owner_key_id)
         return self._row(row)
 
     def dequeue(self) -> CountJob | None:

@@ -25,6 +25,7 @@ dependencies = [
   # The approved ALPR adapter uses the stable PaddleOCR 2.x `ocr()` API.  Version 3
   # pulls PaddleX/ModelScope, which imports PyTorch during OCR startup on Windows.
   "paddleocr>=2.8,<3",
+  "av==19.0.2",
 ]
 
 [project.optional-dependencies]

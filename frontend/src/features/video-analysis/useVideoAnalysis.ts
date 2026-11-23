@@ -8,7 +8,7 @@ type Intent={intent:string;intentGeneration?:number};
 type Context={generation:number;controller:AbortController;enrichController:AbortController;file?:File;video?:VideoJob;videoId?:string;enrichId?:string;uploadIntent?:Intent;enrichIntent?:Intent;busy:boolean;enrichBusy:boolean;autoStarted:boolean;enrichPhase:EnrichmentState;videoPoll?:Timer;enrichPoll?:Timer;videoExpiry?:Timer;enrichExpiry?:Timer;enriched?:EnrichmentJob};
 const context=(generation:number,file?:File):Context=>({generation,file,controller:new AbortController(),enrichController:new AbortController(),busy:false,enrichBusy:false,autoStarted:false,enrichPhase:"waiting"});
 const identifier=(value:unknown):string=>{if(typeof value!=="string"||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(value))throw Error("invalid_receipt");return value;};
-export function useVideoAnalysis(client?:ApiClient){
+export function useVideoAnalysis(client?:ApiClient,progressive=false){
  const [state,dispatch]=useReducer(videoAnalysisReducer,initialVideoState);
  const ref=useRef(context(0)),alive=useRef(true);
  const current=(c:Context)=>alive.current&&ref.current===c&&!c.controller.signal.aborted;
@@ -22,7 +22,10 @@ export function useVideoAnalysis(client?:ApiClient){
   send(c,{type:"retire",scope});
  };
  const knownCancel=(c:Context)=>{
-  if(c.videoId&&c.video?.status!=="completed")void client?.cancelVideo(c.videoId).catch(()=>{});
+  if(c.videoId){
+   if(progressive)void client?.withdrawPlayback(c.videoId).catch(()=>{});
+   else if(c.video?.status!=="completed")void client?.cancelVideo(c.videoId).catch(()=>{});
+  }
   if(c.enrichId&&!["completed","failed","cancelled"].includes(c.enrichPhase))void client?.cancelEnrichment(c.enrichId,{timeoutMs:5000}).catch(()=>{});
  };
  useEffect(()=>{alive.current=true;return()=>{alive.current=false;const c=ref.current;clear(c);c.controller.abort();c.enrichController.abort();knownCancel(c);};},[client]);
@@ -82,13 +85,14 @@ export function useVideoAnalysis(client?:ApiClient){
    const job=parseVideoJob(await client.video(c.videoId,{signal,timeoutMs:10000}));
    if(!current(c)||signal.aborted||job.job_id!==c.videoId)return;
    if(Date.parse(job.expires_at)<=Date.now()){retire(c,"source");return;}
-   c.video=job;send(c,{type:"video",value:job});
+   c.video=job;send(c,{type:"video",value:job});if(progressive)send(c,{type:"message",value:""});
    if(c.videoExpiry)clearTimeout(c.videoExpiry);
    expiry(c,"source",Date.parse(job.expires_at));
    if(job.status==="completed"){
     send(c,{type:"processing",value:"ready"});send(c,{type:"media",value:"available"});
     send(c,{type:"message",value:"Video disponible. Puedes reproducirlo mientras consultamos los vehículos."});
-    if(job.eligible_track_count===0){c.enrichPhase="not_applicable";send(c,{type:"enrichment",value:"not_applicable"});}
+    if(progressive){c.autoStarted=true;}
+    else if(job.eligible_track_count===0){c.enrichPhase="not_applicable";send(c,{type:"enrichment",value:"not_applicable"});}
     else if(job.processing_phase==="ready"&&job.eligible_track_count!==null&&job.eligible_track_count>0&&!c.autoStarted){c.autoStarted=true;await submitEnrichment(c);}
    }else{
     send(c,{type:"processing",value:job.status});
@@ -109,9 +113,9 @@ export function useVideoAnalysis(client?:ApiClient){
   send(c,{type:"processing",value:"uploading"});
   send(c,{type:"message",value:"Subiendo y validando el video…"});
   try{
-   const receipt=await client.uploadVideo(c.file,{...c.uploadIntent,signal,timeoutMs:180000});
+   const receipt=await client.uploadVideo(c.file,{...c.uploadIntent,signal,timeoutMs:180000},progressive);
    const id=identifier(receipt.job_id);
-   if(!current(c)||signal.aborted){void client.cancelVideo(id).catch(()=>{});return;}
+   if(!current(c)||signal.aborted){void (progressive?client.withdrawPlayback(id):client.cancelVideo(id)).catch(()=>{});return;}
    c.videoId=id;send(c,{type:"processing",value:"checking"});await pollVideo(c);
   }catch(cause){if(current(c)&&!signal.aborted)error(c,cause,"source");}
   finally{c.busy=false;}
@@ -137,7 +141,7 @@ export function useVideoAnalysis(client?:ApiClient){
   try{
    if(scope==="processing"){
     if(c.videoPoll)clearTimeout(c.videoPoll);
-    if(c.videoId){c.controller.abort();c.controller=new AbortController();await client.cancelVideo(c.videoId);await pollVideo(c);}
+    if(c.videoId){c.controller.abort();c.controller=new AbortController();if(progressive){await client.withdrawPlayback(c.videoId);retire(c,"source");}else{await client.cancelVideo(c.videoId);await pollVideo(c);}}
     else{c.controller.abort();send(c,{type:"processing",value:"interrupted"});send(c,{type:"message",value:"Solicitud interrumpida. Reanuda para comprobar si fue aceptada."});}
    }else{
     if(c.enrichPoll)clearTimeout(c.enrichPoll);

@@ -14,6 +14,11 @@ ROUTES=[
  ("POST",r"/api/v1/detections/images","image-upload"),
  ("GET",rf"/api/v1/detections/{ID}/(?:original-image|annotated-image)","image"),
  ("POST",r"/api/v1/video-jobs","video-upload"),
+ ("GET|DELETE",rf"/api/v1/video-jobs/{ID}/playback","json"),
+ ("GET|HEAD",rf"/api/v1/video-jobs/{ID}/playback/source","progressive-source"),
+ ("GET",rf"/api/v1/video-jobs/{ID}/playback/(?:frames|tracks)","json"),
+ ("GET",rf"/api/v1/video-jobs/{ID}/playback/tracks/[1-9][0-9]{{0,15}}","json"),
+ ("GET",rf"/api/v1/video-jobs/{ID}/playback/tracks/[1-9][0-9]{{0,15}}/evidence/[a-f0-9-]{{36}}/(?:vehicle|plate)","progressive-evidence"),
  ("GET|DELETE",rf"/api/v1/video-jobs/{ID}","json"),
  ("GET",rf"/api/v1/video-jobs/{ID}/(?:detections|summary|annotated-video)","json"),
  ("GET",rf"/api/v1/video-jobs/{ID}/annotated-video/content","native"),
@@ -38,9 +43,18 @@ def classify(method,path,raw_path,query):
     pairs=list(query.multi_items());keys=[key for key,_ in pairs]
     if len(keys)!=len(set(keys)):raise RelayError(422,"web_query_invalid")
     allowed={"page","page_size"} if path.endswith(("/detections","/results","/events")) else {"profile"} if kind=="plate" else set()
+    if kind=="video-upload":allowed={"presentation"}
+    elif path.endswith("/playback/frames"):allowed={"from_us","to_us","snapshot","cursor"}
+    elif path.endswith("/playback/tracks"):allowed={"snapshot","cursor"}
     if not set(keys)<=allowed:raise RelayError(422,"web_query_invalid")
     for key,value in pairs:
-        if key=="profile":
+        if key=="presentation":
+            if value!="progressive":raise RelayError(422,"web_query_invalid")
+        elif key=="cursor":
+            if not re.fullmatch(r"[A-Za-z0-9_-]{1,512}",value):raise RelayError(422,"web_query_invalid")
+        elif key in ("from_us","to_us","snapshot"):
+            if not re.fullmatch(r"(?:0|[1-9][0-9]{0,15})",value) or int(value)>2**53-1:raise RelayError(422,"web_query_invalid")
+        elif key=="profile":
             if value!="display-contrast-v1":raise RelayError(422,"web_query_invalid")
         elif not re.fullmatch(r"[1-9][0-9]{0,8}",value) or (key=="page_size" and int(value)>100):raise RelayError(422,"web_query_invalid")
     return kind
@@ -68,7 +82,7 @@ class Proxy:
             self.active-=1
             if upload:self.uploads-=1
         ttl=(session.expires_at-self.sessions.clock()).total_seconds()
-        budget={"image-upload":120,"video-upload":180,"image":30,"plate":10,"native":60}.get(kind,10 if request.method=="GET" else 15)
+        budget={"image-upload":120,"video-upload":180,"image":30,"plate":10,"native":60,"progressive-source":60,"progressive-evidence":30}.get(kind,10 if request.method=="GET" else 15)
         deadline=monotonic()+min(budget,ttl)
         path=request.url.path.removeprefix("/web-api")
         headers={"X-API-Key":self.settings.backend_api_key.get_secret_value(),"Accept-Encoding":"identity"}
@@ -99,7 +113,7 @@ class Proxy:
                         if not self.sessions.get(token):raise RelayError(401,"web_session_expired")
                         data.extend(block)
                         if len(data)>16384:raise RelayError(413,"web_body_too_large")
-                if request.method in ("GET","DELETE") and data:raise RelayError(422,"web_body_not_allowed")
+                if request.method in ("GET","HEAD","DELETE") and data:raise RelayError(422,"web_body_not_allowed")
                 if data:
                     try:payload=json.loads(data)
                     except ValueError:raise RelayError(422,"web_json_invalid")
@@ -123,21 +137,21 @@ class Proxy:
                         if intent==prior["uuid"] and generation!=prior["generation"]:raise RelayError(409,"web_intent_replaced")
                     session.intents[operation]={"uuid":intent,"generation":generation}
                 headers["Idempotency-Key"]=self.sessions.upstream_key(token,operation,intent)
-            if kind=="native":
+            if kind in ("native","progressive-source"):
                 range_value=request.headers.get("range")
                 if range_value and not re.fullmatch(r"bytes=(?:[0-9]{1,20}-[0-9]{0,20}|-[1-9][0-9]{0,19})",range_value):raise RelayError(416,"web_range_invalid")
                 if range_value:headers["Range"]=range_value
                 if value:=request.headers.get("if-range"):
                     if len(value)>256 or any(ord(c)<32 for c in value):raise RelayError(416,"web_range_invalid")
                     headers["If-Range"]=value
-                job_path=path.split("/annotated-video")[0]
+                job_path=path.removesuffix("/source") if kind=="progressive-source" else path.split("/annotated-video")[0]
                 async with asyncio.timeout(max(.001,deadline-monotonic())):
                     check=await self.client.send(self.client.build_request("GET",self.settings.backend_url.rstrip("/")+job_path,headers={"X-API-Key":headers["X-API-Key"],"Accept-Encoding":"identity"}),stream=True)
                     try:
                         if check.status_code!=200:raise RelayError(check.status_code if check.status_code in (401,404,410) else 409,"web_media_unavailable")
                         metadata=await limited_json(check,deadline)
                     finally:await check.aclose()
-                if metadata.get("status")!="completed":raise RelayError(409,"web_media_unavailable")
+                if (not metadata.get("media_available") if kind=="progressive-source" else metadata.get("status")!="completed"):raise RelayError(409,"web_media_unavailable")
                 expiry=datetime.fromisoformat(metadata["expires_at"].replace("Z","+00:00"))
                 deadline=min(deadline,monotonic()+(expiry-self.sessions.clock()).total_seconds())
             target=self.settings.backend_url.rstrip("/")+path
@@ -151,13 +165,13 @@ class Proxy:
                     if "application/json" in response.headers.get("content-type",""):
                         detail=await limited_json(response,deadline)
                         if isinstance(detail,dict) and re.fullmatch(r"[a-z0-9_]{1,64}",str(detail.get("code",""))):code=detail["code"]
-                    return safe_error(response.status_code,code,{"Retry-After":"1"} if response.status_code==429 else None)
+                    return safe_error(response.status_code,code,{"Retry-After":"1"} if response.status_code==429 else {"Content-Range":response.headers["content-range"]} if response.status_code==416 and re.fullmatch(r"bytes \*/[0-9]{1,16}",response.headers.get("content-range","")) else None)
                 if response.status_code==204:return Response(status_code=204,headers={"Cache-Control":"no-store"})
                 if kind in ("json","enrich","image-upload","video-upload"):
                     payload=await limited_json(response,deadline)
                     if not self.sessions.get(token):raise RelayError(401,"web_session_expired")
                     return JSONResponse(payload,status_code=response.status_code,headers={"Cache-Control":"no-store"})
-            maximum={"native":2*1024**3,"image":64*1024**2,"plate":2*1024**2}[kind]
+            maximum={"progressive-source":2*1024**3,"progressive-evidence":16*1024**2,"native":2*1024**3,"image":64*1024**2,"plate":2*1024**2}[kind]
             content_length=response.headers.get("content-length")
             content_range=response.headers.get("content-range","")
             total=re.search(r"/([0-9]+)$",content_range)

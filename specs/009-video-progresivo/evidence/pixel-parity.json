@@ -1,0 +1,7 @@
+{
+  "frames_compared": 3611,
+  "pixel_mismatch_indexes": [],
+  "reference_has_extra_frame": false,
+  "seconds": 77.56300000008196,
+  "conversion": "opencv-bgr-v1: ITU601/BICUBIC"
+}

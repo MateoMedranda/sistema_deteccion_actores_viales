@@ -17,6 +17,7 @@ class EnrichmentProcessor:
         self.plate_slots = threading.BoundedSemaphore(max_plate)
         self.logger = logging.getLogger("road_actor_detection")
         self.image_policy=BaselinePolicy()
+        self.executor=concurrent.futures.ThreadPoolExecutor(max_workers=2)
 
     @property
     def capabilities(self):
@@ -30,10 +31,12 @@ class EnrichmentProcessor:
 
     def enrich(self, crop: np.ndarray, frame_index=None, *, request_id=None, job_id=None, source_type="image", should_continue=None):
         context = {"request_id": request_id, "job_id": job_id, "source_type": source_type}
-        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-            attrs = executor.submit(self._attributes, crop, frame_index, context)
-            plate = executor.submit(self._plate, crop, frame_index, context, should_continue)
-            return attrs.result(), plate.result()
+        attrs = self.executor.submit(self._attributes, crop, frame_index, context)
+        plate = self.executor.submit(self._plate, crop, frame_index, context, should_continue)
+        return attrs.result(), plate.result()
+
+    def close(self):
+        self.executor.shutdown(wait=True,cancel_futures=True)
 
     def _attributes(self, crop, frame_index, context=None):
         with InferenceMetrics(self.logger, "attributes", **(context or {})) as metric:

@@ -1,0 +1,25 @@
+{
+  "reference_commit": "431b6dfccea3fcaccf80feab9039c254604c0718",
+  "python": "3.12.15",
+  "platform": "Windows",
+  "architecture": "AMD64",
+  "versions": {
+    "fastapi": "0.115.14",
+    "torch": "2.14.1",
+    "ultralytics": "8.4.183",
+    "opencv-python-headless": "4.14.0.94",
+    "av": "19.0.2"
+  },
+  "sample_every_frame": true,
+  "pairs_per_video": 3,
+  "order": "AB/BA",
+  "timing_limit_ratio": 1.1,
+  "rss_limit_ratio": 1.2,
+  "real_corpus_status": "authorized_private_path_received; paired evaluation deferred by user",
+  "fixture_corpus": "backend/tests/fixtures_progressive.py",
+  "private_runtime_reused": false,
+  "candidate_source_sha256": "ac44dd0c1fc94ea4fed6f070b2ca0ef70f24dfe4a9b031aa30a0a684f80087df",
+  "private_manifest_location": ".runtime/009-private-manifest.json",
+  "pixel_parity": "evidence/pixel-parity.json",
+  "browser_metrics": "evidence/browser-metrics.json"
+}
