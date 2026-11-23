@@ -216,6 +216,8 @@ class ProgressiveProcessor:
                 )
                 else "processing_failed"
             )
+            diagnostic=str(exc) if isinstance(exc,ValueError) and str(exc) in ("invalid_observation","non_contiguous_batch","conflicting_batch","timeline_unrepresentable") else code
+            p.logger.error("progressive_processing_failed",extra={"job_id":job.job_id,"error_code":diagnostic,"exception_type":type(exc).__name__,"progress":count,"source_type":"video"})
             try:
                 row = store.row(job.job_id)
                 if row["analysis"] != "complete":

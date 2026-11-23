@@ -29,7 +29,15 @@ class YOLOv10ByteTrackAdapter:
         result=self._model.predict(frame,conf=self._confidence_threshold,device=self._device,verbose=False,mode="predict")[0]
         tracks=self._tracker.update(result.boxes.cpu().numpy(),result.orig_img)
         output=[]
+        height,width=frame.shape[:2]
         for row in tracks:
-            x1,y1,x2,y2=map(int,row[:4]);tid=int(row[4]);score=float(row[5]);cls=int(row[6])
-            output.append((Detection(cls,str(self._model.names[cls]),score,max(0,x1),max(0,y1),max(1,x2),max(1,y2)),tid))
+            # Kalman predictions may extend outside the frame when a vehicle leaves.
+            # Match Results.update's clipping without mutating the tracker's state.
+            x1,y1,x2,y2=map(int,row[:4])
+            x1,x2=max(0,min(width,x1)),max(0,min(width,x2))
+            y1,y2=max(0,min(height,y1)),max(0,min(height,y2))
+            if x2<=x1 or y2<=y1:
+                continue
+            tid=int(row[4]);score=float(row[5]);cls=int(row[6])
+            output.append((Detection(cls,str(self._model.names[cls]),score,x1,y1,x2,y2),tid))
         return output

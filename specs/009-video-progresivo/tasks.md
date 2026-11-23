@@ -326,3 +326,10 @@ Corrección solicitada por el usuario: seleccionar un camión mostraba evidencia
 - [X] T101 Restaurar primer fotograma confirmado automático del editor y arrastre con puntero/toque de extremos y línea completa, con captura de puntero, límites y alternativa de teclado; conservar contador en el video principal.
 - [X] T102 Añadir regresiones de identidad y edición, ejecutar pruebas pertinentes y validación breve real sin comparación larga ni OCR masivo.
 - [X] T103 Documentar la causa y corrección, advertir que trabajos ya analizados necesitan nuevo análisis, y confirmar la entrega conservando la rama y los cambios.
+
+
+## Phase 11: Cajas del tracker en bordes — regresión reportada
+
+- [X] T104 Recortar coordenadas exportadas de ByteTrack al ancho/alto real y omitir cajas degeneradas, conservando su estado interno, pesos, umbrales y validación del store.
+- [X] T105 Registrar tipo seguro de la excepción del pipeline sin rutas/placas/secretos para evitar diagnósticos genéricos sin evidencia.
+- [X] T106 Probar salida del borde y publicación de primeros lotes con modelo/video real autorizado, ejecutar regresiones, documentar y confirmar la corrección sin comparación larga.

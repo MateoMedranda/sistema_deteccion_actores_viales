@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-22",
+  "cause": "unclipped Kalman box rejected first atomic batch",
+  "failing_frame_index": 11,
+  "frame_width": 1920,
+  "unclipped_x_max": 1934,
+  "corrected_frames_checked": 60,
+  "corrected_frames_published": 60,
+  "corrected_batches_published": 4,
+  "available_until_us": 2000000,
+  "store_validation_enabled": true,
+  "backend_tests_passed": 335,
+  "long_benchmark_run": false
+}

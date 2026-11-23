@@ -78,3 +78,14 @@ Editor restaurado: primer cuadro confirmado automático (preview acotada a1280px
 Pruebas efectivas:333 backend,125 frontend y compilación aprobados; caso E2E de inspección/conteo aprobado en escritorio/tablet/móvil, con primer fotograma automático; verificación adicional de arrastre completo con12movimientos reales y desplazamiento esperado de ambos extremos en escritorio. La prueba unitaria verifica creación, traslación, extremo, teclado y borrado. No se ejecutó comparación larga ni prueba humana.
 
 Despliegue local: reiniciar la API para crear modelos/trackers limpios y analizar el video otra vez. Un trabajo anterior ya tiene IDs/evidencias mezclados; no se corrige al recargar la página ni se reescribe automáticamente. Los gates de rendimiento/usabilidad previos continúan pendientes.
+
+
+## Regresión de publicación en el borde — 2026-11-22
+
+El reporte de0/3611cuadros fue reproducido con la publicación real del primer lote. En el cuadro11 el tracker de Kalman produjo una caja con x_max1934 para una imagen de1920px; las siguientes llegaron a1951/1966. El store rechazó invalid_observation y revirtió el lote completo de15cuadros, dejando el límite publicado en cero. La prueba previa de40cuadros comprobaba IDs, pero no enviaba esas coordenadas a la publicación transaccional.
+
+El adaptador ahora recorta las coordenadas exportadas al ancho/alto de cada cuadro, como hacía Results.update en el flujo anterior, y omite cajas degeneradas completamente fuera de la imagen. No altera el estado interno de ByteTrack, modelo, umbral ni validación del store. El pipeline registra excepción/tipo/código seguro para diagnosticar futuros errores sin publicar texto libre, rutas o placas.
+
+Regresiones: test_tracker_identity incluye salida por borde derecho, borde superior y caja completamente externa; test_progressive_operational_metrics verifica diagnóstico seguro ante rechazo de publicación. Suite backend completa:335aprobadas. Verificación real aislada:60cuadros,4lotes publicados y2.000.000us disponibles; validación activa y sin comparación larga. No se modificaron datos del servicio activo ni se ejecutó OCR masivo.
+
+Reiniciar API y crear un análisis nuevo tras limpiar la selección anterior; el trabajo fallido no se reanuda automáticamente. La solución conserva seguimiento persistente y el editor arrastrable del primer fotograma.

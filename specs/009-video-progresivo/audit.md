@@ -28,3 +28,5 @@ Evidencia: test_progressive_demand_count, test_progressive_operational_metrics, 
 
 
 Adenda T100–T103: corregida la propiedad del tracker por video y restaurado el editor sobre primer fotograma con arrastre de extremos/segmento. Evidencia: test_tracker_identity, countEditorDrag, E2E selectivo y diagnóstico real de40cuadros documentado en validation.md. Los datos ya analizados con identidades mezcladas requieren nuevo trabajo; no se migran como si fueran correctos.
+
+T104–T106: restaurado el recorte de cajas del tracker antes de persistencia/crops. Causa real, regresiones,335tests y publicación de60cuadros en4lotes documentados en validation.md. Se conserva la validación del store y no se anuncia validación exhaustiva del video completo.
