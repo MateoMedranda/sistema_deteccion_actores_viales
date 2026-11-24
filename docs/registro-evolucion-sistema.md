@@ -36,7 +36,7 @@ Las métricas metodológicas de sesión (horas/LOC/causa de eliminación) descri
 | Perfil de tiempos por etapa y lector CLI | T107–T109 | 0107f73 | validation.md y quickstart.md |
 | Detección cada dos cuadros y predicción intermedia | T110–T112 | af091cb | evidence/detection-interval-check.json |
 | MP4 anotado solo al solicitar exportación | T113–T116 | 4a0638d | evidence/export-on-demand-validation.json |
-| Fases internas de YOLO y este índice documental | T117–T120 | Commit de esta entrega; consultar git log | evidence/detection-breakdown-check.json |
+| Fases internas de YOLO y este índice documental | T117–T120 | 3fbdee7 | evidence/detection-breakdown-check.json |
 
 Se mantienen las identidades por trabajo y el conteo basado en observaciones confirmadas; se prueban ambas políticas de detección, reintentos y retirada. Las cajas intermedias son predicciones y no generan por sí solas evidencia OCR ni cruces confirmados. Consultar las enmiendas para el alcance exacto y sus límites.
 
