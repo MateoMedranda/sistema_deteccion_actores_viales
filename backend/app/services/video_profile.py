@@ -14,6 +14,7 @@ from pathlib import Path
 import platform
 import sys
 from time import perf_counter
+from app.services.detection_profile import DetectionBreakdown, render_detection_breakdown
 
 
 ANALYSIS_STAGES = (
@@ -63,6 +64,7 @@ class VideoProfile:
         self.source = {key: getattr(job.metadata, key) for key in (
             "width", "height", "fps", "duration_seconds", "total_frames")}
         self.stages = {key: dict(calls=0, total_ms=0.0, max_ms=0.0) for key in STAGES}
+        self.detection_breakdown = DetectionBreakdown()
         self.frames = self.confirmed_frames = self.confirmed_us = 0
         self.sampling = dict(requested_interval=1, effective_interval=1, detected_frames=0, predicted_frames=0)
         self.analysis_ms = None
@@ -82,6 +84,9 @@ class VideoProfile:
             row["calls"] += 1
             row["total_ms"] += elapsed
             row["max_ms"] = max(row["max_ms"], elapsed)
+
+    def record_detection(self, speed, predict_ms, transfer_ms):
+        self.detection_breakdown.record(speed, predict_ms, transfer_ms)
 
     def confirmed(self, frames, until_us, buffer_seconds):
         self.confirmed_frames, self.confirmed_us = frames, until_us
@@ -114,7 +119,7 @@ class VideoProfile:
         fps = self.frames * 1000 / analysis if analysis > 0 else 0
         confirmed_seconds = self.confirmed_us / 1_000_000
         return {
-            "schema_version": 1, "job_id": self.job_id, "created_at": self.created_at,
+            "schema_version": 2, "job_id": self.job_id, "created_at": self.created_at,
             "updated_at": datetime.now(UTC).isoformat(), "outcome": self.outcome,
             "error_code": self.error_code, "environment": self.context, "source": self.source,
             "processed_frames": self.frames, "confirmed_frames": self.confirmed_frames,
@@ -128,6 +133,8 @@ class VideoProfile:
             "initial_buffer_available_ms": self.initial_buffer_ms,
             "other_analysis_ms": round(max(0, analysis - accounted), 3),
             "stages": stages,
+            "detection_breakdown": self.detection_breakdown.snapshot(
+                self.stages["detection"]["total_ms"], self.stages["detection"]["calls"], self.frames),
             "scope": "Worker wall time only; excludes upload, queue, model loading and browser. "
             "Detection includes preprocess/predict/postprocess and CPU transfer. "
             "Stage totals are exclusive; final encoding and cleanup are outside analysis. "
@@ -173,6 +180,7 @@ def render_report(data):
         lines.insert(2, f"Intervalo solicitado/efectivo: {sampling['requested_interval']}/{sampling['effective_interval']} | Cuadros con deteccion: {sampling['detected_frames']} | Con prediccion: {sampling['predicted_frames']}")
     for key, row in data["stages"].items():
         lines.append(f"{LABELS.get(key,key):43} {row['total_ms']:12.2f} {number(row['ms_per_processed_frame']):>11} {number(row['analysis_percent']):>11} {row['calls']:9}")
+    lines.extend(render_detection_breakdown(data))
     lines.extend([f"Otros tiempos no desglosados: {data['other_analysis_ms']:.2f} ms", "", data["scope"],
                   "El buffer disponible se mide en backend; no es el primer cuadro visto en navegador.",
                   "Comparar una ejecucion sin seleccionar vehiculos con otra con consultas permite observar la espera compartida."])

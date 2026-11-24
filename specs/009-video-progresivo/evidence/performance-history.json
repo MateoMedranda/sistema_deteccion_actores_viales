@@ -1,0 +1,175 @@
+{
+  "captured_at": "2026-11-24T23:06:54.458880+00:00",
+  "scope": "Three completed ordinary user runs. Same reported video metadata/model/device/threshold; workload not controlled. Observations, not paired benchmark acceptance.",
+  "runs": [
+    {
+      "label": "original",
+      "job_id": "fd8de1af-0fd6-474c-add1-db2b16ed801d",
+      "created_at": "2026-11-24T21:44:22.488769+00:00",
+      "source": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 30.0,
+        "duration_seconds": 120.366667,
+        "total_frames": 3611
+      },
+      "environment": {
+        "python": "3.12.15",
+        "system": "Windows",
+        "logical_cpus": 16,
+        "packages": {
+          "torch": "2.14.1+cpu",
+          "ultralytics": "8.4.62",
+          "av": "19.0.2",
+          "opencv-python-headless": "4.14.0.94"
+        },
+        "device": "cpu",
+        "model": "yolov10s_best.pt",
+        "confidence_threshold": 0.25
+      },
+      "processed_frames": 3611,
+      "sampling": null,
+      "analysis_wall_ms": 592006.128,
+      "total_wall_ms": 624680.624,
+      "analysis_fps": 6.1,
+      "initial_buffer_available_ms": 26786.173000000417,
+      "stage_total_ms": {
+        "setup": 154.644,
+        "decode": 43808.498,
+        "resource_wait": 1440.191,
+        "detection": 427596.83,
+        "tracking": 10098.733,
+        "detection_tracking_combined": 0.0,
+        "presentation": 6236.82,
+        "evidence": 22858.133,
+        "annotation": 2245.322,
+        "video_write": 56761.677,
+        "publication": 14829.418,
+        "controls": 3261.241,
+        "frame_logging": 1602.425,
+        "profile_reporting": 380.295,
+        "final_encode": 32531.979,
+        "finalization": 124.286,
+        "cleanup": 17.586
+      }
+    },
+    {
+      "label": "intervalo-2",
+      "job_id": "39a448fe-b008-46cb-9973-a8386ff7c079",
+      "created_at": "2026-11-24T22:12:39.903846+00:00",
+      "source": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 30.0,
+        "duration_seconds": 120.366667,
+        "total_frames": 3611
+      },
+      "environment": {
+        "python": "3.12.15",
+        "system": "Windows",
+        "logical_cpus": 16,
+        "packages": {
+          "torch": "2.14.1+cpu",
+          "ultralytics": "8.4.62",
+          "av": "19.0.2",
+          "opencv-python-headless": "4.14.0.94"
+        },
+        "device": "cpu",
+        "model": "yolov10s_best.pt",
+        "confidence_threshold": 0.25
+      },
+      "processed_frames": 3611,
+      "sampling": {
+        "requested_interval": 2,
+        "effective_interval": 2,
+        "detected_frames": 1806,
+        "predicted_frames": 1805
+      },
+      "analysis_wall_ms": 425748.02,
+      "total_wall_ms": 455437.176,
+      "analysis_fps": 8.482,
+      "initial_buffer_available_ms": 16693.638100055978,
+      "stage_total_ms": {
+        "setup": 54.699,
+        "decode": 51672.298,
+        "resource_wait": 4.444,
+        "detection": 245414.208,
+        "tracking": 7195.794,
+        "detection_tracking_combined": 0.0,
+        "presentation": 7441.552,
+        "evidence": 19876.082,
+        "annotation": 2409.832,
+        "video_write": 64012.848,
+        "publication": 20021.666,
+        "controls": 3100.877,
+        "frame_logging": 2277.424,
+        "profile_reporting": 339.749,
+        "final_encode": 29540.126,
+        "finalization": 104.618,
+        "cleanup": 43.774
+      }
+    },
+    {
+      "label": "intervalo-2-sin-exportacion",
+      "job_id": "61144197-1879-4852-bba9-307ad1b87b9e",
+      "created_at": "2026-11-24T22:45:55.586039+00:00",
+      "source": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 30.0,
+        "duration_seconds": 120.366667,
+        "total_frames": 3611
+      },
+      "environment": {
+        "python": "3.12.15",
+        "system": "Windows",
+        "logical_cpus": 16,
+        "packages": {
+          "torch": "2.14.1+cpu",
+          "ultralytics": "8.4.62",
+          "av": "19.0.2",
+          "opencv-python-headless": "4.14.0.94"
+        },
+        "device": "cpu",
+        "model": "yolov10s_best.pt",
+        "confidence_threshold": 0.25
+      },
+      "processed_frames": 3611,
+      "sampling": {
+        "requested_interval": 2,
+        "effective_interval": 2,
+        "detected_frames": 1806,
+        "predicted_frames": 1805
+      },
+      "analysis_wall_ms": 341580.553,
+      "total_wall_ms": 341673.553,
+      "analysis_fps": 10.571,
+      "initial_buffer_available_ms": 13806.2915999908,
+      "stage_total_ms": {
+        "setup": 15.929,
+        "decode": 50859.701,
+        "resource_wait": 582.336,
+        "detection": 238158.224,
+        "tracking": 7371.536,
+        "detection_tracking_combined": 0.0,
+        "presentation": 7445.328,
+        "evidence": 17431.735,
+        "annotation": 0.0,
+        "video_write": 0.0,
+        "publication": 13132.173,
+        "controls": 3014.931,
+        "frame_logging": 1575.998,
+        "profile_reporting": 229.015,
+        "final_encode": 0.0,
+        "finalization": 52.196,
+        "cleanup": 39.974
+      }
+    }
+  ],
+  "comparison": {
+    "last_change_total_time_reduction_percent": 24.978993590106036,
+    "last_change_fps_increase_percent": 24.628625324215992,
+    "overall_total_time_reduction_percent": 45.30428192054824,
+    "overall_fps_increase_percent": 73.29508196721312
+  }
+}

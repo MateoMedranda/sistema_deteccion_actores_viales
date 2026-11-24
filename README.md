@@ -169,3 +169,8 @@ Ver [quickstart009](specs/009-video-progresivo/quickstart.md) y [validación efe
 
 
 En el flujo progresivo actual, **Conteo opcional** permite capturar un fotograma, dibujar una línea por toque/puntero o teclado y activar un contador sobre la esquina superior derecha del video principal. El acumulado sigue el instante reproducido; retroceder no duplica cruces y no hace otra inferencia. Cambiar la línea recalcula trayectorias existentes. Los clientes anteriores sin la opción `enrichment=on-demand` conservan su política automática y conteo final. Reiniciar API y gateway tras actualizar código; el selector de `backend/start.ps1` admite entornos inválidos y puede comprobarse con `-CheckEnvironment`.
+
+
+## Registro documental del sistema
+
+El [índice de evolución y evidencia](docs/registro-evolucion-sistema.md) conecta especificaciones, decisiones, tareas, pruebas, métricas y commits para preparar los documentos del sistema.

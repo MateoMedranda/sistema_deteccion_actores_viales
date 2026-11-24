@@ -223,3 +223,14 @@ Lecturas/archivos tienen leases en ProgressiveStore.readers. El archivo final so
 Frontend añade VideoExport junto al reproductor: botón explícito, progreso de cuadros/preparación y enlace nativo protegido. Polling GET no repite POST ante pérdida de respuesta; el servidor deduplica. Gateway añade únicamente GET/POST exactos sobre playback/export con su sesión/CSRF y consultas cerradas. No se modifica autenticación ni se exponen rutas privadas. La salida H.264 se ofrece únicamente en ready. Los perfiles de exportación se guardan en video-export-profiles, separados de video-profiles, para no contaminar --latest del análisis.
 
 Compatibilidad: clientes legacy sin presentation siguen igual. CountProcessor solo solicita/espera exportación base cuando el usuario ya pidió un artefacto de conteo legacy sobre un análisis progresivo completo; el contador interactivo sigue calculándose directamente sobre observaciones reales sin generar MP4. Los gates largos/humanos pendientes no se consideran aprobados.
+
+
+## Enmienda: instrumentación interna sin modificar el predictor (2026-11-24)
+
+Se lee Results.speed del resultado inmediato de cada predict real. El código de Ultralytics activo ya mide preprocess/inference/postprocess y asigna esos milisegundos por imagen; la llamada del adaptador procesa una sola imagen. No se registran callbacks ni se reemplazan métodos del predictor, ni se repite forward o añade sincronización GPU. El mismo adaptador mantiene pesos, confianza, argumentos predict, ByteTrack y conversión de cajas.
+
+DetectionBreakdown acumula tres fases nativas y tiempos de pared de predict/transferencia CPU/NumPy en memoria constante. Se incorpora como detection_breakdown del perfil versión 2, subordinado a stages.detection; nunca se añade a ANALYSIS_STAGES ni cambia el denominador de FPS. Las medias por llamada solo usan llamadas con telemetría válida; el coste por cuadro utiliza todos los cuadros procesados. Un resultado ausente/adapter no perfilable/fallo queda explícitamente sin desglose; valores incompletos, negativos o no finitos no se copian.
+
+No atribuido = detección padre menos fases nativas conocidas menos transferencia medida, acotado inferiormente a cero. Si faltan datos también contiene trabajo de modelo desconocido: no debe interpretarse siempre como sobrecarga. Se informan discrepancias de relojes/exceso agregado sin reescalar los valores. El lector muestra esa cobertura y conserva la lectura de perfiles versión 1.
+
+La documentación versionada incorpora docs/registro-evolucion-sistema.md y evidence/performance-history.json. Se preservan los perfiles operativos completos en .runtime, sin subir medios o secretos. La sesión metodológica en metricas/sesiones no representa latencia del sistema; se documenta esa diferencia.

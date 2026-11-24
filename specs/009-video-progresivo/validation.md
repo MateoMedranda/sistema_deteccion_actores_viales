@@ -122,3 +122,12 @@ Verificación complementaria de compatibilidad: **125 pruebas frontend aprobadas
 - Autorización/CSRF, consultas/cuerpos cerrados, análisis incompleto, retirada durante encoding sin publicar parcial, artefacto perdido, recuperación tras reinicio y eliminación al vencer verificados. Un conteo legacy solicitado explícitamente conserva su salida solicitando la exportación base; el contador progresivo no la necesita.
 - Navegador real aislado (puertos 9413/9414/9415), Chromium escritorio y móvil: **2 casos aprobados**. Analizar sin POST de exportación, pulsar una vez, conservar número de detecciones, esperar ready y descargar MP4 por gateway. Capturas de ambas disposiciones revisadas. Solo datos sintéticos; no acredita rendimiento real ni amplía gates pendientes.
 - No se ejecutó comparación larga ni se inició otro análisis del video privado. Repetir un análisis nuevo tras reiniciar API/gateway permitirá medir el ahorro real. T039/T074–T077 y demás pendientes históricos permanecen abiertos.
+
+
+## Desglose interno de detección — 2026-11-24
+
+La prueba inicial falló por ausencia de detection_breakdown. Treinta regresiones focalizadas aprobadas después de instrumentar; suite completa backend: **381 passed**. Tras revisar telemetría inválida y desbordamientos: **34 regresiones pertinentes aprobadas**. La contabilidad con reloj controlado separa fases nativas, transferencia y resto sin duplicar la detección padre ni alterar FPS; los resultados del tracker conservan las pruebas de igualdad existentes. Se comprueban telemetría ausente/incompleta/inválida, tiempos no finitos, fallos sin resultado, discrepancias sin reescalado, lectura antigua y ausencia de muestras duplicadas en cuadros predichos.
+
+El diagnóstico breve real usa solo 12 cuadros fuente, 6 detecciones y 6 predicciones con los pesos/configuración existentes, sin OCR, exportación ni benchmark largo. Detalle agregado y contexto en evidence/detection-breakdown-check.json. Sirve para acreditar disponibilidad de los tiempos nativos, no para inferir el cuello de botella de un video completo; hace falta un análisis ordinario nuevo del usuario.
+
+Se conservan tres informes anteriores completados como agregados en evidence/performance-history.json. Misma metadata de video (3.611 cuadros, 1920×1080, 120,366667 s), modelo, dispositivo CPU y umbral reportados; carga externa no controlada. Los porcentajes observados no acreditan el protocolo AB/BA ni calidad/identidad exhaustiva. Las validaciones largas y humanas anteriores permanecen pendientes.

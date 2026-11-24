@@ -196,3 +196,32 @@ El análisis termina sin la fase automática de conversión. En el informe norma
 La exportación guarda un diagnóstico independiente en backend/.runtime/video-export-profiles/<job_id>.json (o junto a VIDEO_JOB_DB_PATH personalizado), con tiempos de decode/dibujo/escritura/conversión y resultado; no sustituye el informe de análisis ni ejecuta modelos. Su progreso y enlace se consultan por la nueva ruta playback/export. No renovar TTL: exportar/descargar antes del vencimiento del trabajo.
 
 Una petición de exportación puede consumir CPU/disco mientras se ejecuta; para comparar el análisis ordinario no pulsar Exportar hasta terminar la medición. La mejora real se determina repitiendo el mismo video y compartiendo el nuevo perfil. No se ejecutó el benchmark largo diferido en esta entrega.
+
+
+## Obtener el desglose interno de YOLO (2026-11-24)
+
+Solo necesita reiniciar la API para cargar esta instrumentación; no se modifican gateway, frontend ni .env. Detener con Ctrl+C en su propia terminal y, desde la raíz del checkout principal:
+
+~~~powershell
+.\backend\start.ps1 -Service api
+~~~
+
+Crear un análisis nuevo del mismo video, sin solicitar exportación; para una primera referencia, no seleccionar vehículos mientras procesa. Al terminar o fallar:
+
+~~~powershell
+.\.venv\Scripts\python.exe .\backend\scripts\report_video_profile.py --latest
+~~~
+
+Además de la tabla general aparecerá «Desglose interno de detección»: preparación de entrada, inferencia de la red, posprocesamiento, transferencia de cajas y tiempo no atribuido. La cobertura debería coincidir con las llamadas reales a YOLO, no con todos los cuadros: con intervalo 2, 3.611 cuadros implican 1.806 llamadas. No se reutilizan tiempos de la detección anterior en cuadros predichos.
+
+Para compartir el JSON completo desde PowerShell:
+
+~~~powershell
+.\.venv\Scripts\python.exe .\backend\scripts\report_video_profile.py --latest --json | Set-Content -Encoding UTF8 "$env:USERPROFILE\Desktop\perfil-video.json"
+~~~
+
+Revisar job_id, outcome, analysis_complete y schema_version=2; un archivo exportado al escritorio es una copia del momento, mientras el original se actualiza aproximadamente cada cinco segundos y al finalizar. --job ID_DEL_TRABAJO selecciona una ejecución exacta. Informes anteriores no se completan retroactivamente y el lector indicará que falta el desglose.
+
+En detection_breakdown: phases contiene totales/medias/máximos de llamadas con datos nativos válidos; boxes_transfer separa CPU/NumPy; predict_wall es un subtotal de pared, no otra fase para sumar; unattributed_detection_ms conserva el resto del padre. missing/invalid/unrecorded describen falta de cobertura. Un n/d significa que no se midió, no que la fase no costara nada. native_exceeds_wall_calls/overreported_ms señalan discrepancias sin alterar los valores. Las fases ya están incluidas en stages.detection: no sumarlas otra vez al tiempo de análisis.
+
+Los registros para futuros documentos se encuentran desde docs/registro-evolucion-sistema.md. Las comparaciones ya interpretadas se preservan en specs/009-video-progresivo/evidence/performance-history.json; no dependen únicamente del chat o de conservar .runtime.

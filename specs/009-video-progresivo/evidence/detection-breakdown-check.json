@@ -1,0 +1,78 @@
+{
+  "scope": "12 source frames and 6 detections only; real model telemetry diagnostic. No OCR, export or performance/accuracy acceptance.",
+  "environment": {
+    "python": "3.12.15",
+    "system": "Windows",
+    "logical_cpus": 16,
+    "packages": {
+      "torch": "2.14.1+cpu",
+      "ultralytics": "8.4.62",
+      "av": "19.0.2",
+      "opencv-python-headless": "4.14.0.94"
+    },
+    "device": "cpu",
+    "model": "yolov10s_best.pt",
+    "confidence_threshold": 0.25
+  },
+  "source_frames": 12,
+  "detection_calls": 6,
+  "prediction_frames": 6,
+  "detection_breakdown": {
+    "source": "ultralytics.Results.speed",
+    "unit": "ms",
+    "included_in": "stages.detection",
+    "recorded_calls": 6,
+    "native_timing_calls": 6,
+    "missing_native_timing_calls": 0,
+    "invalid_native_timing_calls": 0,
+    "unrecorded_detection_calls": 0,
+    "native_exceeds_wall_calls": 0,
+    "parent_detection_ms": 888.214,
+    "native_total_ms": 812.697,
+    "phases": {
+      "preparation": {
+        "calls": 6,
+        "total_ms": 39.962,
+        "mean_call_ms": 6.66,
+        "max_call_ms": 24.861,
+        "ms_per_processed_frame": 3.33,
+        "detection_percent": 4.499
+      },
+      "inference": {
+        "calls": 6,
+        "total_ms": 767.483,
+        "mean_call_ms": 127.914,
+        "max_call_ms": 165.122,
+        "ms_per_processed_frame": 63.957,
+        "detection_percent": 86.407
+      },
+      "postprocessing": {
+        "calls": 6,
+        "total_ms": 5.252,
+        "mean_call_ms": 0.875,
+        "max_call_ms": 1.044,
+        "ms_per_processed_frame": 0.438,
+        "detection_percent": 0.591
+      }
+    },
+    "predict_wall": {
+      "calls": 6,
+      "total_ms": 887.878,
+      "mean_call_ms": 147.98,
+      "max_call_ms": 253.62,
+      "ms_per_processed_frame": 73.99,
+      "detection_percent": 99.962
+    },
+    "boxes_transfer": {
+      "calls": 6,
+      "total_ms": 0.316,
+      "mean_call_ms": 0.053,
+      "max_call_ms": 0.07,
+      "ms_per_processed_frame": 0.026,
+      "detection_percent": 0.036
+    },
+    "unattributed_detection_ms": 75.201,
+    "overreported_ms": 0,
+    "notes": "Nested timings: do not add to pipeline totals. Native phases cover successful predict calls with complete finite telemetry. Unattributed time includes setup, warmup, callbacks, orchestration and instrumentation; when coverage is incomplete it also contains unknown model work. No rescaling or invented phase timings."
+  }
+}

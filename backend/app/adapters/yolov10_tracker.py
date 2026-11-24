@@ -68,9 +68,21 @@ class YOLOv10ByteTrackAdapter:
         self.last_was_detection = self.requires_detection
         if self.last_was_detection:
             with measure("detection"):
+                before_predict = profile.clock() if profile is not None else 0
                 result = self._model.predict(frame, conf=self._confidence_threshold,
                     device=self._device, verbose=False, mode="predict")[0]
+                after_predict = profile.clock() if profile is not None else 0
                 detections = result.boxes.cpu().numpy()
+                after_transfer = profile.clock() if profile is not None else 0
+            if profile is not None:
+                # Read existing per-result telemetry; no predictor hooks, extra
+                # forward passes, synchronization or mutation of shared models.
+                try:
+                    speed = getattr(result, "speed", None)
+                except Exception:
+                    speed = None
+                profile.record_detection(speed, (after_predict-before_predict)*1000,
+                                         (after_transfer-after_predict)*1000)
             with measure("tracking"):
                 tracks = self._tracker.update(detections, result.orig_img)
                 output = self._convert(tracks, frame.shape[:2])

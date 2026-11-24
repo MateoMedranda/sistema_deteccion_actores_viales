@@ -35,3 +35,8 @@ T104–T106: restaurado el recorte de cajas del tracker antes de persistencia/cr
 ## Seguimiento de cambio aprobado — exportación explícita, 2026-11-24
 
 Se separa la capacidad de analizar de la de producir MP4. Esta enmienda sustituye la obligación anterior de exportar automáticamente en el camino progresivo; los clientes legacy permanecen compatibles. T113–T116 cuentan con pruebas de pipeline, contratos/seguridad/ciclo de vida, frontend y descarga real en dos disposiciones. No se declara aceptación completa de la iteración ni se cierran validaciones largas/humanas pendientes. Véase validation.md y evidence/export-on-demand-validation.json.
+
+
+## Seguimiento: instrumentación interna y documentación, 2026-11-24
+
+T117–T120 añaden observabilidad sin cambiar el predictor y consolidan trazabilidad documental. El índice docs/registro-evolucion-sistema.md relaciona requisitos, diseño, contratos, tareas, pruebas, sesiones y commits; performance-history.json preserva las comparaciones ordinarias existentes. La evidencia distingue diagnóstico funcional breve, mediciones ordinarias y evaluaciones controladas pendientes. No se declaran optimizaciones del motor ni nuevos FPS por añadir mediciones.

@@ -361,3 +361,13 @@ Eliminar dibujo/escritura/conversión del recorrido progresivo. Conservar detecc
 - [X] T114 Incorporar exportación durable, acotada e idempotente con autorización/TTL, manejo independiente de fallos/reintentos y limpieza; conservar descarga y conteo legacy.
 - [X] T115 Incorporar botón de exportación, progreso y descarga protegida en frontend/gateway, sin disparar exportaciones por leer estados.
 - [X] T116 Probar ausencia de generación automática, exportación sin inferencia, contratos, reintentos, retirada y frontend; ejecutar suites, documentar y confirmar sin benchmark largo.
+
+
+## Phase 15: Desglose de detección y trazabilidad documental
+
+El usuario solicita separar preparación/inferencia/posprocesamiento sin cambiar el comportamiento y consolidar el registro necesario para documentar el sistema.
+
+- [X] T117 Recoger tiempos nativos Results.speed y medir transferencia de cajas sin modificar predict, pesos, umbrales, intervalo, identidad, conteo ni exportación; contabilizar subtotales sin duplicar etapas.
+- [X] T118 Mostrar cobertura, datos ausentes/inválidos, discrepancias y tiempo no atribuido en JSON/CLI, conservando lectura de informes anteriores y acumulación acotada.
+- [X] T119 Probar contabilidad, fallos y cuadros predichos; ejecutar suite y diagnóstico breve real sin comparación larga; documentar cómo obtener el informe nuevo.
+- [X] T120 Consolidar índice documental, decisiones y evidencia agregada de las mediciones anteriores, distinguir datos operativos de métricas de trabajo y conservar pendientes históricos; confirmar la entrega.
