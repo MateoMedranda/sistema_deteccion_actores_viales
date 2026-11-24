@@ -127,6 +127,7 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
                 video_jobs,
                 logger,
             )
+            video_worker.processor.profile_root=settings.video_job_db_path.parent / "video-profiles"
             video_worker.processor.progressive_inference_slots=progressive_slots
             video_worker.processor.progressive=progressive
             video_worker.processor.evidence=evidence

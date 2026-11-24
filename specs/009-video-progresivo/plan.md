@@ -192,3 +192,10 @@ El adaptador registraba model.track con persist=False en el primer cuadro. La ve
 La primera muestra confirmada se copia desde VideoFrame a un canvas de preview acotado a1280px de ancho, con la misma orientación. No hay otro decode. El editor lo muestra automáticamente, con captura de puntero y arrastre de extremos o segmento completo, traslación acotada, teclado y ajustes secundarios plegados. Se mantiene el conteo progresivo previamente implementado.
 
 La corrección modifica identidades previamente incorrectas; no se fuerza equivalencia con las asociaciones defectuosas de la referencia. El ensayo corto de40cuadros y las regresiones de orden/imagen intercalada son evidencia de esta corrección, no aceptación de toda la precisión ni del benchmark pendiente.
+
+
+## Enmienda aprobada: perfil por etapas (2026-11-24)
+
+El usuario solicita implementar únicamente la medición antes de decidir optimizaciones. `VideoProfile` acumula tiempo de pared exclusivo en memoria constante por trabajo; instrumenta el adaptador ByteTrack sin cambiar sus entradas, llamadas predict, asociación ni clipping. Espera del bloqueo se mide antes de adquirirlo; detección incluye predict/pre/post/transferencia, seguimiento incluye inicialización y conversión. El adaptador no perfilable se declara combinado. Se conservan los contadores históricos usados por el arnés.
+
+El pipeline separa decode, controles, presentación, selección/guardado de recortes, dibujo, escritura y transacción de publicación; cierre/exportación H.264 y limpieza quedan fuera de `analysis_wall_ms`. Guarda agregados privados junto al DB en `video-profiles`, cada cinco segundos y al terminar, con JSON atómico y fallo de escritura no fatal. La CLI local selecciona último/ID y muestra tabla o JSON sin iniciar inferencia. No cambia contratos HTTP ni configuración privada, ni activa las optimizaciones de los puntos 2/4/5. El primer perfil real del uso ordinario queda a cargo del usuario; no se ejecuta benchmark largo ni se atribuye una mejora de FPS por instrumentar.

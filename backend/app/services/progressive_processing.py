@@ -6,6 +6,7 @@ import cv2
 import psutil
 from app.adapters.timed_video_decoder import TimedVideoDecoder
 from app.services.video_presentation import PresentationFilter, draw_box
+from app.services.video_profile import VideoProfile
 
 
 class ProgressiveProcessor:
@@ -23,119 +24,144 @@ class ProgressiveProcessor:
         p.store.register_path(job.job_id, output)
         started = perf_counter()
         metrics = dict(decode_ms=0, inference_ms=0, evidence_ms=0, render_ms=0, publish_ms=0)
-        previous = started
+        profile = VideoProfile(job, p.detector, p.profile_root)
         p.progressive_metrics = metrics
         writer = None
         batch = []
         prepared = []
         count = 0
         tracker = IoUTracker()
-        model = (
-            p.detector.create_video_tracker()
-            if hasattr(p.detector, "create_video_tracker")
-            else None
-        )
+        model = None
+        frames = None
         display = PresentationFilter()
         decoder = TimedVideoDecoder(job.staged_path)
 
         def check():
-            store.row(job.job_id)
-            if p.store.is_cancelled(job.job_id):
-                raise VideoProcessingError("job_cancelled")
-            if perf_counter() - started >= p.timeout_seconds:
-                raise VideoProcessingError("job_timeout")
+            with profile.measure("controls"):
+                store.row(job.job_id)
+                if p.store.is_cancelled(job.job_id):
+                    raise VideoProcessingError("job_cancelled")
+                if perf_counter() - started >= p.timeout_seconds:
+                    raise VideoProcessingError("job_timeout")
 
         def publish():
             if not batch:
                 return
             check()
             before = perf_counter()
-            store.publish(
-                job.job_id,
-                batch,
-                on_publish=(lambda: self.evidence.commit(job, prepared, batch))
-                if self.evidence
-                else None,
-            )
-            metrics["publish_ms"] += (perf_counter() - before) * 1000
-            p.store.progress(job.job_id, count)
+            with profile.measure("publication"):
+                store.publish(
+                    job.job_id,
+                    batch,
+                    on_publish=(lambda: self.evidence.commit(job, prepared, batch))
+                    if self.evidence
+                    else None,
+                )
+                metrics["publish_ms"] += (perf_counter() - before) * 1000
+                p.store.progress(job.job_id, count)
+            profile.confirmed(count, batch[-1]["end_us"], store.buffer_seconds)
             batch.clear()
             prepared.clear()
 
         try:
-            for frame in decoder:
+            with profile.measure("setup"):
+                model = p.detector.create_video_tracker() if hasattr(p.detector, "create_video_tracker") else None
+                frames = iter(decoder)
+            while True:
+                before_decode = perf_counter()
+                with profile.measure("decode"):
+                    try:
+                        frame = next(frames)
+                    except StopIteration:
+                        break
+                metrics["decode_ms"] += (perf_counter() - before_decode) * 1000
                 frame_started = perf_counter()
-                metrics["decode_ms"] += (perf_counter() - previous) * 1000
                 check()
                 image = frame.image
-                if writer is None:
-                    store.set_timeline(job.job_id, decoder.timeline)
-                    h, w = image.shape[:2]
-                    with p.store._lock, p.store._connection:
-                        p.store._connection.execute(
-                            "UPDATE video_jobs SET width=?,height=? WHERE job_id=?",
-                            (w, h, job.job_id),
+                with profile.measure("setup"):
+                    if writer is None:
+                        store.set_timeline(job.job_id, decoder.timeline)
+                        h, w = image.shape[:2]
+                        with p.store._lock, p.store._connection:
+                            p.store._connection.execute(
+                                "UPDATE video_jobs SET width=?,height=? WHERE job_id=?",
+                                (w, h, job.job_id),
+                            )
+                        writer = cv2.VideoWriter(
+                            os.path.relpath(raw),
+                            cv2.VideoWriter_fourcc(*"mp4v"),
+                            job.metadata.fps,
+                            (w, h),
                         )
-                    writer = cv2.VideoWriter(
-                        os.path.relpath(raw),
-                        cv2.VideoWriter_fourcc(*"mp4v"),
-                        job.metadata.fps,
-                        (w, h),
-                    )
-                    if not writer.isOpened():
-                        raise VideoProcessingError("output_initialization_failed")
+                        if not writer.isOpened():
+                            raise VideoProcessingError("output_initialization_failed")
                 before = perf_counter()
-                with p.progressive_inference_slots:
+                with profile.measure("resource_wait"):
+                    p.progressive_inference_slots.acquire()
+                try:
                     if model is not None:
                         try:
-                            pairs = model.track(image)
+                            if hasattr(model, "track_profiled"):
+                                pairs = model.track_profiled(image, profile)
+                            else:
+                                with profile.measure("detection_tracking_combined"):
+                                    pairs = model.track(image)
                         except ModuleNotFoundError as e:
                             if e.name != "scipy":
                                 raise
                             model = None
                     if model is None:
-                        detections = p.detector.detect(image)
-                        pairs = list(zip(detections, tracker.assign(detections), strict=True))
+                        with profile.measure("detection"):
+                            detections = p.detector.detect(image)
+                        with profile.measure("tracking"):
+                            pairs = list(zip(detections, tracker.assign(detections), strict=True))
+                finally:
+                    p.progressive_inference_slots.release()
                 metrics["inference_ms"] += (perf_counter() - before) * 1000
                 before = perf_counter()
-                observed = [
-                    dict(
-                        track_id=tid,
-                        class_name=d.class_name,
-                        bbox=(d.x_min, d.y_min, d.x_max, d.y_max),
-                    )
-                    for d, tid in pairs
-                ]
-                boxes = display.present(image, frame.frame_index, observed)
-                observations = []
-                for d, tid in pairs:
-                    bbox = {k: getattr(d, k) for k in ("x_min", "y_min", "x_max", "y_max")}
-                    box = boxes.get(tid)
-                    observations.append(
+                with profile.measure("presentation"):
+                    observed = [
                         dict(
                             track_id=tid,
-                            class_id=d.class_id,
                             class_name=d.class_name,
-                            confidence=d.confidence,
-                            raw_bbox=bbox,
-                            display_bbox=dict(
-                                zip(("x_min", "y_min", "x_max", "y_max"), map(int, box))
-                            )
-                            if box
-                            else None,
+                            bbox=(d.x_min, d.y_min, d.x_max, d.y_max),
                         )
-                    )
+                        for d, tid in pairs
+                    ]
+                    boxes = display.present(image, frame.frame_index, observed)
+                    observations = []
+                    for d, tid in pairs:
+                        bbox = {k: getattr(d, k) for k in ("x_min", "y_min", "x_max", "y_max")}
+                        box = boxes.get(tid)
+                        observations.append(
+                            dict(
+                                track_id=tid,
+                                class_id=d.class_id,
+                                class_name=d.class_name,
+                                confidence=d.confidence,
+                                raw_bbox=bbox,
+                                display_bbox=dict(
+                                    zip(("x_min", "y_min", "x_max", "y_max"), map(int, box))
+                                )
+                                if box
+                                else None,
+                            )
+                        )
                 metrics["render_ms"] += (perf_counter() - before) * 1000
                 before = perf_counter()
-                if self.evidence:
-                    prepared.extend(self.evidence.prepare(job, frame, pairs))
+                with profile.measure("evidence"):
+                    if self.evidence:
+                        prepared.extend(self.evidence.prepare(job, frame, pairs))
                 metrics["evidence_ms"] += (perf_counter() - before) * 1000
                 before = perf_counter()
-                for d, tid in pairs:
-                    if tid in boxes:
-                        draw_box(image, boxes[tid], d.class_name)
-                writer.write(image)
+                with profile.measure("annotation"):
+                    for d, tid in pairs:
+                        if tid in boxes:
+                            draw_box(image, boxes[tid], d.class_name)
+                with profile.measure("video_write"):
+                    writer.write(image)
                 count += 1
+                profile.frames = count
                 metrics["render_ms"] += (perf_counter() - before) * 1000
                 batch.append(
                     dict(
@@ -151,60 +177,67 @@ class ProgressiveProcessor:
                     or batch[-1]["end_us"] - batch[0]["start_us"] >= p.progressive_batch_us
                 ):
                     publish()
-                p.logger.info("video_frame_processed", extra={"job_id":job.job_id,"source_type":"video","progress":count,"frame_ms":round((perf_counter()-frame_started)*1000,3),"memory_mb":round(psutil.Process().memory_info().rss/1024**2,2),"tracker":"model" if model is not None else "iou-fallback"})
-                previous = perf_counter()
+                with profile.measure("frame_logging"):
+                    p.logger.info("video_frame_processed", extra={"job_id":job.job_id,"source_type":"video","progress":count,"frame_ms":round((perf_counter()-frame_started)*1000,3),"memory_mb":round(psutil.Process().memory_info().rss/1024**2,2),"tracker":"model" if model is not None else "iou-fallback"})
+                profile.checkpoint(p.logger)
             publish()
             if count == 0:
                 raise VideoProcessingError("invalid_video")
             metrics["analysis_ms"] = (perf_counter() - started) * 1000
-            store.finish_analysis(job.job_id)
-            writer.release()
-            writer = None
-            p.store.phase(job.job_id, "encoding", count)
-            store.export(job.job_id, "encoding")
-            p._encode_h264(
-                raw,
-                output,
-                lambda: p.store.is_cancelled(job.job_id),
-                started + p.timeout_seconds,
-                job.expires_at,
-            )
-            with p.store._lock, p.store._connection:
-                row = p.store.get(job.job_id, job.owner_key_id)
-                if p.store.is_cancelled(job.job_id):
-                    raise VideoProcessingError("job_cancelled")
-                classes = [
-                    r[0]
-                    for r in p.store._connection.execute(
-                        "SELECT DISTINCT class_name FROM video_detections WHERE job_id=?",
-                        (job.job_id,),
+            profile.end_analysis(complete=True)
+            with profile.measure("finalization"):
+                store.finish_analysis(job.job_id)
+                writer.release()
+                writer = None
+                p.store.phase(job.job_id, "encoding", count)
+                store.export(job.job_id, "encoding")
+            with profile.measure("final_encode"):
+                p._encode_h264(
+                    raw,
+                    output,
+                    lambda: p.store.is_cancelled(job.job_id),
+                    started + p.timeout_seconds,
+                    job.expires_at,
+                )
+            with profile.measure("finalization"):
+                with p.store._lock, p.store._connection:
+                    row = p.store.get(job.job_id, job.owner_key_id)
+                    if p.store.is_cancelled(job.job_id):
+                        raise VideoProcessingError("job_cancelled")
+                    classes = [
+                        r[0]
+                        for r in p.store._connection.execute(
+                            "SELECT DISTINCT class_name FROM video_detections WHERE job_id=?",
+                            (job.job_id,),
+                        )
+                    ]
+                    eligible = (
+                        p.store._connection.execute(
+                            "SELECT COUNT(DISTINCT track_id) FROM video_detections WHERE job_id=? AND lower(class_name) IN ("
+                            + ",".join("?" * len(p.eligible_classes))
+                            + ")",
+                            (job.job_id, *p.eligible_classes),
+                        ).fetchone()[0]
+                        if p.eligible_classes
+                        else 0
                     )
-                ]
-                eligible = (
                     p.store._connection.execute(
-                        "SELECT COUNT(DISTINCT track_id) FROM video_detections WHERE job_id=? AND lower(class_name) IN ("
-                        + ",".join("?" * len(p.eligible_classes))
-                        + ")",
-                        (job.job_id, *p.eligible_classes),
-                    ).fetchone()[0]
-                    if p.eligible_classes
-                    else 0
-                )
-                p.store._connection.execute(
-                    "UPDATE video_jobs SET status='completed',processing_phase='ready',output_path=?,actual_frame_count=?,total_frames=?,processed_frames=?,frame_total_confirmed=1,eligible_track_count=?,classes_present=? WHERE job_id=?",
-                    (
-                        str(output),
-                        count,
-                        count,
-                        count,
-                        eligible,
-                        __import__("json").dumps(sorted(classes)),
-                        job.job_id,
-                    ),
-                )
-            store.export(job.job_id, "ready")
+                        "UPDATE video_jobs SET status='completed',processing_phase='ready',output_path=?,actual_frame_count=?,total_frames=?,processed_frames=?,frame_total_confirmed=1,eligible_track_count=?,classes_present=? WHERE job_id=?",
+                        (
+                            str(output),
+                            count,
+                            count,
+                            count,
+                            eligible,
+                            __import__("json").dumps(sorted(classes)),
+                            job.job_id,
+                        ),
+                    )
+                store.export(job.job_id, "ready")
+            profile.outcome = "completed"
             return "completed"
         except Exception as exc:
+            profile.end_analysis()
             code = (
                 str(exc)
                 if str(exc)
@@ -216,6 +249,8 @@ class ProgressiveProcessor:
                 )
                 else "processing_failed"
             )
+            profile.outcome = "cancelled" if code == "job_cancelled" else "failed"
+            profile.error_code = code
             diagnostic=str(exc) if isinstance(exc,ValueError) and str(exc) in ("invalid_observation","non_contiguous_batch","conflicting_batch","timeline_unrepresentable") else code
             p.logger.error("progressive_processing_failed",extra={"job_id":job.job_id,"error_code":diagnostic,"exception_type":type(exc).__name__,"progress":count,"source_type":"video"})
             try:
@@ -230,12 +265,18 @@ class ProgressiveProcessor:
                 raise
             raise VideoProcessingError(code) from exc
         finally:
-            if writer is not None:
-                writer.release()
-            raw.unlink(missing_ok=True)
-            p.store.release(job.job_id)
-            if self.evidence:
-                self.evidence.discard_pending(job.job_id)
+            with profile.measure("cleanup"):
+                if frames is not None:
+                    frames.close()
+                if writer is not None:
+                    writer.release()
+                raw.unlink(missing_ok=True)
+                p.store.release(job.job_id)
+                if self.evidence:
+                    self.evidence.discard_pending(job.job_id)
+            profile.end_analysis()
+            if profile.save(p.logger):
+                p.logger.info("video_profile_ready", extra={"job_id": job.job_id, "status": profile.outcome})
             p.logger.info(
                 "progressive_video_outcome",
                 extra={

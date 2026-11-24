@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from contextlib import nullcontext
 import numpy as np
 from app.domain.models import Detection
 
@@ -21,23 +22,34 @@ class YOLOv10ByteTrackAdapter:
         self._tracker=None
 
     def track(self, frame: np.ndarray) -> list[tuple[Detection,int]]:
+        return self._track(frame)
+
+    def track_profiled(self, frame, profile):
+        return self._track(frame, profile)
+
+    def _track(self, frame, profile=None):
+        measure = profile.measure if profile is not None else lambda stage: nullcontext()
         if self._tracker is None:
-            from ultralytics.trackers.byte_tracker import BYTETracker
-            from ultralytics.utils import YAML, IterableSimpleNamespace
-            from ultralytics.utils.checks import check_yaml
-            self._tracker=BYTETracker(args=IterableSimpleNamespace(**YAML.load(check_yaml("bytetrack.yaml"))))
-        result=self._model.predict(frame,conf=self._confidence_threshold,device=self._device,verbose=False,mode="predict")[0]
-        tracks=self._tracker.update(result.boxes.cpu().numpy(),result.orig_img)
-        output=[]
-        height,width=frame.shape[:2]
-        for row in tracks:
-            # Kalman predictions may extend outside the frame when a vehicle leaves.
-            # Match Results.update's clipping without mutating the tracker's state.
-            x1,y1,x2,y2=map(int,row[:4])
-            x1,x2=max(0,min(width,x1)),max(0,min(width,x2))
-            y1,y2=max(0,min(height,y1)),max(0,min(height,y2))
-            if x2<=x1 or y2<=y1:
-                continue
-            tid=int(row[4]);score=float(row[5]);cls=int(row[6])
-            output.append((Detection(cls,str(self._model.names[cls]),score,x1,y1,x2,y2),tid))
-        return output
+            with measure("tracking"):
+                from ultralytics.trackers.byte_tracker import BYTETracker
+                from ultralytics.utils import YAML, IterableSimpleNamespace
+                from ultralytics.utils.checks import check_yaml
+                self._tracker=BYTETracker(args=IterableSimpleNamespace(**YAML.load(check_yaml("bytetrack.yaml"))))
+        with measure("detection"):
+            result=self._model.predict(frame,conf=self._confidence_threshold,device=self._device,verbose=False,mode="predict")[0]
+            # Transfer belongs to prediction, not ByteTrack CPU association.
+            detections=result.boxes.cpu().numpy()
+        with measure("tracking"):
+            tracks=self._tracker.update(detections,result.orig_img)
+            output=[]
+            height,width=frame.shape[:2]
+            for row in tracks:
+                # Preserve clipping and identity state from the approved adapter.
+                x1,y1,x2,y2=map(int,row[:4])
+                x1,x2=max(0,min(width,x1)),max(0,min(width,x2))
+                y1,y2=max(0,min(height,y1)),max(0,min(height,y2))
+                if x2<=x1 or y2<=y1:
+                    continue
+                tid=int(row[4]);score=float(row[5]);cls=int(row[6])
+                output.append((Detection(cls,str(self._model.names[cls]),score,x1,y1,x2,y2),tid))
+            return output

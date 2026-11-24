@@ -89,3 +89,14 @@ El adaptador ahora recorta las coordenadas exportadas al ancho/alto de cada cuad
 Regresiones: test_tracker_identity incluye salida por borde derecho, borde superior y caja completamente externa; test_progressive_operational_metrics verifica diagnóstico seguro ante rechazo de publicación. Suite backend completa:335aprobadas. Verificación real aislada:60cuadros,4lotes publicados y2.000.000us disponibles; validación activa y sin comparación larga. No se modificaron datos del servicio activo ni se ejecutó OCR masivo.
 
 Reiniciar API y crear un análisis nuevo tras limpiar la selección anterior; el trabajo fallido no se reanuda automáticamente. La solución conserva seguimiento persistente y el editor arrastrable del primer fotograma.
+
+
+## Instrumentación por etapas — 2026-11-24
+
+- Cambio solicitado: T107–T109, medición del flujo existente antes de decidir optimizaciones. No se cambian modelos, píxeles, umbrales, frecuencia, política de evidencias, identidad, conteo ni exportación.
+- Verificación: 13 pruebas focalizadas aprobadas; suite completa backend: **343 passed** (una advertencia de deprecación Starlette/AnyIO). Tras la revisión final del cierre del decodificador y dos casos adicionales de atribución exacta YOLO/ByteTrack y fallo de exportación: **19 regresiones pertinentes aprobadas**. Sin cambios frontend ni nuevas dependencias.
+- Contabilidad con reloj controlado: espera, detección, tracking, otros tiempos y conversión final no se mezclan; costes por cuadro y porcentaje se calculan con base explícita. El tiempo de un bloque que falla también queda contabilizado.
+- Igualdad del tracker normal/perfilado en ocho cuadros sintéticos con orden de detecciones alternado; se conserva salida de detecciones/IDs. El camino real llama una vez a predict por cuadro, como antes.
+- Integración: video sintético de doce cuadros completa análisis/exportación con informe, separación de etapas y lectura CLI por último/ID/JSON; fallo de detección previo al primer lote genera informe seguro sin texto privado; carpeta de informe no escribible no falla el video.
+- Resúmenes periódicos reemplazan un único archivo por trabajo, con estructura de agregados de memoria constante. No almacenan píxeles, matrículas, propietario, credenciales ni la ruta/nombre de la carga.
+- No se ejecutó un video privado ni comparación larga. No hay todavía datos reales de esta instrumentación para identificar el cuello de botella del equipo del usuario. La guía de obtención está en quickstart.md. T039/T074–T077 y los pendientes de convergencia no se cierran por esta entrega.

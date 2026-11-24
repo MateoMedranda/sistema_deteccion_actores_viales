@@ -333,3 +333,12 @@ Corrección solicitada por el usuario: seleccionar un camión mostraba evidencia
 - [X] T104 Recortar coordenadas exportadas de ByteTrack al ancho/alto real y omitir cajas degeneradas, conservando su estado interno, pesos, umbrales y validación del store.
 - [X] T105 Registrar tipo seguro de la excepción del pipeline sin rutas/placas/secretos para evitar diagnósticos genéricos sin evidencia.
 - [X] T106 Probar salida del borde y publicación de primeros lotes con modelo/video real autorizado, ejecutar regresiones, documentar y confirmar la corrección sin comparación larga.
+
+
+## Phase 12: Perfil de rendimiento por etapas — cambio solicitado
+
+Alcance exclusivo: medir el camino progresivo actual; no optimizar, muestrear, cambiar pesos/umbrales, exportación ni política de enriquecimiento. Los gates largos y humanos siguen pendientes.
+
+- [X] T107 Instrumentar tiempos exclusivos de decode, espera, detección, tracking, presentación, recortes, dibujo, escritura, publicación, controles y logs; separar análisis de conversión final y conservar diagnóstico de fallos.
+- [X] T108 Guardar resúmenes acotados por trabajo sin datos de reconocimiento/secretos, con FPS, progreso confirmado, contexto y lectura por CLI; no permitir que un error de informe detenga el procesamiento.
+- [X] T109 Añadir pruebas de contabilidad, separación del tracker, estados y fallo de guardado; documentar cómo obtener y compartir una ejecución ordinaria sin benchmark largo.
