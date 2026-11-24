@@ -17,6 +17,7 @@ ROUTES=[
  ("GET|DELETE",rf"/api/v1/video-jobs/{ID}/playback","json"),
  ("POST",rf"/api/v1/video-jobs/{ID}/playback/tracks/[1-9][0-9]{{0,15}}/enrich","json"),
  ("GET|PUT|DELETE",rf"/api/v1/video-jobs/{ID}/playback/count","json"),
+ ("GET|POST",rf"/api/v1/video-jobs/{ID}/playback/export","json"),
  ("GET|HEAD",rf"/api/v1/video-jobs/{ID}/playback/source","progressive-source"),
  ("GET",rf"/api/v1/video-jobs/{ID}/playback/(?:frames|tracks)","json"),
  ("GET",rf"/api/v1/video-jobs/{ID}/playback/tracks/[1-9][0-9]{{0,15}}","json"),

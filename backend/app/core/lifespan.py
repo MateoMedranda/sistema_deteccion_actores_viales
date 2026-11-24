@@ -21,6 +21,7 @@ from app.services.video_progressive_service import ProgressiveService
 from app.services.progressive_evidence import ProgressiveEvidence
 from app.services.progressive_enrichment import ProgressiveEnrichment
 from app.services.video_worker import VideoWorker
+from app.services.progressive_export import ProgressiveExport
 from app.services.video_job_service import VideoJobService
 from app.services.count_annotation_service import CountAnnotationService
 from app.services.count_job_service import CountJobService
@@ -136,6 +137,9 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
             video_worker.processor.progressive_batch_us=round(settings.video_progressive_batch_seconds*1e6)
             video_worker.start()
         app.state.video_worker = video_worker
+        progressive_export=ProgressiveExport(progressive,video_jobs,video_artifacts,settings,logger)
+        app.state.progressive_export=progressive_export
+        progressive_export.start()
         count_workers = [
             CountWorker(
                 CountProcessor(count_jobs, video_jobs, count_artifacts, CountAnnotationService(), logger),
@@ -144,6 +148,7 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
             for _ in range(settings.max_concurrent_count_jobs)
         ]
         for count_worker in count_workers:
+            count_worker.processor.progressive_export=progressive_export
             count_worker.start()
         app.state.count_worker = count_workers[0]
         app.state.count_workers = count_workers
@@ -157,6 +162,7 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         janitor.close()
         app.state.plate_preview_service.close()
         preview_store.close()
+        progressive_export.close()
         for count_worker in count_workers:
             count_worker.close()
         enrichment_worker.close()

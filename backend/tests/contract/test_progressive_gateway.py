@@ -9,6 +9,8 @@ from app.web.proxy import classify, RelayError
         ("POST", "/api/v1/video-jobs", "presentation=progressive", "video-upload"),
         ("POST", "/api/v1/video-jobs", "presentation=progressive&enrichment=on-demand", "video-upload"),
         ("POST", "/api/v1/video-jobs/a/playback/tracks/1/enrich", "", "json"),
+        ("POST", "/api/v1/video-jobs/a/playback/export", "", "json"),
+        ("GET", "/api/v1/video-jobs/a/playback/export", "", "json"),
         ("PUT", "/api/v1/video-jobs/a/playback/count", "", "json"),
         ("GET", "/api/v1/video-jobs/a/playback/count", "at_us=0", "json"),
         ("DELETE", "/api/v1/video-jobs/a/playback/count", "", "json"),

@@ -1,11 +1,9 @@
-"""Single inference pass for progressive source-time playback and legacy CFR export."""
+"""Progressive analysis only. Annotated video export is an explicit separate job."""
 
 from time import perf_counter
-import os
-import cv2
 import psutil
 from app.adapters.timed_video_decoder import TimedVideoDecoder
-from app.services.video_presentation import PresentationFilter, draw_box
+from app.services.video_presentation import PresentationFilter
 from app.services.video_profile import VideoProfile
 
 
@@ -18,16 +16,11 @@ class ProgressiveProcessor:
 
         p = self.processor
         store = self.store
-        raw = p.artifacts.annotated_output_path().with_suffix(".raw.mp4")
-        output = p.artifacts.annotated_output_path()
-        p.store.register_path(job.job_id, raw)
-        p.store.register_path(job.job_id, output)
         started = perf_counter()
         metrics = dict(decode_ms=0, inference_ms=0, evidence_ms=0, render_ms=0, publish_ms=0)
         profile = VideoProfile(job, p.detector, p.profile_root)
         profile.sampling["requested_interval"] = getattr(p, "detection_interval", 1)
         p.progressive_metrics = metrics
-        writer = None
         batch = []
         prepared = []
         count = 0
@@ -85,7 +78,7 @@ class ProgressiveProcessor:
                 check()
                 image = frame.image
                 with profile.measure("setup"):
-                    if writer is None:
+                    if count == 0:
                         store.set_timeline(job.job_id, decoder.timeline)
                         h, w = image.shape[:2]
                         with p.store._lock, p.store._connection:
@@ -93,14 +86,6 @@ class ProgressiveProcessor:
                                 "UPDATE video_jobs SET width=?,height=? WHERE job_id=?",
                                 (w, h, job.job_id),
                             )
-                        writer = cv2.VideoWriter(
-                            os.path.relpath(raw),
-                            cv2.VideoWriter_fourcc(*"mp4v"),
-                            job.metadata.fps,
-                            (w, h),
-                        )
-                        if not writer.isOpened():
-                            raise VideoProcessingError("output_initialization_failed")
                 before = perf_counter()
                 requires_detection = model is None or getattr(model, "requires_detection", True)
                 if requires_detection:
@@ -166,12 +151,6 @@ class ProgressiveProcessor:
                         prepared.extend(self.evidence.prepare(job, frame, pairs))
                 metrics["evidence_ms"] += (perf_counter() - before) * 1000
                 before = perf_counter()
-                with profile.measure("annotation"):
-                    for d, tid in pairs:
-                        if tid in boxes:
-                            draw_box(image, boxes[tid], d.class_name)
-                with profile.measure("video_write"):
-                    writer.write(image)
                 count += 1
                 profile.frames = count
                 profile.sampling["detected_frames" if detection_performed else "predicted_frames"] += 1
@@ -201,18 +180,6 @@ class ProgressiveProcessor:
             profile.end_analysis(complete=True)
             with profile.measure("finalization"):
                 store.finish_analysis(job.job_id)
-                writer.release()
-                writer = None
-                p.store.phase(job.job_id, "encoding", count)
-                store.export(job.job_id, "encoding")
-            with profile.measure("final_encode"):
-                p._encode_h264(
-                    raw,
-                    output,
-                    lambda: p.store.is_cancelled(job.job_id),
-                    started + p.timeout_seconds,
-                    job.expires_at,
-                )
             with profile.measure("finalization"):
                 with p.store._lock, p.store._connection:
                     row = p.store.get(job.job_id, job.owner_key_id)
@@ -236,9 +203,8 @@ class ProgressiveProcessor:
                         else 0
                     )
                     p.store._connection.execute(
-                        "UPDATE video_jobs SET status='completed',processing_phase='ready',output_path=?,actual_frame_count=?,total_frames=?,processed_frames=?,frame_total_confirmed=1,eligible_track_count=?,classes_present=? WHERE job_id=?",
+                        "UPDATE video_jobs SET status='completed',processing_phase='ready',output_path=NULL,actual_frame_count=?,total_frames=?,processed_frames=?,frame_total_confirmed=1,eligible_track_count=?,classes_present=? WHERE job_id=?",
                         (
-                            str(output),
                             count,
                             count,
                             count,
@@ -247,7 +213,6 @@ class ProgressiveProcessor:
                             job.job_id,
                         ),
                     )
-                store.export(job.job_id, "ready")
             profile.outcome = "completed"
             return "completed"
         except Exception as exc:
@@ -274,7 +239,6 @@ class ProgressiveProcessor:
                 store.export(job.job_id, "failed")
             except Exception:
                 pass
-            output.unlink(missing_ok=True)
             if isinstance(exc, VideoProcessingError):
                 raise
             raise VideoProcessingError(code) from exc
@@ -282,9 +246,6 @@ class ProgressiveProcessor:
             with profile.measure("cleanup"):
                 if frames is not None:
                     frames.close()
-                if writer is not None:
-                    writer.release()
-                raw.unlink(missing_ok=True)
                 p.store.release(job.job_id)
                 if self.evidence:
                     self.evidence.discard_pending(job.job_id)

@@ -351,3 +351,13 @@ Motivación medida: detección consume aproximadamente 72 % del análisis en CPU
 - [X] T110 Incorporar intervalo validado y predicción Kalman en cuadros intermedios, avanzar el reloj de ByteTrack por cuadro fuente sin actualizaciones vacías ni reinicio de ID; mantener intervalo 1 compatible.
 - [X] T111 Publicar todos los cuadros/cajas, diferenciar internamente predicción de medición y reservar evidencias y cruces para mediciones; conservar semántica temporal y no duplicación al retroceder.
 - [X] T112 Añadir contadores de detección/predicción al perfil, regresiones de identidad/movimiento/conteo y prueba breve con modelo real; ejecutar suite y documentar configuración, límites y resultados sin comparación larga.
+
+
+## Phase 14: Exportación anotada explícita — cambio aprobado
+
+Eliminar dibujo/escritura/conversión del recorrido progresivo. Conservar detecciones, predicciones, cronología, selección y conteo; construir MP4 solo por solicitud explícita reutilizando anotaciones, sin YOLO.
+
+- [X] T113 Finalizar análisis sin generar video ni esperar conversión; conservar modo legacy y perfiles con etapas de exportación en cero.
+- [X] T114 Incorporar exportación durable, acotada e idempotente con autorización/TTL, manejo independiente de fallos/reintentos y limpieza; conservar descarga y conteo legacy.
+- [X] T115 Incorporar botón de exportación, progreso y descarga protegida en frontend/gateway, sin disparar exportaciones por leer estados.
+- [X] T116 Probar ausencia de generación automática, exportación sin inferencia, contratos, reintentos, retirada y frontend; ejecutar suites, documentar y confirmar sin benchmark largo.

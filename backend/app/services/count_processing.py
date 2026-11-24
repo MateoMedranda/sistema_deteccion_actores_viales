@@ -39,6 +39,18 @@ class CountProcessor:
         output: Path | None = None
         try:
             source = self.video_store.get(job.source_video_job_id, job.owner_key_id)
+            exporter=getattr(self,"progressive_export",None)
+            if source.status is VideoJobStatus.COMPLETED and (source.output_path is None or not source.output_path.is_file()) and exporter and exporter.store.exists(source.job_id):
+                import time
+                exporter.request(source.job_id,job.owner_key_id)
+                while True:
+                    self._ensure_count_is_active(job)
+                    if exporter.stop.is_set():raise CountProcessingError("source_not_ready")
+                    status=exporter.status(source.job_id,job.owner_key_id)
+                    if status["state"]=="ready":break
+                    if status["state"]=="failed":raise CountProcessingError("source_not_ready")
+                    time.sleep(.1)
+                source=self.video_store.get(job.source_video_job_id,job.owner_key_id)
             if source.status is not VideoJobStatus.COMPLETED or source.output_path is None or not source.output_path.is_file():
                 raise CountProcessingError("source_not_ready")
             detections = self.video_store.all_detections(job.source_video_job_id, job.owner_key_id)

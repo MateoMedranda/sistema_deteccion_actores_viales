@@ -84,6 +84,11 @@ def annotated_video_content(job_id: str, request: Request, principal: Principal 
     job = request.app.state.video_jobs.get(job_id, principal.key_id)
     if job.status is not VideoJobStatus.COMPLETED or job.output_path is None or not job.output_path.is_file():
         raise ApiError(404, "artifact_not_found", "The requested resource is unavailable.")
+    if request.app.state.progressive_store.exists(job_id):
+        from app.services.progressive_media import media
+        result=media(request.app.state.progressive_store,job_id,principal.key_id,job.output_path,request)
+        result.headers["Content-Disposition"]='attachment; filename="annotated.mp4"'
+        return result
     return FileResponse(job.output_path, media_type="video/mp4", filename="annotated.mp4")
 
 

@@ -169,3 +169,30 @@ El comando de perfil sigue siendo:
 Revisar «Intervalo solicitado/efectivo: 2/2», «Cuadros con detección» y «Con predicción». En un análisis completo, ambos suman los cuadros procesados; para un número par hay mitad de detecciones. Con número impar hay una detección adicional. Si el adaptador no soporta predicción se informa 2/1 y se conserva detección en todos en lugar de producir huecos. Los informes anteriores sin sampling siguen siendo legibles.
 
 Los cuadros intermedios estiman movimiento; se corrigen al detectar de nuevo sin reiniciar Track ID. Solo detecciones reales producen candidatos de evidencia o confirman conteo. Los cruces se confirman en la siguiente observación real, una vez por ID; retroceder no duplica eventos. No usar una predicción como prueba de placa ni prometer igualdad exhaustiva de calidad entre ambos modos. Para evaluar calidad con vehículos pequeños/movimientos rápidos, comparar nuevos análisis con 1 y 2, además del perfil. No se ha ejecutado la comparación larga diferida.
+
+
+## Exportar el video anotado únicamente al solicitarlo (2026-11-24)
+
+Tras actualizar, reiniciar API y gateway desde sus propias terminales con Ctrl+C. Desde la raíz, en dos terminales diferentes:
+
+~~~powershell
+.\backend\start.ps1 -Service api
+~~~
+
+~~~powershell
+.\backend\start.ps1 -Service gateway
+~~~
+
+El frontend de desarrollo puede continuar con npm --prefix frontend run dev. Un gateway antiguo no conoce la nueva ruta y debe reiniciarse también. No cambian .env, pesos, umbrales ni VIDEO_DETECTION_INTERVAL=2.
+
+Crear un análisis nuevo para medir el camino sin exportación automática. Al terminar, la reproducción, ficha y conteo siguen disponibles sin MP4 adicional. Bajo el reproductor, pulsar «Exportar video anotado» únicamente si se necesita un archivo: la interfaz muestra cola, generación de cuadros y preparación del MP4; al estar listo aparece «Descargar MP4». Se puede seguir explorando durante la exportación. Si falla, «Reintentar exportación» conserva el análisis. Trabajos antiguos con un MP4 válido lo reutilizan.
+
+El análisis termina sin la fase automática de conversión. En el informe normal deben quedar en cero las llamadas y tiempos de annotation, video_write y final_encode:
+
+~~~powershell
+.\.venv\Scripts\python.exe .\backend\scripts\report_video_profile.py --latest
+~~~
+
+La exportación guarda un diagnóstico independiente en backend/.runtime/video-export-profiles/<job_id>.json (o junto a VIDEO_JOB_DB_PATH personalizado), con tiempos de decode/dibujo/escritura/conversión y resultado; no sustituye el informe de análisis ni ejecuta modelos. Su progreso y enlace se consultan por la nueva ruta playback/export. No renovar TTL: exportar/descargar antes del vencimiento del trabajo.
+
+Una petición de exportación puede consumir CPU/disco mientras se ejecuta; para comparar el análisis ordinario no pulsar Exportar hasta terminar la medición. La mejora real se determina repitiendo el mismo video y compartiendo el nuevo perfil. No se ejecutó el benchmark largo diferido en esta entrega.

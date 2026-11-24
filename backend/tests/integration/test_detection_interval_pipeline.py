@@ -24,7 +24,7 @@ def test_full_video_timeline_ids_evidence_and_count_survive_interval_two(enrichm
     assert model.calls == list(range(0, 12, interval))
     assert data["stages"]["detection"]["calls"] == 12//interval
     assert data["stages"]["resource_wait"]["calls"] == 12//interval
-    assert data["stages"]["video_write"]["calls"] == 12
+    assert data["stages"]["video_write"]["calls"] == 0
     store = client.app.state.progressive_store
     with store.lock:
         frames = [json.loads(r[0]) for r in store.db.execute("SELECT payload FROM p_frames WHERE job=? ORDER BY idx", (job,))]

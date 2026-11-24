@@ -126,3 +126,19 @@ def disable_count(job_id: str, request: Request, principal: Principal = Depends(
     query(request, [])
     request.app.state.progressive_count.disable(job_id,principal.key_id)
     return Response(status_code=204)
+
+
+from app.domain.progressive import VideoExportStatus
+
+@router.get("/{job_id}/playback/export", response_model=VideoExportStatus)
+def export_status(job_id: str, request: Request, principal: Principal = Depends(require_api_key)):
+    query(request, [])
+    return request.app.state.progressive_export.status(job_id, principal.key_id)
+
+
+@router.post("/{job_id}/playback/export", status_code=202, response_model=VideoExportStatus)
+async def request_export(job_id: str, request: Request, principal: Principal = Depends(require_api_key)):
+    query(request, [])
+    if await request.body():
+        raise ApiError(422, "body_not_allowed", "The export request does not accept a body.")
+    return request.app.state.progressive_export.request(job_id, principal.key_id)

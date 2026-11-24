@@ -68,7 +68,7 @@ class PlaybackState(BaseModel):
     generation: UUID
     revision: int = Field(ge=0, le=9007199254740991)
     analysis_state: Literal["queued", "analyzing", "complete", "partial_failed"]
-    export_state: Literal["waiting", "encoding", "ready", "failed"]
+    export_state: Literal["waiting", "queued", "encoding", "ready", "failed"]
     frames_processed: int = Field(ge=0, le=9007199254740991)
     frames_published: int = Field(ge=0, le=9007199254740991)
     available_until_us: int = Field(ge=0, le=9007199254740991)
@@ -226,3 +226,14 @@ for _model in [
     VideoJobAccepted,
 ]:
     _model.model_rebuild()
+
+
+class VideoExportStatus(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    job_id: str
+    state: Literal["waiting", "queued", "rendering", "encoding", "ready", "failed"]
+    processed_frames: int = Field(ge=0)
+    total_frames: int = Field(ge=0)
+    expires_at: datetime
+    url: str | None
+    error_code: str | None

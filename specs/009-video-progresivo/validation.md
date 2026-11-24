@@ -112,3 +112,13 @@ Reiniciar API y crear un análisis nuevo tras limpiar la selección anterior; el
 - Los pendientes anteriores de evaluación larga/humana permanecen abiertos. Repetir un análisis ordinario tras reiniciar la API permite comparar el perfil con el del usuario.
 
 Verificación complementaria de compatibilidad: **125 pruebas frontend aprobadas** y compilación TypeScript/Vite correcta. Configuración local: únicamente VIDEO_DETECTION_INTERVAL=2, conservando los demás bytes del .env; variable privada excluida de Git.
+
+
+## Exportación explícita — 2026-11-24
+
+- La regresión inicial falló como se esperaba: el camino previo registraba llamadas de dibujo/escritura/conversión. Tras separar, las tres etapas permanecen en cero al terminar un análisis sintético; no hay MP4 en output_root ni una intención de exportación creada por GET.
+- Suite completa backend: **369 passed** (una advertencia de deprecación Starlette/AnyIO). Después de añadir los contratos documentados y dos casos adicionales de gateway/expiración: **29 regresiones pertinentes aprobadas**. Suite frontend: **129 passed**; compilación TypeScript/Vite aprobada.
+- Integración: solicitud explícita produce H.264 decodificable con los doce cuadros y Range protegido; parchear el detector para prohibir inferencia no impide exportar. POST repetido reutiliza intención/archivo. Fallo de encoder no falla análisis, no cambia sus métricas y permite reintento.
+- Autorización/CSRF, consultas/cuerpos cerrados, análisis incompleto, retirada durante encoding sin publicar parcial, artefacto perdido, recuperación tras reinicio y eliminación al vencer verificados. Un conteo legacy solicitado explícitamente conserva su salida solicitando la exportación base; el contador progresivo no la necesita.
+- Navegador real aislado (puertos 9413/9414/9415), Chromium escritorio y móvil: **2 casos aprobados**. Analizar sin POST de exportación, pulsar una vez, conservar número de detecciones, esperar ready y descargar MP4 por gateway. Capturas de ambas disposiciones revisadas. Solo datos sintéticos; no acredita rendimiento real ni amplía gates pendientes.
+- No se ejecutó comparación larga ni se inició otro análisis del video privado. Repetir un análisis nuevo tras reiniciar API/gateway permitirá medir el ahorro real. T039/T074–T077 y demás pendientes históricos permanecen abiertos.

@@ -9,6 +9,7 @@ import { useProgressiveTracks } from "./useProgressiveTracks";
 import {ProgressiveCountTools} from "./ProgressiveCountTools";
 import {useProgressiveCount} from "./useProgressiveCount";
 import { ProgressiveTrackList, ProgressiveTrackResults } from "./ProgressiveTrackResults";
+import { VideoExport } from "./VideoExport";
 import { VideoTimeline, clock } from "./VideoTimeline";
 import { SourceDecoder } from "./sourceDecoder";
 import { playbackDecision } from "./playbackPolicy";
@@ -498,6 +499,7 @@ export function ProgressiveVideoPlayer({
               : "El reproductor aparecerá al confirmar los primeros cuadros."}
           </p>
         )}
+        {state&&<VideoExport key={id} client={client} id={id} enabled={state.analysis_state==="complete"} serverState={state.export_state} active={active} expiresAt={state.expires_at} onUnavailable={playback.retire}/>}
         {state&&<details className="progressive-vehicles"><summary>Vehículos de este fotograma ({last.current?.observations.length??0})</summary><ProgressiveTrackList observations={last.current?.observations??[]} selected={selected} onSelect={select}/></details>}
 
       </div>

@@ -250,6 +250,7 @@
         "export_state": {
           "enum": [
             "waiting",
+            "queued",
             "encoding",
             "ready",
             "failed"
@@ -896,6 +897,75 @@
         "created_at"
       ],
       "additionalProperties": false
+    },
+    "VideoExportStatus": {
+      "additionalProperties": false,
+      "properties": {
+        "job_id": {
+          "title": "Job Id",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "waiting",
+            "queued",
+            "rendering",
+            "encoding",
+            "ready",
+            "failed"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "processed_frames": {
+          "minimum": 0,
+          "title": "Processed Frames",
+          "type": "integer"
+        },
+        "total_frames": {
+          "minimum": 0,
+          "title": "Total Frames",
+          "type": "integer"
+        },
+        "expires_at": {
+          "format": "date-time",
+          "title": "Expires At",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Url"
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Error Code"
+        }
+      },
+      "required": [
+        "job_id",
+        "state",
+        "processed_frames",
+        "total_frames",
+        "expires_at",
+        "url",
+        "error_code"
+      ],
+      "title": "VideoExportStatus",
+      "type": "object"
     }
   }
 }

@@ -601,6 +601,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/video-jobs/{job_id}/playback/export:
+    get:
+      summary: Leer el estado de exportación sin crear un MP4
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200': &id001
+          description: Estado de una exportación solicitada explícitamente
+          content:
+            application/json:
+              schema:
+                $ref: ./schemas.json#/$defs/VideoExportStatus
+        '401':
+          description: Credencial inválida
+        '404':
+          description: Trabajo inexistente o ajeno
+        '410':
+          description: Trabajo retirado o vencido
+        '422':
+          description: Consulta o cuerpo no permitido
+    post:
+      summary: Solicitar o reutilizar la exportación del video analizado
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '202': *id001
+        '401':
+          description: Credencial inválida
+        '404':
+          description: Trabajo inexistente o ajeno
+        '410':
+          description: Trabajo retirado o vencido
+        '422':
+          description: Consulta o cuerpo no permitido
+        '409':
+          description: Análisis aún incompleto
+        '503':
+          description: Cola llena o servicio cerrando
+
 components:
   securitySchemes:
     ApiKey:

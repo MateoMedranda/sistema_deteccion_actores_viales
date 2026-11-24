@@ -416,6 +416,9 @@ class ProgressiveStore:
                     ).fetchone()
                     if parent and parent[0]:
                         paths.append(Path(parent[0]))
+                if self.db.execute("SELECT 1 FROM sqlite_master WHERE name='p_video_exports'").fetchone():
+                    export=self.db.execute("SELECT output,temporary FROM p_video_exports WHERE job=?",(row["job"],)).fetchone()
+                    if export:paths.extend(Path(p) for p in export if p)
                 if any(self.readers.get(str(p)) for p in paths):
                     continue
                 for path in paths:
@@ -428,7 +431,7 @@ class ProgressiveStore:
                 self.db.execute("DELETE FROM p_tracks WHERE job=?", (row["job"],))
                 self.db.execute("DELETE FROM p_evidence WHERE job=?", (row["job"],))
                 self.db.execute("DELETE FROM p_enrichment_requests WHERE job=?", (row["job"],))
-                for table in ("p_count_state", "p_count_events"):
+                for table in ("p_count_state", "p_count_events", "p_video_exports"):
                     if self.db.execute("SELECT 1 FROM sqlite_master WHERE name=?", (table,)).fetchone():
                         self.db.execute("DELETE FROM " + table + " WHERE job=?", (row["job"],))
                 if self.db.execute(

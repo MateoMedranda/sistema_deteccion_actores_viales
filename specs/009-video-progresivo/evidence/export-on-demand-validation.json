@@ -1,0 +1,23 @@
+{
+  "scope": "Synthetic functional validation only; no private video or long performance benchmark.",
+  "backend_full_suite": 369,
+  "backend_followup_regressions": 29,
+  "frontend_tests": 129,
+  "frontend_build": "passed",
+  "browser_projects": [
+    "desktop",
+    "mobile"
+  ],
+  "browser_passed": 2,
+  "browser_failed": 0,
+  "browser_flaky": 0,
+  "browser_duration_ms": 61089.615000000005,
+  "assertions": [
+    "Analysis writes no annotated video and does not encode H.264",
+    "Explicit POST only; duplicate intent reuses queued/ready result",
+    "Export reads persisted presentation boxes without detector or tracker calls",
+    "H.264 output, protected native download and range access",
+    "Encoder failure and recovery preserve complete analysis",
+    "Owner, CSRF, query/body restrictions, withdrawal and expiry enforced"
+  ]
+}

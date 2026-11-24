@@ -35,8 +35,8 @@ def test_normal_video_report_and_cli_are_local_and_preserve_pipeline(enrichment_
     assert data["analysis_fps"] > 0 and data["analysis_wall_ms"] > 0
     stages = data["stages"]
     assert stages["detection"]["calls"] == stages["tracking"]["calls"] == 12
-    assert stages["video_write"]["calls"] == stages["annotation"]["calls"] == 12
-    assert stages["publication"]["calls"] >= 1 and stages["final_encode"]["calls"] == 1
+    assert stages["video_write"]["calls"] == stages["annotation"]["calls"] == 0
+    assert stages["publication"]["calls"] >= 1 and stages["final_encode"]["calls"] == 0
     assert stages["resource_wait"]["calls"] == 12
     assert data["first_publication_ms"] is not None
     assert data["initial_buffer_available_ms"] is None  # synthetic clip is shorter than the buffer
@@ -90,9 +90,9 @@ def test_export_failure_does_not_mix_export_duration_into_analysis(enrichment_cl
     monkeypatch.setattr(client.app.state.video_worker.processor, "_encode_h264", fail_encode)
     job_id = submit(client, tmp_path, auth_headers)
     _, data = report(client, job_id)
-    assert data["outcome"] == "failed" and data["analysis_complete"]
+    assert data["outcome"] == "completed" and data["analysis_complete"]
     assert data["confirmed_frames"] == data["processed_frames"] == 12
-    assert data["error_code"] == "video_encoding_failed"
-    assert data["stages"]["final_encode"]["calls"] == 1
+    assert data["error_code"] is None
+    assert data["stages"]["final_encode"]["calls"] == 0
     assert data["stages"]["final_encode"]["analysis_percent"] is None
     assert data["total_wall_ms"] >= data["analysis_wall_ms"]
