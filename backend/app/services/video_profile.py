@@ -64,6 +64,7 @@ class VideoProfile:
             "width", "height", "fps", "duration_seconds", "total_frames")}
         self.stages = {key: dict(calls=0, total_ms=0.0, max_ms=0.0) for key in STAGES}
         self.frames = self.confirmed_frames = self.confirmed_us = 0
+        self.sampling = dict(requested_interval=1, effective_interval=1, detected_frames=0, predicted_frames=0)
         self.analysis_ms = None
         self.analysis_complete = False
         self.first_publication_ms = self.initial_buffer_ms = None
@@ -117,6 +118,7 @@ class VideoProfile:
             "updated_at": datetime.now(UTC).isoformat(), "outcome": self.outcome,
             "error_code": self.error_code, "environment": self.context, "source": self.source,
             "processed_frames": self.frames, "confirmed_frames": self.confirmed_frames,
+            "sampling": dict(self.sampling),
             "confirmed_video_seconds": round(confirmed_seconds, 6),
             "analysis_complete": self.analysis_complete, "analysis_wall_ms": round(analysis, 3),
             "total_wall_ms": round(elapsed, 3), "analysis_fps": round(fps, 3),
@@ -167,6 +169,8 @@ def render_report(data):
         f"Primera publicacion: {number(data['first_publication_ms'])} ms | Buffer inicial disponible: {number(data['initial_buffer_available_ms'])} ms",
         "", f"{'Etapa':43} {'Total ms':>12} {'ms/cuadro':>11} {'% analisis':>11} {'Llamadas':>9}",
     ]
+    if sampling := data.get("sampling"):
+        lines.insert(2, f"Intervalo solicitado/efectivo: {sampling['requested_interval']}/{sampling['effective_interval']} | Cuadros con deteccion: {sampling['detected_frames']} | Con prediccion: {sampling['predicted_frames']}")
     for key, row in data["stages"].items():
         lines.append(f"{LABELS.get(key,key):43} {row['total_ms']:12.2f} {number(row['ms_per_processed_frame']):>11} {number(row['analysis_percent']):>11} {row['calls']:9}")
     lines.extend([f"Otros tiempos no desglosados: {data['other_analysis_ms']:.2f} ms", "", data["scope"],

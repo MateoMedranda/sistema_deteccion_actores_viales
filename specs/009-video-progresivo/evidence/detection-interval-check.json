@@ -1,0 +1,51 @@
+{
+  "source_sha256": "b9719430c3e984d05cdb1b8b997efaf588c2517e7c7b2410671d0e87b7c6f6cf",
+  "weights_sha256": "63bd56f75cfc33ec68029bb08db621fc53bbfa539d8ba475f13ea56af7bbe579",
+  "environment": {
+    "python": "3.12.15",
+    "system": "Windows",
+    "logical_cpus": 16,
+    "packages": {
+      "torch": "2.14.1+cpu",
+      "ultralytics": "8.4.62",
+      "av": "19.0.2",
+      "opencv-python-headless": "4.14.0.94"
+    },
+    "device": "cpu",
+    "model": "yolov10s_best.pt",
+    "confidence_threshold": 0.25
+  },
+  "scope": "First 60 frames only, detector/ByteTrack/count diagnostic; no OCR, no full export, no performance acceptance.",
+  "results": [
+    {
+      "interval": 1,
+      "frames": 60,
+      "detected_frames": 60,
+      "predicted_frames": 0,
+      "detector_calls": 60,
+      "source_until_us": 2000000,
+      "observations": 742,
+      "unique_tracks": 24,
+      "confirmed_crossings": 3,
+      "a_to_b": 2,
+      "b_to_a": 1,
+      "first_frame_track_count": 13
+    },
+    {
+      "interval": 2,
+      "frames": 60,
+      "detected_frames": 30,
+      "predicted_frames": 30,
+      "detector_calls": 30,
+      "source_until_us": 2000000,
+      "observations": 726,
+      "unique_tracks": 19,
+      "confirmed_crossings": 3,
+      "a_to_b": 2,
+      "b_to_a": 1,
+      "first_frame_track_count": 13
+    }
+  ],
+  "same_count": true,
+  "first_frame_common_track_count": 13
+}

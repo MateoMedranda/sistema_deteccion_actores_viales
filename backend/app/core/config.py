@@ -40,6 +40,7 @@ class Settings(BaseSettings):
     max_video_height: int = Field(default=1080, gt=0)
     max_video_fps: int = Field(default=30, gt=0)
     max_video_frames: int = Field(default=3600, gt=0)
+    video_detection_interval: int = Field(default=1, ge=1, le=2)
     video_progressive_batch_frames: int = Field(default=15,ge=1,le=60)
     video_progressive_batch_seconds: float = Field(default=.5,gt=0,le=10)
     video_progressive_buffer_seconds: float = Field(default=5,gt=0,le=30)

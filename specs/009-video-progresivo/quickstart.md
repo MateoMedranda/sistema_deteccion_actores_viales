@@ -146,3 +146,26 @@ Compartir el archivo JSON y, en texto, si se seleccionaron vehículos, si estaba
 - `first_publication_ms`: primer lote confirmado desde el inicio del worker; `initial_buffer_available_ms`: momento en que alcanza el umbral de buffer configurado. Puede ser nulo en clips cortos; ninguno acredita el primer cuadro visto por el usuario.
 
 Los informes contienen solo agregados y contexto mínimo (modelo por nombre, dispositivo, umbral, versiones, dimensiones/FPS), sin imágenes, matrículas, resultados por vehículo, nombres/rutas de la carga, API keys ni credenciales. Son diagnósticos locales, no se exponen por API y permanecen disponibles tras la expiración de medios hasta su eliminación manual. La carpeta es ignorada por Git. Cada trabajo mantiene un JSON de tamaño acotado, actualizado mediante sustitución atómica, sin listas de muestras por cuadro. El coste de guardar avances se contabiliza en `profile_reporting`; un error de escritura se registra sin propagarlo al análisis.
+
+
+## Detección cada dos cuadros (2026-11-24)
+
+En backend/.env, configuración exclusiva de video progresivo:
+
+~~~dotenv
+VIDEO_DETECTION_INTERVAL=2
+~~~
+
+2 ejecuta YOLO en cuadros 0,2,4,... y predice posiciones en 1,3,5,...; 1 restaura detección en todos. Solo se admiten esos dos valores. El valor predeterminado si falta la variable es 1; el ejemplo y el entorno local de esta entrega usan 2. No cambia FPS del video, pesos, umbral, admisión ni exportación. Las imágenes y el procesamiento legacy conservan su comportamiento.
+
+Reiniciar únicamente la API desde su terminal con Ctrl+C y, desde la raíz, .\backend\start.ps1 -Service api. No iniciar otra API en el mismo puerto. Crear un análisis nuevo: los resultados anteriores no se recalculan y una modificación del .env no cambia un trabajo ya iniciado.
+
+El comando de perfil sigue siendo:
+
+~~~powershell
+.\.venv\Scripts\python.exe .\backend\scripts\report_video_profile.py --latest
+~~~
+
+Revisar «Intervalo solicitado/efectivo: 2/2», «Cuadros con detección» y «Con predicción». En un análisis completo, ambos suman los cuadros procesados; para un número par hay mitad de detecciones. Con número impar hay una detección adicional. Si el adaptador no soporta predicción se informa 2/1 y se conserva detección en todos en lugar de producir huecos. Los informes anteriores sin sampling siguen siendo legibles.
+
+Los cuadros intermedios estiman movimiento; se corrigen al detectar de nuevo sin reiniciar Track ID. Solo detecciones reales producen candidatos de evidencia o confirman conteo. Los cruces se confirman en la siguiente observación real, una vez por ID; retroceder no duplica eventos. No usar una predicción como prueba de placa ni prometer igualdad exhaustiva de calidad entre ambos modos. Para evaluar calidad con vehículos pequeños/movimientos rápidos, comparar nuevos análisis con 1 y 2, además del perfil. No se ha ejecutado la comparación larga diferida.

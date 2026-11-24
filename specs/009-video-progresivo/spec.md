@@ -182,3 +182,14 @@ El usuario aprobó implementar detección/seguimiento primero, enriquecimiento s
 ### Corrección aprobada por reporte del usuario: identidad y editor
 
 El vehículo seleccionado debe conservar su identidad física entre cuadros; no se acepta reciclar el Track ID según el orden de detección. El editor usa por defecto el primer fotograma, permite dibujar arrastrando, mover ambos extremos y trasladar toda la línea sin cambiar su longitud cuando sea posible dentro de los bordes. Las coordenadas precisas y el uso de otro fotograma quedan como opciones secundarias; el contador principal sigue sincronizado.
+
+
+## Cambio aprobado: detección alterna configurable (2026-11-24)
+
+El usuario autoriza reducir la frecuencia de detección del video progresivo a un cuadro de cada dos, con seguimiento entre ambos, motivado por el perfil real: aproximadamente 72 % del tiempo en detección CPU. La configuración permite volver al modo de todos los cuadros. No cambian pesos, umbral, entrada del detector ni velocidad de reproducción.
+
+Se conservan todos los cuadros e intervalos fuente para reproducir y retroceder; las cajas intermedias son estimaciones de movimiento del mismo Track ID, corregidas en la siguiente detección. Omitir una detección programada no equivale a observar un cuadro sin vehículos y no puede perder/renumerar tracks por ese solo motivo. La desaparición real en un cuadro observado sí conserva la política de pérdida/reactivación existente.
+
+Solo posiciones respaldadas por detección real alimentan los recortes de evidencia y confirman cruces de conteo. Las estimaciones visuales no inventan detecciones ni confirmaciones de cruce. El conteo conecta observaciones reales del mismo track, mantiene dirección y unicidad, y retroceder consulta el histórico sin volver a contar. La confirmación puede aparecer en la siguiente observación; un cruce exclusivamente estimado al final del video no se da por confirmado.
+
+La verificación debe demostrar mitad de llamadas YOLO en una secuencia par, movimiento en cuadros intermedios, continuidad temporal/IDs, mismo conteo en una escena controlada para modos 1/2 y ausencia de cruces falsos por predicción. El perfil distingue cuadros detectados/predichos e intervalo efectivo. No se garantiza igualdad exhaustiva de detecciones frente al modo 1 en cualquier escena: vehículos que solo aparezcan entre detecciones, oclusiones/movimientos rápidos y vehículos pequeños requieren evaluación; no se promete tiempo real ni se sustituyen los gates largos pendientes.

@@ -61,3 +61,10 @@ Fuente120s, límite42s y posición18s: se admiten10s y30s, ir a42s muestra el ú
 - `DELETE .../playback/count`:204 idempotente, retira línea/eventos y aumenta revisión de configuración existente.
 
 Las nuevas rutas requieren autenticación/propiedad, sesión/CSRF en gateway para consultas y mutaciones, no-store, sin URL arbitraria. Vencimiento/retiro devuelve410 al propietario y404 a otros; cleanup retira datos de conteo y solicitudes. No se cambia el conteo final legacy ni se permite ver cuadros fuera del prefijo.
+
+
+## Detección alterna — compatibilidad de presentación y conteo (2026-11-24)
+
+VIDEO_DETECTION_INTERVAL=2 conserva FramePage/FrameSlice/Observation, duración, cuadros y PTS. Las posiciones de cuadros intermedios proceden de la predicción del tracker; raw_bbox representa esa posición antes del suavizado, no una nueva ejecución de YOLO, y confidence conserva la última puntuación observada. El recibo privado detection_performed de p_frames no se devuelve en HTTP. Por defecto, recibos históricos sin marca son observaciones reales.
+
+Los cruces usan exclusivamente los cuadros observados, tanto para el conteo progresivo como para las filas video_detections usadas por conteo legacy. La exportación visual sí incluye las cajas intermedias. Una predicción sola no confirma un cruce ni genera recortes/enriquecimiento; evidencia y last_seen se respaldan en observaciones reales. No se cambia unicidad por Track ID, propiedad, TTL, rangos o navegación. No hay migración de contratos ni nuevas rutas.

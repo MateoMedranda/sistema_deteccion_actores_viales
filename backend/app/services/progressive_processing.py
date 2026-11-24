@@ -25,6 +25,7 @@ class ProgressiveProcessor:
         started = perf_counter()
         metrics = dict(decode_ms=0, inference_ms=0, evidence_ms=0, render_ms=0, publish_ms=0)
         profile = VideoProfile(job, p.detector, p.profile_root)
+        profile.sampling["requested_interval"] = getattr(p, "detection_interval", 1)
         p.progressive_metrics = metrics
         writer = None
         batch = []
@@ -66,6 +67,11 @@ class ProgressiveProcessor:
         try:
             with profile.measure("setup"):
                 model = p.detector.create_video_tracker() if hasattr(p.detector, "create_video_tracker") else None
+                if model is not None and hasattr(model, "set_detection_interval"):
+                    model.set_detection_interval(profile.sampling["requested_interval"])
+                    profile.sampling["effective_interval"] = model.detection_interval
+                elif profile.sampling["requested_interval"] != 1:
+                    p.logger.warning("video_detection_interval_fallback", extra={"job_id": job.job_id})
                 frames = iter(decoder)
             while True:
                 before_decode = perf_counter()
@@ -96,8 +102,10 @@ class ProgressiveProcessor:
                         if not writer.isOpened():
                             raise VideoProcessingError("output_initialization_failed")
                 before = perf_counter()
-                with profile.measure("resource_wait"):
-                    p.progressive_inference_slots.acquire()
+                requires_detection = model is None or getattr(model, "requires_detection", True)
+                if requires_detection:
+                    with profile.measure("resource_wait"):
+                        p.progressive_inference_slots.acquire()
                 try:
                     if model is not None:
                         try:
@@ -110,13 +118,17 @@ class ProgressiveProcessor:
                             if e.name != "scipy":
                                 raise
                             model = None
+                            profile.sampling["effective_interval"] = 1
+                            p.logger.warning("video_detection_interval_fallback", extra={"job_id": job.job_id})
                     if model is None:
                         with profile.measure("detection"):
                             detections = p.detector.detect(image)
                         with profile.measure("tracking"):
                             pairs = list(zip(detections, tracker.assign(detections), strict=True))
                 finally:
-                    p.progressive_inference_slots.release()
+                    if requires_detection:
+                        p.progressive_inference_slots.release()
+                detection_performed = model is None or getattr(model, "last_was_detection", True)
                 metrics["inference_ms"] += (perf_counter() - before) * 1000
                 before = perf_counter()
                 with profile.measure("presentation"):
@@ -150,7 +162,7 @@ class ProgressiveProcessor:
                 metrics["render_ms"] += (perf_counter() - before) * 1000
                 before = perf_counter()
                 with profile.measure("evidence"):
-                    if self.evidence:
+                    if self.evidence and detection_performed:
                         prepared.extend(self.evidence.prepare(job, frame, pairs))
                 metrics["evidence_ms"] += (perf_counter() - before) * 1000
                 before = perf_counter()
@@ -162,6 +174,7 @@ class ProgressiveProcessor:
                     writer.write(image)
                 count += 1
                 profile.frames = count
+                profile.sampling["detected_frames" if detection_performed else "predicted_frames"] += 1
                 metrics["render_ms"] += (perf_counter() - before) * 1000
                 batch.append(
                     dict(
@@ -169,6 +182,7 @@ class ProgressiveProcessor:
                         start_us=frame.start_us,
                         end_us=frame.end_us,
                         pts=str(frame.pts),
+                        detection_performed=detection_performed,
                         observations=observations,
                     )
                 )

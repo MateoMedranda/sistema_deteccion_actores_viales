@@ -342,3 +342,12 @@ Alcance exclusivo: medir el camino progresivo actual; no optimizar, muestrear, c
 - [X] T107 Instrumentar tiempos exclusivos de decode, espera, detección, tracking, presentación, recortes, dibujo, escritura, publicación, controles y logs; separar análisis de conversión final y conservar diagnóstico de fallos.
 - [X] T108 Guardar resúmenes acotados por trabajo sin datos de reconocimiento/secretos, con FPS, progreso confirmado, contexto y lectura por CLI; no permitir que un error de informe detenga el procesamiento.
 - [X] T109 Añadir pruebas de contabilidad, separación del tracker, estados y fallo de guardado; documentar cómo obtener y compartir una ejecución ordinaria sin benchmark largo.
+
+
+## Phase 13: Detección alterna configurable — cambio aprobado
+
+Motivación medida: detección consume aproximadamente 72 % del análisis en CPU. Alcance aprobado: intervalo 1/2, predicción entre cuadros sin perder la cronología; conservar identidades y conteo basado en observaciones confirmadas. No cambiar pesos, umbral, píxeles, FPS del original, exportación ni enriquecimiento selectivo.
+
+- [X] T110 Incorporar intervalo validado y predicción Kalman en cuadros intermedios, avanzar el reloj de ByteTrack por cuadro fuente sin actualizaciones vacías ni reinicio de ID; mantener intervalo 1 compatible.
+- [X] T111 Publicar todos los cuadros/cajas, diferenciar internamente predicción de medición y reservar evidencias y cruces para mediciones; conservar semántica temporal y no duplicación al retroceder.
+- [X] T112 Añadir contadores de detección/predicción al perfil, regresiones de identidad/movimiento/conteo y prueba breve con modelo real; ejecutar suite y documentar configuración, límites y resultados sin comparación larga.

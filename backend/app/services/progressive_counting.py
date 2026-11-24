@@ -49,7 +49,8 @@ class ProgressiveCountService:
                 processed=state["processed"]
                 for rec in self.store.db.execute("SELECT idx,payload FROM p_frames WHERE job=? AND idx>=? ORDER BY idx",(job,processed)):
                     frame=json.loads(rec["payload"])
-                    for ob in frame["observations"]:
+                    # Estimates are for display; only measurements confirm a crossing.
+                    for ob in (frame["observations"] if frame.get("detection_performed", True) else []):
                         box=ob["raw_bbox"];tid=ob["track_id"];key=str(tid)
                         point=CountPoint((box["x_min"]+box["x_max"])/(2*sizes["width"]),(box["y_min"]+box["y_max"])/(2*sizes["height"]))
                         side=side_of_line(point,line)

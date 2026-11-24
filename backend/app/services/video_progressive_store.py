@@ -138,6 +138,8 @@ class ProgressiveStore:
                     or frame["end_us"] <= expected
                 ):
                     raise ValueError("non_contiguous_batch")
+                if type(frame.get("detection_performed", True)) is not bool:
+                    raise ValueError("invalid_observation")
                 for ordinal, ob in enumerate(frame["observations"]):
                     b = ob["raw_bbox"]
                     if (
@@ -172,7 +174,7 @@ class ProgressiveStore:
                                 o["raw_bbox"]["x_max"],
                                 o["raw_bbox"]["y_max"],
                             )
-                            for o in frame["observations"]
+                            for o in (frame["observations"] if frame.get("detection_performed", True) else [])
                         ],
                     )
                 expected = frame["end_us"]

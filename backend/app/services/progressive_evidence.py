@@ -120,6 +120,8 @@ class ProgressiveEvidence:
         row = self.store.row(job.job_id)
         sightings = {}
         for frame in frames:
+            if not frame.get("detection_performed", True):
+                continue
             for ob in frame["observations"]:
                 tid = ob["track_id"]
                 if tid not in sightings:
