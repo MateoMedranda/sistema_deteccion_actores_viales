@@ -114,3 +114,12 @@ Se entregan ficha común sin scroll completo, inspección exacta y estable por f
 El modelo real declara Car, Bus, Truck, Big Truck, Motorbike y Van. Faltaban alias de Big Truck/Motorbike: una regresión de seis clases producía cuatro cruces. Se incorpora camión pesado separado de camión y se reconoce Motorbike como motocicleta mediante el registro compartido; recortes/enriquecimiento reconocen las grafías equivalentes y mantienen filtros explícitos. No se alteran clases/IDs originales, pesos, intervalos, hilos ni eventos históricos.
 
 Evidencia y limitaciones: [class-count-fix.md](../specs/010-video-detalle-conteo/class-count-fix.md), [diagnóstico agregado](../specs/010-video-detalle-conteo/evidence/model-class-diagnostic.json). Se verifican468 pruebas backend distintas y144 frontend distintas, además del build. Incluye ByteTrack real con detector sintético, intervalos1/2 y las seis clases; seis cuadros del video autorizado confirman detección de Van/Truck/Big Truck, sin afirmar precisión ni conteos únicos. Las observaciones originales recientes habían vencido. Se recomienda análisis nuevo tras reiniciar servicios; comparación larga y validaciones humanas previas continúan pendientes.
+
+
+## Iteración 011: velocidad y múltiples líneas de conteo — 2026-11-25
+
+Especificación en [011-video-multilinea-velocidad](../specs/011-video-multilinea-velocidad/spec.md), rama feature/011-video-multilinea-velocidad desde main/e0b88f3 en el checkout principal. Incluye velocidad de reproducción 0,25× a 2×, al menos 10 líneas independientes con nombre/color editable desde tarjetas y barra por encima del video. Se integra el requisito previo de contar cruces en ambos sentidos sin flecha ni inversión. El turno interrumpido no había modificado el producto.
+
+Cada identidad suma como máximo una vez por línea/revisión; cruzar varias líneas puede aportar a varias tarjetas. Renombrar/recolorear no reinicia cantidades, mover geometría recalcula solo su línea, retroceder consulta historia y acelerar sigue limitado al prefijo analizado. No se cambia el modelo ni se promete inferencia más rápida. Se especifican recuperación temporal, compatibilidad con una línea anterior, privacidad y experiencia adaptable.
+
+Esta etapa entrega cinco historias,26 FR,10 SC y checklist 16/16 de calidad documental; [specification-validation.md](../specs/011-video-multilinea-velocidad/specification-validation.md) registra alcance y trazabilidad. No implica implementación ni pruebas del producto/humanas y conserva pendientes anteriores. Continúa plan.
