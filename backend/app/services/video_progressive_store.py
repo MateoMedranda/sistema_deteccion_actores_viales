@@ -419,6 +419,8 @@ class ProgressiveStore:
                 if self.db.execute("SELECT 1 FROM sqlite_master WHERE name='p_video_exports'").fetchone():
                     export=self.db.execute("SELECT output,temporary FROM p_video_exports WHERE job=?",(row["job"],)).fetchone()
                     if export:paths.extend(Path(p) for p in export if p)
+                for resource in getattr(self,"detail_resources",[]):
+                    paths.extend(resource.paths(row["job"]))
                 if any(self.readers.get(str(p)) for p in paths):
                     continue
                 for path in paths:
@@ -427,6 +429,8 @@ class ProgressiveStore:
                             path.unlink(missing_ok=True)
                         except OSError:
                             pass
+                for resource in getattr(self,"detail_resources",[]):
+                    resource.purge(row["job"])
                 self.db.execute("DELETE FROM p_frames WHERE job=?", (row["job"],))
                 self.db.execute("DELETE FROM p_tracks WHERE job=?", (row["job"],))
                 self.db.execute("DELETE FROM p_evidence WHERE job=?", (row["job"],))

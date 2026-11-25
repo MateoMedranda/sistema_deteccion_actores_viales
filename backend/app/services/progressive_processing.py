@@ -161,6 +161,8 @@ class ProgressiveProcessor:
                         start_us=frame.start_us,
                         end_us=frame.end_us,
                         pts=str(frame.pts),
+                        time_base_num=frame.time_base.numerator,
+                        time_base_den=frame.time_base.denominator,
                         detection_performed=detection_performed,
                         observations=observations,
                     )

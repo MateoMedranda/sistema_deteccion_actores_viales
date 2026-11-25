@@ -1,3 +1,5 @@
+import {useVideoInspection,type InspectionSelection} from "./useVideoInspection";
+import {VideoInspectionDetails} from "./VideoInspectionDetails";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { ApiClient } from "../../services/apiClient";
 import { ClientError } from "../../services/apiClient";
@@ -5,10 +7,10 @@ import type { Frame, Observation } from "./progressiveTypes";
 import { clampSeek, terminal } from "./progressiveTypes";
 import { classPresentation } from "../image-analysis/classPresentation";
 import { useProgressivePlayback } from "./useProgressivePlayback";
-import { useProgressiveTracks } from "./useProgressiveTracks";
+
 import {ProgressiveCountTools} from "./ProgressiveCountTools";
 import {useProgressiveCount} from "./useProgressiveCount";
-import { ProgressiveTrackList, ProgressiveTrackResults } from "./ProgressiveTrackResults";
+import { ProgressiveTrackList } from "./ProgressiveTrackResults";
 import { VideoExport } from "./VideoExport";
 import { VideoTimeline, clock } from "./VideoTimeline";
 import { SourceDecoder } from "./sourceDecoder";
@@ -45,16 +47,11 @@ export function ProgressiveVideoPlayer({
   const [firstFrame,setFirstFrame]=useState<HTMLCanvasElement>();
   const [fullscreen, setFullscreen] = useState(false);
   const [canPlay, setCanPlay] = useState(false);
-  const tracks = useProgressiveTracks(client, state, active, playback.retire);
-  const [requestMessage,setRequestMessage]=useState("");
+  const [inspectionSelection,setInspectionSelection]=useState<InspectionSelection>();
+  const inspection=useVideoInspection(client,id,inspectionSelection,playback.retire);
   const count=useProgressiveCount(client,id,state,position,active,playback.retire);
   const lineRef=useRef(count.result?.line);lineRef.current=count.result?.line;
-  useEffect(()=>{
-    if(selected===undefined||!state)return;
-    const c=new AbortController();let timer:ReturnType<typeof setTimeout>,attempt=0;
-    const request=async()=>{try{setRequestMessage("Consultando el vehículo seleccionado…");await client.json("/api/v1/video-jobs/"+id+"/playback/tracks/"+selected+"/enrich",{method:"POST"},{signal:c.signal,timeoutMs:10000,expiresAt:state.expires_at});if(!c.signal.aborted)setRequestMessage("")}catch(e){if(c.signal.aborted)return;if(e instanceof ClientError&&[401,403,404,410].includes(e.status)){playback.retire();return}setRequestMessage("Recuperando la consulta del vehículo…");timer=setTimeout(request,Math.min(8000,1000*2**attempt++))}};
-    void request();return()=>{c.abort();clearTimeout(timer)};
-  },[client,id,selected,state?.generation]);
+  const closeInspection=()=>{selectedRef.current=undefined;setSelected(undefined);setInspectionSelection(undefined)};
   const pause = () => {
     wantPlay.current = false;
     running.current = undefined;
@@ -67,8 +64,10 @@ export function ProgressiveVideoPlayer({
     pause();
     selectedRef.current = id;
     setSelected(id);
+    if(last.current&&state)setInspectionSelection({generation:state.generation,track_id:id,frame_index:last.current.frame_index});
   };
   const seek = async (us: number) => {
+    closeInspection();
     const s = latest.current,
       d = decoder.current;
     if (!s || !d) return;
@@ -466,6 +465,7 @@ export function ProgressiveVideoPlayer({
                 disabled={!canPlay}
                 onClick={() => {
                   if(state&&terminal(state)&&positionRef.current>=(state.last_frame_start_us??0))void seek(0);
+                  closeInspection();
                   wantPlay.current = true;
                   setPhase("Preparando reproducción…");
                 }}
@@ -503,15 +503,7 @@ export function ProgressiveVideoPlayer({
         {state&&<details className="progressive-vehicles"><summary>Vehículos de este fotograma ({last.current?.observations.length??0})</summary><ProgressiveTrackList observations={last.current?.observations??[]} selected={selected} onSelect={select}/></details>}
 
       </div>
-      <ProgressiveTrackResults
-        client={client}
-        tracks={tracks}
-        selected={selected}
-        onSelect={select}
-        onUnavailable={playback.retire}
-        onClose={()=>{selectedRef.current=undefined;setSelected(undefined);setRequestMessage("")}}
-        requestMessage={requestMessage}
-      />
+      <VideoInspectionDetails key={inspection.result?.inspection_id??inspection.key} client={client} result={inspection.result} message={inspection.message} onClose={closeInspection}/>
       {state?.media_available&&<ProgressiveCountTools firstFrame={firstFrame} source={canvas} pause={pause} enabled={!!count.result?.enabled} onApply={count.configure} onDisable={count.disable} message={count.message} position={clock(position)}/>}
     </section>
   );

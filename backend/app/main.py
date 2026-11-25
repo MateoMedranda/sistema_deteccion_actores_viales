@@ -50,8 +50,27 @@ def create_app(settings: Settings | None = None, detector: Detector | None = Non
     app.include_router(video_playback.router, prefix="/api")
     from app.api.routes import video_detection_summary
     app.include_router(video_detection_summary.router, prefix="/api")
+    from app.api.routes import video_inspections
+    app.include_router(video_inspections.router, prefix="/api")
     app.include_router(count_jobs.router, prefix="/api")
     app.include_router(enrichment_jobs.router, prefix="/api")
+
+    @app.middleware("http")
+    async def bounded_video_detail(request: Request, call_next):
+        detail = "/playback/" in request.url.path and any(part in request.url.path for part in ("/inspections", "/directed-count", "/detection-summary", "/capabilities"))
+        if detail:
+            from fastapi.responses import JSONResponse
+            total=bytearray()
+            async for block in request.stream():
+                total.extend(block)
+                if len(total)>65536:
+                    return JSONResponse({"code":"body_too_large","message":"Control body exceeds its limit."},status_code=413,headers={"Cache-Control":"no-store"})
+            request._body=bytes(total)
+            if request.method in ("GET","HEAD","DELETE") and total:
+                return JSONResponse({"code":"body_not_allowed","message":"Body not allowed."},status_code=422,headers={"Cache-Control":"no-store"})
+        response=await call_next(request)
+        if detail:response.headers["Cache-Control"]="no-store"
+        return response
 
     @app.middleware("http")
     async def request_identity(request: Request, call_next) -> Response:

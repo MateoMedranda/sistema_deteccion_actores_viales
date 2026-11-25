@@ -54,6 +54,16 @@ export const imageTimeouts = {
 };
 
 export class ApiClient {
+  async inspectionPlatePreview(job:string,inspection:string,asset:string,options:RequestOptions={}){
+    return this.consume('/api/v1/video-jobs/'+encodeURIComponent(job)+'/playback/inspections/'+inspection+'/plate-preview?profile=display-contrast-v1',async(response)=>{
+      const {parseDetail}=await import('../features/video-analysis/inspectionContracts');
+      const header=response.headers.get('X-Plate-Preview-Metadata');if(!header||header.length>2048)throw error('invalid_response');
+      const metadata=parseDetail<import('../features/video-analysis/inspectionContracts').InspectionPlatePreviewMetadata>('InspectionPlatePreviewMetadata',JSON.parse(header));
+      if(metadata.job_id!==job||metadata.inspection_id!==inspection||metadata.plate_asset_id!==asset||Date.parse(metadata.expires_at)<=Date.now())throw error('invalid_response');
+      const blob=await response.blob();if(blob.size>2*1024*1024||blob.type!=='image/png')throw error('invalid_response');
+      return {blob,metadata};
+    },{},options);
+  }
   private readonly baseUrl: string;
   private readonly origin: string;
   private controllers=new Set<AbortController>();

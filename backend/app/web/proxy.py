@@ -9,6 +9,10 @@ from starlette.responses import JSONResponse,Response,StreamingResponse
 
 ID=r"[A-Za-z0-9][A-Za-z0-9_-]{0,127}"
 ROUTES=[
+ ("POST",rf"/api/v1/video-jobs/{ID}/playback/inspections","json"),
+ ("GET",rf"/api/v1/video-jobs/{ID}/playback/inspections/[a-f0-9-]{{36}}","json"),
+ ("GET",rf"/api/v1/video-jobs/{ID}/playback/inspections/[a-f0-9-]{{36}}/assets/[a-f0-9-]{{36}}/(?:vehicle|plate)","progressive-evidence"),
+ ("GET",rf"/api/v1/video-jobs/{ID}/playback/inspections/[a-f0-9-]{{36}}/plate-preview","plate"),
  ("GET",rf"/api/v1/video-jobs/{ID}/playback/capabilities","json"),
  ("GET",r"/api/v1/web-policy","json"),
  ("GET",r"/health/(?:live|ready|video-ready|enrichment-ready|image-policy)","json"),
@@ -119,7 +123,7 @@ class Proxy:
                     async for block in request.stream():
                         if not self.sessions.get(token):raise RelayError(401,"web_session_expired")
                         data.extend(block)
-                        if len(data)>16384:raise RelayError(413,"web_body_too_large")
+                        if len(data)>(65536 if "/playback/inspections" in request.url.path or "/playback/directed-count" in request.url.path else 16384):raise RelayError(413,"web_body_too_large")
                 if request.method in ("GET","HEAD","DELETE") and data:raise RelayError(422,"web_body_not_allowed")
                 if data:
                     try:payload=json.loads(data)

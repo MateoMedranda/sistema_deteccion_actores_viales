@@ -125,6 +125,10 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         progressive_slots=threading.Lock()
         progressive_worker=ProgressiveEnrichment(evidence,enrichment_processor,logger,progressive_slots)
         progressive_worker.start()
+        from app.services.video_inspections import VideoInspections
+        inspections=VideoInspections(progressive,settings,enrichment_processor,progressive_slots)
+        app.state.video_inspections=inspections
+        inspections.start()
         app.state.progressive_worker=progressive_worker
         video_worker = None
         if detector is not None:
@@ -163,7 +167,7 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         preview_store=PlatePreviewStore()
         app.state.plate_preview_store=preview_store
         app.state.plate_preview_service=PlatePreviewService(enrichment_jobs,image_sources,preview_store)
-        janitor = PeriodicCleanup((progressive,evidence,image_sources, enrichment_jobs, artifacts, app.state.video_job_service, count_jobs, preview_store), logger)
+        janitor = PeriodicCleanup((progressive,inspections,evidence,image_sources, enrichment_jobs, artifacts, app.state.video_job_service, count_jobs, preview_store), logger)
         app.state.temporary_cleanup = janitor
         janitor.start()
         yield
@@ -176,6 +180,7 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         enrichment_worker.close()
         if video_worker is not None:
             video_worker.close()
+        inspections.close()
         progressive_worker.close()
         enrichment_processor.close()
         progressive.close()

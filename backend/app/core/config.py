@@ -76,6 +76,19 @@ class Settings(BaseSettings):
     plate_ocr_accept_threshold: float = Field(default=0.80, ge=0, le=1)
     frontend_allowed_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
 
+    video_inspection_max_queued: int = Field(default=20, gt=0)
+    video_inspection_max_contexts_per_job: int = Field(default=128, gt=0)
+    video_inspection_max_bytes_per_job: int = Field(default=134217728, gt=0)
+    video_inspection_max_resource_bytes: int = Field(default=8388608, gt=0)
+    video_inspection_decode_max_frames: int = Field(default=300, gt=0)
+    video_inspection_decode_timeout_seconds: float = Field(default=5, gt=0)
+
+    @model_validator(mode="after")
+    def inspection_limits(self):
+        if self.video_inspection_max_resource_bytes > self.video_inspection_max_bytes_per_job:
+            raise ValueError("Inspection resource limit exceeds job quota")
+        return self
+
     def vehicle_class_set(self) -> set[str]:
         return {item.strip().lower() for item in self.vehicle_classes.split(",") if item.strip()}
 

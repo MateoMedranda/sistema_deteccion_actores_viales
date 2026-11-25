@@ -18,6 +18,24 @@ class TimedFrame:
     image: np.ndarray
 
 
+def frame_to_bgr(frame, reformatter):
+    """Approved ITU601/BICUBIC conversion and orientation, shared without model imports."""
+    # Preserve the approved OpenCV/FFmpeg conversion, including tagged BT.709 sources.
+    image = reformatter.reformat(
+        frame,
+        format="bgr24",
+        src_colorspace=Colorspace.ITU601,
+        dst_colorspace=Colorspace.ITU601,
+        interpolation=Interpolation.BICUBIC,
+    ).to_ndarray()
+    rotation = int(round(getattr(frame, "rotation", 0) or 0)) % 360
+    if rotation:
+        if rotation not in (90, 180, 270):
+            raise ValueError("timeline_unrepresentable")
+        image = np.rot90(image, rotation // 90).copy()
+    return image
+
+
 class TimedVideoDecoder:
     def __init__(self, path: Path):
         self.path = path
@@ -38,19 +56,7 @@ class TimedVideoDecoder:
                 start = round((frame.pts * tb - origin * base) * 1_000_000)
                 if start < 0:  # preroll is not a presentation interval
                     continue
-                # Preserve the approved OpenCV/FFmpeg conversion, including tagged BT.709 sources.
-                image = reformatter.reformat(
-                    frame,
-                    format="bgr24",
-                    src_colorspace=Colorspace.ITU601,
-                    dst_colorspace=Colorspace.ITU601,
-                    interpolation=Interpolation.BICUBIC,
-                ).to_ndarray()
-                rotation = int(round(getattr(frame, "rotation", 0) or 0)) % 360
-                if rotation:
-                    if rotation not in (90, 180, 270):
-                        raise ValueError("timeline_unrepresentable")
-                    image = np.rot90(image, rotation // 90).copy()
+                image = frame_to_bgr(frame, reformatter)
                 h, w = image.shape[:2]
                 if self.timeline is None:
                     self.timeline = dict(
