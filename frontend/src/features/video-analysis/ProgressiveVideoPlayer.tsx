@@ -1,3 +1,4 @@
+import {directionArrow} from "./directionArrow";
 import {useVideoInspection,type InspectionSelection} from "./useVideoInspection";
 import {VideoInspectionDetails} from "./VideoInspectionDetails";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
@@ -9,7 +10,8 @@ import { classPresentation } from "../image-analysis/classPresentation";
 import { useProgressivePlayback } from "./useProgressivePlayback";
 
 import {ProgressiveCountTools} from "./ProgressiveCountTools";
-import {useProgressiveCount} from "./useProgressiveCount";
+import {useDirectedCount} from "./useDirectedCount";
+import type {CountDraft} from "./useCountDraft";
 import { ProgressiveTrackList } from "./ProgressiveTrackResults";
 import { VideoExport } from "./VideoExport";
 import { VideoTimeline, clock } from "./VideoTimeline";
@@ -22,11 +24,13 @@ export function ProgressiveVideoPlayer({
   id,
   active,
   onUnavailable,
+  countDraft,localFirstFrame,
 }: {
   client: ApiClient;
   id: string;
   active: boolean;
   onUnavailable: () => void;
+  countDraft?:CountDraft;localFirstFrame?:HTMLCanvasElement;
 }) {
   const playback = useProgressivePlayback(client, id, active, onUnavailable),
     { state, latest, cache, ensure } = playback;
@@ -49,8 +53,11 @@ export function ProgressiveVideoPlayer({
   const [canPlay, setCanPlay] = useState(false);
   const [inspectionSelection,setInspectionSelection]=useState<InspectionSelection>();
   const inspection=useVideoInspection(client,id,inspectionSelection,playback.retire);
-  const count=useProgressiveCount(client,id,state,position,active,playback.retire);
+  const count=useDirectedCount(client,id,state,position,active,playback.retire);
+  const draftApplied=useRef(false);
+  useEffect(()=>{if(state&&countDraft&&!draftApplied.current){draftApplied.current=true;void count.configure(countDraft.line,countDraft.direction)}},[state?.generation,countDraft]);
   const lineRef=useRef(count.result?.line);lineRef.current=count.result?.line;
+  const directionRef=useRef(count.result?.direction);directionRef.current=count.result?.direction;
   const closeInspection=()=>{selectedRef.current=undefined;setSelected(undefined);setInspectionSelection(undefined)};
   const pause = () => {
     wantPlay.current = false;
@@ -210,7 +217,7 @@ export function ProgressiveVideoPlayer({
         ":" +
         c.height +
         ":" +
-        forcePaint.current+":"+JSON.stringify(lineRef.current);
+        forcePaint.current+":"+JSON.stringify([lineRef.current,directionRef.current]);
       if (signature !== painted) {
         const width = s.timeline.width,
           height = s.timeline.height;
@@ -266,6 +273,10 @@ export function ProgressiveVideoPlayer({
         }
         const line=lineRef.current;
         if(line){ctx.beginPath();ctx.moveTo(line.point_a.x*width,line.point_a.y*height);ctx.lineTo(line.point_b.x*width,line.point_b.y*height);ctx.strokeStyle="#10203d";ctx.lineWidth=7*scale;ctx.stroke();ctx.strokeStyle="#ffd166";ctx.lineWidth=3*scale;ctx.stroke();}
+        if(line&&directionRef.current){
+          const a=directionArrow(line,width,height,directionRef.current),angle=Math.atan2(a.y2-a.y1,a.x2-a.x1),head=12*scale;
+          ctx.beginPath();ctx.moveTo(a.x1,a.y1);ctx.lineTo(a.x2,a.y2);ctx.lineTo(a.x2-head*Math.cos(angle-.5),a.y2-head*Math.sin(angle-.5));ctx.moveTo(a.x2,a.y2);ctx.lineTo(a.x2-head*Math.cos(angle+.5),a.y2-head*Math.sin(angle+.5));ctx.strokeStyle='#ffd166';ctx.lineWidth=3*scale;ctx.stroke();
+        }
         ctx.restore();
         c.dataset.frameIndex = String(f.frame_index);
         c.dataset.timeUs = String(f.start_us);
@@ -427,7 +438,8 @@ export function ProgressiveVideoPlayer({
                 aria-label={"Video analizado, instante " + clock(position)}
               />
               {count.result?.enabled&&<div className="progressive-count-overlay" aria-label="Contador de cruces" data-count-time-us={count.result.at_us}>
-                <span>Cruces · {clock(position)}</span><strong>{count.result.at_us>=0&&count.result.at_us<=position&&position-count.result.at_us<1_000_000?count.result.total:"…"}</strong><small>A → B: {count.result.at_us>=0&&count.result.at_us<=position?count.result.a_to_b:"…"} · B → A: {count.result.at_us>=0&&count.result.at_us<=position?count.result.b_to_a:"…"}</small>
+                <span>Cruces · {clock(count.result.at_us)}</span><strong>{count.result.status==='ready'&&count.result.at_us<=position?count.result.total:'…'}</strong><small>{count.result.status==='pending'?'Calculando este tramo…':'Sentido de la flecha'}</small>
+
               </div>}
               <div className="progressive-hitboxes">
                 {boxes
@@ -504,7 +516,7 @@ export function ProgressiveVideoPlayer({
 
       </div>
       <VideoInspectionDetails key={inspection.result?.inspection_id??inspection.key} client={client} result={inspection.result} message={inspection.message} onClose={closeInspection}/>
-      {state?.media_available&&<ProgressiveCountTools firstFrame={firstFrame} source={canvas} pause={pause} enabled={!!count.result?.enabled} onApply={count.configure} onDisable={count.disable} message={count.message} position={clock(position)}/>}
+      {state?.media_available&&<ProgressiveCountTools initialLine={countDraft?.line} initialDirection={countDraft?.direction} firstFrame={localFirstFrame??firstFrame} source={canvas} pause={pause} enabled={!!count.result?.enabled} onApply={count.configure} onDisable={count.disable} message={count.message} position={clock(position)}/>}
     </section>
   );
 }

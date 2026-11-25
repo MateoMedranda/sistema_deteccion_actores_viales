@@ -129,6 +129,12 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         inspections=VideoInspections(progressive,settings,enrichment_processor,progressive_slots)
         app.state.video_inspections=inspections
         inspections.start()
+        from app.services.directed_count_service import DirectedCountService
+        from app.services.video_detail_worker import VideoDetailWorker
+        app.state.directed_count=DirectedCountService(progressive)
+        detail_worker=VideoDetailWorker(progressive,app.state.directed_count)
+        app.state.video_detail_worker=detail_worker
+        detail_worker.start()
         app.state.progressive_worker=progressive_worker
         video_worker = None
         if detector is not None:
@@ -180,6 +186,7 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         enrichment_worker.close()
         if video_worker is not None:
             video_worker.close()
+        detail_worker.close()
         inspections.close()
         progressive_worker.close()
         enrichment_processor.close()
