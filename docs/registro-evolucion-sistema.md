@@ -89,3 +89,9 @@ Artefactos: [plan](../specs/010-video-detalle-conteo/plan.md), [investigación](
 Decisiones: inspecciones inmutables por fotograma y extracción PTS exacta bajo demanda; ficha compartida sin scroll completo; conteo dirigido de segmento finito con revisión/eventos históricos; inventario de identidades por votos de clase independiente de OCR/línea; exportación explícita vehicle-labels-v1, sin reutilizar MP4 antiguos como etiquetados. Se mantienen APIs legacy, modos de detección, hilos, pesos y runtime. La clasificación consolidada puede diferir de la etiqueta observada de un cuadro; identidades locales no garantizan vehículos físicos únicos tras perder seguimiento.
 
 Revisión documental:16 esquemas,8 ejemplos válidos y8 negativos,37 referencias y13 operaciones verificadas; no son pruebas de implementación. Se generarán tareas en la siguiente fase. La sesión de planificación registra esfuerzo metodológico y cambios confirmados, no FPS ni exactitud del sistema.
+
+### Tareas de010 — 2026-11-24
+
+Artefactos: [tasks.md](../specs/010-video-detalle-conteo/tasks.md), [puntos-tarea.csv](../specs/010-video-detalle-conteo/puntos-tarea.csv) y [validación de generación](../specs/010-video-detalle-conteo/task-generation.md). Se generan74 tareas pendientes: US1=7, US2=18, US3=14, US4=11, US5=10, más14 de setup/fundamentos/cierre. Incluyen12 oportunidades de paralelismo acotadas por dependencias y archivos; MVP visual T001–T015. B1–B5 se trazan a sus historias y al cierre transversal.
+
+Formato/dependencias y cobertura de24 FR/9 SC comprobados; restricciones del modelo de datos y pruebas previstas incluidas. Hook de puntos revisado/recalculado:399 PTS de línea base, sin clasificaciones heurísticas pendientes. No son horas ni rendimiento del sistema. Sin implementación ni pruebas de producto en esta fase; continúa analyze. La sesión metodológica y sus commits conservan trazabilidad separada de métricas operativas.
