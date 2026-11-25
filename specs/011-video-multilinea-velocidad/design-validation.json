@@ -1,0 +1,12 @@
+{
+  "schema_definitions": 11,
+  "schema_and_openapi_refs": 15,
+  "operations": 4,
+  "valid_examples": 9,
+  "invalid_shape_examples_rejected": 12,
+  "semantic_negative_examples_shape_valid": 10,
+  "local_links_checked": 6,
+  "initial_palette_unique_colors": 32,
+  "after_plan_hooks": 0,
+  "product_tests_run": false
+}

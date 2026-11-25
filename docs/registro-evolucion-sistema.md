@@ -123,3 +123,12 @@ Especificación en [011-video-multilinea-velocidad](../specs/011-video-multiline
 Cada identidad suma como máximo una vez por línea/revisión; cruzar varias líneas puede aportar a varias tarjetas. Renombrar/recolorear no reinicia cantidades, mover geometría recalcula solo su línea, retroceder consulta historia y acelerar sigue limitado al prefijo analizado. No se cambia el modelo ni se promete inferencia más rápida. Se especifican recuperación temporal, compatibilidad con una línea anterior, privacidad y experiencia adaptable.
 
 Esta etapa entrega cinco historias,26 FR,10 SC y checklist 16/16 de calidad documental; [specification-validation.md](../specs/011-video-multilinea-velocidad/specification-validation.md) registra alcance y trazabilidad. No implica implementación ni pruebas del producto/humanas y conserva pendientes anteriores. Continúa plan.
+
+
+### Planificación de011 —2026-11-25
+
+Artefactos: [plan](../specs/011-video-multilinea-velocidad/plan.md), [investigación](../specs/011-video-multilinea-velocidad/research.md), [datos](../specs/011-video-multilinea-velocidad/data-model.md), [contratos](../specs/011-video-multilinea-velocidad/contracts/README.md), [guía](../specs/011-video-multilinea-velocidad/quickstart.md) y [validación documental](../specs/011-video-multilinea-velocidad/design-validation.md).
+
+Se diseña colección UUID con CAS, geometría independiente de nombre/color, tombstones/admisiones acotados, importación única de la línea anterior y reducción bidireccional medida fuera del lock con publicación condicionada. Una consulta agregada entrega cantidades con intervalos de validez exacta para mantenerlas sincronizadas con los cuadros sin peticiones por cuadro. El reloj canvas se reancla al cambiar velocidad; no se alteran PTS/decoder/analizadores ni exportación. Las tarjetas superiores se mantienen dentro del root fullscreen; límites iniciales10líneas/128admisiones, sin infraestructura nueva.
+
+Validación de diseño:11esquemas,15referencias,4operaciones,9ejemplos positivos y12negativos de estructura;10negativos semánticos revisados cuyo rechazo efectivo deberá probarse al implementar. Plan constitucional conforme, sin producto implementado, tests de producto ni comparación larga/humana. Referencia breve011 se capturará antes de cambios; dependencia regex se declarará/fijará en implementación. Continúa tasks.
