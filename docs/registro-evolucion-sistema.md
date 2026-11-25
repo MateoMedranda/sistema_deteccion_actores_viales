@@ -81,3 +81,11 @@ Especificación: [010-video-detalle-conteo](../specs/010-video-detalle-conteo/sp
 Requisitos: ficha de video consistente con imágenes sin scroll vertical anidado de toda la ficha; recortes/enriquecimiento vinculados al instante seleccionado y estables frente a actualizaciones; exportación explícita con etiquetas de clase e identidad; cruces reales del segmento en un único sentido elegido con flecha; resumen final por clase independiente del conteo. La decisión de sentido fue confirmada expresamente por el usuario. Los conteos usan identidades locales, con límites de seguimiento documentados.
 
 Esta entrega es únicamente specify: cinco historias, 24 requisitos, nueve criterios de éxito y checklist de calidad. No implementa capacidades, no acredita pruebas de producto ni cierra pendientes anteriores; plan, tareas y validaciones posteriores deben conservar la trazabilidad y sus commits. La evaluación de aceleración AMD queda fuera de esta iteración.
+
+### Planificación de010 — 2026-11-24
+
+Artefactos: [plan](../specs/010-video-detalle-conteo/plan.md), [investigación](../specs/010-video-detalle-conteo/research.md), [modelo de datos](../specs/010-video-detalle-conteo/data-model.md), [contratos](../specs/010-video-detalle-conteo/contracts/README.md), [guía de validación](../specs/010-video-detalle-conteo/quickstart.md) y [validación documental](../specs/010-video-detalle-conteo/design-validation.md).
+
+Decisiones: inspecciones inmutables por fotograma y extracción PTS exacta bajo demanda; ficha compartida sin scroll completo; conteo dirigido de segmento finito con revisión/eventos históricos; inventario de identidades por votos de clase independiente de OCR/línea; exportación explícita vehicle-labels-v1, sin reutilizar MP4 antiguos como etiquetados. Se mantienen APIs legacy, modos de detección, hilos, pesos y runtime. La clasificación consolidada puede diferir de la etiqueta observada de un cuadro; identidades locales no garantizan vehículos físicos únicos tras perder seguimiento.
+
+Revisión documental:16 esquemas,8 ejemplos válidos y8 negativos,37 referencias y13 operaciones verificadas; no son pruebas de implementación. Se generarán tareas en la siguiente fase. La sesión de planificación registra esfuerzo metodológico y cambios confirmados, no FPS ni exactitud del sistema.

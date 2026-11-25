@@ -1,0 +1,988 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "Point": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "y": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ]
+    },
+    "Line": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "point_a": {
+          "$ref": "#/$defs/Point"
+        },
+        "point_b": {
+          "$ref": "#/$defs/Point"
+        }
+      },
+      "required": [
+        "point_a",
+        "point_b"
+      ]
+    },
+    "Box": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "x_min": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "y_min": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "x_max": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "y_max": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "x_min",
+        "y_min",
+        "x_max",
+        "y_max"
+      ]
+    },
+    "Capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+        },
+        "generation": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "protocol": {
+          "type": "string",
+          "enum": [
+            "video-detail-v1"
+          ]
+        },
+        "temporal_inspection": {
+          "type": "string",
+          "enum": [
+            "supported",
+            "unavailable"
+          ]
+        },
+        "directed_count": {
+          "type": "string",
+          "enum": [
+            "supported",
+            "unavailable"
+          ]
+        },
+        "detection_summary": {
+          "type": "string",
+          "enum": [
+            "building",
+            "supported",
+            "unavailable"
+          ]
+        },
+        "label_export": {
+          "type": "string",
+          "enum": [
+            "supported",
+            "unavailable"
+          ]
+        },
+        "reason_codes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]{1,64}$"
+          },
+          "maxItems": 20
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "job_id",
+        "generation",
+        "protocol",
+        "temporal_inspection",
+        "directed_count",
+        "detection_summary",
+        "label_export",
+        "reason_codes",
+        "expires_at"
+      ]
+    },
+    "InspectionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "generation": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "track_id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "frame_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "generation",
+        "track_id",
+        "frame_index"
+      ]
+    },
+    "Asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "vehicle",
+            "plate"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^/api/v1/video-jobs/[A-Za-z0-9][A-Za-z0-9_-]{0,127}/playback/"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "asset_id",
+        "kind",
+        "url",
+        "expires_at"
+      ]
+    },
+    "Attribute": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "value": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "inspection_id": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "name",
+        "value",
+        "confidence",
+        "inspection_id"
+      ]
+    },
+    "Attributes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "completed",
+            "partial",
+            "failed",
+            "not_applicable"
+          ]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Attribute"
+          },
+          "maxItems": 20
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z0-9_]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "items",
+        "error_code"
+      ]
+    },
+    "Plate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "read",
+            "unreadable",
+            "not_detected",
+            "failed",
+            "not_applicable"
+          ]
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ocr_confidence": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "inspection_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "policy_id": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "used_enhancement": {
+          "type": "boolean"
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z0-9_]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "text",
+        "ocr_confidence",
+        "inspection_id",
+        "policy_id",
+        "used_enhancement",
+        "error_code"
+      ]
+    },
+    "Inspection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+        },
+        "generation": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "inspection_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "policy_version": {
+          "type": "string",
+          "enum": [
+            "selected-frame-v1"
+          ]
+        },
+        "track_id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "frame_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "time_us": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "end_us": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "class_name": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "bbox": {
+          "$ref": "#/$defs/Box"
+        },
+        "observation_kind": {
+          "type": "string",
+          "enum": [
+            "measured",
+            "predicted"
+          ]
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "queued",
+            "preparing",
+            "processing",
+            "ready",
+            "partial",
+            "unavailable",
+            "failed",
+            "not_applicable"
+          ]
+        },
+        "result_revision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "vehicle": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Asset"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "plate_asset": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Asset"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/Attributes"
+        },
+        "plate": {
+          "$ref": "#/$defs/Plate"
+        },
+        "plate_preview_url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^/api/v1/video-jobs/[A-Za-z0-9][A-Za-z0-9_-]{0,127}/playback/"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "plate_preview_profiles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z0-9_]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "confidence_kind": {
+          "type": "string",
+          "enum": [
+            "measured",
+            "last_measured"
+          ]
+        }
+      },
+      "required": [
+        "job_id",
+        "generation",
+        "inspection_id",
+        "policy_version",
+        "track_id",
+        "frame_index",
+        "time_us",
+        "end_us",
+        "class_name",
+        "bbox",
+        "observation_kind",
+        "state",
+        "result_revision",
+        "vehicle",
+        "plate_asset",
+        "attributes",
+        "plate",
+        "plate_preview_url",
+        "plate_preview_profiles",
+        "error_code",
+        "expires_at",
+        "confidence",
+        "confidence_kind"
+      ]
+    },
+    "DirectedCountRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "generation": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "expected_revision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "line": {
+          "$ref": "#/$defs/Line"
+        },
+        "direction": {
+          "type": "string",
+          "enum": [
+            "negative_to_positive",
+            "positive_to_negative"
+          ]
+        }
+      },
+      "required": [
+        "generation",
+        "expected_revision",
+        "line",
+        "direction"
+      ]
+    },
+    "DirectedCount": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+        },
+        "generation": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "policy_version": {
+          "type": "string",
+          "enum": [
+            "finite-center-v1"
+          ]
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "line": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Line"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "direction": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "negative_to_positive",
+                "positive_to_negative"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "disabled",
+            "pending",
+            "ready",
+            "unavailable"
+          ]
+        },
+        "at_us": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "available_until_us": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "covered_until_us": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "total": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z0-9_]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "job_id",
+        "generation",
+        "policy_version",
+        "revision",
+        "enabled",
+        "line",
+        "direction",
+        "status",
+        "at_us",
+        "available_until_us",
+        "covered_until_us",
+        "total",
+        "error_code",
+        "expires_at"
+      ]
+    },
+    "SummaryClass": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "class_key": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "track_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "requires_review": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "class_key",
+        "label",
+        "color",
+        "track_count",
+        "requires_review"
+      ]
+    },
+    "DetectionSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+        },
+        "generation": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "policy_version": {
+          "type": "string",
+          "enum": [
+            "vehicle-inventory-v1"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "building",
+            "partial",
+            "final",
+            "unavailable"
+          ]
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "covered_frames": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "covered_until_us": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "available_until_us": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "analysis_complete": {
+          "type": "boolean"
+        },
+        "total_tracks": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "classes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SummaryClass"
+          },
+          "maxItems": 1000
+        },
+        "excluded_nonvehicle_tracks": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "requires_review": {
+          "type": "boolean"
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z0-9_]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "job_id",
+        "generation",
+        "policy_version",
+        "status",
+        "revision",
+        "covered_frames",
+        "covered_until_us",
+        "available_until_us",
+        "analysis_complete",
+        "total_tracks",
+        "classes",
+        "excluded_nonvehicle_tracks",
+        "requires_review",
+        "error_code",
+        "expires_at"
+      ]
+    },
+    "LabelExportStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+        },
+        "renderer_version": {
+          "type": "string",
+          "enum": [
+            "vehicle-labels-v1"
+          ]
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "waiting",
+            "queued",
+            "rendering",
+            "encoding",
+            "ready",
+            "failed"
+          ]
+        },
+        "processed_frames": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "total_frames": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^/api/v1/video-jobs/[A-Za-z0-9][A-Za-z0-9_-]{0,127}/playback/"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z0-9_]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "job_id",
+        "renderer_version",
+        "state",
+        "processed_frames",
+        "total_frames",
+        "expires_at",
+        "url",
+        "error_code"
+      ]
+    },
+    "InspectionPlatePreviewMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "type": "string",
+          "const": "inspection-plate-preview-v1"
+        },
+        "inspection_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "plate_asset_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+        },
+        "generation": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "track_id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "frame_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "time_us": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "coordinate_space": {
+          "type": "string",
+          "const": "plate-crop"
+        },
+        "original_width": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "original_height": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "processed_width": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "processed_height": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "source_to_processed": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 6,
+          "maxItems": 6
+        },
+        "profile_id": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "policy_version": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "display_only": {
+          "type": "boolean",
+          "const": true
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "version",
+        "inspection_id",
+        "plate_asset_id",
+        "job_id",
+        "generation",
+        "track_id",
+        "frame_index",
+        "time_us",
+        "coordinate_space",
+        "original_width",
+        "original_height",
+        "processed_width",
+        "processed_height",
+        "source_to_processed",
+        "profile_id",
+        "policy_version",
+        "display_only",
+        "expires_at"
+      ]
+    }
+  }
+}
