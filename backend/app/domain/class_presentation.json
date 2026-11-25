@@ -52,7 +52,15 @@
     "motorcycle": {
       "label": "Motocicleta",
       "color": "#A16207"
+    },
+    "big_truck": {
+      "label": "Camión pesado",
+      "color": "#B45309"
     }
   },
-  "fallback_color": "#64748B"
+  "fallback_color": "#64748B",
+  "aliases": {
+    "big truck": "big_truck",
+    "motorbike": "motorcycle"
+  }
 }

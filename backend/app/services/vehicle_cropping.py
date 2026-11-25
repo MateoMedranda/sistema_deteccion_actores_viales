@@ -2,6 +2,7 @@ from dataclasses import dataclass
 import numpy as np
 from app.domain.models import Detection, FrameDetection
 from app.services.image_geometry import clip_box
+from app.domain.vehicle_taxonomy import normalize_class
 
 @dataclass(frozen=True)
 class VehicleCrop:
@@ -12,7 +13,7 @@ class VehicleCrop:
     y_max: int
 
 def crop_vehicle(image: np.ndarray, detection: Detection | FrameDetection, vehicle_classes: set[str]):
-    if image is None or detection.class_name.lower() not in vehicle_classes:
+    if image is None or normalize_class(detection.class_name) not in {normalize_class(name) for name in vehicle_classes}:
         return None
     height, width = image.shape[:2]
     box = clip_box(detection.x_min, detection.y_min, detection.x_max, detection.y_max, width, height)

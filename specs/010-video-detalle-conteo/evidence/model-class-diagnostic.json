@@ -1,0 +1,90 @@
+{
+  "date": "2026-11-25",
+  "model": "yolov10s_best.pt",
+  "device": "cpu",
+  "model_names": {
+    "0": "Car",
+    "1": "Bus",
+    "2": "Truck",
+    "3": "Big Truck",
+    "4": "Motorbike",
+    "5": "Van"
+  },
+  "method": "Six independent frames from the previously authorized test video using the configured real detector; no OCR, export, or full-video evaluation. Counts are observations, not unique vehicles.",
+  "samples": [
+    {
+      "time_seconds": 0,
+      "observations": {
+        "Car": 12,
+        "Big Truck": 1
+      }
+    },
+    {
+      "time_seconds": 15,
+      "observations": {
+        "Car": 13,
+        "Big Truck": 1,
+        "Van": 1
+      }
+    },
+    {
+      "time_seconds": 30,
+      "observations": {
+        "Car": 11,
+        "Big Truck": 1
+      }
+    },
+    {
+      "time_seconds": 45,
+      "observations": {
+        "Car": 14,
+        "Van": 1
+      }
+    },
+    {
+      "time_seconds": 60,
+      "observations": {
+        "Car": 6,
+        "Truck": 1
+      }
+    },
+    {
+      "time_seconds": 90,
+      "observations": {
+        "Car": 16,
+        "Van": 2
+      }
+    }
+  ],
+  "observation_totals": {
+    "Car": 72,
+    "Big Truck": 3,
+    "Van": 4,
+    "Truck": 1
+  },
+  "before": {
+    "excluded_known_model_classes": [
+      "Big Truck",
+      "Motorbike"
+    ],
+    "synthetic_crossings_accepted": 4,
+    "synthetic_crossings_expected": 6
+  },
+  "after_expected": {
+    "canonical_count_classes": [
+      "car",
+      "bus",
+      "truck",
+      "big_truck",
+      "motorcycle",
+      "van"
+    ],
+    "synthetic_crossings": 6
+  },
+  "limitations": [
+    "Bus/Motorbike were not observed in these six sampled real frames.",
+    "Expired observations from recent jobs were unavailable; the exact user-reported crossings could not be replayed.",
+    "No claim of detector accuracy, physical unique vehicle totals, or full-video counting accuracy.",
+    "Existing historical events are not rewritten. New analysis is needed to regenerate all aggregates consistently."
+  ]
+}

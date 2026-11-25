@@ -4,6 +4,7 @@ from pathlib import Path
 
 from pydantic import Field, field_validator, model_validator
 from app.core.paths import BACKEND_ROOT, backend_path
+from app.domain.vehicle_taxonomy import configured_vehicle_classes
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -90,7 +91,7 @@ class Settings(BaseSettings):
         return self
 
     def vehicle_class_set(self) -> set[str]:
-        return {item.strip().lower() for item in self.vehicle_classes.split(",") if item.strip()}
+        return configured_vehicle_classes(self.vehicle_classes.split(","))
 
     def frontend_origin_list(self) -> list[str]:
         origins = [item.strip().rstrip("/") for item in self.frontend_allowed_origins.split(",") if item.strip()]

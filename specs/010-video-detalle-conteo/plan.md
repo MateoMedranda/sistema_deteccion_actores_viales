@@ -138,7 +138,7 @@ No se reinterpretan `/summary`, `/playback/count` ni `/tracks/{id}/enrich`. La U
 
 ### Refinamientos del análisis A1/U1
 
-La elegibilidad de cruce se evalúa únicamente con la clase medida en la observación que confirma el paso, normalizada con strip/lower. Se admiten car, truck, bus, van, pickup, suv, sedan, hatchback, mpv, estate, bicycle y motorcycle; person, vacío y clases no catalogadas no suman cruces. Todas las mediciones conservan el estado geométrico de la trayectoria; un paso excluido por clase no consume la elegibilidad para un futuro cruce válido. Guardar class_key_at_crossing inmutable en el evento y no reevaluarlo con votos futuros, clasificación consolidada u OCR. Esta política no restringe el resumen: sus clases no catalogadas siguen visibles con requires_review.
+La elegibilidad de cruce se evalúa únicamente con la clase medida en la observación que confirma el paso, normalizada con strip/lower y los alias explícitos del registro compartido (`Big Truck` → `big_truck`, `Motorbike` → `motorcycle`). Se admiten car, truck, big_truck, bus, van, pickup, suv, sedan, hatchback, mpv, estate, bicycle y motorcycle; person, vacío y clases no catalogadas no suman cruces. Todas las mediciones conservan el estado geométrico de la trayectoria; un paso excluido por clase no consume la elegibilidad para un futuro cruce válido. Guardar class_key_at_crossing inmutable en el evento y no reevaluarlo con votos futuros, clasificación consolidada u OCR. Esta política no restringe el resumen: sus clases no catalogadas siguen visibles con requires_review.
 
 Antes de modificar backend/app o frontend/src en la iteración, T001 creará un comparador autocontenido en backend/tests/performance/test_video_detail_overhead.py, basado en los fixtures/runners de rendimiento existentes. Su fuente sintética y detector controlado no dependerán de T002 ni de APIs nuevas. Una ejecución de calentamiento y al menos tres medidas capturan mediana de tiempo de análisis/publicación, tamaño de lote/observaciones, entorno/paquetes, hash del fixture y huella del código fuente de base en evidence/publication-baseline.json. No persistir medios o credenciales. La línea base identifica el código anterior a010, aunque ya existan commits documentales de010.
 
@@ -160,3 +160,8 @@ Ejecutar una imagen y un video sintéticos end-to-end, suites backend/frontend y
 ## Complexity Tracking
 
 Sin violaciones de constitución. Las rutas/tablas nuevas evitan reinterpretar clientes y resultados históricos; no introducen un segundo backend, segundo detector ni nueva infraestructura. La complejidad de colas/PTS/leases es necesaria para evitar bloqueo, evidencia equivocada y retención indebida.
+
+
+### Corrección de catálogo — 2026-11-25
+
+El checkpoint configurado declara Car, Bus, Truck, Big Truck, Motorbike y Van. Se incorpora `big_truck` (Camión pesado), separado de `truck`, y los dos alias explícitos compartidos con la presentación. Los nombres/IDs de las observaciones originales permanecen intactos. El filtro configurado de enriquecimiento expande `truck` a su subtipo pesado y las grafías equivalentes, sin habilitar familias desactivadas. Los eventos ya confirmados no se reescriben. Véase [class-count-fix.md](class-count-fix.md) para evidencia, alcance y validación.

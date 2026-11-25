@@ -35,7 +35,7 @@ Una fila por job con generation y revision monótona, incluso disabled; puntos n
 
 DELETE aumenta revisión y deja tombstone sin geometría/medios, dentro del TTL del padre. Las filas derivadas de revisiones antiguas se eliminan de forma acotada. Ningún cambio afecta p_count_state/p_count_events legacy, resumen ni detecciones.
 
-Política de elegibilidad del conteo finite-center-v1: La elegibilidad de cruce se evalúa únicamente con la clase medida en la observación que confirma el paso, normalizada con strip/lower. Se admiten car, truck, bus, van, pickup, suv, sedan, hatchback, mpv, estate, bicycle y motorcycle; person, vacío y clases no catalogadas no suman cruces. Todas las mediciones conservan el estado geométrico de la trayectoria; un paso excluido por clase no consume la elegibilidad para un futuro cruce válido. Guardar class_key_at_crossing inmutable en el evento y no reevaluarlo con votos futuros, clasificación consolidada u OCR. Esta política no restringe el resumen: sus clases no catalogadas siguen visibles con requires_review.
+Política de elegibilidad del conteo finite-center-v1: La elegibilidad de cruce se evalúa únicamente con la clase medida en la observación que confirma el paso, normalizada con strip/lower y los alias explícitos del registro compartido (`Big Truck` → `big_truck`, `Motorbike` → `motorcycle`). Se admiten car, truck, big_truck, bus, van, pickup, suv, sedan, hatchback, mpv, estate, bicycle y motorcycle; person, vacío y clases no catalogadas no suman cruces. Todas las mediciones conservan el estado geométrico de la trayectoria; un paso excluido por clase no consume la elegibilidad para un futuro cruce válido. Guardar class_key_at_crossing inmutable en el evento y no reevaluarlo con votos futuros, clasificación consolidada u OCR. Esta política no restringe el resumen: sus clases no catalogadas siguen visibles con requires_review.
 
 ## 4. DirectedTrackState / p_directed_count_tracks
 
@@ -57,7 +57,7 @@ Clave `(job,generation,track_id,class_key)`; observation_count>=1 y max_confiden
 
 Clave `(job,generation,track_id)`, canonical_class, first_seen_us/last_seen_us, measured_observations. Canonical class puede cambiar mientras llegan votos; al cerrar cobertura final queda congelada. Las predicciones, selecciones de ficha y líneas no crean identidades ni votos. No usar p_tracks ni top-K de enriquecimiento.
 
-Taxonomía `vehicle-inventory-v1`: car/truck/bus/van/pickup/suv/sedan/hatchback/mpv/estate/bicycle/motorcycle son vehículos conocidos; person se declara no vehicular y se excluye del total. Ganadores desconocidos se muestran explícitamente con requires_review, conservan clave de origen y forman parte del total automatizado con advertencia «clases no catalogadas»; no se descartan silenciosamente. No reutilizar VEHICLE_CLASSES, que define elegibilidad de enriquecimiento.
+Taxonomía `vehicle-inventory-v1`: car/truck/big_truck/bus/van/pickup/suv/sedan/hatchback/mpv/estate/bicycle/motorcycle son vehículos conocidos; person se declara no vehicular y se excluye del total. Ganadores desconocidos se muestran explícitamente con requires_review, conservan clave de origen y forman parte del total automatizado con advertencia «clases no catalogadas»; no se descartan silenciosamente. La elegibilidad del inventario/cruce usa la taxonomía conocida; la configuración VEHICLE_CLASSES de enriquecimiento sigue siendo un filtro independiente.
 
 ## 8. DetectionSummaryState / p_detection_summary_state
 
@@ -92,3 +92,8 @@ Estados y validación de H.264/Range/retiro conservan la exportación actual. Un
 | VIDEO_INSPECTION_DECODE_TIMEOUT_SECONDS | 5 | Plazo del subproceso incluido arranque; positivo |
 
 No modificar variables de detección, pesos, confianza, hilos, intervalos o autenticación. La implementación debe añadir ejemplos sin secretos y validar recurso<=cuota de job. Estos valores se fijan como límites operativos iniciales, no como rendimiento garantizado.
+
+
+### Corrección de catálogo — 2026-11-25
+
+El checkpoint configurado declara Car, Bus, Truck, Big Truck, Motorbike y Van. Se incorpora `big_truck` (Camión pesado), separado de `truck`, y los dos alias explícitos compartidos con la presentación. Los nombres/IDs de las observaciones originales permanecen intactos. El filtro configurado de enriquecimiento expande `truck` a su subtipo pesado y las grafías equivalentes, sin habilitar familias desactivadas. Los eventos ya confirmados no se reescriben. Véase [class-count-fix.md](class-count-fix.md) para evidencia, alcance y validación.

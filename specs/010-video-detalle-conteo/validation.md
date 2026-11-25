@@ -27,3 +27,8 @@ Comando reproducible de investigación breve, desde raíz: `.\.venv\Scripts\pyth
 Advertencias: deprecación de BlockingPortal/record_property en herramientas de prueba y aviso de chunk Vite de aproximadamente504KB minificado. No impiden las verificaciones. Los logs de retirada durante fixtures mantenidos en pausa corresponden al teardown controlado; no se presentan como calidad/precisión del modelo. La prueba táctil inicial confundía el rectángulo de ancho cero de una línea SVG vertical con invisibilidad; su comprobación renderizada corregida pasa en tablet/móvil.
 
 No se cambian pesos, umbral, resolución, cadencia, runtime, hilos ni configuración privada. Permanecen diferidas la comparación larga y las validaciones humanas/exhaustivas previas de009. Los conteos representan identidades locales y la extracción puede declarar indisponibilidad si excede300 cuadros/5s. La exportación mantiene el comportamiento temporal vigente; una escena donde no caben etiquetas legibles falla explícitamente.
+
+
+## Corrección multiclase — 2026-11-25
+
+Se verifica el catálogo del checkpoint real: Car/Bus/Truck/Big Truck/Motorbike/Van. Cinco fallos reproducidos antes del parche; la prueba central obtenía4 cruces de6. Alias explícitos compartidos corrigen camión pesado/motocicleta, mantienen Truck y Van y el historial original. Validación:458 pruebas de suite backend más10 regresiones añadidas después (22 en el archivo final),143 Vitest de suite más1 caso posterior de lookup seguro (2 en archivo nuevo), build aprobado. Diagnóstico, método y límites en [class-count-fix.md](class-count-fix.md); seis muestras de modelo real no constituyen evaluación integral de conteo. No se reconstruyen los trabajos vencidos ni se cierran validaciones largas/humanas previas.
