@@ -59,6 +59,9 @@ class ProgressiveStore:
             )
             self.db.execute("UPDATE p_evidence SET claimed=0 WHERE claimed=1 AND result IS NULL")
 
+        from app.services.detection_inventory import DetectionInventory
+        self.inventory=DetectionInventory(self)
+
     def create(self, job, owner, source, metadata, expires, on_demand=False):
         timeline = dict(
             timebase="source-pts",
@@ -114,6 +117,7 @@ class ProgressiveStore:
             if row["closed"]:
                 raise ApiError(409, "source_closed", "The analysis is terminal.")
             timeline = json.loads(row["timeline"])
+            new_frames=[]
             expected, count = row["until_us"], row["frames"]
             revision = row["revision"] + 1
             for frame in frames:
@@ -177,6 +181,7 @@ class ProgressiveStore:
                             for o in (frame["observations"] if frame.get("detection_performed", True) else [])
                         ],
                     )
+                new_frames.append(frame)
                 expected = frame["end_us"]
                 count += 1
             if count != row["frames"]:
@@ -185,6 +190,7 @@ class ProgressiveStore:
                     "UPDATE p_video SET revision=?,frames=?,until_us=?,last_start=?,analysis='analyzing' WHERE job=?",
                     (revision, count, expected, frames[-1]["start_us"], job),
                 )
+                self.inventory.publish(row,new_frames)
                 if on_publish:
                     on_publish()
 

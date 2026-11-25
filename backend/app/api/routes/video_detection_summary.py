@@ -8,3 +8,10 @@ router=APIRouter(prefix='/v1/video-jobs',tags=['video-detail'])
 def get_capabilities(job_id:str,request:Request,principal:Principal=Depends(require_api_key)):
  query(request,[])
  return capabilities(request.app.state.progressive_store,job_id,principal.key_id)
+
+from uuid import UUID
+from app.domain.detection_summary import DetectionSummary
+@router.get('/{job_id}/playback/detection-summary',response_model=DetectionSummary)
+def summary(job_id:str,request:Request,generation:UUID,principal:Principal=Depends(require_api_key)):
+ query(request,['generation'])
+ return request.app.state.detection_inventory.snapshot(job_id,principal.key_id,str(generation))

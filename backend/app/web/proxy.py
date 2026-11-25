@@ -9,6 +9,7 @@ from starlette.responses import JSONResponse,Response,StreamingResponse
 
 ID=r"[A-Za-z0-9][A-Za-z0-9_-]{0,127}"
 ROUTES=[
+ ("GET",rf"/api/v1/video-jobs/{ID}/playback/detection-summary","json"),
  ("GET|PUT|DELETE",rf"/api/v1/video-jobs/{ID}/playback/directed-count","json"),
  ("POST",rf"/api/v1/video-jobs/{ID}/playback/inspections","json"),
  ("GET",rf"/api/v1/video-jobs/{ID}/playback/inspections/[a-f0-9-]{{36}}","json"),
@@ -53,6 +54,7 @@ def classify(method,path,raw_path,query):
     if len(keys)!=len(set(keys)):raise RelayError(422,"web_query_invalid")
     allowed={"page","page_size"} if path.endswith(("/detections","/results","/events")) else {"profile"} if kind=="plate" else set()
     if kind=="video-upload":allowed={"presentation","enrichment"}
+    elif path.endswith("/playback/detection-summary"):allowed={"generation"}
     elif path.endswith("/playback/directed-count"):allowed={"generation","at_us","revision"} if method=="GET" else {"generation","expected_revision"} if method=="DELETE" else set()
     elif path.endswith("/playback/count"):allowed={"at_us"} if method=="GET" else set()
     elif path.endswith("/playback/frames"):allowed={"from_us","to_us","snapshot","cursor"}

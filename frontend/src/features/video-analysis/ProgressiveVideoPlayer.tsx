@@ -1,3 +1,5 @@
+import {useDetectionSummary} from "./useDetectionSummary";
+import {DetectionSummaryView} from "./DetectionSummary";
 import {directionArrow} from "./directionArrow";
 import {useVideoInspection,type InspectionSelection} from "./useVideoInspection";
 import {VideoInspectionDetails} from "./VideoInspectionDetails";
@@ -48,6 +50,7 @@ export function ProgressiveVideoPlayer({
     [phase, setPhase] = useState("Preparando el primer tramo…"),
     [selected, setSelected] = useState<number>(),
     [boxes, setBoxes] = useState<Observation[]>([]);
+  const summary=useDetectionSummary(client,id,state?.generation,active,playback.retire);
   const [firstFrame,setFirstFrame]=useState<HTMLCanvasElement>();
   const [fullscreen, setFullscreen] = useState(false);
   const [canPlay, setCanPlay] = useState(false);
@@ -512,6 +515,7 @@ export function ProgressiveVideoPlayer({
           </p>
         )}
         {state&&<VideoExport key={id} client={client} id={id} enabled={state.analysis_state==="complete"} serverState={state.export_state} active={active} expiresAt={state.expires_at} onUnavailable={playback.retire}/>}
+        <DetectionSummaryView result={summary}/>
         {state&&<details className="progressive-vehicles"><summary>Vehículos de este fotograma ({last.current?.observations.length??0})</summary><ProgressiveTrackList observations={last.current?.observations??[]} selected={selected} onSelect={select}/></details>}
 
       </div>

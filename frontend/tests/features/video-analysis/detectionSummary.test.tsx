@@ -1,0 +1,5 @@
+import {render,screen} from '@testing-library/react';import {it,expect} from 'vitest';
+import {DetectionSummaryView} from '../../../src/features/video-analysis/DetectionSummary';
+const value:any={status:'final',total_tracks:3,covered_until_us:5000000,classes:[{class_key:'car',label:'Automóvil',color:'#2563eb',track_count:2,requires_review:false},{class_key:'odd',label:'odd',color:'#555555',track_count:1,requires_review:true}],requires_review:true};
+it('keeps total inventory distinct from crossing counts and exposes unknown review',()=>{render(<DetectionSummaryView result={value}/>);expect(screen.getByRole('heading',{name:'Vehículos detectados en todo el video'})).toBeVisible();expect(screen.getByText(/3 identidades/)).toBeVisible();expect(screen.getByText(/Por revisar/)).toBeVisible()});
+it('labels partial and zero honestly',()=>{render(<DetectionSummaryView result={{...value,status:'partial',total_tracks:0,classes:[]}}/>);expect(screen.getByText(/Parcial/)).toBeVisible();expect(screen.getByText(/0 identidades/)).toBeVisible()});
