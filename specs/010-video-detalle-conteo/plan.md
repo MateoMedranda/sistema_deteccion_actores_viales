@@ -4,6 +4,8 @@
 
 **Input**: `specs/010-video-detalle-conteo/spec.md`, con confirmación expresa de un único sentido de conteo indicado mediante flecha.
 
+**Estado de ejecución**: Implementación completada; consultar [audit.md](audit.md) y [validation.md](validation.md). El diseño histórico y la referencia previa se conservan; el coste sintético adicional fue investigado, sin declarar una mejora real de FPS.
+
 ## Summary
 
 Unificar la ficha visual con imágenes y sustituir la selección basada solo en Track ID por contextos de inspección inmutables ligados al fotograma realmente pintado. Congelar el recorte de ese instante y enriquecerlo bajo demanda, sin escoger automáticamente el primer candidato de la trayectoria. El conteo nuevo exige cruce del segmento finito en el sentido elegido, con eventos únicos e históricos. Un inventario independiente consolida una clase por identidad confirmada para el resumen final. La exportación explícita incorpora etiquetas de clase/Track ID y una versión de renderer para no reutilizar MP4 antiguos sin etiquetas.

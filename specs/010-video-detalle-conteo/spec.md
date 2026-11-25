@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-24
 
-**Status**: Draft — validada para planificación
+**Status**: Implementada — validación controlada y límites en audit.md/validation.md
 
 **Input**: User description: "En video, la ficha debe verse igual que en imágenes y no tener ese scroll interno. El video exportado debe llevar etiquetas encima de cada bounding box. Contar solo los vehículos que atraviesan la línea y mejorar el indicador. Evitar que la imagen de enriquecimiento parpadee/cambie o muestre al vehículo cuando apenas entraba. Al final mostrar cuántos vehículos de cada clase se detectaron en todo el video, independientemente del conteo. Crear otra iteración con speckit-specify, rama y commits."
 

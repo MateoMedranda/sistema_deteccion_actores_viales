@@ -101,3 +101,9 @@ Formato/dependencias y cobertura de24 FR/9 SC comprobados; restricciones del mod
 Se aclaran las clases elegibles del conteo y su evaluación en la medición confirmatoria, conservando el evento histórico frente a cambios posteriores de clase. T001 creará el comparador sintético y capturará la referencia antes de cambios de producto; T071 comparará contra esa referencia sin sobrescribirla. Detalle y límites: [remediation.md](../specs/010-video-detalle-conteo/remediation.md).
 
 Se mantienen 74 tareas y la cobertura de 24 FR/9 SC. El recálculo es 402 PTS por ampliar T001 de documentación a prueba de rendimiento; se conserva el antecedente de 399 PTS. No se ejecuta implementación ni comparación larga y los entregables de evidencia siguen pendientes de sus tareas.
+
+### Implementación de010 — 2026-11-24
+
+Se entregan ficha común sin scroll completo, inspección exacta y estable por fotograma bajo demanda, segmento finito en sentido elegido, inventario independiente por clase y exportación explícita con etiquetas/Track ID. Nuevas tablas/medios mantienen autorización, cuotas, leases y TTL; APIs antiguas conservadas. Auditoría: [audit.md](../specs/010-video-detalle-conteo/audit.md); resultados: [validation.md](../specs/010-video-detalle-conteo/validation.md).
+
+74 tareas completadas;446 pruebas backend,142 frontend,18 casos de navegador más2 táctiles y2 regresiones repetidas, build aprobado. La comparación sintética final registró +31.47% frente a la referencia; investigación breve AB/BA aisló +8.96% (0.0308ms/cuadro). Se conservan ambos resultados; no son FPS de YOLO ni evaluación de cámaras edge. No se cambiaron pesos, hilos, umbral, resolución ni intervalo. Los gates largos/humanos de009 mantienen su estado previo.

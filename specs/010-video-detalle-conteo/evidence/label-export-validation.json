@@ -1,0 +1,20 @@
+{
+  "status": "verified_controlled",
+  "renderer": "vehicle-labels-v1",
+  "checks": [
+    "explicit separate cache and URL",
+    "legacy export preserved",
+    "same export worker, analysis priority",
+    "no detector or OCR during export",
+    "whole-frame layout and Unicode accents",
+    "explicit unrepresentable-layout failure",
+    "Range and HEAD, private native download",
+    "decoded H.264 MP4 with 12 expected frames"
+  ],
+  "reviewed_frame": "label-export-frame.png",
+  "reviewed_dimensions": [
+    640,
+    360
+  ],
+  "timeline": "Persisted source receipts and existing export timing behavior retained; no new VFR precision claim."
+}

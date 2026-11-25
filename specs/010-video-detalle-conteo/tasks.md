@@ -2,7 +2,7 @@
 
 **Input**: `specs/010-video-detalle-conteo/` — spec, plan, research, data-model, contracts y quickstart.
 
-**Branch**: `feature/010-video-detalle-conteo` | **Date**: 2026-11-24 | **Estado**: tareas generadas, implementación no iniciada.
+**Branch**: `feature/010-video-detalle-conteo` | **Date**: 2026-11-24 | **Estado**: implementación completada y verificada en condiciones controladas.
 
 **Tests**: Se incluyen por los escenarios y SC-001–SC-009 de la especificación, el plan aprobado y el principio IV de la constitución. Escribir primero las regresiones pertinentes, observar la carencia inicial y ejecutar las verificaciones tras implementar; ninguna prueba de producto se ejecuta al generar este documento.
 
@@ -211,13 +211,13 @@
 
 - [X] T070 Escribir/ejecutar regresiones cruzadas de permisos, cuotas, concurrencia y migración en `backend/tests/integration/test_video_detail_lifecycle.py` y `backend/tests/contract/test_video_detail_compatibility.py`; cubrir todas las13 operaciones, sesión/CSRF, cuerpo<=64KiB/estado<=1MiB, eventos/votos/contextos sin duplicados, local410 vs padre410 y rutas legacy sin cambios. Depende de T069. [FR 022,023,024; SC 008]
 
-- [ ] T071 Ejecutar el harness creado en T001, `backend/tests/performance/test_video_detail_overhead.py`, en modo comparación con la referencia inmutable `specs/010-video-detalle-conteo/evidence/publication-baseline.json`; mismas entradas/parámetros/entorno, un calentamiento y al menos3 medidas del candidato. Registrar ambas huellas, medianas y variación de análisis/publicación en `specs/010-video-detalle-conteo/evidence/publication-overhead.json`; investigar regresión>5% sin inspección/exportación. Sin referencia válida declarar pendiente/fallo, no capturar base del candidato ni sobrescribirla. Sin comparación larga real ni cambio de modelo/hilos para mejorar el número. Depende de T070, T001. [FR 016,017,022,024; SC 008]
+- [X] T071 Ejecutar el harness creado en T001, `backend/tests/performance/test_video_detail_overhead.py`, en modo comparación con la referencia inmutable `specs/010-video-detalle-conteo/evidence/publication-baseline.json`; mismas entradas/parámetros/entorno, un calentamiento y al menos3 medidas del candidato. Registrar ambas huellas, medianas y variación de análisis/publicación en `specs/010-video-detalle-conteo/evidence/publication-overhead.json`; investigar regresión>5% sin inspección/exportación. Sin referencia válida declarar pendiente/fallo, no capturar base del candidato ni sobrescribirla. Sin comparación larga real ni cambio de modelo/hilos para mejorar el número. Depende de T070, T001. [FR 016,017,022,024; SC 008]
 
-- [ ] T072 Ejecutar suite backend, Vitest, build y Playwright010 más regresiones pertinentes009/imagen, usando los comandos de `specs/010-video-detalle-conteo/quickstart.md`; revisar capturas360/768/1440 y MP4. Registrar comandos, resultados y advertencias reales en `specs/010-video-detalle-conteo/validation.md`; ampliar solo ante fallos/riesgos abiertos. Depende de T071, T015, T032, T046, T057, T067. [FR 001,003,022,023,024; SC 001,002,003,004,005,006,007,008,009]
+- [X] T072 Ejecutar suite backend, Vitest, build y Playwright010 más regresiones pertinentes009/imagen, usando los comandos de `specs/010-video-detalle-conteo/quickstart.md`; revisar capturas360/768/1440 y MP4. Registrar comandos, resultados y advertencias reales en `specs/010-video-detalle-conteo/validation.md`; ampliar solo ante fallos/riesgos abiertos. Depende de T071, T015, T032, T046, T057, T067. [FR 001,003,022,023,024; SC 001,002,003,004,005,006,007,008,009]
 
-- [ ] T073 Actualizar API/configuración/diseño vigente y evidencia en `specs/010-video-detalle-conteo/contracts/README.md`, `specs/010-video-detalle-conteo/quickstart.md` y `docs/registro-evolucion-sistema.md`; registrar commits/decisiones y límites de identidades, PTS y etiquetas, sin secretos/medios privados ni FPS prometidos. No marcar gates largos/humanos009 como aprobados. Depende de T072. [FR 024]
+- [X] T073 Actualizar API/configuración/diseño vigente y evidencia en `specs/010-video-detalle-conteo/contracts/README.md`, `specs/010-video-detalle-conteo/quickstart.md` y `docs/registro-evolucion-sistema.md`; registrar commits/decisiones y límites de identidades, PTS y etiquetas, sin secretos/medios privados ni FPS prometidos. No marcar gates largos/humanos009 como aprobados. Depende de T072. [FR 024]
 
-- [ ] T074 Preparar cierre y commits de grupos lógicos en `specs/010-video-detalle-conteo/audit.md` y `specs/010-video-detalle-conteo/tasks.md`: marcar solo tareas ejecutadas con evidencia, verificar rama/cambios previos preservados y estado de pendientes; registrar sesión de implementación en `metricas/sesiones/` conforme a hooks vigentes. No declarar terminada la iteración si falta trabajo obligatorio. Depende de T073. [FR 024]
+- [X] T074 Preparar cierre y commits de grupos lógicos en `specs/010-video-detalle-conteo/audit.md` y `specs/010-video-detalle-conteo/tasks.md`: marcar solo tareas ejecutadas con evidencia, verificar rama/cambios previos preservados y estado de pendientes; registrar sesión de implementación en `metricas/sesiones/` conforme a hooks vigentes. No declarar terminada la iteración si falta trabajo obligatorio. Depende de T073. [FR 024]
 
 
 ## Dependencies & Execution Order

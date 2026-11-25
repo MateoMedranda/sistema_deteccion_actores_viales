@@ -1,0 +1,14 @@
+{
+  "status": "verified_controlled",
+  "policy": "vehicle-inventory-v1",
+  "checks": [
+    "new measured votes published atomically",
+    "duplicate batch does not vote again",
+    "one canonical class per identity",
+    "ties by maximum confidence then lexical key",
+    "person excluded, bicycle/motorcycle included, unknown review",
+    "bounded legacy backfill with provenance check",
+    "zero/partial/final and parent cleanup"
+  ],
+  "browser_reference_tracks": 10
+}

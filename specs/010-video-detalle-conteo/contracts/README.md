@@ -1,6 +1,6 @@
 # Contratos de diseño: Video 010
 
-Estado: propuestos, no implementados. [openapi-additions.yaml](openapi-additions.yaml), [schemas.json](schemas.json) y [examples.json](examples.json) describen las interfaces nuevas; [ui.md](ui.md) describe interacción. El OpenAPI es una adición: en /export renderer es opcional; omitirlo conserva el contrato histórico y seleccionarlo activa la variante etiquetada. La respuesta documenta ambas formas sin exigir renderer a clientes existentes. El diseño de recursos está en [data-model.md](../data-model.md).
+Estado: implementados y verificados con pruebas controladas en010. [openapi-additions.yaml](openapi-additions.yaml), [schemas.json](schemas.json) y [examples.json](examples.json) describen las interfaces nuevas; [ui.md](ui.md) describe interacción. El OpenAPI es una adición: en /export renderer es opcional; omitirlo conserva el contrato histórico y seleccionarlo activa la variante etiquetada. La respuesta documenta ambas formas sin exigir renderer a clientes existentes. El diseño de recursos está en [data-model.md](../data-model.md).
 
 ## Reglas comunes y compatibilidad
 

@@ -1,0 +1,21 @@
+{
+  "status": "verified_controlled",
+  "policy": "finite-center-v1",
+  "checks": [
+    "finite segment including endpoints",
+    "measured centers only",
+    "single chosen direction",
+    "eligible class at confirming measurement",
+    "immutable event class",
+    "CAS and read-only historical queries",
+    "first local frame before upload",
+    "five rewind/forward cycles",
+    "lost mutation response reconciliation",
+    "touch and keyboard"
+  ],
+  "reference": {
+    "forward_crossings": 5,
+    "inverted_crossings": 0
+  },
+  "limitation": "Track fragments are distinct local identities."
+}

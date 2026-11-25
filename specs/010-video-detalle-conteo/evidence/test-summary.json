@@ -36,11 +36,20 @@
   },
   "scope": "Controlled synthetic tests; no accuracy or real-model throughput claims; long/human gates from009 remain deferred.",
   "browser_touch_run": {
+    "startTime": "2026-11-25T03:09:56.631Z",
+    "duration": 10779.168000000001,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "browser_touch_initial_run": {
     "startTime": "2026-11-25T03:08:01.010Z",
     "duration": 20572.137000000002,
     "expected": 0,
     "skipped": 0,
     "unexpected": 2,
     "flaky": 0
-  }
+  },
+  "browser_touch_note": "Initial visibility assertion used the zero-width bounding box of a vertical SVG line. Replaced with visible SVG, attached line, nonzero length and stroke-width checks; both touch projects pass."
 }

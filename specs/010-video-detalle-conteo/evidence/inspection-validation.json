@@ -1,0 +1,21 @@
+{
+  "status": "verified_controlled",
+  "checks": [
+    "exact rational PTS extraction",
+    "hard child watchdog and cleanup",
+    "different selected-frame contexts",
+    "POST deduplication",
+    "stale response filtering",
+    "30 seconds stable blob",
+    "fixed local TTL and parent withdrawal",
+    "restart fails processing without repeated OCR",
+    "bounded cached visual derivative with video metadata"
+  ],
+  "tests": [
+    "tests/unit/test_selected_frame_extractor.py",
+    "tests/contract/test_video_inspections.py",
+    "tests/integration/test_video_inspections.py",
+    "tests/integration/test_video_inspection_preview.py",
+    "frontend/e2e/video-inspection.010.spec.ts"
+  ]
+}

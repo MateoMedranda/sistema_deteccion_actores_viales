@@ -1,6 +1,6 @@
 # Quickstart de validación: Iteración 010
 
-Guía para la futura implementación; las capacidades nuevas todavía no están implementadas. No ejecutar las pruebas previstas como si ya existieran. La revisión de esta fase solo comprueba documentos/contratos y deja evidencia en Git.
+Guía de la implementación010. Capacidades disponibles y verificadas con fixtures controlados; resultados, comandos y límites en [validation.md](validation.md) y [audit.md](audit.md). Reiniciar API/gateway para cargar las rutas nuevas; conservar las variables privadas existentes.
 
 ## Preparación
 
@@ -49,10 +49,10 @@ npm --prefix frontend test
 npm --prefix frontend run build
 ~~~
 
-Playwright010 se añadirá en tasks/implement con config/servidores de prueba aislados, siguiendo los e2e009 existentes. El comando previsto, una vez creado el archivo, será:
+Playwright010 usa servicios sintéticos aislados. Ejecutar los proyectos verificados:
 
 ~~~powershell
-npm --prefix frontend run test:e2e -- --config=playwright.010.config.ts
+npm --prefix frontend run test:e2e -- --config=playwright.010.config.ts --project=desktop --project=tablet --project=mobile
 ~~~
 
 La suite de navegador debe incluir al menos una imagen y un video controlados y revisión visual de sus capturas/MP4. No presentar pruebas de modelo falso como medidas de precisión real.
@@ -74,3 +74,9 @@ El --latest debe seguir refiriéndose al análisis, nunca a inspecciones/exporta
 Al ejecutar T001, antes de cambiar código de producto, crear el harness autocontenido y capturar publication-baseline.json con calentamiento+al menos3 mediciones, fixture/parámetros, entorno y huella fuente. No depende de T002 ni crea trabajo privado. El harness debe ofrecer captura explícita de solo primera escritura y comparación que nunca sobrescriba esa referencia. T071 reutiliza el mismo caso y guarda candidato/comparación aparte; si falta base o no es comparable, queda pendiente/fallida y no se declara aceleración. No ejecutar esta prueba ahora: corresponde a implementar T001/T071.
 
 El caso de conteo debe incluir persona y clase desconocida que cruzan sin sumar, bicicleta/moto elegibles, y clase que cambia tras un evento confirmado sin modificar el histórico. Los votos posteriores del inventario y OCR no deciden elegibilidad retrospectiva. El resumen conserva categorías desconocidas para revisión aunque el contador no las admita.
+
+## Uso de las capacidades010
+
+Seleccionar un video muestra su primer fotograma local. Dibujar/arrastrar el segmento, invertir la flecha y activar conserva un borrador que se aplica al aceptar el trabajo. El indicador suma solo cruces medidos en ese sentido y sigue la posición reproducida. Pausar y seleccionar un recuadro abre evidencia de ese instante; seleccionar otro instante crea otro contexto. El resumen por clase se muestra por separado y queda definitivo al cubrir el análisis completo. Exportar solicita vehicle-labels-v1 explícitamente; sin exportar no se genera MP4 anotado.
+
+Ajustar límites de inspección mediante VIDEO_INSPECTION_* descritos en backend/.env.example, sin cambiar la configuración privada durante pruebas. Los informes metodológicos y operativos siguen separados.

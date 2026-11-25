@@ -1,0 +1,14 @@
+{
+  "status": "verified_controlled",
+  "widths": [
+    360,
+    768,
+    1440
+  ],
+  "checks": [
+    "shared image/video card",
+    "page scrolling without full-card nested scroll",
+    "keyboard close and preserved image flow"
+  ],
+  "reviewed_image": "video-details-desktop.png"
+}
