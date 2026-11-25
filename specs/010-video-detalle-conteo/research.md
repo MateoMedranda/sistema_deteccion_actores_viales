@@ -41,6 +41,8 @@ La expiración de cada contexto se fija al primer POST aceptado y no se renueva.
 - **Rationale**: Representa exactamente el segmento y la evidencia disponible. Cada identidad aporta a lo sumo un evento por revisión; no confundir track_id con total. La flecha se calcula en geometría fuente para no deformarla en 16:9.
 - **Alternatives considered**: Signo respecto a recta infinita cuenta fuera de extremos; contar predicciones puede sumar cruces luego desmentidos; sumar ambos sentidos contradice la aclaración del usuario.
 
+- **Refinamiento A1 aprobado**: La elegibilidad de cruce se evalúa únicamente con la clase medida en la observación que confirma el paso, normalizada con strip/lower. Se admiten car, truck, bus, van, pickup, suv, sedan, hatchback, mpv, estate, bicycle y motorcycle; person, vacío y clases no catalogadas no suman cruces. Todas las mediciones conservan el estado geométrico de la trayectoria; un paso excluido por clase no consume la elegibilidad para un futuro cruce válido. Guardar class_key_at_crossing inmutable en el evento y no reevaluarlo con votos futuros, clasificación consolidada u OCR. Esta política no restringe el resumen: sus clases no catalogadas siguen visibles con requires_review. Reutilizar una taxonomía pura compartida, independiente de VEHICLE_CLASSES de enriquecimiento.
+
 ## R6. Revisión, reducer y editor previo
 
 - **Decision**: PUT con generation/expected_revision y dirección obligatoria; misma configuración con revisión vigente es no-op, revisión obsoleta devuelve409. Tras respuesta perdida, GET permite verificar configuración antes de reintentar; no sobrescribir borradores con datos tardíos. DELETE usa revisión esperada y mantiene tombstone mínimo. Nueva revisión recalcula en worker sobre recibos persistidos, 200 cuadros por lote; GET solo consulta estado/eventos indexados. Para intervalos fuente semiabiertos, ready exige at_us<covered_until_us; igualdad con el inicio del siguiente cuadro pendiente no está cubierta. La UI limita la consulta a un instante <available_until_us (habitualmente el inicio del cuadro pintado/last_frame_start_us). Con prefijo vacío solo at_us=0 devuelve pending/null o disabled/0, sin afirmar cobertura. Eventos únicos `(job,revision,track)`, con tiempo<=at_us. Versiones anteriores se eliminan por lotes tras quedar inaccesibles, sin tocar los eventos legacy.
@@ -83,3 +85,9 @@ El adaptador de preview de video usa metadatos propios `InspectionPlatePreviewMe
 ## Estado final de investigación
 
 Todas las incógnitas bloqueantes están resueltas. Las decisiones de producto ya autorizadas se mantienen; los fallos de capacidad, límites y procedencia tienen resultados explícitos. Las cifras de latencia/calidad deberán verificarse durante implementación; esta investigación no ejecutó benchmarks ni atribuye nuevos FPS al diseño.
+
+## R11. Referencia reproducible de rendimiento (U1)
+
+- Decision: Crear el harness autocontenido y capturar publication-baseline.json en T001 antes de cambios de producto; T002 depende de ese paso. No requiere los fixtures/API que se crearán después.
+- Rationale: Evita una comparación final sin test ni referencia anterior. Calentamiento+>=3 repeticiones, mismas entradas/parámetros/entorno, medianas y huellas separan captura previa de candidato.
+- Alternatives considered: Crear la referencia al final mediría el propio candidato como base; abrir worktree o iniciar la comparación larga contradice el alcance. Si la referencia deja de ser comparable, registrar pendiente/fallo y no inventarla.

@@ -95,3 +95,9 @@ Revisión documental:16 esquemas,8 ejemplos válidos y8 negativos,37 referencias
 Artefactos: [tasks.md](../specs/010-video-detalle-conteo/tasks.md), [puntos-tarea.csv](../specs/010-video-detalle-conteo/puntos-tarea.csv) y [validación de generación](../specs/010-video-detalle-conteo/task-generation.md). Se generan74 tareas pendientes: US1=7, US2=18, US3=14, US4=11, US5=10, más14 de setup/fundamentos/cierre. Incluyen12 oportunidades de paralelismo acotadas por dependencias y archivos; MVP visual T001–T015. B1–B5 se trazan a sus historias y al cierre transversal.
 
 Formato/dependencias y cobertura de24 FR/9 SC comprobados; restricciones del modelo de datos y pruebas previstas incluidas. Hook de puntos revisado/recalculado:399 PTS de línea base, sin clasificaciones heurísticas pendientes. No son horas ni rendimiento del sistema. Sin implementación ni pruebas de producto en esta fase; continúa analyze. La sesión metodológica y sus commits conservan trazabilidad separada de métricas operativas.
+
+### Corrección documental de010 — A1/U1 — 2026-11-24
+
+Se aclaran las clases elegibles del conteo y su evaluación en la medición confirmatoria, conservando el evento histórico frente a cambios posteriores de clase. T001 creará el comparador sintético y capturará la referencia antes de cambios de producto; T071 comparará contra esa referencia sin sobrescribirla. Detalle y límites: [remediation.md](../specs/010-video-detalle-conteo/remediation.md).
+
+Se mantienen 74 tareas y la cobertura de 24 FR/9 SC. El recálculo es 402 PTS por ampliar T001 de documentación a prueba de rendimiento; se conserva el antecedente de 399 PTS. No se ejecuta implementación ni comparación larga y los entregables de evidencia siguen pendientes de sus tareas.

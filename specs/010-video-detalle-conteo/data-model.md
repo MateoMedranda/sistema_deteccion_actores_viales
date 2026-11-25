@@ -35,6 +35,8 @@ Una fila por job con generation y revision monótona, incluso disabled; puntos n
 
 DELETE aumenta revisión y deja tombstone sin geometría/medios, dentro del TTL del padre. Las filas derivadas de revisiones antiguas se eliminan de forma acotada. Ningún cambio afecta p_count_state/p_count_events legacy, resumen ni detecciones.
 
+Política de elegibilidad del conteo finite-center-v1: La elegibilidad de cruce se evalúa únicamente con la clase medida en la observación que confirma el paso, normalizada con strip/lower. Se admiten car, truck, bus, van, pickup, suv, sedan, hatchback, mpv, estate, bicycle y motorcycle; person, vacío y clases no catalogadas no suman cruces. Todas las mediciones conservan el estado geométrico de la trayectoria; un paso excluido por clase no consume la elegibilidad para un futuro cruce válido. Guardar class_key_at_crossing inmutable en el evento y no reevaluarlo con votos futuros, clasificación consolidada u OCR. Esta política no restringe el resumen: sus clases no catalogadas siguen visibles con requires_review.
+
 ## 4. DirectedTrackState / p_directed_count_tracks
 
 Clave `(job,revision,track_id)`. Guarda último centro medido/PTS/índice, último lado no nulo, contacto con segmento pendiente y si ya existe evento. Solo cuadros detection_performed=true o procedencia histórica verificada actualizan el estado. Coordenadas fuente corregidas por orientación; las coordenadas normalizadas del editor se convierten según dimensiones fuente.
@@ -43,7 +45,7 @@ Distancia cero numérica=1e-6 píxeles. Mantener contacto finito a través de mu
 
 ## 5. DirectedCrossingEvent / p_directed_count_events
 
-Clave única `(job,revision,track_id)`, direction elegida, confirming_frame_index y time_us=start_us de la medición confirmatoria. Índice `(job,revision,time_us)` para conteo histórico. El número mostrado es cardinalidad de eventos con time_us<=posición, nunca Track ID máximo. Varios eventos en el mismo cuadro suman varias unidades.
+Clave única `(job,revision,track_id)`, direction elegida, confirming_frame_index, class_key_at_crossing (clase medida vehicular elegible, normalizada e inmutable) y time_us=start_us de la medición confirmatoria. Índice `(job,revision,time_us)` para conteo histórico. El número mostrado es cardinalidad de eventos con time_us<=posición, nunca Track ID máximo. Varios eventos en el mismo cuadro suman varias unidades.
 
 Reducer: worker procesa recibos en orden ascendente, hasta200 por transacción, con cursor y eventos en un único commit. Publicación repetida/reinicio no duplica. Al cambiar revisión, resultados anteriores dejan de ser consultables como actuales. GET devuelve total solo si at_us<covered_until_us y at_us<available_until_us; el extremo es exclusivo y la igualdad podría corresponder a un evento del siguiente cuadro no reducido. Con prefijo vacío solo at_us=0 devuelve pending/null o disabled/0; mientras construye, total=null y status pending con cobertura. Si el reducer alcanza todo el prefijo, status ready aunque el análisis continúe; nuevos lotes vuelven a dejar cola pendiente.
 

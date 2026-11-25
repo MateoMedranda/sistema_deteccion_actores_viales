@@ -57,7 +57,7 @@ before_tasks: sesión de métricas registrada. after_tasks: puntos.ps1 ejecutado
 | FR-019 | T059, T060, T061, T062, T063, T064, T065, T066, T067, T068 |
 | FR-020 | T059, T060, T061, T062, T064, T065, T067, T068 |
 | FR-021 | T059, T060, T062, T063, T064, T065, T066, T067, T068 |
-| FR-022 | T005, T006, T007, T008, T012, T022, T027, T030, T033, T039, T041, T047, T049, T052, T053, T054, T057, T058, T060, T061, T063, T064, T065, T066, T067, T068, T069, T070, T071, T072 |
+| FR-022 | T001, T005, T006, T007, T008, T012, T022, T027, T030, T033, T039, T041, T047, T049, T052, T053, T054, T057, T058, T060, T061, T063, T064, T065, T066, T067, T068, T069, T070, T071, T072 |
 | FR-023 | T005, T006, T007, T008, T016, T017, T019, T020, T021, T023, T024, T025, T026, T027, T032, T033, T035, T037, T039, T041, T047, T049, T050, T053, T054, T058, T060, T063, T064, T065, T066, T067, T068, T069, T070, T072 |
 | FR-024 | T001, T008, T015, T027, T033, T047, T058, T068, T070, T071, T072, T073, T074 |
 
@@ -72,9 +72,13 @@ before_tasks: sesión de métricas registrada. after_tasks: puntos.ps1 ejecutado
 | SC-005 | T035, T036, T040, T045, T046, T047, T072 |
 | SC-006 | T048, T049, T051, T052, T055, T056, T057, T058, T072 |
 | SC-007 | T059, T060, T062, T064, T067, T068, T072 |
-| SC-008 | T017, T033, T035, T047, T049, T052, T057, T058, T059, T060, T064, T066, T067, T068, T070, T071, T072 |
+| SC-008 | T001, T017, T033, T035, T047, T049, T052, T057, T058, T059, T060, T064, T066, T067, T068, T070, T071, T072 |
 | SC-009 | T009, T010, T014, T015, T031, T032, T036, T042, T043, T045, T046, T047, T056, T057, T072 |
 
 ## Conservación y siguiente fase
 
 Rama feature/010-video-detalle-conteo conservada en checkout principal. Archivos no versionados anteriores de otras sesiones no se añaden al commit de esta etapa. Código backend/frontend y .env privados intactos; los CSV de puntos son documentación metodológica. Siguiente paso: speckit-analyze para contrastar especificación, plan y tareas antes de implementar. Los pendientes largos/humanos de009 siguen pendientes.
+
+## Corrección autorizada posterior al análisis — A1/U1
+
+Se conservan74 tareas e IDs. A1 fija elegibilidad por la clase medida en la confirmación, con taxonomía compartida de T005, pruebas T034–T035 y evento inmutable. U1 convierte T001 en creación/captura del harness previo autocontenido y T071 en comparación contra esa referencia; ninguna depende circularmente de T002. Las métricas y puntos se recalculan manteniendo origen plan y el historial de399 PTS de la generación inicial.

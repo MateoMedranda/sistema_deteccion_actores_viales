@@ -49,6 +49,8 @@ GET solo lee: generation debe coincidir; revision si se incluye debe ser la acti
 
 Aplicar nueva configuración encola reconstrucción acotada del prefijo medido existente, no una nueva detección/decodificación. El estado pending permite visualizar progreso de cobertura. Cambiar línea/sentido no toca inventario ni p_count legacy. Datos viejos con procedencia insuficiente: unavailable y motivo seguro, no cruce inventado.
 
+Elegibilidad del contador: La elegibilidad de cruce se evalúa únicamente con la clase medida en la observación que confirma el paso, normalizada con strip/lower. Se admiten car, truck, bus, van, pickup, suv, sedan, hatchback, mpv, estate, bicycle y motorcycle; person, vacío y clases no catalogadas no suman cruces. Todas las mediciones conservan el estado geométrico de la trayectoria; un paso excluido por clase no consume la elegibilidad para un futuro cruce válido. Guardar class_key_at_crossing inmutable en el evento y no reevaluarlo con votos futuros, clasificación consolidada u OCR. Esta política no restringe el resumen: sus clases no catalogadas siguen visibles con requires_review. No se añade query/body para cambiar clases; la política está fijada en finite-center-v1.
+
 ## Resumen de identidades por clase
 
 GET exige generation, no acepta posición ni línea. Estado building mientras el inventario se pone al día; partial al conservar prefijo de un trabajo no completado; final solo con análisis completo y cobertura íntegra; unavailable si no se puede acreditar procedencia. `total_tracks=null` para unavailable; building/partial reportan únicamente identidades confirmadas de su cobertura. Revisiones futuras pueden cambiar clase/total mientras sea parcial; no presentar como definitivo.

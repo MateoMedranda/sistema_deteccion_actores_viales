@@ -68,3 +68,9 @@ Al probar con un análisis ordinario nuevo, conservar el informe operativo:
 ~~~
 
 El --latest debe seguir refiriéndose al análisis, nunca a inspecciones/exportaciones. Registrar latencia de extracción/cola/enriquecimiento y límites en perfiles separados sin medios ni lecturas OCR. Conservar cobertura de inventario/conteo y solicitudes nuevas frente a reutilizadas. Resultados futuros en validation.md/evidence/ de010, enlazados desde docs/registro-evolucion-sistema.md; no versionar .env, videos, placas ni recortes. Mantener explícitos los gates largos/humanos de009 pendientes.
+
+## Referencia previa de publicación y elegibilidad de conteo
+
+Al ejecutar T001, antes de cambiar código de producto, crear el harness autocontenido y capturar publication-baseline.json con calentamiento+al menos3 mediciones, fixture/parámetros, entorno y huella fuente. No depende de T002 ni crea trabajo privado. El harness debe ofrecer captura explícita de solo primera escritura y comparación que nunca sobrescriba esa referencia. T071 reutiliza el mismo caso y guarda candidato/comparación aparte; si falta base o no es comparable, queda pendiente/fallida y no se declara aceleración. No ejecutar esta prueba ahora: corresponde a implementar T001/T071.
+
+El caso de conteo debe incluir persona y clase desconocida que cruzan sin sumar, bicicleta/moto elegibles, y clase que cambia tras un evento confirmado sin modificar el histórico. Los votos posteriores del inventario y OCR no deciden elegibilidad retrospectiva. El resumen conserva categorías desconocidas para revisión aunque el contador no las admita.

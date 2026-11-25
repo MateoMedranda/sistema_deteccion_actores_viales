@@ -134,6 +134,14 @@ Completada mediante inspección de código en tres investigaciones de solo lectu
 
 No se reinterpretan `/summary`, `/playback/count` ni `/tracks/{id}/enrich`. La UI 010 usa rutas nuevas y un selector de renderer opt-in. La UI antigua conserva sus respuestas. Un recurso antiguo sin fuente/procedencia suficiente informa unavailable/reanalysis_required; no se inventa un resultado final. La migración no elimina tablas ni archivos previos.
 
+### Refinamientos del análisis A1/U1
+
+La elegibilidad de cruce se evalúa únicamente con la clase medida en la observación que confirma el paso, normalizada con strip/lower. Se admiten car, truck, bus, van, pickup, suv, sedan, hatchback, mpv, estate, bicycle y motorcycle; person, vacío y clases no catalogadas no suman cruces. Todas las mediciones conservan el estado geométrico de la trayectoria; un paso excluido por clase no consume la elegibilidad para un futuro cruce válido. Guardar class_key_at_crossing inmutable en el evento y no reevaluarlo con votos futuros, clasificación consolidada u OCR. Esta política no restringe el resumen: sus clases no catalogadas siguen visibles con requires_review.
+
+Antes de modificar backend/app o frontend/src en la iteración, T001 creará un comparador autocontenido en backend/tests/performance/test_video_detail_overhead.py, basado en los fixtures/runners de rendimiento existentes. Su fuente sintética y detector controlado no dependerán de T002 ni de APIs nuevas. Una ejecución de calentamiento y al menos tres medidas capturan mediana de tiempo de análisis/publicación, tamaño de lote/observaciones, entorno/paquetes, hash del fixture y huella del código fuente de base en evidence/publication-baseline.json. No persistir medios o credenciales. La línea base identifica el código anterior a010, aunque ya existan commits documentales de010.
+
+La referencia se escribe una sola vez con modo explícito de captura; no se sobrescribe en comparación ni se recaptura después de empezar a cambiar producto. T071 usa el mismo harness/fixture/parámetros, calentamiento y al menos tres medidas del candidato, compara medianas/etapas y conserva ambas huellas en publication-overhead.json. Si falta referencia o cambia el fixture/entorno necesario para comparar, se declara validación pendiente/fallida; no se genera una referencia del candidato ni se afirma mejora. Investigar >5 % de regresión sin consultas/exportación. Solo es comparación sintética breve y no valida FPS reales ni sustituye la evaluación larga diferida.
+
 ### Validación y trazabilidad
 
 | Historias / requisitos | Prueba futura y evidencia | Criterios |
