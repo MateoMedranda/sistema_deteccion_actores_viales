@@ -43,6 +43,10 @@ class JsonFormatter(logging.Formatter):
             "retry_count",
             "candidate_count",
             "profile_id",
+            "requested_intraop",
+            "effective_intraop",
+            "effective_interop",
+            "logical_cpus",
         ):
             if hasattr(record, key):
                 payload[key] = getattr(record, key)

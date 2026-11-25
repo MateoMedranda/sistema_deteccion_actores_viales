@@ -40,3 +40,9 @@ Se separa la capacidad de analizar de la de producir MP4. Esta enmienda sustituy
 ## Seguimiento: instrumentación interna y documentación, 2026-11-24
 
 T117–T120 añaden observabilidad sin cambiar el predictor y consolidan trazabilidad documental. El índice docs/registro-evolucion-sistema.md relaciona requisitos, diseño, contratos, tareas, pruebas, sesiones y commits; performance-history.json preserva las comparaciones ordinarias existentes. La evidencia distingue diagnóstico funcional breve, mediciones ordinarias y evaluaciones controladas pendientes. No se declaran optimizaciones del motor ni nuevos FPS por añadir mediciones.
+
+## Seguimiento: política CPU configurable, 2026-11-24
+
+T121–T124 implementados y verificados con 396 pruebas backend y diagnóstico breve real de hilos efectivos, documentados en validation.md y evidence/cpu-thread-check.json. Se usa el callback público on_predict_start para respetar la configuración después de la preparación diferida de YOLO; la instrumentación de tiempos continúa leyendo Results.speed sin hooks de medición. Predictores de vehículos y placas comparten la política de recursos del proceso. Los argumentos del modelo, pesos, entrada, cadencia y conteo no se alteran.
+
+No se acredita una aceleración al pasar de 8 a 16 ni aceptación completa de la iteración. La configuración local conserva 8; el diagnóstico demuestra control efectivo y equivalencia de clases/identidades/cajas enteras únicamente en el tramo medido. Permanecen abiertos los gates largos/humanos y los demás pendientes previos. Referencias e instrucciones preservadas en el índice de documentación del sistema.

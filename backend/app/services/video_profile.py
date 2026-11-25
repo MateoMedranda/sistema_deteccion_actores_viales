@@ -61,6 +61,14 @@ class VideoProfile:
         self.job_id, self.root = job.job_id, Path(root)
         self.created_at = datetime.now(UTC).isoformat()
         self.context = environment(detector)
+        policy = getattr(detector, "_thread_policy", None)
+        self.cpu_threads = {
+            **(policy.snapshot() if policy is not None else {
+                "requested_intraop": None, "effective_intraop": None,
+                "effective_interop": None, "logical_cpus": os.cpu_count()}),
+            "observed_detection_calls": 0, "min_intraop": None,
+            "max_intraop": None, "mismatched_calls": 0,
+        }
         self.source = {key: getattr(job.metadata, key) for key in (
             "width", "height", "fps", "duration_seconds", "total_frames")}
         self.stages = {key: dict(calls=0, total_ms=0.0, max_ms=0.0) for key in STAGES}
@@ -72,6 +80,15 @@ class VideoProfile:
         self.first_publication_ms = self.initial_buffer_ms = None
         self.last_report = self.started
         self.outcome, self.error_code = "processing", None
+
+    def record_cpu_threads(self, state):
+        row = self.cpu_threads
+        actual = state["effective_intraop"]
+        row.update(state)
+        row["observed_detection_calls"] += 1
+        row["min_intraop"] = min(row["min_intraop"], actual) if row["min_intraop"] is not None else actual
+        row["max_intraop"] = max(row["max_intraop"], actual) if row["max_intraop"] is not None else actual
+        row["mismatched_calls"] += int(state["requested_intraop"] is not None and state["requested_intraop"] != actual)
 
     @contextmanager
     def measure(self, stage):
@@ -124,6 +141,7 @@ class VideoProfile:
             "error_code": self.error_code, "environment": self.context, "source": self.source,
             "processed_frames": self.frames, "confirmed_frames": self.confirmed_frames,
             "sampling": dict(self.sampling),
+            "cpu_threads": dict(self.cpu_threads),
             "confirmed_video_seconds": round(confirmed_seconds, 6),
             "analysis_complete": self.analysis_complete, "analysis_wall_ms": round(analysis, 3),
             "total_wall_ms": round(elapsed, 3), "analysis_fps": round(fps, 3),
@@ -176,6 +194,11 @@ def render_report(data):
         f"Primera publicacion: {number(data['first_publication_ms'])} ms | Buffer inicial disponible: {number(data['initial_buffer_available_ms'])} ms",
         "", f"{'Etapa':43} {'Total ms':>12} {'ms/cuadro':>11} {'% analisis':>11} {'Llamadas':>9}",
     ]
+    if threads := data.get("cpu_threads"):
+        requested = threads["requested_intraop"] or "automatico"
+        actual = threads["effective_intraop"] or "n/d"
+        observed = threads["observed_detection_calls"]
+        lines.insert(2, f"Hilos CPU PyTorch solicitados/efectivos: {requested}/{actual} | Inter-op: {threads['effective_interop']} | CPU logicas: {threads['logical_cpus']} | Detecciones observadas: {observed} | Discrepancias: {threads['mismatched_calls']}")
     if sampling := data.get("sampling"):
         lines.insert(2, f"Intervalo solicitado/efectivo: {sampling['requested_interval']}/{sampling['effective_interval']} | Cuadros con deteccion: {sampling['detected_frames']} | Con prediccion: {sampling['predicted_frames']}")
     for key, row in data["stages"].items():

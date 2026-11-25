@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     api_keys: str | None = None
     model_confidence_threshold: float = Field(default=0.25, ge=0, le=1)
     inference_device: str = "0"
+    torch_num_threads: int | None = Field(default=None, ge=1)
     max_upload_bytes: int = Field(default=10 * 1024 * 1024, gt=0)
     max_image_pixels: int = Field(default=16_000_000, gt=0)
     artifact_ttl_seconds: int = Field(default=900, gt=0)

@@ -68,14 +68,18 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         enrichment_jobs = EnrichmentJobStore(settings.enrichment_job_db_path, settings.enrichment_result_ttl_seconds, settings.max_queued_enrichment_jobs)
         count_jobs.source_guard=source_guard
         enrichment_jobs.source_guard=source_guard
+        thread_policy = None
         detector = injected_detector
         if detector is None and not settings.runtime_errors():
             try:
+                from app.core.torch_threads import TorchThreadPolicy
+                thread_policy = TorchThreadPolicy(settings.torch_num_threads, logger)
                 detector = YOLOv10Detector(
                     settings.model_weights_path,
                     settings.model_confidence_threshold,
                     settings.inference_device,
                     settings.ultralytics_path,
+                    thread_policy=thread_policy,
                 )
             except Exception:
                 logger.error("model_initialization_failed", extra={"error_code":"model_initialization_failed"})
@@ -104,9 +108,13 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         try:
             if settings.plate_model_weights_path:
                 localizer = YOLOv8PlateLocalizer(settings.plate_model_weights_path, settings.plate_localizer_threshold)
+                if thread_policy is not None:
+                    thread_policy.bind_yolo(localizer.model)
                 reader = PaddlePlateReader(settings.paddle_ocr_lang)
         except Exception:
             logger.error("plate_model_initialization_failed", extra={"error_code":"plate_model_initialization_failed"})
+        if thread_policy is not None:
+            thread_policy.apply()
         enrichment_processor = EnrichmentProcessor(attributes, localizer, reader, settings.plate_ocr_retry_threshold, settings.plate_ocr_accept_threshold, settings.max_concurrent_attribute_inferences, settings.max_concurrent_plate_inferences)
         enrichment_processor.logger = logger
         app.state.enrichment_job_service.processor = enrichment_processor

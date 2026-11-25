@@ -10,12 +10,15 @@ from app.adapters.yolov10_tracker import YOLOv10ByteTrackAdapter
 
 
 class YOLOv10Detector:
-    def __init__(self, weights_path: Path, confidence_threshold: float, device: str, ultralytics_path: Path | None = None) -> None:
+    def __init__(self, weights_path: Path, confidence_threshold: float, device: str, ultralytics_path: Path | None = None, *, thread_policy=None) -> None:
         if ultralytics_path and str(ultralytics_path) not in sys.path:
             sys.path.insert(0, str(ultralytics_path))
         from ultralytics import YOLO
 
         self._model = YOLO(str(weights_path))
+        self._thread_policy = thread_policy
+        if thread_policy is not None:
+            thread_policy.bind_yolo(self._model)
         self._confidence_threshold = confidence_threshold
         self._device = device
         self._model_name = weights_path.name
@@ -46,5 +49,6 @@ class YOLOv10Detector:
 
     def create_video_tracker(self) -> YOLOv10ByteTrackAdapter:
         tracker = YOLOv10ByteTrackAdapter(self._model, self._confidence_threshold, self._device)
+        tracker._thread_policy = self._thread_policy
         tracker.reset()
         return tracker

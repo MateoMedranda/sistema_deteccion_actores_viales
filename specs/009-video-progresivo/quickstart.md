@@ -225,3 +225,23 @@ Revisar job_id, outcome, analysis_complete y schema_version=2; un archivo export
 En detection_breakdown: phases contiene totales/medias/máximos de llamadas con datos nativos válidos; boxes_transfer separa CPU/NumPy; predict_wall es un subtotal de pared, no otra fase para sumar; unattributed_detection_ms conserva el resto del padre. missing/invalid/unrecorded describen falta de cobertura. Un n/d significa que no se midió, no que la fase no costara nada. native_exceeds_wall_calls/overreported_ms señalan discrepancias sin alterar los valores. Las fases ya están incluidas en stages.detection: no sumarlas otra vez al tiempo de análisis.
 
 Los registros para futuros documentos se encuentran desde docs/registro-evolucion-sistema.md. Las comparaciones ya interpretadas se preservan en specs/009-video-progresivo/evidence/performance-history.json; no dependen únicamente del chat o de conservar .runtime.
+
+## Ajustar hilos de CPU
+
+Editar backend/.env (configuración privada) y reiniciar únicamente la terminal de la API:
+
+~~~dotenv
+TORCH_NUM_THREADS=8
+~~~
+
+Desde la raíz del proyecto, después de detener la API anterior con Ctrl+C:
+
+~~~powershell
+.\backend\start.ps1 -Service api
+~~~
+
+Se aceptan enteros positivos, por ejemplo 1, 2, 4, 8 o 16. Eliminar la variable conserva el valor nativo de las librerías; no escribir vacío o cero. El entorno del proceso tiene prioridad sobre .env. El ejemplo versionado deja la variable comentada; la configuración local conserva explícitamente 8. No se cambia MAX_CONCURRENT_VIDEO_JOBS, VIDEO_DETECTION_INTERVAL ni INFERENCE_DEVICE. No usar varios workers Uvicorn para este experimento.
+
+El evento estructurado torch_cpu_threads informa requested_intraop/effective_intraop/effective_interop/logical_cpus. En un análisis nuevo, report_video_profile.py --latest muestra «Hilos CPU PyTorch solicitados/efectivos». El JSON añade cpu_threads con observed_detection_calls, min_intraop, max_intraop y mismatched_calls. Para un trabajo real perfilado, los efectivos deben coincidir con lo solicitado y las discrepancias ser cero; antes de la primera detección solo hay una lectura inicial. Informes antiguos siguen siendo legibles y no permiten deducir cuántos hilos usaron.
+
+Comparar el mismo video completo sin exportarlo ni seleccionar vehículos, con alimentación/carga similares, reiniciando la API entre valores. Revisar FPS, inferencia por llamada y tiempo total. Mantener la misma resolución, modelo e intervalo. El diagnóstico corto de evidence/cpu-thread-check.json verifica aplicación del control; no sustituye la comparación completa ni permite prometer tiempo real. Más hilos pueden no ayudar: en el diagnóstico, 8 y 16 quedaron en un rango parecido.

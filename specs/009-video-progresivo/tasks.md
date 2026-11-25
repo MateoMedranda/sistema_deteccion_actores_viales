@@ -371,3 +371,12 @@ El usuario solicita separar preparación/inferencia/posprocesamiento sin cambiar
 - [X] T118 Mostrar cobertura, datos ausentes/inválidos, discrepancias y tiempo no atribuido en JSON/CLI, conservando lectura de informes anteriores y acumulación acotada.
 - [X] T119 Probar contabilidad, fallos y cuadros predichos; ejecutar suite y diagnóstico breve real sin comparación larga; documentar cómo obtener el informe nuevo.
 - [X] T120 Consolidar índice documental, decisiones y evidencia agregada de las mediciones anteriores, distinguir datos operativos de métricas de trabajo y conservar pendientes históricos; confirmar la entrega.
+
+## Phase 16: Hilos CPU configurables y observables
+
+Cambio autorizado: controlar los hilos intra-op de PyTorch y registrar solicitado/efectivo sin cambiar pesos, entrada, intervalo ni conteo.
+
+- [X] T121 Añadir TORCH_NUM_THREADS opcional positivo al backend y política única por proceso; conservar el valor nativo cuando se omite y respetar el configurado tras preparación diferida de los predictores YOLO.
+- [X] T122 Registrar hilos solicitados/efectivos, inter-op observado y discrepancias en log y perfiles JSON/CLI, sin muestras por cuadro ni reinterpretar informes anteriores.
+- [X] T123 Probar configuración, arranque, callbacks, muestreo y regresiones de identidad/conteo; ejecutar diagnóstico real breve y suite backend sin comparación larga.
+- [X] T124 Documentar configuración/reinicio, evidencia y límites de rendimiento/edge computing, conservar pendientes anteriores y confirmar la entrega.

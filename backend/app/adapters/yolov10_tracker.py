@@ -17,6 +17,7 @@ class YOLOv10ByteTrackAdapter:
         self._model = model
         self._confidence_threshold = confidence_threshold
         self._device = device
+        self._thread_policy = None
         self.detection_interval = 1
         self.reset()
 
@@ -81,6 +82,8 @@ class YOLOv10ByteTrackAdapter:
                     speed = getattr(result, "speed", None)
                 except Exception:
                     speed = None
+                if self._thread_policy is not None:
+                    profile.record_cpu_threads(self._thread_policy.snapshot())
                 profile.record_detection(speed, (after_predict-before_predict)*1000,
                                          (after_transfer-after_predict)*1000)
             with measure("tracking"):

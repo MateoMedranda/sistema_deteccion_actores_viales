@@ -1,0 +1,208 @@
+{
+  "scope": "Short sequential real-model smoke diagnostic, not full-pipeline benchmark or quality acceptance. 24 identical decoded source frames, interval 2, 3 image warmup calls, 12 measured video detections per process. Fresh process per configuration; 8 repeated at both ends to expose drift. No original images, plates, filenames, source paths or per-frame outputs retained. Windows scheduling, other applications and thermal/power state are uncontrolled.",
+  "source": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30
+  },
+  "observations": [
+    {
+      "threads": 8,
+      "cpu_threads": {
+        "requested_intraop": 8,
+        "effective_intraop": 8,
+        "effective_interop": 8,
+        "logical_cpus": 16,
+        "observed_detection_calls": 12,
+        "min_intraop": 8,
+        "max_intraop": 8,
+        "mismatched_calls": 0
+      },
+      "model": "yolov10s_best.pt",
+      "environment": {
+        "python": "3.12.15",
+        "system": "Windows",
+        "logical_cpus": 16,
+        "packages": {
+          "torch": "2.14.1+cpu",
+          "ultralytics": "8.4.62",
+          "av": "19.0.2",
+          "opencv-python-headless": "4.14.0.94"
+        },
+        "device": "cpu",
+        "model": "yolov10s_best.pt",
+        "confidence_threshold": 0.25
+      },
+      "frames": 24,
+      "detection_calls": 12,
+      "inference_mean_ms": 81.39,
+      "detection_mean_ms": 85.218,
+      "same_classes_track_ids_and_integer_boxes_as_first_8": true
+    },
+    {
+      "threads": 1,
+      "cpu_threads": {
+        "requested_intraop": 1,
+        "effective_intraop": 1,
+        "effective_interop": 8,
+        "logical_cpus": 16,
+        "observed_detection_calls": 12,
+        "min_intraop": 1,
+        "max_intraop": 1,
+        "mismatched_calls": 0
+      },
+      "model": "yolov10s_best.pt",
+      "environment": {
+        "python": "3.12.15",
+        "system": "Windows",
+        "logical_cpus": 16,
+        "packages": {
+          "torch": "2.14.1+cpu",
+          "ultralytics": "8.4.62",
+          "av": "19.0.2",
+          "opencv-python-headless": "4.14.0.94"
+        },
+        "device": "cpu",
+        "model": "yolov10s_best.pt",
+        "confidence_threshold": 0.25
+      },
+      "frames": 24,
+      "detection_calls": 12,
+      "inference_mean_ms": 377.807,
+      "detection_mean_ms": 381.807,
+      "same_classes_track_ids_and_integer_boxes_as_first_8": true
+    },
+    {
+      "threads": 2,
+      "cpu_threads": {
+        "requested_intraop": 2,
+        "effective_intraop": 2,
+        "effective_interop": 8,
+        "logical_cpus": 16,
+        "observed_detection_calls": 12,
+        "min_intraop": 2,
+        "max_intraop": 2,
+        "mismatched_calls": 0
+      },
+      "model": "yolov10s_best.pt",
+      "environment": {
+        "python": "3.12.15",
+        "system": "Windows",
+        "logical_cpus": 16,
+        "packages": {
+          "torch": "2.14.1+cpu",
+          "ultralytics": "8.4.62",
+          "av": "19.0.2",
+          "opencv-python-headless": "4.14.0.94"
+        },
+        "device": "cpu",
+        "model": "yolov10s_best.pt",
+        "confidence_threshold": 0.25
+      },
+      "frames": 24,
+      "detection_calls": 12,
+      "inference_mean_ms": 233.198,
+      "detection_mean_ms": 238.651,
+      "same_classes_track_ids_and_integer_boxes_as_first_8": true
+    },
+    {
+      "threads": 4,
+      "cpu_threads": {
+        "requested_intraop": 4,
+        "effective_intraop": 4,
+        "effective_interop": 8,
+        "logical_cpus": 16,
+        "observed_detection_calls": 12,
+        "min_intraop": 4,
+        "max_intraop": 4,
+        "mismatched_calls": 0
+      },
+      "model": "yolov10s_best.pt",
+      "environment": {
+        "python": "3.12.15",
+        "system": "Windows",
+        "logical_cpus": 16,
+        "packages": {
+          "torch": "2.14.1+cpu",
+          "ultralytics": "8.4.62",
+          "av": "19.0.2",
+          "opencv-python-headless": "4.14.0.94"
+        },
+        "device": "cpu",
+        "model": "yolov10s_best.pt",
+        "confidence_threshold": 0.25
+      },
+      "frames": 24,
+      "detection_calls": 12,
+      "inference_mean_ms": 137.542,
+      "detection_mean_ms": 142.228,
+      "same_classes_track_ids_and_integer_boxes_as_first_8": true
+    },
+    {
+      "threads": 16,
+      "cpu_threads": {
+        "requested_intraop": 16,
+        "effective_intraop": 16,
+        "effective_interop": 8,
+        "logical_cpus": 16,
+        "observed_detection_calls": 12,
+        "min_intraop": 16,
+        "max_intraop": 16,
+        "mismatched_calls": 0
+      },
+      "model": "yolov10s_best.pt",
+      "environment": {
+        "python": "3.12.15",
+        "system": "Windows",
+        "logical_cpus": 16,
+        "packages": {
+          "torch": "2.14.1+cpu",
+          "ultralytics": "8.4.62",
+          "av": "19.0.2",
+          "opencv-python-headless": "4.14.0.94"
+        },
+        "device": "cpu",
+        "model": "yolov10s_best.pt",
+        "confidence_threshold": 0.25
+      },
+      "frames": 24,
+      "detection_calls": 12,
+      "inference_mean_ms": 83.828,
+      "detection_mean_ms": 88.345,
+      "same_classes_track_ids_and_integer_boxes_as_first_8": true
+    },
+    {
+      "threads": 8,
+      "cpu_threads": {
+        "requested_intraop": 8,
+        "effective_intraop": 8,
+        "effective_interop": 8,
+        "logical_cpus": 16,
+        "observed_detection_calls": 12,
+        "min_intraop": 8,
+        "max_intraop": 8,
+        "mismatched_calls": 0
+      },
+      "model": "yolov10s_best.pt",
+      "environment": {
+        "python": "3.12.15",
+        "system": "Windows",
+        "logical_cpus": 16,
+        "packages": {
+          "torch": "2.14.1+cpu",
+          "ultralytics": "8.4.62",
+          "av": "19.0.2",
+          "opencv-python-headless": "4.14.0.94"
+        },
+        "device": "cpu",
+        "model": "yolov10s_best.pt",
+        "confidence_threshold": 0.25
+      },
+      "frames": 24,
+      "detection_calls": 12,
+      "inference_mean_ms": 87.315,
+      "detection_mean_ms": 90.915,
+      "same_classes_track_ids_and_integer_boxes_as_first_8": true
+    }
+  ]
+}
