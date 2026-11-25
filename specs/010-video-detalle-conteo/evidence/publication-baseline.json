@@ -1,0 +1,50 @@
+{
+  "context": {
+    "python": "3.12.15 (main, Oct 14 2026, 01:08:45) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "packages": {
+      "numpy": "2.3.5",
+      "pydantic": "2.14.1",
+      "Pillow": "11.3.0",
+      "av": "19.0.2"
+    },
+    "parameters": {
+      "frames": 300,
+      "observations": 20,
+      "batch": 15,
+      "width": 640,
+      "height": 360,
+      "warmup": 1,
+      "repeats": 5
+    },
+    "fixture_sha256": "a3993901a3daa7dd6bb00584ca1889d6a8201509554bc60c596d147f30b1923b"
+  },
+  "source_sha256": "059999c4b81d24ab0cb58894b4a330ac93f5b2f424728c9930f506de83e1800d",
+  "samples": [
+    {
+      "analysis_ms": 112.4149999814108,
+      "publication_ms": 104.77719979826361
+    },
+    {
+      "analysis_ms": 97.13909996207803,
+      "publication_ms": 90.1701997499913
+    },
+    {
+      "analysis_ms": 100.3904000390321,
+      "publication_ms": 93.23720016982406
+    },
+    {
+      "analysis_ms": 97.67469996586442,
+      "publication_ms": 92.01469994150102
+    },
+    {
+      "analysis_ms": 96.90949996002018,
+      "publication_ms": 90.40819969959557
+    }
+  ],
+  "medians": {
+    "analysis_ms": 97.67469996586442,
+    "publication_ms": 92.01469994150102
+  },
+  "scope": "synthetic publication only; no real model FPS or long benchmark"
+}

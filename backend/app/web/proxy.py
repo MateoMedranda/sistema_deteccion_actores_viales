@@ -9,6 +9,7 @@ from starlette.responses import JSONResponse,Response,StreamingResponse
 
 ID=r"[A-Za-z0-9][A-Za-z0-9_-]{0,127}"
 ROUTES=[
+ ("GET",rf"/api/v1/video-jobs/{ID}/playback/capabilities","json"),
  ("GET",r"/api/v1/web-policy","json"),
  ("GET",r"/health/(?:live|ready|video-ready|enrichment-ready|image-policy)","json"),
  ("POST",r"/api/v1/detections/images","image-upload"),

@@ -1,3 +1,4 @@
+import {VehicleDetailsCard} from "../../components/vehicle-details/VehicleDetailsCard";
 import {classPresentation} from "../image-analysis/classPresentation";
 import {useEffect,useState} from "react";
 import {ApiClient,ClientError} from "../../services/apiClient";
@@ -20,7 +21,7 @@ export function ProgressiveTrackResults({client,tracks,selected,onSelect,onUnava
  const track=tracks.find(t=>t.track_id===selected),pending=track&&["waiting_evidence","queued","processing"].includes(track.state);
  const plateEvidence=track?.evidence.find(e=>e.plate_url&&track.plate.evidence_ids.includes(e.evidence_id));
  const vehicle=track?.evidence[0];
- return <aside className="vehicle-details progressive-details" aria-label="Ficha del vehículo">
+ return <VehicleDetailsCard className="progressive-details">
  {!track?<div className="details-empty"><span aria-hidden="true">⌖</span><h3>Explora cada vehículo</h3><p>{selected?"Preparando la ficha del vehículo seleccionado…":"Pausa y selecciona un recuadro del video para consultar atributos, placa y recortes."}</p><p className="muted">Solo se consultan los vehículos que selecciones.</p></div>:<>
  <div className="details-heading"><div><span className="eyebrow">FICHA DEL VEHÍCULO</span><h3>Vehículo #{track.track_id}</h3></div><button className="icon-button" aria-label="Cerrar ficha del vehículo" onClick={onClose}>×</button></div>
  <div className="vehicle-meta"><span><i className="class-swatch" style={{backgroundColor:classPresentation(track.class_name).color}} aria-hidden="true"/>{classPresentation(track.class_name).label}</span><span>Track ID {track.track_id}</span></div>
@@ -31,5 +32,5 @@ export function ProgressiveTrackResults({client,tracks,selected,onSelect,onUnava
  {track.state==="not_requested"&&<button onClick={()=>onSelect(track.track_id)}>Consultar vehículo</button>}
  <p className="privacy-note">{track.final?"Consulta guardada temporalmente":"Datos provisionales · pueden actualizarse"} · Track ID local a este video.</p>
  </>}
- </aside>;
+ </VehicleDetailsCard>;
 }

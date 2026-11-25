@@ -48,6 +48,8 @@ def create_app(settings: Settings | None = None, detector: Detector | None = Non
     app.include_router(detections.router, prefix="/api")
     app.include_router(video_jobs.router, prefix="/api")
     app.include_router(video_playback.router, prefix="/api")
+    from app.api.routes import video_detection_summary
+    app.include_router(video_detection_summary.router, prefix="/api")
     app.include_router(count_jobs.router, prefix="/api")
     app.include_router(enrichment_jobs.router, prefix="/api")
 

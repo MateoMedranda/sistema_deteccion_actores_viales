@@ -1,3 +1,4 @@
+import {VehicleDetailsCard} from "../../components/vehicle-details/VehicleDetailsCard";
 import type { Detection, VehicleResult } from "../../services/apiTypes";
 import { ApiClient } from "../../services/apiClient";
 import { PlateComparison } from "./PlateComparison";
@@ -27,11 +28,7 @@ export function VehicleDetails({
   onClose: () => void;
 }) {
   return (
-    <aside
-      id="vehicle-details"
-      className="vehicle-details"
-      aria-label="Ficha del vehículo"
-    >
+    <VehicleDetailsCard id="vehicle-details">
       {!detection ? (
         <div className="details-empty">
           <span aria-hidden="true">⌖</span>
@@ -130,6 +127,6 @@ export function VehicleDetails({
           </p>
         </>
       )}
-    </aside>
+    </VehicleDetailsCard>
   );
 }

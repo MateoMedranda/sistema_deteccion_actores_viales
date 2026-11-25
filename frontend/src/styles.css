@@ -367,7 +367,7 @@ main{max-width:1920px;padding:0 clamp(16px,2vw,32px) 28px;}
 
 /* Selective video inspection: same details hierarchy as still images. */
 .progressive-workspace{grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:20px;background:transparent!important;border:0!important;padding:0!important}
-.progressive-details{position:static;align-self:start;padding:20px;max-height:min(850px,calc(100vh - 120px));overflow:auto}
+.progressive-details{position:static;align-self:start;padding:20px;max-height:none;overflow:visible}
 .progressive-details .details-heading h3{margin:5px 0 0}.progressive-details .vehicle-meta{flex-wrap:wrap}
 .progressive-details .video-evidence{margin:14px 0 0}.video-evidence figcaption{font-size:.75rem;color:var(--muted);margin-bottom:8px}.video-evidence img{display:block;width:100%;height:auto;min-height:90px;max-height:220px;object-fit:contain;background:#eef2f7;border-radius:10px}
 .progressive-vehicles{margin-top:16px;border-top:1px solid var(--border);padding-top:12px}.progressive-vehicles summary{cursor:pointer;font-size:.8rem;min-height:44px;display:flex;align-items:center;font-weight:650}

@@ -1,0 +1,5 @@
+.vehicle-details.progressive-details{max-height:none;overflow:visible;align-self:start}
+.vehicle-details .attribute-list dd{margin:0;overflow-wrap:anywhere}
+.vehicle-details .video-evidence{margin:14px 0 0}
+.vehicle-details .video-evidence figcaption{font-size:.875rem;font-weight:600;margin-bottom:8px}
+.vehicle-details .video-evidence img{display:block;width:100%;height:auto;max-height:260px;object-fit:contain;background:#eef2f7;border-radius:10px}

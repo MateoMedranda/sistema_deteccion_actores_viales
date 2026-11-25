@@ -22,11 +22,11 @@
 
 **Independent Test / Checkpoint**: Los servidores/fixtures usan rutas temporales y puertos propios; no hay cambios en pesos, backend .env privado ni trabajos existentes.
 
-- [ ] T001 Crear el harness sintético autocontenido `backend/tests/performance/test_video_detail_overhead.py` y capturar la referencia previa en `specs/010-video-detalle-conteo/evidence/publication-baseline.json` ANTES de cualquier cambio de backend/app o frontend/src: sin depender de T002/APIs010, una ejecución de calentamiento y al menos3 medidas, mediana de análisis/publicación, entorno/paquetes, fixture/parámetros y huella fuente. Modo de captura explícito, escritura única sin sobrescritura; no ejecutar comparación larga ni modelos reales. Registrar comandos/estado de base en `specs/010-video-detalle-conteo/validation.md`; mantener rama/cambios privados y detector/hilos/intervalo. [FR 022,024; SC 008]
+- [X] T001 Crear el harness sintético autocontenido `backend/tests/performance/test_video_detail_overhead.py` y capturar la referencia previa en `specs/010-video-detalle-conteo/evidence/publication-baseline.json` ANTES de cualquier cambio de backend/app o frontend/src: sin depender de T002/APIs010, una ejecución de calentamiento y al menos3 medidas, mediana de análisis/publicación, entorno/paquetes, fixture/parámetros y huella fuente. Modo de captura explícito, escritura única sin sobrescritura; no ejecutar comparación larga ni modelos reales. Registrar comandos/estado de base en `specs/010-video-detalle-conteo/validation.md`; mantener rama/cambios privados y detector/hilos/intervalo. [FR 022,024; SC 008]
 
-- [ ] T002 Preparar fixtures sintéticos reutilizables en `backend/tests/fixtures_010.py` y `frontend/tests/fixtures/videoDetail010.ts`: misma identidad en 3 s/20 s, PTS no cero/VFR/rotación, clases/empates/persona/desconocidos, trayectorias y cajas de bordes; sin medios privados ni modelos reales. Depende de T001.
+- [X] T002 Preparar fixtures sintéticos reutilizables en `backend/tests/fixtures_010.py` y `frontend/tests/fixtures/videoDetail010.ts`: misma identidad en 3 s/20 s, PTS no cero/VFR/rotación, clases/empates/persona/desconocidos, trayectorias y cajas de bordes; sin medios privados ni modelos reales. Depende de T001.
 
-- [ ] T003 Configurar entorno Playwright010 aislado en `frontend/playwright.010.config.ts` y `backend/tests/e2e/serve_video_detail_010.py`, reutilizando patrones009 y directorios temporales; incluir una imagen y un video y registrar cleanup de servicios propios. Depende de T002.
+- [X] T003 Configurar entorno Playwright010 aislado en `frontend/playwright.010.config.ts` y `backend/tests/e2e/serve_video_detail_010.py`, reutilizando patrones009 y directorios temporales; incluir una imagen y un video y registrar cleanup de servicios propios. Depende de T002.
 
 
 ## Phase 2: Foundational — contratos y acceso compartidos
@@ -35,15 +35,15 @@
 
 **Independent Test / Checkpoint**: Contratos cerrados y guards rechazan entradas inválidas/propietario ajeno, sin crear inspecciones, votos, cruces o exportaciones por GET.
 
-- [ ] T004 Añadir primero regresiones de contratos/primitivas y capacidad conservadora en `backend/tests/contract/test_video_detail_foundation.py`, basadas en `specs/010-video-detalle-conteo/contracts/schemas.json`; cubrir UUID, enteros seguros, bool rechazado, no finitos, cuerpos/query desconocidos/duplicados y capacidades sin efectos. Depende de T003.
+- [X] T004 Añadir primero regresiones de contratos/primitivas y capacidad conservadora en `backend/tests/contract/test_video_detail_foundation.py`, basadas en `specs/010-video-detalle-conteo/contracts/schemas.json`; cubrir UUID, enteros seguros, bool rechazado, no finitos, cuerpos/query desconocidos/duplicados y capacidades sin efectos. Depende de T003.
 
-- [ ] T005 Implementar primitivas y Capabilities en `backend/app/domain/video_detail.py`: «job/generation como pertenencia», enteros «0..2^53-1» y «track>=1», UUID, fechas y errores seguros; aplicar esquemas cerrados/no finitos y protocolo `video-detail-v1` de `contracts/schemas.json`, sin alterar PlaybackState/FrameSlice legacy. Crear también taxonomía pura compartida en `backend/app/domain/vehicle_taxonomy.py`, con normalización y conjunto de clases vehiculares conocidas independiente de VEHICLE_CLASSES; será reutilizada por conteo e inventario sin depender de implementar US3. Depende de T004. [FR 022,023]
+- [X] T005 Implementar primitivas y Capabilities en `backend/app/domain/video_detail.py`: «job/generation como pertenencia», enteros «0..2^53-1» y «track>=1», UUID, fechas y errores seguros; aplicar esquemas cerrados/no finitos y protocolo `video-detail-v1` de `contracts/schemas.json`, sin alterar PlaybackState/FrameSlice legacy. Crear también taxonomía pura compartida en `backend/app/domain/vehicle_taxonomy.py`, con normalización y conjunto de clases vehiculares conocidas independiente de VEHICLE_CLASSES; será reutilizada por conteo e inventario sin depender de implementar US3. Depende de T004. [FR 022,023]
 
-- [ ] T006 Implementar guard y lease reutilizables en `backend/app/services/video_detail_access.py`, extendiendo `backend/app/services/video_progressive_store.py` solo para puntos de integración aditivos: «Parent check antes de reclamar, inferir y publicar», propiedad/generación/TTL, reader lease y limpieza registrable sin BEGIN anidado ni cambios en tablas legacy. Depende de T005. [FR 022,023]
+- [X] T006 Implementar guard y lease reutilizables en `backend/app/services/video_detail_access.py`, extendiendo `backend/app/services/video_progressive_store.py` solo para puntos de integración aditivos: «Parent check antes de reclamar, inferir y publicar», propiedad/generación/TTL, reader lease y limpieza registrable sin BEGIN anidado ni cambios en tablas legacy. Depende de T005. [FR 022,023]
 
-- [ ] T007 Implementar GET /playback/capabilities en `backend/app/api/routes/video_detection_summary.py` y su servicio `backend/app/services/video_detail_capabilities.py`; «Capacidades independientes» según fuente+PTS, mediciones e inventario verificables; no anunciar como supported un servicio/dato inexistente ni disparar reconstrucción desde GET. Depende de T006. [FR 018,022,023]
+- [X] T007 Implementar GET /playback/capabilities en `backend/app/api/routes/video_detection_summary.py` y su servicio `backend/app/services/video_detail_capabilities.py`; «Capacidades independientes» según fuente+PTS, mediciones e inventario verificables; no anunciar como supported un servicio/dato inexistente ni disparar reconstrucción desde GET. Depende de T006. [FR 018,022,023]
 
-- [ ] T008 Conectar capabilities y allowlist exacta en `backend/app/main.py` y `backend/app/web/proxy.py`; preservar sesión/CSRF/API key, errores 404/410, respuestas no-store y contratos cerrados previos. Ejecutar T004 y registrar en `specs/010-video-detalle-conteo/validation.md` sin incluir secretos. Depende de T007. [FR 022,023,024]
+- [X] T008 Conectar capabilities y allowlist exacta en `backend/app/main.py` y `backend/app/web/proxy.py`; preservar sesión/CSRF/API key, errores 404/410, respuestas no-store y contratos cerrados previos. Ejecutar T004 y registrar en `specs/010-video-detalle-conteo/validation.md` sin incluir secretos. Depende de T007. [FR 022,023,024]
 
 
 ## Phase 3: User Story 1 — ficha consistente con imágenes (P1, MVP visual)
@@ -52,19 +52,19 @@
 
 **Independent Test / Checkpoint**: Comparar fichas con todos los apartados a360/768/1440: scroll normal de página, cierre/foco y zoom local de placa, sin horizontal ni pérdida del flujo de imágenes.
 
-- [ ] T009 [P] [US1] Escribir regresiones de shell/estados y adaptación de ficha en `frontend/tests/features/video-analysis/videoDetailsLayout.test.tsx`; comprobar orden, confianza, cierre, clases de tamaño y que el zoom de placa conserve sus controles, usando datos fijos sin depender de US2. Depende de T008. [FR 001,002,003; SC 001,009]
+- [X] T009 [P] [US1] Escribir regresiones de shell/estados y adaptación de ficha en `frontend/tests/features/video-analysis/videoDetailsLayout.test.tsx`; comprobar orden, confianza, cierre, clases de tamaño y que el zoom de placa conserve sus controles, usando datos fijos sin depender de US2. Depende de T008. [FR 001,002,003; SC 001,009]
 
-- [ ] T010 [P] [US1] Escribir recorrido visual/teclado/toque a360/768/1440 en `frontend/e2e/video-detail-layout.010.spec.ts`; verificar ficha completa sin altura/scroll propios ni desbordamiento de página, comparar imagen y video y guardar capturas de evidencia sintética. Depende de T008. [FR 001,002,003; SC 001,009]
+- [X] T010 [P] [US1] Escribir recorrido visual/teclado/toque a360/768/1440 en `frontend/e2e/video-detail-layout.010.spec.ts`; verificar ficha completa sin altura/scroll propios ni desbordamiento de página, comparar imagen y video y guardar capturas de evidencia sintética. Depende de T008. [FR 001,002,003; SC 001,009]
 
-- [ ] T011 [US1] Extraer presentación compartida a `frontend/src/components/vehicle-details/VehicleDetailsCard.tsx` y `frontend/src/components/vehicle-details/vehicleDetails.css`: encabezado, cierre, recorte, atributos y placa; adaptadores por origen, sin llamadas API ni identidades inventadas dentro del shell. Depende de T009, T010. [FR 001,002,003]
+- [X] T011 [US1] Extraer presentación compartida a `frontend/src/components/vehicle-details/VehicleDetailsCard.tsx` y `frontend/src/components/vehicle-details/vehicleDetails.css`: encabezado, cierre, recorte, atributos y placa; adaptadores por origen, sin llamadas API ni identidades inventadas dentro del shell. Depende de T009, T010. [FR 001,002,003]
 
-- [ ] T012 [US1] Adaptar `frontend/src/features/image-analysis/VehicleDetails.tsx` al shell conservando estados, confianza, preview y acceso actuales de imágenes; ejecutar sus regresiones sin cambiar contratos ni comportamiento del análisis de imagen. Depende de T011. [FR 001,003,022]
+- [X] T012 [US1] Adaptar `frontend/src/features/image-analysis/VehicleDetails.tsx` al shell conservando estados, confianza, preview y acceso actuales de imágenes; ejecutar sus regresiones sin cambiar contratos ni comportamiento del análisis de imagen. Depende de T011. [FR 001,003,022]
 
-- [ ] T013 [US1] Adaptar `frontend/src/features/video-analysis/ProgressiveTrackResults.tsx` a la misma presentación con Track ID y tiempo propios, preservando el adaptador legacy mientras US2 no esté conectado y sin insertar una lista completa encima de la ficha. Depende de T012. [FR 001,002,003]
+- [X] T013 [US1] Adaptar `frontend/src/features/video-analysis/ProgressiveTrackResults.tsx` a la misma presentación con Track ID y tiempo propios, preservando el adaptador legacy mientras US2 no esté conectado y sin insertar una lista completa encima de la ficha. Depende de T012. [FR 001,002,003]
 
-- [ ] T014 [US1] Eliminar únicamente max-height/overflow de toda .progressive-details y unificar ancho/tokens/breakpoints con imágenes en `frontend/src/styles.css`; conservar scroll de visores ampliados, foco, botones tocables y página sin horizontal. Depende de T013. [FR 001,002,003; SC 001,009]
+- [X] T014 [US1] Eliminar únicamente max-height/overflow de toda .progressive-details y unificar ancho/tokens/breakpoints con imágenes en `frontend/src/styles.css`; conservar scroll de visores ampliados, foco, botones tocables y página sin horizontal. Depende de T013. [FR 001,002,003; SC 001,009]
 
-- [ ] T015 [US1] Ejecutar T009–T010 y regresiones de imagen/video de la ficha; revisar capturas y registrar evidencia de US1 en `specs/010-video-detalle-conteo/validation.md` y `specs/010-video-detalle-conteo/evidence/ui-layout.json`. Este checkpoint entrega el MVP visual sin afirmar resuelta todavía la evidencia temporal. Depende de T014. [FR 001,002,003,024; SC 001,009]
+- [X] T015 [US1] Ejecutar T009–T010 y regresiones de imagen/video de la ficha; revisar capturas y registrar evidencia de US1 en `specs/010-video-detalle-conteo/validation.md` y `specs/010-video-detalle-conteo/evidence/ui-layout.json`. Este checkpoint entrega el MVP visual sin afirmar resuelta todavía la evidencia temporal. Depende de T014. [FR 001,002,003,024; SC 001,009]
 
 
 ## Phase 4: User Story 2 — inspección temporal estable (P1; B1 y parte de B5)
