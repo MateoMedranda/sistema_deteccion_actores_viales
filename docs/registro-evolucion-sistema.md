@@ -132,3 +132,12 @@ Artefactos: [plan](../specs/011-video-multilinea-velocidad/plan.md), [investigac
 Se diseña colección UUID con CAS, geometría independiente de nombre/color, tombstones/admisiones acotados, importación única de la línea anterior y reducción bidireccional medida fuera del lock con publicación condicionada. Una consulta agregada entrega cantidades con intervalos de validez exacta para mantenerlas sincronizadas con los cuadros sin peticiones por cuadro. El reloj canvas se reancla al cambiar velocidad; no se alteran PTS/decoder/analizadores ni exportación. Las tarjetas superiores se mantienen dentro del root fullscreen; límites iniciales10líneas/128admisiones, sin infraestructura nueva.
 
 Validación de diseño:11esquemas,15referencias,4operaciones,9ejemplos positivos y12negativos de estructura;10negativos semánticos revisados cuyo rechazo efectivo deberá probarse al implementar. Plan constitucional conforme, sin producto implementado, tests de producto ni comparación larga/humana. Referencia breve011 se capturará antes de cambios; dependencia regex se declarará/fijará en implementación. Continúa tasks.
+
+
+### Tareas de011 —2026-11-25
+
+Se generan [tasks.md](../specs/011-video-multilinea-velocidad/tasks.md), [puntos-tarea.csv](../specs/011-video-multilinea-velocidad/puntos-tarea.csv) y [validación de generación](../specs/011-video-multilinea-velocidad/task-generation.md) en feature/011-video-multilinea-velocidad y checkout principal.75tareas pendientes: US1=12,US2=13,US3=8,US4=9,US5=9, más24compartidas.144dependencias acíclicas y23oportunidades [P] acotadas por archivos/prerrequisitos;26FR/10SC cubiertos.
+
+La primera tarea captura referencia011 antes de editar producto. Se separan configuración, cruces bidireccionales, tarjetas/colores, reloj y recuperación; constraints/contratos y validez temporal de cantidades se trazan a tareas concretas. T071mantiene la validación con cinco personas como pendiente si no se realiza, sin bloquear el commit técnico ni acreditar SC-009por pruebas sintéticas.
+
+Hook PTS revisado:365puntos de plan, todas las75filas clasificadas por agente, sin heurísticas ni agregados/eliminados. La pasada inicial342era borrador heurístico, no una estimación validada. No se implementa código ni se ejecuta la comparación larga/tests de producto en esta fase. Continúa analyze.

@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-25
 
-**Status**: Planificada — lista para generar tareas; funcionalidad pendiente de implementación.
+**Status**: Tareas generadas — pendiente de análisis e implementación.
 
 **Input**: User description: "Crear una nueva iteración para controlar la velocidad del video e implementar más de una línea de conteo en intersecciones. Sacar el contador a una barra superior con varios contadores. Dar nombre a cada línea, por ejemplo AV SIMÓN BOLIVAR y RUTA VIVA, permitir cambiar su color desde el contador y mostrar nombre y color en su tarjeta. Usar otra rama."
 
