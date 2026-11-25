@@ -13,7 +13,7 @@ from app.adapters.selected_frame_extractor import extract_frame
 
 class VideoInspections(InspectionStore):
  def __init__(self,store,settings,processor,slots):
-  super().__init__(store,settings);self.processor,self.slots=processor,slots
+  super().__init__(store,settings);self.processor,self.slots=processor,slots;self.preview_slot=threading.BoundedSemaphore(1)
   self.stop=threading.Event();self.thread=threading.Thread(target=self.run,name='video-inspection',daemon=True)
   self.logger=logging.getLogger('road_actor_detection')
  def start(self):self.thread.start()
@@ -45,7 +45,8 @@ class VideoInspections(InspectionStore):
    value['state']=state;value['result_revision']+=1
    with s.lock,s.db:
     self.get_record(job,owner,iid)
-    s.db.execute('UPDATE p_video_inspections SET state=?,payload=?,paths=? WHERE id=?',(state,dump(value),dump(paths),iid))
+    actual=rec['bytes'] if state in ['queued','preparing','processing'] else sum(Path(p).stat().st_size for p in paths.values())
+    s.db.execute('UPDATE p_video_inspections SET state=?,payload=?,paths=?,bytes=? WHERE id=?',(state,dump(value),dump(paths),actual,iid))
   def asset(kind,data):
    if len(data)>self.settings.video_inspection_max_resource_bytes:raise ValueError('inspection_resource_limit')
    aid=str(uuid4());path=self.directory/(aid+'.png');temporary=path.with_suffix('.tmp');created.extend([temporary,path]);temporary.write_bytes(data)
@@ -77,7 +78,6 @@ class VideoInspections(InspectionStore):
      if ok:
       value['plate_asset']=asset('plate',png.tobytes());value['plate_preview_url']=f'/api/v1/video-jobs/{job}/playback/inspections/{iid}/plate-preview';value['plate_preview_profiles']=['display-contrast-v1']
     publish('partial' if attrs['status']=='failed' or plate['status']=='failed' else 'ready')
-   with s.lock,s.db:s.db.execute('UPDATE p_video_inspections SET bytes=? WHERE id=?',(sum(Path(p).stat().st_size for p in paths.values()),iid))
   except Exception as exc:
    if 'owner' in locals():
     try:

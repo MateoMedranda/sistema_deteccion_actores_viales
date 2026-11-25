@@ -18,6 +18,8 @@ class ProgressiveExport:
     def __init__(self, store, legacy, artifacts, settings, logger):
         self.store, self.legacy, self.artifacts = store, legacy, artifacts
         self.settings, self.logger = settings, logger
+        from app.services.video_export_variant_store import VideoExportVariantStore
+        self.variants=VideoExportVariantStore(store,settings)
         self.stop = threading.Event()
         self.thread = threading.Thread(target=self.run, name="video-export", daemon=True)
         self.encoder = VideoProcessor(None, legacy, artifacts, settings.ffmpeg_executable,
@@ -43,7 +45,8 @@ class ProgressiveExport:
         self.stop.set()
         self.thread.join()
 
-    def status(self, job, owner):
+    def status(self, job, owner, renderer=None):
+        if renderer:return self.variants.status(job,owner,renderer)
         with self.store.lock:
             row = self.store.row(job, owner)
             parent = self.legacy.get(job, owner)
@@ -55,7 +58,10 @@ class ProgressiveExport:
                         url=f"/api/v1/video-jobs/{job}/annotated-video/content" if ready else None,
                         error_code=record["error"] if record else None)
 
-    def request(self, job, owner):
+    def request(self, job, owner, renderer=None):
+        if renderer:
+            if self.stop.is_set():raise ApiError(503,"export_unavailable","Export is unavailable.")
+            return self.variants.request(job,owner,renderer)
         with self.store.lock:
             row = self.store.row(job, owner)
             if row["analysis"] != "complete":
@@ -87,7 +93,7 @@ class ProgressiveExport:
                 self.store.db.execute("UPDATE p_video_exports SET state='rendering' WHERE job=?", (row["job"],))
                 self.store.db.execute("UPDATE p_video SET export='encoding' WHERE job=?", (row["job"],))
                 return row["job"], row["owner"]
-        return None
+        return self.variants.claim()
 
     def run(self):
         while not self.stop.wait(.25):
@@ -95,7 +101,8 @@ class ProgressiveExport:
             if claimed:
                 self.process(*claimed)
 
-    def process(self, job, owner):
+    def process(self, job, owner, renderer=None):
+        table="p_video_label_exports" if renderer else "p_video_exports"
         started = perf_counter()
         metrics = dict(decode_ms=0.0, annotation_ms=0.0, video_write_ms=0.0, encode_ms=0.0)
         writer = frames = None
@@ -123,11 +130,11 @@ class ProgressiveExport:
             with self.store.lock, self.store.db:
                 row = self.store.row(job, owner)
                 parent = self.legacy.get(job, owner)
-                record = self.store.db.execute("SELECT * FROM p_video_exports WHERE job=?", (job,)).fetchone()
+                record = self.store.db.execute(f"SELECT * FROM {table} WHERE job=?", (job,)).fetchone()
                 output = Path(record["output"]) if record["output"] else self.artifacts.annotated_output_path()
                 raw = Path(record["temporary"]) if record["temporary"] else output.with_suffix(".raw.mp4")
                 source, total = Path(row["source"]), row["frames"]
-                self.store.db.execute("UPDATE p_video_exports SET output=?,temporary=? WHERE job=?", (str(output), str(raw), job))
+                self.store.db.execute(f"UPDATE {table} SET output=?,temporary=? WHERE job=?", (str(output), str(raw), job))
                 for path in (source, raw, output):
                     key = str(path)
                     self.store.readers[key] = self.store.readers.get(key, 0) + 1
@@ -151,10 +158,14 @@ class ProgressiveExport:
                     if not writer.isOpened():
                         raise RuntimeError("export_initialization_failed")
                 before = perf_counter()
-                for ob in receipt["observations"]:
-                    box = ob["display_bbox"]
-                    if box:
-                        draw_box(image, tuple(box[key] for key in ("x_min", "y_min", "x_max", "y_max")), ob["class_name"])
+                if renderer:
+                    from app.services.video_export_labels import draw_labels
+                    draw_labels(image,receipt['observations'])
+                else:
+                    for ob in receipt["observations"]:
+                        box = ob["display_bbox"]
+                        if box:
+                            draw_box(image, tuple(box[key] for key in ("x_min", "y_min", "x_max", "y_max")), ob["class_name"])
                 metrics["annotation_ms"] += (perf_counter() - before) * 1000
                 before = perf_counter()
                 writer.write(image)
@@ -162,13 +173,13 @@ class ProgressiveExport:
                 count += 1
                 if count % 15 == 0:
                     with self.store.lock, self.store.db:
-                        self.store.db.execute("UPDATE p_video_exports SET frames=? WHERE job=?", (count, job))
+                        self.store.db.execute(f"UPDATE {table} SET frames=? WHERE job=?", (count, job))
             if count != total or not count:
                 raise RuntimeError("export_timeline_mismatch")
             writer.release()
             writer = None
             with self.store.lock, self.store.db:
-                self.store.db.execute("UPDATE p_video_exports SET state='encoding',frames=? WHERE job=?", (count, job))
+                self.store.db.execute(f"UPDATE {table} SET state='encoding',frames=? WHERE job=?", (count, job))
             before = perf_counter()
             try:
                 self.encoder(raw, output, cancelled, started + self.settings.video_job_timeout_seconds, parent.expires_at)
@@ -179,16 +190,16 @@ class ProgressiveExport:
                 raise RuntimeError("export_encoding_failed")
             with self.store.lock, self.store.db:
                 self.store.row(job, owner)
-                self.store.db.execute("UPDATE video_jobs SET output_path=? WHERE job_id=? AND status='completed'", (str(output), job))
-                self.store.db.execute("UPDATE p_video_exports SET state='ready',error=NULL WHERE job=?", (job,))
-                self.store.db.execute("UPDATE p_video SET export='ready' WHERE job=?", (job,))
+                if not renderer:self.store.db.execute("UPDATE video_jobs SET output_path=? WHERE job_id=? AND status='completed'", (str(output), job))
+                self.store.db.execute(f"UPDATE {table} SET state='ready',error=NULL WHERE job=?", (job,))
+                if not renderer:self.store.db.execute("UPDATE p_video SET export='ready' WHERE job=?", (job,))
             outcome = "ready"
         except Exception as exc:
-            allowed = {"export_interrupted", "export_timeout", "export_unavailable", "export_timeline_mismatch", "export_initialization_failed"}
+            allowed = {"export_interrupted", "export_timeout", "export_unavailable", "export_timeline_mismatch", "export_initialization_failed", "export_label_layout_unrepresentable"}
             code = str(exc) if str(exc) in allowed else "export_failed"
             with self.store.lock, self.store.db:
-                self.store.db.execute("UPDATE p_video_exports SET state='failed',error=? WHERE job=?", (code, job))
-                self.store.db.execute("UPDATE p_video SET export='failed' WHERE job=?", (job,))
+                self.store.db.execute(f"UPDATE {table} SET state='failed',error=? WHERE job=?", (code, job))
+                if not renderer:self.store.db.execute("UPDATE p_video SET export='failed' WHERE job=?", (job,))
             self.logger.error("video_export_failed", extra={"job_id": job, "error_code": code, "exception_type": type(exc).__name__})
         finally:
             if frames is not None: frames.close()
@@ -207,9 +218,9 @@ class ProgressiveExport:
             try:
                 directory = self.settings.video_job_db_path.parent / "video-export-profiles"
                 directory.mkdir(parents=True, exist_ok=True)
-                path = directory / (job + ".json")
+                path = directory / (job + ("."+renderer if renderer else "") + ".json")
                 temporary = path.with_suffix(".json.tmp")
-                temporary.write_text(json.dumps(dict(job_id=job, outcome=outcome, frames=count,
+                temporary.write_text(json.dumps(dict(job_id=job, renderer_version=renderer, outcome=outcome, frames=count,
                     error_code=code, total_ms=round((perf_counter()-started)*1000), **metrics), indent=2), encoding="utf-8")
                 temporary.replace(path)
             except OSError:

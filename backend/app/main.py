@@ -60,6 +60,7 @@ def create_app(settings: Settings | None = None, detector: Detector | None = Non
     @app.middleware("http")
     async def bounded_video_detail(request: Request, call_next):
         detail = "/playback/" in request.url.path and any(part in request.url.path for part in ("/inspections", "/directed-count", "/detection-summary", "/capabilities"))
+        detail = detail or ("/playback/export" in request.url.path and "renderer" in request.query_params)
         if detail:
             from fastapi.responses import JSONResponse
             total=bytearray()

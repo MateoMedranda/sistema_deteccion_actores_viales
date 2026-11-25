@@ -392,6 +392,7 @@ class ProgressiveStore:
                 (str(path), now().isoformat()),
             ).fetchone():
                 return True
+            if any(getattr(resource,"retains",lambda p:False)(path) for resource in getattr(self,"detail_resources",[])):return True
             if self.legacy:
                 return (
                     self.db.execute(

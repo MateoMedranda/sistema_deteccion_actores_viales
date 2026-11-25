@@ -1,3 +1,4 @@
+import {parseDetail} from "../features/video-analysis/inspectionContracts";
 import type {WebPolicy} from "./managedTypes";
 import { parseImagePolicy, parsePlatePreviewMetadata, type PlatePreviewContext } from "./apiTypes";
 import { decodeImage } from "../utils/decodeImage";
@@ -56,7 +57,6 @@ export const imageTimeouts = {
 export class ApiClient {
   async inspectionPlatePreview(job:string,inspection:string,asset:string,options:RequestOptions={}){
     return this.consume('/api/v1/video-jobs/'+encodeURIComponent(job)+'/playback/inspections/'+inspection+'/plate-preview?profile=display-contrast-v1',async(response)=>{
-      const {parseDetail}=await import('../features/video-analysis/inspectionContracts');
       const header=response.headers.get('X-Plate-Preview-Metadata');if(!header||header.length>2048)throw error('invalid_response');
       const metadata=parseDetail<import('../features/video-analysis/inspectionContracts').InspectionPlatePreviewMetadata>('InspectionPlatePreviewMetadata',JSON.parse(header));
       if(metadata.job_id!==job||metadata.inspection_id!==inspection||metadata.plate_asset_id!==asset||Date.parse(metadata.expires_at)<=Date.now())throw error('invalid_response');
@@ -104,6 +104,11 @@ export class ApiClient {
   }
   disableProgressiveCount(id:string,options:RequestOptions={}){
     return this.consume("/api/v1/video-jobs/"+encodeURIComponent(id)+"/playback/count",async()=>undefined,{method:"DELETE"},{timeoutMs:10000,...options});
+  }
+  labelVideo(id:string,path:string|null){
+    if(!this.web)throw error('managed_transport_required');
+    if(path!=='/api/v1/video-jobs/'+encodeURIComponent(id)+'/playback/export/content?renderer=vehicle-labels-v1')throw error('invalid_export_url');
+    return this.url(path);
   }
   nativeVideo(id:string,count=false){
     if(!this.web)throw error("managed_transport_required");

@@ -1,0 +1,6 @@
+import {test,expect} from '@playwright/test';import path from 'node:path';
+test('explicit labeled MP4 downloads as a separate private variant',async({page,request})=>{
+ await request.post('http://127.0.0.1:9415/test-only/reset?scenario=short');await page.goto('/');await expect(page.locator('main')).toHaveAttribute('data-session-state','ready');await page.getByRole('tab',{name:'Video',exact:true}).click();await page.locator('input[type=file][aria-label=Video]').setInputFiles(path.resolve('../.runtime/e2e-009/source.mp4'));await page.getByRole('button',{name:'Procesar video',exact:true}).click();
+ const button=page.getByRole('button',{name:'Exportar video anotado',exact:true});await expect(button).toBeEnabled({timeout:30000});await button.click();const link=page.getByRole('link',{name:'Descargar MP4'});await expect(link).toBeVisible({timeout:30000});expect(await link.getAttribute('href')).toContain('/playback/export/content?renderer=vehicle-labels-v1');
+ const downloaded=page.waitForEvent('download');await link.click();const file=await downloaded;expect(file.suggestedFilename()).toBe('video-anotado.mp4');await file.saveAs('test-results/010-artifacts/labeled-video.mp4');await page.getByRole('button',{name:'Limpiar video',exact:true}).click();
+});

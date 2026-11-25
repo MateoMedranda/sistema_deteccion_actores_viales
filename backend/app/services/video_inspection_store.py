@@ -13,7 +13,7 @@ class InspectionStore:
   self.directory=settings.video_temp_dir/'inspections';self.directory.mkdir(parents=True,exist_ok=True)
   with store.lock,store.db:
    store.db.execute('CREATE TABLE IF NOT EXISTS p_video_inspections(id TEXT PRIMARY KEY,job TEXT,generation TEXT,track INTEGER,idx INTEGER,policy TEXT,expires TEXT,state TEXT,payload TEXT,paths TEXT DEFAULT \'{}\',bytes INTEGER DEFAULT 0,UNIQUE(job,generation,track,idx,policy))')
-   store.db.execute("UPDATE p_video_inspections SET state='failed',payload=json_set(payload,'$.state','failed','$.error_code','inspection_interrupted') WHERE state='processing'")
+   store.db.execute("UPDATE p_video_inspections SET state='failed',payload=json_set(payload,'$.state','failed','$.error_code','inspection_interrupted','$.result_revision',coalesce(json_extract(payload,'$.result_revision'),0)+1) WHERE state='processing'")
    store.db.execute("UPDATE p_video_inspections SET state='queued' WHERE state='preparing'")
   if not hasattr(store,'detail_resources'):store.detail_resources=[]
   store.detail_resources.append(self)

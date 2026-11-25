@@ -1,7 +1,7 @@
 from uuid import UUID
 from fastapi import APIRouter,Depends,Query,Request,Response
 from app.api.dependencies import Principal,require_api_key
-from app.api.routes.video_playback import query
+from app.services.video_detail_access import closed_query as query
 from app.domain.directed_count import DirectedCountRequest,DirectedCount
 router=APIRouter(prefix='/v1/video-jobs',tags=['directed-count'])
 @router.put('/{job_id}/playback/directed-count',response_model=DirectedCount)

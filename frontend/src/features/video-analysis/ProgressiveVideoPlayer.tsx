@@ -514,7 +514,7 @@ export function ProgressiveVideoPlayer({
               : "El reproductor aparecerá al confirmar los primeros cuadros."}
           </p>
         )}
-        {state&&<VideoExport key={id} client={client} id={id} enabled={state.analysis_state==="complete"} serverState={state.export_state} active={active} expiresAt={state.expires_at} onUnavailable={playback.retire}/>}
+        {state&&<VideoExport renderer="vehicle-labels-v1" key={id} client={client} id={id} enabled={state.analysis_state==="complete"} serverState={state.export_state} active={active} expiresAt={state.expires_at} onUnavailable={playback.retire}/>}
         <DetectionSummaryView result={summary}/>
         {state&&<details className="progressive-vehicles"><summary>Vehículos de este fotograma ({last.current?.observations.length??0})</summary><ProgressiveTrackList observations={last.current?.observations??[]} selected={selected} onSelect={select}/></details>}
 

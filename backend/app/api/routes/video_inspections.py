@@ -22,8 +22,8 @@ def get(job_id:str,inspection_id:UUID,request:Request,principal:Principal=Depend
 def asset(job_id:str,inspection_id:UUID,asset_id:UUID,kind:Literal['vehicle','plate'],request:Request,principal:Principal=Depends(require_api_key)):
  query(request,[]);service=request.app.state.video_inspections
  path=service.resource(job_id,principal.key_id,str(inspection_id),str(asset_id),kind)
- response=media(service.store,job_id,principal.key_id,path,request,'image/png',service.settings.video_inspection_max_resource_bytes)
- response.headers['ETag']='"'+str(asset_id)+'"';return response
+ response=media(service.store,job_id,principal.key_id,path,request,'image/png',service.settings.video_inspection_max_resource_bytes,identity=str(asset_id),guard=lambda:service.get_record(job_id,principal.key_id,str(inspection_id)))
+ return response
 @router.get('/{job_id}/playback/inspections/{inspection_id}/plate-preview')
 def plate_preview(job_id:str,inspection_id:UUID,request:Request,profile:str='display-contrast-v1',principal:Principal=Depends(require_api_key)):
  query(request,['profile']);png,metadata=preview(request.app.state.video_inspections,job_id,principal.key_id,str(inspection_id),profile)

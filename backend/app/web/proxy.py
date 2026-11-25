@@ -9,6 +9,7 @@ from starlette.responses import JSONResponse,Response,StreamingResponse
 
 ID=r"[A-Za-z0-9][A-Za-z0-9_-]{0,127}"
 ROUTES=[
+ ("GET|HEAD",rf"/api/v1/video-jobs/{ID}/playback/export/content","progressive-source"),
  ("GET",rf"/api/v1/video-jobs/{ID}/playback/detection-summary","json"),
  ("GET|PUT|DELETE",rf"/api/v1/video-jobs/{ID}/playback/directed-count","json"),
  ("POST",rf"/api/v1/video-jobs/{ID}/playback/inspections","json"),
@@ -54,6 +55,7 @@ def classify(method,path,raw_path,query):
     if len(keys)!=len(set(keys)):raise RelayError(422,"web_query_invalid")
     allowed={"page","page_size"} if path.endswith(("/detections","/results","/events")) else {"profile"} if kind=="plate" else set()
     if kind=="video-upload":allowed={"presentation","enrichment"}
+    elif path.endswith(("/playback/export","/playback/export/content")):allowed={"renderer"}
     elif path.endswith("/playback/detection-summary"):allowed={"generation"}
     elif path.endswith("/playback/directed-count"):allowed={"generation","at_us","revision"} if method=="GET" else {"generation","expected_revision"} if method=="DELETE" else set()
     elif path.endswith("/playback/count"):allowed={"at_us"} if method=="GET" else set()
@@ -61,7 +63,9 @@ def classify(method,path,raw_path,query):
     elif path.endswith("/playback/tracks"):allowed={"snapshot","cursor"}
     if not set(keys)<=allowed:raise RelayError(422,"web_query_invalid")
     for key,value in pairs:
-        if key=="generation":
+        if key=="renderer":
+            if value!="vehicle-labels-v1":raise RelayError(422,"web_query_invalid")
+        elif key=="generation":
             try:UUID(value)
             except ValueError:raise RelayError(422,"web_query_invalid")
         elif key=="enrichment":
@@ -162,7 +166,7 @@ class Proxy:
                 if value:=request.headers.get("if-range"):
                     if len(value)>256 or any(ord(c)<32 for c in value):raise RelayError(416,"web_range_invalid")
                     headers["If-Range"]=value
-                job_path=path.removesuffix("/source") if kind=="progressive-source" else path.split("/annotated-video")[0]
+                job_path=path.split("/export/content")[0] if "/playback/export/content" in path else path.removesuffix("/source") if kind=="progressive-source" else path.split("/annotated-video")[0]
                 async with asyncio.timeout(max(.001,deadline-monotonic())):
                     check=await self.client.send(self.client.build_request("GET",self.settings.backend_url.rstrip("/")+job_path,headers={"X-API-Key":headers["X-API-Key"],"Accept-Encoding":"identity"}),stream=True)
                     try:

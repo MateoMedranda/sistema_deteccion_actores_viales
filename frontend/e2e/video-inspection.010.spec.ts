@@ -10,6 +10,7 @@ test('selected frame has frozen evidence and exact context',async({page,request}
  await expect(page.getByRole('img',{name:'Recorte del vehículo',exact:true})).toBeVisible({timeout:15000});expect(bodies[0].frame_index).toBe(Number(frame));
  const image=page.getByRole('img',{name:'Recorte del vehículo',exact:true});const url=await image.getAttribute('src');await expect(page.getByText('SYN123',{exact:true})).toBeVisible();
  await page.waitForTimeout(30000);expect(await image.getAttribute('src')).toBe(url);
+ await page.screenshot({path:'test-results/010-artifacts/video-card.png',fullPage:true});
  await page.getByRole('slider',{name:/Posición del video/}).focus();await page.keyboard.press('Home');await expect(page.getByRole('heading',{name:'Vehículo #1',exact:true})).toHaveCount(0);
  await page.getByRole('button',{name:'Limpiar video',exact:true}).click();await request.post('http://127.0.0.1:9415/test-only/release');
 });

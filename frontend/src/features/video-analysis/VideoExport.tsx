@@ -1,3 +1,4 @@
+import {parseDetail,type LabelExportStatus} from "./inspectionContracts";
 import {useEffect, useRef, useState} from "react";
 import {ApiClient, ClientError} from "../../services/apiClient";
 import "./VideoExport.css";
@@ -6,7 +7,8 @@ type ExportState = "waiting" | "queued" | "rendering" | "encoding" | "ready" | "
 type Receipt = {job_id:string;state:ExportState;processed_frames:number;total_frames:number;expires_at:string;url:string|null;error_code:string|null};
 const busyStates = new Set(["queued", "rendering", "encoding"]);
 
-function receipt(value:unknown,id:string):Receipt {
+function receipt(value:unknown,id:string,renderer?:"vehicle-labels-v1"):Receipt {
+  if(renderer){const r=parseDetail<LabelExportStatus>("LabelExportStatus",value);if(r.job_id!==id||r.renderer_version!==renderer||(r.state==="ready"&&r.url!==`/api/v1/video-jobs/${id}/playback/export/content?renderer=${renderer}`))throw Error("invalid_export_state");return r;}
   const r=value as Receipt;
   if(!r||r.job_id!==id||!["waiting","queued","rendering","encoding","ready","failed"].includes(r.state)
     ||!Number.isSafeInteger(r.processed_frames)||!Number.isSafeInteger(r.total_frames)
@@ -15,8 +17,8 @@ function receipt(value:unknown,id:string):Receipt {
   return r;
 }
 
-export function VideoExport({client,id,enabled,serverState,active,expiresAt,onUnavailable}:{
-  client:ApiClient;id:string;enabled:boolean;serverState:string;active:boolean;expiresAt:string;onUnavailable:()=>void;
+export function VideoExport({client,id,enabled,serverState,active,expiresAt,onUnavailable,renderer}:{
+  renderer?:"vehicle-labels-v1";client:ApiClient;id:string;enabled:boolean;serverState:string;active:boolean;expiresAt:string;onUnavailable:()=>void;
 }) {
   const [result,setResult]=useState<Receipt>();
   const [requested,setRequested]=useState(false);
@@ -34,8 +36,8 @@ export function VideoExport({client,id,enabled,serverState,active,expiresAt,onUn
     const controller=new AbortController();let timer:ReturnType<typeof setTimeout>;let failures=0;
     const poll=async()=>{
       try {
-        const next=receipt(await client.json(`/api/v1/video-jobs/${id}/playback/export`,undefined,
-          {signal:controller.signal,timeoutMs:10000,expiresAt}),id);
+        const next=receipt(await client.json(`/api/v1/video-jobs/${id}/playback/export${renderer?"?renderer="+renderer:""}`,undefined,
+          {signal:controller.signal,timeoutMs:10000,expiresAt}),id,renderer);
         if(controller.signal.aborted)return;
         setResult(next);setMessage("");failures=0;
         if(!busyStates.has(next.state)){setRequested(false);return;}
@@ -47,15 +49,15 @@ export function VideoExport({client,id,enabled,serverState,active,expiresAt,onUn
       timer=setTimeout(poll,failures?Math.min(8000,1000*2**(failures-1)):500);
     };
     void poll();return()=>{controller.abort();clearTimeout(timer);};
-  },[client,id,active,requested,serverState,expiresAt]);
+  },[client,id,active,requested,serverState,expiresAt,renderer]);
 
   const request=async()=>{
     const controller=action.current;
     if(!controller||controller.signal.aborted||busy)return;
     setBusy(true);setMessage("");
     try {
-      const next=receipt(await client.json(`/api/v1/video-jobs/${id}/playback/export`,{method:"POST"},
-        {signal:controller.signal,timeoutMs:10000,expiresAt}),id);
+      const next=receipt(await client.json(`/api/v1/video-jobs/${id}/playback/export${renderer?"?renderer="+renderer:""}`,{method:"POST"},
+        {signal:controller.signal,timeoutMs:10000,expiresAt}),id,renderer);
       if(controller.signal.aborted)return;
       setResult(next);setRequested(busyStates.has(next.state));
     } catch(e) {
@@ -76,7 +78,7 @@ export function VideoExport({client,id,enabled,serverState,active,expiresAt,onUn
     <div><h4>Video anotado</h4><p role="status">{message|| (busy?"Solicitando exportación…":labels[state])}</p>
       {result&&busyStates.has(state)&&<progress aria-label="Cuadros de la exportación" max={Math.max(1,result.total_frames)} value={result.processed_frames}/>}
     </div>
-    {state==="ready"?<a href={client.nativeVideo(id)} download="video-anotado.mp4">Descargar MP4</a>:
+    {state==="ready"?<a href={renderer?client.labelVideo(id,result!.url):client.nativeVideo(id)} download="video-anotado.mp4">Descargar MP4</a>:
       <button type="button" disabled={!active||!enabled||busy||busyStates.has(state)} onClick={()=>void request()}>
         {state==="failed"?"Reintentar exportación":"Exportar video anotado"}
       </button>}

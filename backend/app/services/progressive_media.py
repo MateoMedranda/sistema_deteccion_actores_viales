@@ -7,7 +7,7 @@ from starlette.responses import Response, StreamingResponse
 from app.api.error_handlers import ApiError
 
 
-def media(store, job, owner, path: Path, request, media_type="video/mp4", maximum=None):
+def media(store, job, owner, path: Path, request, media_type="video/mp4", maximum=None, identity=None, guard=None):
     with store.lock:
         row = store.row(job, owner)
         if not path.is_file():
@@ -15,7 +15,7 @@ def media(store, job, owner, path: Path, request, media_type="video/mp4", maximu
         size = path.stat().st_size
         if maximum and size > maximum:
             raise ApiError(422, "evidence_too_large", "The media is unavailable.")
-        etag = '"' + row["generation"] + "-" + str(size) + '"'
+        etag = '"' + row["generation"] + "-" + (identity or str(size)) + '"'
         headers = {
             "Accept-Ranges": "bytes",
             "Cache-Control": "no-store",
@@ -58,6 +58,7 @@ def media(store, job, owner, path: Path, request, media_type="video/mp4", maximu
                 try:
                     with store.lock:
                         store.row(job, owner)
+                        if guard:guard()
                 except ApiError:
                     return
                 block = handle.read(min(65536, remaining))

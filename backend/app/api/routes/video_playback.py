@@ -129,16 +129,25 @@ def disable_count(job_id: str, request: Request, principal: Principal = Depends(
 
 
 from app.domain.progressive import VideoExportStatus
+from app.domain.video_label_export import LabelExportStatus
 
-@router.get("/{job_id}/playback/export", response_model=VideoExportStatus)
-def export_status(job_id: str, request: Request, principal: Principal = Depends(require_api_key)):
-    query(request, [])
-    return request.app.state.progressive_export.status(job_id, principal.key_id)
+@router.get("/{job_id}/playback/export", response_model=VideoExportStatus|LabelExportStatus)
+def export_status(job_id: str, request: Request, renderer: Literal["vehicle-labels-v1"]|None=None, principal: Principal = Depends(require_api_key)):
+    query(request, ["renderer"])
+    return request.app.state.progressive_export.status(job_id, principal.key_id,renderer)
 
 
-@router.post("/{job_id}/playback/export", status_code=202, response_model=VideoExportStatus)
-async def request_export(job_id: str, request: Request, principal: Principal = Depends(require_api_key)):
-    query(request, [])
+@router.post("/{job_id}/playback/export", status_code=202, response_model=VideoExportStatus|LabelExportStatus)
+async def request_export(job_id: str, request: Request, renderer: Literal["vehicle-labels-v1"]|None=None, principal: Principal = Depends(require_api_key)):
+    query(request, ["renderer"])
     if await request.body():
         raise ApiError(422, "body_not_allowed", "The export request does not accept a body.")
-    return request.app.state.progressive_export.request(job_id, principal.key_id)
+    return request.app.state.progressive_export.request(job_id, principal.key_id,renderer)
+
+@router.get("/{job_id}/playback/export/content")
+@router.head("/{job_id}/playback/export/content")
+def label_content(job_id:str,request:Request,renderer:Literal["vehicle-labels-v1"],principal:Principal=Depends(require_api_key)):
+    query(request,["renderer"])
+    service=request.app.state.progressive_export
+    path=service.variants.path(job_id,principal.key_id,renderer)
+    return media(service.store,job_id,principal.key_id,path,request,identity=renderer+"-"+path.stem)
