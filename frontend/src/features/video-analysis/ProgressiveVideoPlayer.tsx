@@ -17,6 +17,7 @@ import { useProgressivePlayback } from "./useProgressivePlayback";
 
 import {useCountLines} from "./useCountLines";
 import {useCountSnapshots} from "./useCountSnapshots";
+import {sameLines} from './countLinesContracts';
 import type {CountDraft} from "./useCountDraft";
 import { ProgressiveTrackList } from "./ProgressiveTrackResults";
 import { VideoExport } from "./VideoExport";
@@ -66,7 +67,8 @@ export function ProgressiveVideoPlayer({
   const changeRate=(value:number)=>{const now=performance.now();if(running.current)running.current=reanchor(running.current,now,value);rateRef.current=value;setRate(value);if(running.current)setPhase("Reproduciendo · "+value+"×")};
   const [selectedLine,setSelectedLine]=useState<string>();
   const draftApplied=useRef(false),draftPending=useRef(false);
-  useEffect(()=>{if(count.collection&&countDraft?.lines.length&&!draftApplied.current&&!draftPending.current){if(count.collection.lines.length){draftApplied.current=true;return}draftPending.current=true;void count.configure(countDraft.lines).then(ok=>{if(ok)draftApplied.current=true}).catch(()=>{}).finally(()=>{draftPending.current=false})}},[count.collection?.generation,count.collection?.revision,countDraft]);
+  const [initialConflict,setInitialConflict]=useState(false);
+  useEffect(()=>{if(count.collection&&countDraft?.lines.length&&!draftApplied.current&&!draftPending.current){if(count.collection.lines.length){if(sameLines(count.collection.lines,countDraft.lines))draftApplied.current=true;else setInitialConflict(true);return}draftPending.current=true;void count.configure(countDraft.lines).then(ok=>{if(ok)draftApplied.current=true}).catch(()=>{}).finally(()=>{draftPending.current=false})}},[count.collection?.generation,count.collection?.revision,countDraft]);
   const lineRef=useRef(count.collection?.lines);lineRef.current=count.collection?.lines;
   const presentation=useRef('');presentation.current=(count.collection?.revision??0)+':'+(selectedLine??'');const selectedLineRef=useRef(selectedLine);selectedLineRef.current=selectedLine;
   const closeInspection=()=>{selectedRef.current=undefined;setSelected(undefined);setInspectionSelection(undefined)};
@@ -432,6 +434,7 @@ export function ProgressiveVideoPlayer({
           {playback.message} {phase}
         </p>
         {count.message&&<p className="count-feedback" data-success={count.message.startsWith("Líneas guardadas")} role="status">{count.message}</p>}
+        {initialConflict&&<div role="alert">Las líneas guardadas son distintas del borrador inicial. Se conserva la configuración confirmada. <button disabled={count.busy} onClick={()=>{draftApplied.current=true;setInitialConflict(false)}}>Usar líneas guardadas</button><button disabled={count.busy} onClick={()=>{void count.configure(countDraft!.lines).then(ok=>{if(ok){draftApplied.current=true;setInitialConflict(false)}}).catch(()=>{})}}>Aplicar borrador inicial sobre la versión actual</button></div>}
         <CountLineBar collection={count.collection} snapshot={counts.snapshot} position={position} busy={count.busy} onChange={count.configure} selected={selectedLine} onSelect={setSelectedLine}/>
         {count.collection?.legacy_import.status==='offered'&&<p>Hay una línea anterior disponible. <button disabled={count.busy} onClick={()=>void count.importLegacy()}>Importar línea anterior</button></p>}
         {state?.media_available ? (
@@ -530,7 +533,7 @@ export function ProgressiveVideoPlayer({
 
       </div>
       <VideoInspectionDetails key={inspection.result?.inspection_id??inspection.key} client={client} result={inspection.result} message={inspection.message} onClose={closeInspection}/>
-      {state?.media_available&&count.collection&&<CountLineEditor key={state.generation} selectedLine={selectedLine} onSelect={setSelectedLine} lines={count.collection.lines} limit={count.collection.limits.max_active_lines} colors={count.collection.default_colors} busy={count.busy} firstFrame={localFirstFrame??firstFrame} source={canvas} pause={pause} onChange={count.configure} message={count.message} position={clock(position)}/>}
+      {state?.media_available&&count.collection&&<CountLineEditor key={state.generation} selectedLine={selectedLine} onSelect={setSelectedLine} lines={count.collection.lines} limit={count.collection.limits.max_active_lines} admittedCount={count.collection.admitted_count} maxAdmittedLines={count.collection.limits.max_admitted_lines} colors={count.collection.default_colors} busy={count.busy} firstFrame={localFirstFrame??firstFrame} source={canvas} pause={pause} onChange={count.configure} message={count.message} position={clock(position)}/>}
     </section>
   );
 }
