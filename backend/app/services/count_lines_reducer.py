@@ -1,5 +1,6 @@
 """Cooperative fair reduction: capture under lock, geometry outside, CAS commit."""
-import json,time
+import json,time,logging
+from app.api.error_handlers import ApiError
 from app.services.video_observation_provenance import measured
 from app.services.directed_counting import advance
 from app.domain.vehicle_taxonomy import normalize_class
@@ -10,12 +11,29 @@ class CountLinesReducer:
  def paths(self,job):return []
  def purge(self,job):self.turn.pop(job,None)
  def reduce(self,job):
+  captured={}
+  try:return self._reduce(job,captured)
+  except ApiError:raise
+  except Exception:
+   self._mark_failure(job,captured)
+   logging.getLogger('road_actor_detection').exception('count_lines_reducer_failed',extra={'job_id':job,'error_code':'count_reducer_failed'})
+ def _mark_failure(self,job,captured):
+  if not captured:return
+  s=self.service.store
+  with s.lock,s.db:
+   try:source=s.row(job)
+   except ApiError:return
+   if source['generation']!=captured['generation']:return
+   for line in captured['lines']:
+    s.db.execute("UPDATE p_count_lines SET error='count_reducer_failed' WHERE job=? AND generation=? AND line_id=? AND geometry_revision=? AND cursor=? AND deleted=0 AND error IS NULL",(job,captured['generation'],line['line_id'],line['geometry_revision'],line['cursor']))
+ def _reduce(self,job,captured):
   service=self.service;s=service.store;cfg=service.settings;start=time.perf_counter()
   with s.lock:
    lock_start=time.perf_counter();source=s.row(job);g=source['generation'];all_lines=[l for l in service._lines(job,g) if not l['error'] and l['cursor']<source['frames']]
    if not all_lines:return
    offset=self.turn.get(job,0)%len(all_lines);base=all_lines[offset];self.turn[job]=offset+1
    lines=[l for l in all_lines[offset:]+all_lines[:offset] if l['cursor']==base['cursor']][:cfg.video_count_reducer_max_pairs]
+   captured.update(generation=g,lines=lines)
    count=min(cfg.video_count_reducer_batch_frames,max(1,cfg.video_count_reducer_max_pairs//len(lines)))
    lengths=s.db.execute('SELECT idx,length(CAST(payload AS BLOB)) AS size FROM p_frames WHERE job=? AND idx>=? ORDER BY idx LIMIT ?',(job,base['cursor'],count)).fetchall();size=0;accepted=[]
    for row in lengths:
@@ -41,14 +59,19 @@ class CountLinesReducer:
      for row in s.db.execute(query,(job,g,lid,l['geometry_revision'],*group)):states[lid][row[0]]=json.loads(row[1])
     segment=json.loads(l['segment']);geometry[lid]=[(segment[k]['x']*dimensions['width'],segment[k]['y']*dimensions['height']) for k in ['point_a','point_b']]
    capture_ms=(time.perf_counter()-lock_start)*1000
-  events={l['line_id']:[] for l in lines};tick=time.perf_counter();completed=[]
+  events={l['line_id']:[] for l in lines};failed=set();tick=time.perf_counter();completed=[]
   for f,obs in zip(frames,observations):
    for l in lines:
     lid=l['line_id']
-    for ob in obs:
-     tid=ob['track_id'];box=ob['raw_bbox'];point=((box['x_min']+box['x_max'])/2,(box['y_min']+box['y_max'])/2)
-     states[lid][tid],event=advance(states[lid].get(tid,{}),point,geometry[lid],'both',ob['class_name'])
-     if event:events[lid].append((job,g,lid,l['geometry_revision'],tid,f['start_us'],f['frame_index'],normalize_class(ob['class_name'])))
+    if lid in failed:continue
+    try:
+     for ob in obs:
+      tid=ob['track_id'];box=ob['raw_bbox'];point=((box['x_min']+box['x_max'])/2,(box['y_min']+box['y_max'])/2)
+      states[lid][tid],event=advance(states[lid].get(tid,{}),point,geometry[lid],'both',ob['class_name'])
+      if event:events[lid].append((job,g,lid,l['geometry_revision'],tid,f['start_us'],f['frame_index'],normalize_class(ob['class_name'])))
+    except Exception:
+     failed.add(lid)
+     logging.getLogger('road_actor_detection').exception('count_line_reducer_failed',extra={'job_id':job,'line_id':lid,'geometry_revision':l['geometry_revision'],'error_code':'count_reducer_failed'})
    completed.append(f)
    if (time.perf_counter()-tick)*1000>=cfg.video_count_reducer_budget_ms:break
   compute_ms=(time.perf_counter()-tick)*1000
@@ -59,7 +82,9 @@ class CountLinesReducer:
     if current['generation']!=g:return
     for l in lines:
      lid=l['line_id'];actual=s.db.execute('SELECT * FROM p_count_lines WHERE job=? AND generation=? AND line_id=?',(job,g,lid)).fetchone()
-     if not actual or actual['deleted'] or actual['geometry_revision']!=l['geometry_revision'] or actual['cursor']!=l['cursor']:continue
+     if not actual or actual['deleted'] or actual['error'] or actual['geometry_revision']!=l['geometry_revision'] or actual['cursor']!=l['cursor']:continue
+     if lid in failed:
+      s.db.execute("UPDATE p_count_lines SET error='count_reducer_failed' WHERE job=? AND generation=? AND line_id=?",(job,g,lid));continue
      s.db.executemany('INSERT OR REPLACE INTO p_count_lines_tracks VALUES(?,?,?,?,?,?)',[(job,g,lid,l['geometry_revision'],tid,dump(value)) for tid,value in states[lid].items()])
      s.db.executemany('INSERT OR IGNORE INTO p_count_lines_events VALUES(?,?,?,?,?,?,?,?)',events[lid])
      last=completed[-1];s.db.execute('UPDATE p_count_lines SET cursor=?,covered=? WHERE job=? AND generation=? AND line_id=?',(last['frame_index']+1,last['end_us'],job,g,lid))

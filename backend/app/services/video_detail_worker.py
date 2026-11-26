@@ -17,7 +17,6 @@ class VideoDetailWorker:
       try:self.multiline.reduce(job)
       except ApiError:pass
       except Exception:
-       with self.store.lock,self.store.db:self.store.db.execute("UPDATE p_count_lines SET error='count_reducer_failed' WHERE job=? AND deleted=0 AND error IS NULL",(job,))
        logging.getLogger('road_actor_detection').exception('count_lines_reducer_failed',extra={'job_id':job})
      self.count.reduce(job)
      if self.inventory:self.inventory.backfill(job)
