@@ -431,7 +431,7 @@ export function ProgressiveVideoPlayer({
         <p role="status">
           {playback.message} {phase}
         </p>
-        {count.message&&<p role="status">{count.message}</p>}
+        {count.message&&<p className="count-feedback" data-success={count.message.startsWith("Líneas guardadas")} role="status">{count.message}</p>}
         <CountLineBar collection={count.collection} snapshot={counts.snapshot} position={position} busy={count.busy} onChange={count.configure} selected={selectedLine} onSelect={setSelectedLine}/>
         {count.collection?.legacy_import.status==='offered'&&<p>Hay una línea anterior disponible. <button disabled={count.busy} onClick={()=>void count.importLegacy()}>Importar línea anterior</button></p>}
         {state?.media_available ? (

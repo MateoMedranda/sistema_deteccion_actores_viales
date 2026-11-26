@@ -12,3 +12,7 @@ def test_closed_shape(example):
 @pytest.mark.parametrize('example',[e for e in EXAMPLES['invalid_semantic'] if e['name'] not in ['duplicate_normalized_name','duplicate_color_case']],ids=lambda e:e['name'])
 def test_semantic_dto(example):
  with pytest.raises(ValidationError):getattr(models,example['schema']).model_validate(example['data'])
+
+def test_expiry_requires_timezone():
+ value=next(e['data'] for e in EXAMPLES['valid'] if e['schema']=='Collection')
+ with pytest.raises(ValidationError):models.Collection.model_validate({**value,'expires_at':'2099-01-01T00:00:00'})

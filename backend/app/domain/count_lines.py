@@ -4,7 +4,7 @@ from uuid import UUID
 from datetime import datetime
 import unicodedata
 import regex
-from pydantic import BaseModel,ConfigDict,Field,field_validator,model_validator
+from pydantic import BaseModel,ConfigDict,AwareDatetime,Field,field_validator,model_validator
 SafeInt=Annotated[int,Field(strict=True,ge=0,le=2**53-1)]
 Positive=Annotated[int,Field(strict=True,ge=1,le=2**53-1)]
 class Closed(BaseModel):
@@ -69,7 +69,7 @@ class Collection(Closed):
  default_colors:list[Annotated[str,Field(pattern=r'^#[0-9A-Fa-f]{6}$')]]=Field(min_length=32,max_length=32)
  lines:list[LineConfig]=Field(max_length=32)
  legacy_import:LegacyImportState
- expires_at:datetime
+ expires_at:AwareDatetime
  @model_validator(mode='after')
  def collection_coherent(self):
   if len({c.upper() for c in self.default_colors})!=32 or len({str(l.line_id) for l in self.lines})!=len(self.lines):raise ValueError('count_collection_invalid')
@@ -100,7 +100,7 @@ class CountSnapshot(Closed):
  available_until_us:SafeInt
  analysis_state:Literal['queued','analyzing','complete','partial_failed']
  lines:list[CountValue]=Field(max_length=32)
- expires_at:datetime
+ expires_at:AwareDatetime
  @model_validator(mode='after')
  def coherent(self):
   if len({l.line_id for l in self.lines})!=len(self.lines):raise ValueError('count_line_id_invalid')
