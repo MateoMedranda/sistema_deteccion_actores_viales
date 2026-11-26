@@ -3,6 +3,8 @@ import {ApiClient,ClientError,type RequestOptions} from "../../services/apiClien
 import {parseVideoJob,type VideoJob} from "./videoTypes";
 import type {EnrichmentJob} from "../../services/apiTypes";
 import {initialVideoState,videoAnalysisReducer,type EnrichmentState,type VideoAction} from "./videoAnalysisReducer";
+const RESTORE_KEY="road-video-011";
+const forgetVideo=()=>{try{sessionStorage.removeItem(RESTORE_KEY)}catch{}};
 type Timer=ReturnType<typeof setTimeout>;
 type Intent={intent:string;intentGeneration?:number};
 type Context={generation:number;controller:AbortController;enrichController:AbortController;file?:File;video?:VideoJob;videoId?:string;enrichId?:string;uploadIntent?:Intent;enrichIntent?:Intent;busy:boolean;enrichBusy:boolean;autoStarted:boolean;enrichPhase:EnrichmentState;videoPoll?:Timer;enrichPoll?:Timer;videoExpiry?:Timer;enrichExpiry?:Timer;enriched?:EnrichmentJob};
@@ -17,7 +19,7 @@ export function useVideoAnalysis(client?:ApiClient,progressive=false){
  const clear=(c:Context)=>{for(const key of ["videoPoll","enrichPoll","videoExpiry","enrichExpiry"] as const)if(c[key])clearTimeout(c[key]);};
  const retire=(c:Context,scope:"source"|"enrichment")=>{
   if(ref.current!==c)return;
-  if(scope==="source"){clear(c);c.controller.abort();c.enrichController.abort();c.file=undefined;c.video=undefined;c.videoId=undefined;c.enrichId=undefined;}
+  if(scope==="source"){if(progressive)forgetVideo();clear(c);c.controller.abort();c.enrichController.abort();c.file=undefined;c.video=undefined;c.videoId=undefined;c.enrichId=undefined;}
   else{if(c.enrichPoll)clearTimeout(c.enrichPoll);c.enrichController.abort();c.enrichId=undefined;c.enriched=undefined;c.enrichPhase="expired";}
   send(c,{type:"retire",scope});
  };
@@ -85,7 +87,7 @@ export function useVideoAnalysis(client?:ApiClient,progressive=false){
    const job=parseVideoJob(await client.video(c.videoId,{signal,timeoutMs:10000}));
    if(!current(c)||signal.aborted||job.job_id!==c.videoId)return;
    if(Date.parse(job.expires_at)<=Date.now()){retire(c,"source");return;}
-   c.video=job;send(c,{type:"video",value:job});if(progressive)send(c,{type:"message",value:""});
+   c.video=job;if(progressive){try{sessionStorage.setItem(RESTORE_KEY,JSON.stringify({id:job.job_id,expires_at:job.expires_at}))}catch{}}send(c,{type:"video",value:job});if(progressive)send(c,{type:"message",value:""});
    if(c.videoExpiry)clearTimeout(c.videoExpiry);
    expiry(c,"source",Date.parse(job.expires_at));
    if(job.status==="completed"){
@@ -101,6 +103,7 @@ export function useVideoAnalysis(client?:ApiClient,progressive=false){
   }catch(cause){if(current(c)&&!signal.aborted)error(c,cause,"source");}
  };
  const choose=(file?:File)=>{
+  if(progressive)forgetVideo();
   const old=ref.current;clear(old);old.controller.abort();old.enrichController.abort();knownCancel(old);
   const next=context(old.generation+1,file);ref.current=next;
   dispatch({type:"reset",generation:next.generation,file});
@@ -153,5 +156,9 @@ export function useVideoAnalysis(client?:ApiClient,progressive=false){
  const retryVideo=async()=>{const file=ref.current.file;if(!file)return;choose(file);await start();};
  const rejectFile=(message:string)=>{ref.current.file=undefined;send(ref.current,{type:"message",value:message});dispatch({type:"reset",generation:ref.current.generation+1});ref.current.generation++;send(ref.current,{type:"message",value:message});};
  const discard=()=>retire(ref.current,"source");
+ useEffect(()=>{
+  if(!client||!progressive||ref.current.videoId||ref.current.file)return;
+  const restoreTimer=setTimeout(()=>{try{const saved=JSON.parse(sessionStorage.getItem(RESTORE_KEY)??'null');if(!saved)return;if(typeof saved.expires_at!=='string'||Date.parse(saved.expires_at)<=Date.now()){forgetVideo();return}const id=identifier(saved.id);if(ref.current.controller.signal.aborted){ref.current=context(ref.current.generation+1);dispatch({type:'reset',generation:ref.current.generation})}const c=ref.current;c.videoId=id;send(c,{type:'processing',value:'checking'});void pollVideo(c)}catch{forgetVideo()}},0);return()=>clearTimeout(restoreTimer);
+ },[client,progressive]);
  return {state,choose,start,resume,retryEnrichment,cancel,retryVideo,rejectFile,discard,mediaError:()=>{const c=ref.current;send(c,{type:"media",value:"failed"});if(c.videoId)void pollVideo(c);}};
 }

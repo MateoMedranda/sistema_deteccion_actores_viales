@@ -1,5 +1,5 @@
 import {useCountDraft} from "./useCountDraft";
-import {ProgressiveCountTools} from "./ProgressiveCountTools";
+import {CountLineEditor} from "./CountLineEditor";
 import {ProgressiveVideoPlayer} from "./ProgressiveVideoPlayer";
 import { MediaUpload } from "../../components/MediaUpload";
 import { useEffect, useRef, useState } from "react";
@@ -13,6 +13,7 @@ import { VideoLegend } from "./VideoLegend";
 import { VideoTrackResults } from "./VideoTrackResults";
 import { VideoPlayer } from "./VideoPlayer";
 import { useVideoAnalysis } from "./useVideoAnalysis";
+const EMPTY_COUNT_LINES: import("./countLinesContracts").LineWrite[]=[];
 export function VideoWorkspace({ client, active = true }: { client?: ApiClient; active?: boolean }) {
     const analysis = useVideoAnalysis(client,!!client?.managed), s = analysis.state;
     const countDraft=useCountDraft(s.file),emptyCanvas=useRef<HTMLCanvasElement>(null);
@@ -37,7 +38,8 @@ export function VideoWorkspace({ client, active = true }: { client?: ApiClient; 
                 </div><span className="workspace-tag">Video ↗</span></div>
             <MediaUpload kind="video" title="Tu video, una escena completa" description="Vehículos, atributos y placas a lo largo de la escena." inputLabel="Video" selectLabel="Seleccionar video" actionLabel={["failed", "cancelled"].includes(s.processing) ? "Reintentar video" : "Procesar video"} clearLabel="Limpiar video" accept={policy?.media_types.join(",") ?? "video/mp4"} disabled={!client || busy || s.processing === "ready"} file={s.file} generation={s.generation} compact={!!s.video} onChoose={select} onAnalyze={() => void (["failed", "cancelled"].includes(s.processing) ? analysis.retryVideo() : analysis.start())} onReset={() => analysis.choose()}
                 hint={<><small>MP4 · Archivos temporales y privados</small><small>{policy ? "Máximo " + new Intl.NumberFormat("es", { maximumFractionDigits: 2 }).format(policy.max_upload_bytes / 1024 / 1024) + " MiB y " + policy.max_duration_seconds + " segundos." : "Preparando los límites de carga automáticamente…"}</small></>} />
-            {client?.managed&&s.file&&!s.video&&<ProgressiveCountTools key={s.generation} firstFrame={countDraft.firstFrame} source={emptyCanvas} pause={()=>{}} enabled={!!countDraft.draft} initialLine={countDraft.draft?.line} initialDirection={countDraft.draft?.direction} onApply={async(line,direction)=>countDraft.setDraft({line,direction:direction??'negative_to_positive'})} onDisable={async()=>countDraft.setDraft(undefined)} message={countDraft.draft?'El conteo se aplicará al iniciar el análisis.':''} position="0:00"/>}
+            {client?.managed&&s.file&&!s.video&&<CountLineEditor key={s.generation} firstFrame={countDraft.firstFrame} source={emptyCanvas} pause={()=>{}} lines={countDraft.draft?.lines??EMPTY_COUNT_LINES} onChange={async lines=>countDraft.setDraft({lines})} message={countDraft.draft?.lines.length?'Las líneas se aplicarán al iniciar el análisis.':''} position="0:00"/>}
+            {s.video&&!s.file&&<button className="secondary-button" onClick={()=>analysis.choose()}>Limpiar video</button>}
             {s.message&&<p role="status" className="video-message">{s.message}</p>}
             <VideoProgress hideEnrichment={!!client?.managed} video={s.video} processingState={s.processing === "idle" ? undefined : s.processing} enrichment={s.enriched} enrichmentState={s.enrichment} />
             <div className="video-stage-actions">{busy && <button onClick={() => void analysis.cancel("processing")}>Cancelar procesamiento</button>}{["submitting", "queued", "processing"].includes(s.enrichment) && <button onClick={() => void analysis.cancel("enrichment")}>Cancelar enriquecimiento</button>}{(s.processing === "interrupted" || s.enrichment === "interrupted") && <button onClick={() => void analysis.resume()}>Reanudar consulta</button>}{["failed", "cancelled", "expired"].includes(s.enrichment) && ready && <button onClick={() => void analysis.retryEnrichment()}>Reintentar enriquecimiento</button>}</div>

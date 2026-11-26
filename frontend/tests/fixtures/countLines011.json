@@ -1,0 +1,1441 @@
+{
+  "valid": [
+    {
+      "name": "create_two_lines",
+      "schema": "CollectionWrite",
+      "data": {
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "expected_revision": 0,
+        "lines": [
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "33333333-3333-4333-8333-333333333333",
+            "name": "RUTA VIVA",
+            "color": "#06B6D4",
+            "segment": {
+              "point_a": {
+                "x": 0.55,
+                "y": 0.5
+              },
+              "point_b": {
+                "x": 0.95,
+                "y": 0.5
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "confirmed_collection",
+      "schema": "Collection",
+      "data": {
+        "job_id": "fixture-011",
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "protocol": "video-count-lines-v1",
+        "policy_version": "finite-center-both-v1",
+        "mode": "both",
+        "revision": 1,
+        "limits": {
+          "max_active_lines": 10,
+          "max_admitted_lines": 128,
+          "max_name_graphemes": 60,
+          "max_name_utf8_bytes": 2048,
+          "max_name_codepoints": 1024
+        },
+        "default_colors": [
+          "#F59E0B",
+          "#06B6D4",
+          "#EF4444",
+          "#8B5CF6",
+          "#10B981",
+          "#EC4899",
+          "#F97316",
+          "#3B82F6",
+          "#84CC16",
+          "#14B8A6",
+          "#A855F7",
+          "#EAB308",
+          "#0EA5E9",
+          "#F43F5E",
+          "#22C55E",
+          "#D946EF",
+          "#FB923C",
+          "#6366F1",
+          "#A3E635",
+          "#2DD4BF",
+          "#C084FC",
+          "#FACC15",
+          "#38BDF8",
+          "#FB7185",
+          "#4ADE80",
+          "#E879F9",
+          "#EA580C",
+          "#4F46E5",
+          "#65A30D",
+          "#0D9488",
+          "#7C3AED",
+          "#CA8A04"
+        ],
+        "lines": [
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            },
+            "geometry_revision": 1,
+            "origin": "user"
+          },
+          {
+            "line_id": "33333333-3333-4333-8333-333333333333",
+            "name": "RUTA VIVA",
+            "color": "#06B6D4",
+            "segment": {
+              "point_a": {
+                "x": 0.55,
+                "y": 0.5
+              },
+              "point_b": {
+                "x": 0.95,
+                "y": 0.5
+              }
+            },
+            "geometry_revision": 1,
+            "origin": "user"
+          }
+        ],
+        "legacy_import": {
+          "status": "none",
+          "line_id": null
+        },
+        "expires_at": "2026-11-25T23:59:00Z",
+        "admitted_count": 2
+      }
+    },
+    {
+      "name": "empty_offers_import",
+      "schema": "Collection",
+      "data": {
+        "job_id": "fixture-011",
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "protocol": "video-count-lines-v1",
+        "policy_version": "finite-center-both-v1",
+        "mode": "both",
+        "revision": 0,
+        "limits": {
+          "max_active_lines": 10,
+          "max_admitted_lines": 128,
+          "max_name_graphemes": 60,
+          "max_name_utf8_bytes": 2048,
+          "max_name_codepoints": 1024
+        },
+        "default_colors": [
+          "#F59E0B",
+          "#06B6D4",
+          "#EF4444",
+          "#8B5CF6",
+          "#10B981",
+          "#EC4899",
+          "#F97316",
+          "#3B82F6",
+          "#84CC16",
+          "#14B8A6",
+          "#A855F7",
+          "#EAB308",
+          "#0EA5E9",
+          "#F43F5E",
+          "#22C55E",
+          "#D946EF",
+          "#FB923C",
+          "#6366F1",
+          "#A3E635",
+          "#2DD4BF",
+          "#C084FC",
+          "#FACC15",
+          "#38BDF8",
+          "#FB7185",
+          "#4ADE80",
+          "#E879F9",
+          "#EA580C",
+          "#4F46E5",
+          "#65A30D",
+          "#0D9488",
+          "#7C3AED",
+          "#CA8A04"
+        ],
+        "lines": [],
+        "legacy_import": {
+          "status": "offered",
+          "line_id": null
+        },
+        "expires_at": "2026-11-25T23:59:00Z",
+        "admitted_count": 0
+      }
+    },
+    {
+      "name": "mixed_coverage",
+      "schema": "CountSnapshot",
+      "data": {
+        "job_id": "fixture-011",
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "protocol": "video-count-lines-v1",
+        "policy_version": "finite-center-both-v1",
+        "revision": 1,
+        "at_us": 1000000,
+        "available_until_us": 5000000,
+        "analysis_state": "analyzing",
+        "lines": [
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "geometry_revision": 1,
+            "status": "ready",
+            "result_scope": "building",
+            "covered_until_us": 5000000,
+            "total": 5,
+            "error_code": null,
+            "valid_until_us": 2000000
+          },
+          {
+            "line_id": "33333333-3333-4333-8333-333333333333",
+            "geometry_revision": 1,
+            "status": "pending",
+            "result_scope": "building",
+            "covered_until_us": 1000000,
+            "total": null,
+            "error_code": null,
+            "valid_until_us": 1000000
+          }
+        ],
+        "expires_at": "2026-11-25T23:59:00Z"
+      }
+    },
+    {
+      "name": "missing_provenance",
+      "schema": "CountSnapshot",
+      "data": {
+        "job_id": "fixture-011",
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "protocol": "video-count-lines-v1",
+        "policy_version": "finite-center-both-v1",
+        "revision": 1,
+        "at_us": 1000000,
+        "available_until_us": 5000000,
+        "analysis_state": "analyzing",
+        "lines": [
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "geometry_revision": 1,
+            "status": "ready",
+            "result_scope": "building",
+            "covered_until_us": 5000000,
+            "total": 5,
+            "error_code": null,
+            "valid_until_us": 2000000
+          },
+          {
+            "line_id": "33333333-3333-4333-8333-333333333333",
+            "geometry_revision": 1,
+            "status": "unavailable",
+            "result_scope": "building",
+            "covered_until_us": 1000000,
+            "total": null,
+            "error_code": "reanalysis_required",
+            "valid_until_us": 1000000
+          }
+        ],
+        "expires_at": "2026-11-25T23:59:00Z"
+      }
+    },
+    {
+      "name": "final_counts",
+      "schema": "CountSnapshot",
+      "data": {
+        "job_id": "fixture-011",
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "protocol": "video-count-lines-v1",
+        "policy_version": "finite-center-both-v1",
+        "revision": 1,
+        "at_us": 1000000,
+        "available_until_us": 5000000,
+        "analysis_state": "complete",
+        "lines": [
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "geometry_revision": 1,
+            "status": "ready",
+            "result_scope": "final",
+            "covered_until_us": 5000000,
+            "total": 5,
+            "error_code": null,
+            "valid_until_us": 2000000
+          },
+          {
+            "line_id": "33333333-3333-4333-8333-333333333333",
+            "geometry_revision": 1,
+            "status": "ready",
+            "result_scope": "final",
+            "covered_until_us": 5000000,
+            "total": 3,
+            "error_code": null,
+            "valid_until_us": 3000000
+          }
+        ],
+        "expires_at": "2026-11-25T23:59:00Z"
+      }
+    },
+    {
+      "name": "request_legacy_import",
+      "schema": "LegacyImport",
+      "data": {
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "expected_revision": 0
+      }
+    },
+    {
+      "name": "imported_collection",
+      "schema": "Collection",
+      "data": {
+        "job_id": "fixture-011",
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "protocol": "video-count-lines-v1",
+        "policy_version": "finite-center-both-v1",
+        "mode": "both",
+        "revision": 1,
+        "limits": {
+          "max_active_lines": 10,
+          "max_admitted_lines": 128,
+          "max_name_graphemes": 60,
+          "max_name_utf8_bytes": 2048,
+          "max_name_codepoints": 1024
+        },
+        "default_colors": [
+          "#F59E0B",
+          "#06B6D4",
+          "#EF4444",
+          "#8B5CF6",
+          "#10B981",
+          "#EC4899",
+          "#F97316",
+          "#3B82F6",
+          "#84CC16",
+          "#14B8A6",
+          "#A855F7",
+          "#EAB308",
+          "#0EA5E9",
+          "#F43F5E",
+          "#22C55E",
+          "#D946EF",
+          "#FB923C",
+          "#6366F1",
+          "#A3E635",
+          "#2DD4BF",
+          "#C084FC",
+          "#FACC15",
+          "#38BDF8",
+          "#FB7185",
+          "#4ADE80",
+          "#E879F9",
+          "#EA580C",
+          "#4F46E5",
+          "#65A30D",
+          "#0D9488",
+          "#7C3AED",
+          "#CA8A04"
+        ],
+        "lines": [
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "Línea 1",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            },
+            "origin": "legacy_import",
+            "geometry_revision": 1
+          }
+        ],
+        "legacy_import": {
+          "status": "imported",
+          "line_id": "22222222-2222-4222-8222-222222222222"
+        },
+        "expires_at": "2026-11-25T23:59:00Z",
+        "admitted_count": 1
+      }
+    },
+    {
+      "name": "clear_collection",
+      "schema": "CollectionWrite",
+      "data": {
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "expected_revision": 1,
+        "lines": []
+      }
+    }
+  ],
+  "invalid_shape": [
+    {
+      "name": "direction_not_accepted",
+      "schema": "CollectionWrite",
+      "data": {
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "expected_revision": 0,
+        "lines": [
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "33333333-3333-4333-8333-333333333333",
+            "name": "RUTA VIVA",
+            "color": "#06B6D4",
+            "segment": {
+              "point_a": {
+                "x": 0.55,
+                "y": 0.5
+              },
+              "point_b": {
+                "x": 0.95,
+                "y": 0.5
+              }
+            }
+          }
+        ],
+        "direction": "both"
+      }
+    },
+    {
+      "name": "unsafe_revision",
+      "schema": "CollectionWrite",
+      "data": {
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "expected_revision": 9007199254740992,
+        "lines": [
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "33333333-3333-4333-8333-333333333333",
+            "name": "RUTA VIVA",
+            "color": "#06B6D4",
+            "segment": {
+              "point_a": {
+                "x": 0.55,
+                "y": 0.5
+              },
+              "point_b": {
+                "x": 0.95,
+                "y": 0.5
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "boolean_revision",
+      "schema": "CollectionWrite",
+      "data": {
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "expected_revision": true,
+        "lines": [
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "33333333-3333-4333-8333-333333333333",
+            "name": "RUTA VIVA",
+            "color": "#06B6D4",
+            "segment": {
+              "point_a": {
+                "x": 0.55,
+                "y": 0.5
+              },
+              "point_b": {
+                "x": 0.95,
+                "y": 0.5
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "invalid_generation",
+      "schema": "LegacyImport",
+      "data": {
+        "generation": "not-uuid",
+        "expected_revision": 0
+      }
+    },
+    {
+      "name": "unknown_import_field",
+      "schema": "LegacyImport",
+      "data": {
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "expected_revision": 0,
+        "source_path": "private"
+      }
+    },
+    {
+      "name": "too_many_lines",
+      "schema": "CollectionWrite",
+      "data": {
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "expected_revision": 0,
+        "lines": [
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "unknown_line_field",
+      "schema": "LineWrite",
+      "data": {
+        "line_id": "22222222-2222-4222-8222-222222222222",
+        "name": "AV SIMÓN BOLIVAR",
+        "color": "#F59E0B",
+        "segment": {
+          "point_a": {
+            "x": 0.1,
+            "y": 0.6
+          },
+          "point_b": {
+            "x": 0.45,
+            "y": 0.6
+          }
+        },
+        "direction": "forward"
+      }
+    },
+    {
+      "name": "bad_color",
+      "schema": "LineWrite",
+      "data": {
+        "line_id": "22222222-2222-4222-8222-222222222222",
+        "name": "AV SIMÓN BOLIVAR",
+        "color": "linear-gradient(red,blue)",
+        "segment": {
+          "point_a": {
+            "x": 0.1,
+            "y": 0.6
+          },
+          "point_b": {
+            "x": 0.45,
+            "y": 0.6
+          }
+        }
+      }
+    },
+    {
+      "name": "empty_name",
+      "schema": "LineWrite",
+      "data": {
+        "line_id": "22222222-2222-4222-8222-222222222222",
+        "name": "",
+        "color": "#F59E0B",
+        "segment": {
+          "point_a": {
+            "x": 0.1,
+            "y": 0.6
+          },
+          "point_b": {
+            "x": 0.45,
+            "y": 0.6
+          }
+        }
+      }
+    },
+    {
+      "name": "boolean_coordinate",
+      "schema": "LineWrite",
+      "data": {
+        "line_id": "22222222-2222-4222-8222-222222222222",
+        "name": "AV SIMÓN BOLIVAR",
+        "color": "#F59E0B",
+        "segment": {
+          "point_a": {
+            "x": true,
+            "y": 0.5
+          },
+          "point_b": {
+            "x": 0.9,
+            "y": 0.5
+          }
+        }
+      }
+    },
+    {
+      "name": "negative_total",
+      "schema": "CountValue",
+      "data": {
+        "line_id": "22222222-2222-4222-8222-222222222222",
+        "geometry_revision": 1,
+        "status": "ready",
+        "result_scope": "building",
+        "covered_until_us": 5000000,
+        "total": -1,
+        "error_code": null,
+        "valid_until_us": 2000000
+      }
+    },
+    {
+      "name": "line_unknown_field",
+      "schema": "CountValue",
+      "data": {
+        "line_id": "22222222-2222-4222-8222-222222222222",
+        "geometry_revision": 1,
+        "status": "ready",
+        "result_scope": "building",
+        "covered_until_us": 5000000,
+        "total": 5,
+        "error_code": null,
+        "valid_until_us": 2000000,
+        "plate": "sensitive"
+      }
+    }
+  ],
+  "invalid_semantic": [
+    {
+      "name": "blank_name",
+      "schema": "LineWrite",
+      "data": {
+        "line_id": "22222222-2222-4222-8222-222222222222",
+        "name": "   ",
+        "color": "#F59E0B",
+        "segment": {
+          "point_a": {
+            "x": 0.1,
+            "y": 0.6
+          },
+          "point_b": {
+            "x": 0.45,
+            "y": 0.6
+          }
+        }
+      },
+      "reject_reason": "count_name_invalid"
+    },
+    {
+      "name": "sixty_one_graphemes",
+      "schema": "LineWrite",
+      "data": {
+        "line_id": "22222222-2222-4222-8222-222222222222",
+        "name": "ÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁ",
+        "color": "#F59E0B",
+        "segment": {
+          "point_a": {
+            "x": 0.1,
+            "y": 0.6
+          },
+          "point_b": {
+            "x": 0.45,
+            "y": 0.6
+          }
+        }
+      },
+      "reject_reason": "count_name_invalid"
+    },
+    {
+      "name": "same_endpoints",
+      "schema": "LineWrite",
+      "data": {
+        "line_id": "22222222-2222-4222-8222-222222222222",
+        "name": "AV SIMÓN BOLIVAR",
+        "color": "#F59E0B",
+        "segment": {
+          "point_a": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "point_b": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        }
+      },
+      "reject_reason": "count_geometry_invalid"
+    },
+    {
+      "name": "duplicate_normalized_name",
+      "schema": "CollectionWrite",
+      "data": {
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "expected_revision": 0,
+        "lines": [
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "33333333-3333-4333-8333-333333333333",
+            "name": " av  simón bolivar ",
+            "color": "#06B6D4",
+            "segment": {
+              "point_a": {
+                "x": 0.55,
+                "y": 0.5
+              },
+              "point_b": {
+                "x": 0.95,
+                "y": 0.5
+              }
+            }
+          }
+        ]
+      },
+      "reject_reason": "count_name_conflict"
+    },
+    {
+      "name": "duplicate_color_case",
+      "schema": "CollectionWrite",
+      "data": {
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "expected_revision": 0,
+        "lines": [
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "33333333-3333-4333-8333-333333333333",
+            "name": "RUTA VIVA",
+            "color": "#f59e0b",
+            "segment": {
+              "point_a": {
+                "x": 0.55,
+                "y": 0.5
+              },
+              "point_b": {
+                "x": 0.95,
+                "y": 0.5
+              }
+            }
+          }
+        ]
+      },
+      "reject_reason": "count_color_conflict"
+    },
+    {
+      "name": "duplicate_uuid",
+      "schema": "CollectionWrite",
+      "data": {
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "expected_revision": 0,
+        "lines": [
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "AV SIMÓN BOLIVAR",
+            "color": "#F59E0B",
+            "segment": {
+              "point_a": {
+                "x": 0.1,
+                "y": 0.6
+              },
+              "point_b": {
+                "x": 0.45,
+                "y": 0.6
+              }
+            }
+          },
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "name": "RUTA VIVA",
+            "color": "#06B6D4",
+            "segment": {
+              "point_a": {
+                "x": 0.55,
+                "y": 0.5
+              },
+              "point_b": {
+                "x": 0.95,
+                "y": 0.5
+              }
+            }
+          }
+        ]
+      },
+      "reject_reason": "count_line_id_invalid"
+    },
+    {
+      "name": "pending_is_not_zero",
+      "schema": "CountValue",
+      "data": {
+        "line_id": "33333333-3333-4333-8333-333333333333",
+        "geometry_revision": 1,
+        "status": "pending",
+        "result_scope": "building",
+        "covered_until_us": 1000000,
+        "total": 0,
+        "error_code": null,
+        "valid_until_us": 1000000
+      },
+      "reject_reason": "count_state_invalid"
+    },
+    {
+      "name": "ready_has_exclusive_coverage",
+      "schema": "CountSnapshot",
+      "data": {
+        "job_id": "fixture-011",
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "protocol": "video-count-lines-v1",
+        "policy_version": "finite-center-both-v1",
+        "revision": 1,
+        "at_us": 1000000,
+        "available_until_us": 5000000,
+        "analysis_state": "analyzing",
+        "lines": [
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "geometry_revision": 1,
+            "status": "ready",
+            "result_scope": "building",
+            "covered_until_us": 1000000,
+            "total": 5,
+            "error_code": null,
+            "valid_until_us": 2000000
+          }
+        ],
+        "expires_at": "2026-11-25T23:59:00Z"
+      },
+      "reject_reason": "count_state_invalid"
+    },
+    {
+      "name": "validity_beyond_coverage",
+      "schema": "CountSnapshot",
+      "data": {
+        "job_id": "fixture-011",
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "protocol": "video-count-lines-v1",
+        "policy_version": "finite-center-both-v1",
+        "revision": 1,
+        "at_us": 1000000,
+        "available_until_us": 5000000,
+        "analysis_state": "analyzing",
+        "lines": [
+          {
+            "line_id": "22222222-2222-4222-8222-222222222222",
+            "geometry_revision": 1,
+            "status": "ready",
+            "result_scope": "building",
+            "covered_until_us": 5000000,
+            "total": 5,
+            "error_code": null,
+            "valid_until_us": 6000000
+          }
+        ],
+        "expires_at": "2026-11-25T23:59:00Z"
+      },
+      "reject_reason": "count_state_invalid"
+    },
+    {
+      "name": "pending_has_no_valid_interval",
+      "schema": "CountSnapshot",
+      "data": {
+        "job_id": "fixture-011",
+        "generation": "11111111-1111-4111-8111-111111111111",
+        "protocol": "video-count-lines-v1",
+        "policy_version": "finite-center-both-v1",
+        "revision": 1,
+        "at_us": 1000000,
+        "available_until_us": 5000000,
+        "analysis_state": "analyzing",
+        "lines": [
+          {
+            "line_id": "33333333-3333-4333-8333-333333333333",
+            "geometry_revision": 1,
+            "status": "pending",
+            "result_scope": "building",
+            "covered_until_us": 1000000,
+            "total": null,
+            "error_code": null,
+            "valid_until_us": 2000000
+          }
+        ],
+        "expires_at": "2026-11-25T23:59:00Z"
+      },
+      "reject_reason": "count_state_invalid"
+    }
+  ],
+  "note": "Semantic negatives intentionally pass JSON Schema and require the documented service/parser invariants; no product validator is implemented in this phase."
+}

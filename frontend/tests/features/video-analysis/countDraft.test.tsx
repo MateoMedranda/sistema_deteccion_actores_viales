@@ -7,6 +7,6 @@ it('captures first local frame without uploading, revokes URL and drops draft wh
  const revoke=vi.fn();vi.stubGlobal('URL',Object.assign(URL,{createObjectURL:vi.fn(()=>'blob:local'),revokeObjectURL:revoke}));
  const {result,rerender}=renderHook(({file})=>useCountDraft(file),{initialProps:{file:new File(['synthetic'],'one.mp4',{type:'video/mp4'})}});
  act(()=>video.onloadeddata?.(new Event('loadeddata')));await waitFor(()=>expect(result.current.firstFrame?.width).toBe(640));
- act(()=>result.current.setDraft({line:{point_a:{x:.1,y:.5},point_b:{x:.9,y:.5}},direction:'negative_to_positive'}));
+ act(()=>result.current.setDraft({lines:[{line_id:'22222222-2222-4222-8222-222222222222',name:'Ruta',color:'#F59E0B',segment:{point_a:{x:.1,y:.5},point_b:{x:.9,y:.5}}}]}));
  rerender({file:new File(['next'],'two.mp4',{type:'video/mp4'})});expect(result.current.draft).toBeUndefined();expect(revoke).toHaveBeenCalledWith('blob:local');
 });

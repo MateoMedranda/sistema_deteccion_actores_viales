@@ -1,0 +1,7 @@
+import {renderHook,act} from '@testing-library/react';import {it,expect,vi} from 'vitest';
+import fixtures from '../../fixtures/countLines011';import {useCountSnapshots} from '../../../src/features/video-analysis/useCountSnapshots';
+it('uses one aggregate poll and discards the old seek response',async()=>{
+ vi.useFakeTimers();const collection=structuredClone(fixtures.valid.find(e=>e.name==='confirmed_collection')!.data) as any;let resolve!:(v:any)=>void;const first=structuredClone(fixtures.valid.find(e=>e.name==='mixed_coverage')!.data) as any,second={...first,at_us:1100000,lines:first.lines.map((l:any)=>l.status==='ready'?l:{...l,valid_until_us:1100000})};let wall=1000;vi.spyOn(performance,'now').mockImplementation(()=>wall);const client={json:vi.fn().mockImplementationOnce(()=>new Promise(r=>resolve=r)).mockResolvedValue(second)};
+ const view=renderHook(()=>useCountSnapshots(client as any,'fixture-011',collection,1000000,true,vi.fn()));
+ try{expect(client.json).toHaveBeenCalledTimes(1);await act(async()=>vi.advanceTimersByTime(800));expect(client.json).toHaveBeenCalledTimes(1);wall=1200;await act(async()=>view.result.current.refresh(1100000));expect(client.json).toHaveBeenCalledTimes(2);await act(async()=>resolve(first));expect(view.result.current.snapshot?.at_us).toBe(1100000);wall=1250;await act(async()=>view.result.current.refresh(1200000));expect(client.json).toHaveBeenCalledTimes(2);wall=1600;await act(async()=>vi.advanceTimersByTime(400));expect(client.json).toHaveBeenCalledTimes(3)}finally{view.unmount();vi.useRealTimers()}
+});

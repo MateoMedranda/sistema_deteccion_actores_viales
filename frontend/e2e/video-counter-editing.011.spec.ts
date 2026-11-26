@@ -1,0 +1,4 @@
+import {test,expect} from '@playwright/test';import {open,stop,headers} from './multilineHelpers';
+test('duplicate colors and names do not overwrite other lines',async({page,request})=>{
+ const {path,generation}=await open(page,request,2);const original=await(await request.get(path+'?generation='+generation,{headers})).json();const first=page.locator('.count-line-card').first();await first.getByLabel('Color de AV SIMÓN BOLIVAR').fill(original.lines[1].color.toLowerCase());await first.getByLabel('Color de AV SIMÓN BOLIVAR').dispatchEvent('change');await expect(page.getByText('Cada línea necesita un nombre y color diferentes.',{exact:true}).first()).toBeVisible();const after=await(await request.get(path+'?generation='+generation,{headers})).json();expect(after.revision).toBe(original.revision);await stop(page,request);
+});

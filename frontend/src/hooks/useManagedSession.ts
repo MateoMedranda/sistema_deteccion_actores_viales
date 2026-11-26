@@ -6,6 +6,7 @@ export function useManagedSession(){
  const [state,setState]=useState<State>("connecting"),[session,setSession]=useState<WebSessionReady>(),[client,setClient]=useState<ApiClient>();
  const pending=useRef<Promise<void>>(),alive=useRef(true),current=useRef<ApiClient>(),revision=useRef(0),attempts=useRef(0);
  const reject=useCallback(()=>{
+  try{sessionStorage.removeItem("road-video-011")}catch{}
   revision.current++;current.current=undefined;attempts.current++;
   setClient(undefined);setSession(undefined);setState("access_rejected");
  },[]);
@@ -42,11 +43,13 @@ export function useManagedSession(){
  useEffect(()=>{
   if(!session)return;
   const timer=setTimeout(()=>{
+   try{sessionStorage.removeItem("road-video-011")}catch{}
    revision.current++;current.current=undefined;setClient(undefined);setSession(undefined);setState("expired");void connect();
   },Math.max(0,Date.parse(session.expires_at)-Date.now()));
   return()=>clearTimeout(timer);
  },[session,connect]);
  const reset=useCallback(async()=>{
+  try{sessionStorage.removeItem("road-video-011")}catch{}
   revision.current++;const old=current.current;current.current=undefined;
   setClient(undefined);setSession(undefined);setState("connecting");
   await old?.shutdown();

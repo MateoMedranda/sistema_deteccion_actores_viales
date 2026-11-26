@@ -1,0 +1,3 @@
+import {render,screen,fireEvent} from '@testing-library/react';import {it,expect,vi} from 'vitest';
+import {PlaybackRateControl} from '../../../src/features/video-analysis/PlaybackRateControl';
+it('offers seven rates without implicit play or seek',()=>{const change=vi.fn();render(<PlaybackRateControl value={1} onChange={change}/>);const select=screen.getByRole('combobox',{name:'Velocidad de reproducción'});expect(screen.getAllByRole('option')).toHaveLength(7);expect(select).toHaveValue('1');fireEvent.change(select,{target:{value:'0.5'}});expect(change).toHaveBeenCalledTimes(1);expect(change).toHaveBeenCalledWith(.5)});

@@ -1,5 +1,5 @@
-import {useEffect,useState} from 'react';import type {CountLine} from './useProgressiveCount';import type {CountDirection} from './directionArrow';
-export type CountDraft={line:CountLine;direction:CountDirection};
+import {useEffect,useState} from 'react';import type {LineWrite} from './countLinesContracts';
+export type CountDraft={lines:LineWrite[]};
 export function useCountDraft(file:File|undefined){
  const [firstFrame,setFirstFrame]=useState<HTMLCanvasElement>(),[draft,setDraft]=useState<CountDraft>();
  useEffect(()=>{
