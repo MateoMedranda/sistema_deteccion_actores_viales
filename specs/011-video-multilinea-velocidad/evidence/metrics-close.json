@@ -1,0 +1,21 @@
+{
+  "raw_hook": {
+    "horas_humano": "0.25",
+    "minutos_pausa_auto": "61"
+  },
+  "corrected": {
+    "horas_humano": null,
+    "horas_agente_approx": 1.02,
+    "minutos_pausa_auto": 0
+  },
+  "reason": "No heartbeat occurred while implementation and tests continued; human effort was not observed.",
+  "code": {
+    "added": 1122,
+    "deleted": 56
+  },
+  "tests": {
+    "added": 1926,
+    "deleted": 13
+  },
+  "unclassified_deletions": 0
+}
