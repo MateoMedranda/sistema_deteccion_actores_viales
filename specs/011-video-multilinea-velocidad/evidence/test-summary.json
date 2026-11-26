@@ -22,5 +22,11 @@
   "omissions": [
     "T071/SC-009: five participants unavailable",
     "Earlier long real-model comparisons remain deferred"
-  ]
+  ],
+  "final_incremental_checks": {
+    "timezone_contracts": 30,
+    "independent_draft": 2,
+    "final_build": "passed",
+    "final_layout_and_latency": 6
+  }
 }

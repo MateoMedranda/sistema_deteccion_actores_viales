@@ -8,7 +8,6 @@ Entrega en el checkout principal, rama `feature/011-video-multilinea-velocidad`.
 4c07221 fix(video): preserve independent drafts and fit the fullscreen scene
 43e1bf5 feat(frontend): add multiline counters and source-time playback speed
 cf6adce feat(video): count independent named lines with bounded historical reduction
-c0cfb17 chore(metrics): record analysis and authorized documentation corrections
 ```
 
 ## Trazabilidad
