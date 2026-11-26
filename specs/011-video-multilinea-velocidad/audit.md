@@ -58,3 +58,23 @@ cf6adce feat(video): count independent named lines with bounded historical reduc
 El harness se capturó antes de app y la referencia es inmutable. Los JSON de primeras pasadas conservan fallos y motivos de corrección. La salida de timing del navegador se transcribió a `playback-rate.json` antes de que una ejecución posterior limpiara su directorio temporal. Las capturas son sintéticas, sin medios privados.
 
 T071 continúa sin marcar. No se usa E2E para acreditar SC-009 ni para cerrar pendientes humanos/largos de otras iteraciones.
+
+
+## Cierre de correcciones de convergencia —2026-11-26
+
+La tabla anterior conserva la trazabilidad inicial; los casos omitidos de la revisión de Phase9 se completan con T076–T085. Estado actual84/85, pendiente externo exclusivo T071/SC-009. Pruebas y límites actuales: [validation.md](validation.md) y [evidence/convergence-corrections.json](evidence/convergence-corrections.json). No se cierran gates humanos/largos anteriores.
+
+| Tarea | Requisito / corrección | Evidencia ejecutada |
+| --- | --- | --- |
+| T076 | FR-003/014/015/026: operación seleccionada aislada | countLineDrafts: aplicar/borrar A conserva B confirmado y su propuesta |
+| T077 | FR-007/021/026: geometría remota coherente | countLineDrafts: puntos remotos y metadatos durante edición |
+| T078 | FR-021/026: recuperación sin duplicar ni retirar contexto nuevo | countLineRecovery: fallo inicial/posterior, cancelación y autoridad |
+| T079 | FR-014/026: error solo de línea/revisión afectada | cinco casos en test_count_lines_reduction.py y suite completa562 |
+| T080 | FR-015/026: propuestas preservadas y conflicto explícito | countLineDrafts y playbackRateIntegration: base remota y borrador inicial distinto |
+| T081 | FR-003/015: borrador vacío no reaparece | countLineDrafts: borrar A nueva, añadir/aplicar B |
+| T082 | FR-021/026: importación de contexto correcto | countLineRecovery: trabajo/generación ajenos y respuesta tardía |
+| T083 | FR-001: límite acumulado anunciado | countLineDrafts:128/128; countLineRecovery: carrera de admisión |
+| T084 | FR-018/019/020/025: pruebas funcionales de reloj/decoder/cachés | playbackRateIntegration, sourceDecoder, frameCache y21casos Chromium |
+| T085 | FR-005: nombre inicial único normalizado | countLineDrafts: caja, espacios, NFC/NFD y reservas confirmadas |
+
+Commits de producto de esta corrección: `45df949` (backend/T079) y `9273112` (frontend y regresiones T076–T078/T080–T085). Después del ajuste final de nombres/colores se repitió configuración de diez líneas:3/3aprobadas en1440/768/360px. Los21escenarios y estas3revalidaciones se registran por separado; no se suman como24casos distintos.

@@ -157,3 +157,14 @@ Se implementaron colecciones CAS de líneas con UUID/nombre/color, cuotas y borr
 La interfaz añade barra superior de tarjetas, editor de primer fotograma con arrastre/teclado, edición de nombre/color, selección y eliminación. El reloj0,25×–2× conserva tiempos fuente, límites de búsqueda y pausa durante espera; no acelera YOLO ni cambia exportaciones. Configuración/cruces se recuperan con autoridad y TTL originales.
 
 Evidencia: `specs/011-video-multilinea-velocidad/validation.md`, `audit.md` y `evidence/`. Se conservaron resultados iniciales desfavorables y límites de medición. T071/SC-009 queda pendiente de cinco participantes; no se cerraron comparaciones largas ni validaciones de otras iteraciones. La referencia de publicación se capturó antes de cambios de producto.
+
+
+### Correcciones de convergencia011 —T076–T085 —2026-11-26
+
+Se corrigen confirmaciones cruzadas de borradores, geometría obsoleta del editor, recuperación del descriptor, pérdida de propuestas al conciliar, línea vaciada que reaparecía, importaciones de otro contexto, límites acumulados y nombres iniciales duplicados. El cliente conserva base/propuesta por UUID, valida respuestas y exige resolución explícita de conflictos. El backend aísla fallos por línea/revisión con CAS, sin invalidar contadores ya calculados ni afectar detección/seguimiento.
+
+La validación de velocidad pasa de comprobaciones de texto a ejercitar el reproductor/caché/proyección reales con decoder instrumentado: mismo instante, cajas, identidad inspeccionada y conteos a0,5/1/2×; espera y pausa explícita; pruebas del decoder real y límites28frames/8MiB/16MiB. Resultados finales:562backend,221frontend, build y21escenarios Chromium a1440/768/360. Un PermissionError inicial de perfil temporal de Windows se conserva en evidencia; no se reprodujo al repetir el archivo4/4 ni la suite562/562. No se modificó el perfilador para ocultarlo.
+
+T071/SC-009 sigue pendiente de cinco participantes y no es un defecto de implementación. No se usaron medios privados ni se ejecutó comparación larga; no se acreditan FPS de inferencia ni hardware edge. Evidencia y trazabilidad en specs/011-video-multilinea-velocidad/validation.md, audit.md y evidence/convergence-corrections.json. Se conserva feature/011-video-multilinea-velocidad y se excluyen los45CSVprevios de los commits propios.
+
+Commits de producto:45df949 (aislamiento del reducer) y9273112 (editor, recuperación y pruebas). La comprobación adicional de configuración cerró3/3a los tres tamaños. Fuente de resultados actuales: evidence/convergence-corrections.json; los reportes previos no se sustituyen.

@@ -1,0 +1,125 @@
+{
+  "date": "2026-11-26",
+  "feature": "011-video-multilinea-velocidad",
+  "scope": "T076-T085",
+  "pending_external": [
+    "T071 / SC-009: cinco participantes"
+  ],
+  "backend": {
+    "command": ".venv/Scripts/python.exe -B -m pytest backend/tests -o addopts= -q --tb=short --junitxml=.runtime/validation-011-corrections.xml",
+    "passed": 562,
+    "failed": 0,
+    "seconds": 88.23,
+    "warnings": [
+      "anyio deprecated alias",
+      "cinco avisos de record_property por JUnit xunit2"
+    ],
+    "first_run": {
+      "passed": 561,
+      "failed": 1,
+      "reason": "PermissionError transitorio al leer el JSON de perfil temporal en Windows",
+      "isolated_file_retry": "4/4 aprobadas",
+      "full_retry": "562/562 aprobadas; no se modificó el perfilador ni se ocultó el fallo"
+    }
+  },
+  "frontend": {
+    "command": "npm --prefix frontend test -- --run",
+    "passed": 221,
+    "files": 73,
+    "failed": 0,
+    "seconds": 22.97,
+    "build": "npm --prefix frontend run build: aprobado",
+    "build_warning": "chunk minificado mayor de 500 kB"
+  },
+  "browser": {
+    "command": "npx playwright test --config playwright.011.config.ts --project desktop --project tablet --project mobile --grep-invert 'source playback takes'",
+    "passed": 21,
+    "failed": 0,
+    "viewports": [
+      1440,
+      768,
+      360
+    ],
+    "stats": {
+      "startTime": "2026-11-26T11:52:05.999Z",
+      "duration": 98327.765,
+      "expected": 21,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "limits": "No se repitió la medición temporal de 30 s del E2E; velocidad/sincronización se verificó con reproductor real y decoder instrumentado a 0,5/1/2. Los logs ApiError al retirar trabajos son del teardown controlado del fixture.",
+    "configuration_recheck": {
+      "command": "npx playwright test video-line-configuration.011.spec.ts --config playwright.011.config.ts --project desktop --project tablet --project mobile",
+      "passed": 3,
+      "failed": 0,
+      "seconds": 28.0
+    }
+  },
+  "runtime": {
+    "python": "3.12.15",
+    "platform": "Windows",
+    "machine": "AMD64"
+  },
+  "not_run": [
+    "validación con cinco personas",
+    "comparación larga con modelos reales",
+    "videos privados"
+  ],
+  "product_commits": {
+    "backend": "45df949",
+    "frontend": "9273112"
+  },
+  "task_evidence": {
+    "T076": [
+      "countLineDrafts: aplicar/borrar A conserva B confirmado y borrador B"
+    ],
+    "T077": [
+      "countLineDrafts: geometría remota y actualización de metadatos sin perder puntos"
+    ],
+    "T078": [
+      "countLineRecovery: fallo inicial, fallo posterior, aborto y 401/403/410",
+      "Recuperación inicial y reload explícito no solapan GET"
+    ],
+    "T079": [
+      "test_count_lines_reduction.py: cinco casos de aislamiento y CAS"
+    ],
+    "T080": [
+      "countLineDrafts: conflicto conserva propuesta y exige resolución",
+      "playbackRateIntegration: borrador inicial remoto distinto"
+    ],
+    "T081": [
+      "countLineDrafts: borrado de borrador no reaparece al aplicar otra línea"
+    ],
+    "T082": [
+      "countLineRecovery: importación de otro trabajo/generación y respuesta tardía"
+    ],
+    "T083": [
+      "countLineDrafts: 128/128 y edición/borrado disponibles",
+      "countLineRecovery: mensaje específico ante carrera de cuota"
+    ],
+    "T084": [
+      "playbackRateIntegration: tres pruebas sobre reproductor, FrameCache y CountLineBar reales",
+      "sourceDecoder: cola 28, bloques 8 MiB y posters 16 MiB",
+      "frameCache: límite 16 MiB, aborto y expulsión de ventanas antiguas"
+    ],
+    "T085": [
+      "countLineDrafts: caja, espacios, NFC/NFD y defaults no ocupados por confirmadas o borradores"
+    ]
+  },
+  "source_sha256": {
+    "backend/app/services/count_lines_reducer.py": "c4c8819aefabe37c938c68847cbfcab78a8baffdbcd22502f853ba12a9037554",
+    "backend/app/services/video_detail_worker.py": "9127a7b8e9bf92355182260ca3017e45860e26f0b80ef686bd50960fedb4b2d7",
+    "frontend/src/features/video-analysis/CountLineEditor.tsx": "66ef4923ae8199907d7979ae8ea3ff9852fd43695fae881aba4daf09ca6b966f",
+    "frontend/src/features/video-analysis/ProgressiveCountTools.tsx": "97b6a6a15b56b03cb4015362a5c9d0022025a01f1ec87832537a8533bcbbf962",
+    "frontend/src/features/video-analysis/useCountLines.ts": "6c555d32c2b79d82e157087ffb37a251fca3d8ea5c5ee1b5c3eda5b3abfdfa8a",
+    "frontend/src/features/video-analysis/ProgressiveVideoPlayer.tsx": "10c540679f35505ea3dc306ac6a6e73394efabaca8ec3dd3cea03b8e2241fd67"
+  },
+  "task_status": {
+    "completed": 84,
+    "total": 85,
+    "pending": [
+      "T071"
+    ]
+  }
+}
