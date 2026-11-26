@@ -9,6 +9,9 @@ from starlette.responses import JSONResponse,Response,StreamingResponse
 
 ID=r"[A-Za-z0-9][A-Za-z0-9_-]{0,127}"
 ROUTES=[
+ ("GET|PUT",rf"/api/v1/video-jobs/{ID}/playback/count-lines","json"),
+ ("GET",rf"/api/v1/video-jobs/{ID}/playback/count-lines/counts","json"),
+ ("POST",rf"/api/v1/video-jobs/{ID}/playback/count-lines/import-legacy","json"),
  ("GET|HEAD",rf"/api/v1/video-jobs/{ID}/playback/export/content","progressive-source"),
  ("GET",rf"/api/v1/video-jobs/{ID}/playback/detection-summary","json"),
  ("GET|PUT|DELETE",rf"/api/v1/video-jobs/{ID}/playback/directed-count","json"),
@@ -56,6 +59,9 @@ def classify(method,path,raw_path,query):
     allowed={"page","page_size"} if path.endswith(("/detections","/results","/events")) else {"profile"} if kind=="plate" else set()
     if kind=="video-upload":allowed={"presentation","enrichment"}
     elif path.endswith(("/playback/export","/playback/export/content")):allowed={"renderer"}
+    elif path.endswith("/playback/count-lines/counts"):allowed={"generation","revision","at_us"}
+    elif path.endswith("/playback/count-lines"):allowed={"generation"} if method=="GET" else set()
+    elif path.endswith("/playback/count-lines/import-legacy"):allowed=set()
     elif path.endswith("/playback/detection-summary"):allowed={"generation"}
     elif path.endswith("/playback/directed-count"):allowed={"generation","at_us","revision"} if method=="GET" else {"generation","expected_revision"} if method=="DELETE" else set()
     elif path.endswith("/playback/count"):allowed={"at_us"} if method=="GET" else set()
@@ -134,7 +140,7 @@ class Proxy:
                     async for block in request.stream():
                         if not self.sessions.get(token):raise RelayError(401,"web_session_expired")
                         data.extend(block)
-                        if len(data)>(65536 if "/playback/inspections" in request.url.path or "/playback/directed-count" in request.url.path else 16384):raise RelayError(413,"web_body_too_large")
+                        if len(data)>(65536 if "/playback/inspections" in request.url.path or "/playback/directed-count" in request.url.path or "/playback/count-lines" in request.url.path else 16384):raise RelayError(413,"web_body_too_large")
                 if request.method in ("GET","HEAD","DELETE") and data:raise RelayError(422,"web_body_not_allowed")
                 if data:
                     try:payload=json.loads(data)

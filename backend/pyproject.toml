@@ -26,6 +26,7 @@ dependencies = [
   # pulls PaddleX/ModelScope, which imports PyTorch during OCR startup on Windows.
   "paddleocr>=2.8,<3",
   "av==19.0.2",
+  "regex>=2025,<2027",
 ]
 
 [project.optional-dependencies]

@@ -52,6 +52,8 @@ def create_app(settings: Settings | None = None, detector: Detector | None = Non
     app.include_router(video_detection_summary.router, prefix="/api")
     from app.api.routes import video_inspections
     app.include_router(video_inspections.router, prefix="/api")
+    from app.api.routes import video_count_lines
+    app.include_router(video_count_lines.router, prefix="/api")
     from app.api.routes import video_directed_count
     app.include_router(video_directed_count.router, prefix="/api")
     app.include_router(count_jobs.router, prefix="/api")
@@ -59,7 +61,7 @@ def create_app(settings: Settings | None = None, detector: Detector | None = Non
 
     @app.middleware("http")
     async def bounded_video_detail(request: Request, call_next):
-        detail = "/playback/" in request.url.path and any(part in request.url.path for part in ("/inspections", "/directed-count", "/detection-summary", "/capabilities"))
+        detail = "/playback/" in request.url.path and any(part in request.url.path for part in ("/inspections", "/count-lines", "/directed-count", "/detection-summary", "/capabilities"))
         detail = detail or ("/playback/export" in request.url.path and "renderer" in request.query_params)
         if detail:
             from fastapi.responses import JSONResponse

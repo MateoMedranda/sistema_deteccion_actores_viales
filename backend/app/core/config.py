@@ -42,6 +42,23 @@ class Settings(BaseSettings):
     max_video_height: int = Field(default=1080, gt=0)
     max_video_fps: int = Field(default=30, gt=0)
     max_video_frames: int = Field(default=3600, gt=0)
+    video_count_max_lines: int = Field(default=10, ge=10, le=32)
+    video_count_max_admitted_lines: int = Field(default=128, ge=10, le=1024)
+    video_count_reducer_batch_frames: int = Field(default=20, ge=1, le=20)
+    video_count_reducer_max_pairs: int = Field(default=200, ge=1, le=200)
+    video_count_reducer_budget_ms: float = Field(default=5, gt=0, le=10)
+
+    @field_validator("video_count_max_lines", "video_count_max_admitted_lines", "video_count_reducer_batch_frames", "video_count_reducer_max_pairs", "video_count_reducer_budget_ms", mode="before")
+    @classmethod
+    def count_number(cls, value):
+        if isinstance(value, bool): raise ValueError("count_number_invalid")
+        return value
+
+    @model_validator(mode="after")
+    def count_capacity(self):
+        if self.video_count_max_admitted_lines < self.video_count_max_lines: raise ValueError("count_capacity_invalid")
+        return self
+
     video_detection_interval: int = Field(default=1, ge=1, le=2)
     video_progressive_batch_frames: int = Field(default=15,ge=1,le=60)
     video_progressive_batch_seconds: float = Field(default=.5,gt=0,le=10)

@@ -133,7 +133,10 @@ def build_lifespan(settings: Settings, injected_detector: Detector | None = None
         from app.services.video_detail_worker import VideoDetailWorker
         app.state.directed_count=DirectedCountService(progressive)
         app.state.detection_inventory=progressive.inventory
+        from app.services.count_lines_service import CountLinesService
+        app.state.count_lines=CountLinesService(progressive,settings)
         detail_worker=VideoDetailWorker(progressive,app.state.directed_count)
+        detail_worker.multiline=app.state.count_lines
         detail_worker.inventory=progressive.inventory
         app.state.video_detail_worker=detail_worker
         detail_worker.start()

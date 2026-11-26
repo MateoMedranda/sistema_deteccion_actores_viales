@@ -23,7 +23,7 @@ def advance(state,point,line,direction,class_name):
   pending=pending or touch
  elif old_side and s!=old_side:
   wanted=1 if direction=='negative_to_positive' else -1
-  event=bool(s==wanted and (pending or touch) and not counted and is_vehicle(class_name))
+  event=bool((direction=='both' or s==wanted) and (pending or touch) and not counted and is_vehicle(class_name))
   pending=False
  else:pending=False
  return dict(point=point,side=s or old_side,contact=pending,counted=counted or event),event
