@@ -37,7 +37,7 @@ npm --prefix frontend test
 npm --prefix frontend run build
 ```
 
-Desde frontend, fixture/browser config011 aislados que deberán crearse para no leer secretos ni depender del video privado:
+Desde frontend, fixture/browser config011 aislados disponibles para no leer secretos ni depender del video privado:
 
 ```powershell
 npx playwright test --config playwright.011.config.ts --project desktop
@@ -58,11 +58,40 @@ Añadir pruebas contractuales de las cuatro operaciones y del relay: cuerpos/que
 
 ## Rendimiento y evidencia
 
-Capture/compare del futuro comparador011, nunca del benchmark010: mismo fixture300 cuadros×20 observaciones, medición0/1/10 líneas, steady-state y catch-up separados. Guardar entorno/hashes, tiempos de publicación, lock/captura/cómputo/commit, p95 GET, retraso de cobertura y memoria. Objetivos iniciales: sección crítica p95≤10 ms, GET≤250 ms, catch-up10 líneas≤5s en fixture; ajuste de lotes si no se cumplen. Comparación0líneas frente a referencia>5% requiere investigación documentada AB/BA, sin borrar el resultado desfavorable.
+Capture/compare del comparador011, nunca del benchmark010: mismo fixture300 cuadros×20 observaciones, medición0/1/10 líneas, steady-state y catch-up separados. Guardar entorno/hashes, tiempos de publicación, lock/captura/cómputo/commit, p95 GET, retraso de cobertura y memoria. Objetivos iniciales: sección crítica p95≤10 ms, GET≤250 ms, catch-up10 líneas≤5s en fixture; ajuste de lotes si no se cumplen. Comparación0líneas frente a referencia>5% requiere investigación documentada AB/BA, sin borrar el resultado desfavorable.
 
 No etiquetar estos tiempos como FPS de inferencia. Un nuevo perfil ordinario puede añadirse posteriormente manteniendo pesos/hilos/intervalo, sin ejecutar por defecto la comparación larga diferida. No se cierra ningún pendiente humano/real anterior por un benchmark sintético.
 
-La entrega implementada deberá guardar agregados en evidence/ con IDs de caso, versión, resultado y límites; sin videos del usuario, cuadros, rutas privadas, placas ni secretos. SC-009 requiere cinco personas: registrar resultado real o pendiente, nunca sustituirlo por tests automáticos. Actualizar docs/registro-evolucion-sistema.md y commits por etapa.
+La entrega guarda agregados en evidence/ con IDs de caso, versión, resultado y límites; sin videos del usuario, cuadros, rutas privadas, placas ni secretos. SC-009 requiere cinco personas: registrar resultado real o pendiente, nunca sustituirlo por tests automáticos. Actualizar docs/registro-evolucion-sistema.md y commits por etapa.
 
 
 Agregar una regresión de intervalo de cantidad: reproducir a30cuadros/s con consultas400ms, y comprobar que una respuesta anterior mantiene un número exactamente válido solo hasta valid_until_us (siguiente cruce/cobertura/prefijo). Al agotarse, demanda agrupada sin más de una petición en vuelo; las otras tarjetas válidas permanecen visibles. No se exige una petición por cuadro ni se presenta el cero pendiente como conteo.
+
+## Operación de la entrega
+
+En el checkout principal, conserva tus servicios habituales API/gateway/frontend. Tras actualizar dependencias, reinicia API y gateway. Para el paquete nuevo `regex`, con el Python3.12 existente:
+
+```powershell
+uv pip install --python .venv/Scripts/python.exe 'regex>=2025,<2027'
+.\backend\start.ps1 -Service api
+# Otra terminal, desde la misma raíz:
+.\backend\start.ps1 -Service gateway
+# Otra terminal:
+npm --prefix frontend run dev
+```
+
+Si ya estás dentro de `frontend`, usa `npm run dev`. La instalación reproducible completa usa `uv sync --project backend --python 3.12`; no es necesario regenerar el entorno existente para estas pruebas. No copies claves al cliente.
+
+Los cinco parámetros `VIDEO_COUNT_*` están documentados en `backend/.env.example`:10líneas activas (10..32),128identidades admitidas acumuladas (incluye borradas),20cuadros,200pares y5ms cooperativos. El descriptor comunica límites efectivos; la interfaz no necesita secretos nuevos.
+
+Desde la raíz, reporte breve sin modelos:
+
+```powershell
+.\.venv\Scripts\python.exe backend/scripts/report_count_lines_overhead.py
+```
+
+La referencia ya existe y `capture` rechaza sobrescribirla. Los ensayos de navegador inician sus propios servicios9413/9414/9415 y los cierran; no requieren detener5173/4174/8000. La config rechaza reutilizar un puerto ocupado. El video sintético se genera en `.runtime/e2e-009` y las bases de prueba son temporales.
+
+La velocidad ofrece0,25/0,5/0,75/1/1,25/1,5/2× y solo cambia la presentación. Las tarjetas cuentan cruces por línea y tiempo fuente; no se suman como vehículos físicos únicos ni reemplazan el inventario global. La exportación conserva su velocidad y anotaciones actuales.
+
+Al recargar se conserva en `sessionStorage` solo el ID opaco y vencimiento del último trabajo; configuración y cruces siguen en el backend autorizado. Cambiar archivo, limpiar o reiniciar sesión elimina la referencia. Nunca se guarda el archivo, recortes, nombres o credenciales en ese registro. El backend verifica propietario y TTL antes de restaurar. Mismo trabajo conserva velocidad al cambiar pestaña; recargar puede volver a1×.

@@ -1,0 +1,16 @@
+{
+  "stats": {
+    "startTime": "2026-11-26T01:54:35.970Z",
+    "duration": 191630.981,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 3,
+    "flaky": 0
+  },
+  "scope": "First desktop pass before final fixes; errors retained.",
+  "failures": [
+    "duplicate color message missing",
+    "reload reference missing",
+    "timing interrupted during HMR source edits; must repeat stable"
+  ]
+}

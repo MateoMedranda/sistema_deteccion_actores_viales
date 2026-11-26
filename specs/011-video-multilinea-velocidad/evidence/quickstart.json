@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "from_root": [
+    "backend/start.ps1 -Service api -CheckEnvironment selected existing Python3.12",
+    "python -m pytest backend/tests",
+    "backend/scripts/report_count_lines_overhead.py"
+  ],
+  "from_frontend": [
+    "npm run build",
+    "npm test -- --run",
+    "npx playwright test -c playwright.011.config.ts"
+  ],
+  "isolated_ports": [
+    9413,
+    9414,
+    9415
+  ],
+  "effective_limits": {
+    "active_lines": 10,
+    "admitted_lines": 128,
+    "batch_frames": 20,
+    "max_pairs": 200,
+    "budget_ms": 5
+  },
+  "shared_or_private_services_started": false,
+  "private_environment_changed": false,
+  "global_inventory_independent": true
+}

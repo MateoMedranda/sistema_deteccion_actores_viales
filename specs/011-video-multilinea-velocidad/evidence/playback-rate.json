@@ -1,0 +1,22 @@
+{
+  "scope": "30 source seconds; Chromium desktop; synthetic640x360; full-run timing case passed",
+  "samples": [
+    {
+      "rate": 0.5,
+      "elapsed_seconds": 59.979,
+      "expected_seconds": 60
+    },
+    {
+      "rate": 1,
+      "elapsed_seconds": 30.099,
+      "expected_seconds": 30
+    },
+    {
+      "rate": 2,
+      "elapsed_seconds": 15.02,
+      "expected_seconds": 15
+    }
+  ],
+  "tolerance_percent": 5,
+  "tablet_mobile_timing": "Not repeated; controls and layout tested separately"
+}

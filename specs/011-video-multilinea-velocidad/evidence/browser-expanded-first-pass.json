@@ -1,0 +1,14 @@
+{
+  "stats": {
+    "startTime": "2026-11-26T02:12:27.811Z",
+    "duration": 122703.954,
+    "expected": 12,
+    "skipped": 0,
+    "unexpected": 9,
+    "flaky": 0
+  },
+  "causes": [
+    "Fixture expected six but one trajectory crosses the extension outside the finite segment: correct total is five.",
+    "Wait phase message was missing when starting at the analyzed-prefix edge."
+  ]
+}

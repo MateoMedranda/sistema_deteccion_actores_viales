@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "scope": "lost PUT/readback, late generations, tombstone, restart, import-once and expiry",
+  "source_tests": "backend/tests and frontend/tests/e2e",
+  "human_validation": false,
+  "real_models": false
+}

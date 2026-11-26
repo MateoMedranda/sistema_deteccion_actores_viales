@@ -148,3 +148,12 @@ Hook PTS revisado:365puntos de plan, todas las75filas clasificadas por agente, s
 Autorizada por el usuario tras analyze. Se elimina la contradicción entre cantidades válidas para un intervalo y redacciones que parecían invalidarlas por cada cuadro. Se distinguen el tiempo solicitado, el cuadro pintado, la navegación y el intervalo exclusivo por línea, sin debilitar la exactitud ni requerir consultas por RAF.
 
 El gate de fundamentos se limita al almacenamiento/DTO/configuración/lifecycle ya disponibles. Las pruebas funcionales de descriptor y cuotas se ubican explícitamente en US1 (T015/T016), después de sus implementaciones. Se conservan los75IDs y el grafo de144dependencias; [remediation.md](../specs/011-video-multilinea-velocidad/remediation.md) documenta alcance y comprobación. Sin cambios de producto, modelos, configuración privada ni pruebas humanas/largas.
+
+
+### Iteración011 —varias líneas y velocidad de reproducción —2026-11-25
+
+Se implementaron colecciones CAS de líneas con UUID/nombre/color, cuotas y borrado temporal, reducción cooperativa bidireccional por segmento finito e instantáneas históricas de validez exclusiva. El worker existente comparte publicación, inspección e inventario; no hay inferencia ni thread por línea. Se preservaron identidad local, observaciones medidas y contratos010; importación anterior recalculada, nunca copia del total direccional.
+
+La interfaz añade barra superior de tarjetas, editor de primer fotograma con arrastre/teclado, edición de nombre/color, selección y eliminación. El reloj0,25×–2× conserva tiempos fuente, límites de búsqueda y pausa durante espera; no acelera YOLO ni cambia exportaciones. Configuración/cruces se recuperan con autoridad y TTL originales.
+
+Evidencia: `specs/011-video-multilinea-velocidad/validation.md`, `audit.md` y `evidence/`. Se conservaron resultados iniciales desfavorables y límites de medición. T071/SC-009 queda pendiente de cinco participantes; no se cerraron comparaciones largas ni validaciones de otras iteraciones. La referencia de publicación se capturó antes de cambios de producto.

@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "scope": "ten named lines, local first-frame editing, confirmed persistence",
+  "source_tests": "backend/tests and frontend/tests/e2e",
+  "human_validation": false,
+  "real_models": false
+}

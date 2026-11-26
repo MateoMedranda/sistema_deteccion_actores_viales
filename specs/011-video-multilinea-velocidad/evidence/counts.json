@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "scope": "six-class measured geometry fixtures;5finite-segment crossings per line in browser, sixth outside segment;10rewinds and20future attempts",
+  "source_tests": "backend/tests and frontend/tests/e2e",
+  "human_validation": false,
+  "real_models": false
+}

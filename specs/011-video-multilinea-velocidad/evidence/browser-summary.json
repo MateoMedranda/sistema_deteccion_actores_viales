@@ -1,0 +1,36 @@
+{
+  "implementation": "011",
+  "browser": "Chromium1255",
+  "viewports": [
+    360,
+    768,
+    1440
+  ],
+  "families": [
+    "configuration and reload of ten lines",
+    "duplicate metadata rollback",
+    "counter selection/keyboard/fullscreen",
+    "ten rewind cycles and twenty future API/UI attempts",
+    "delete/CAS recovery",
+    "legacy import and parent expiry",
+    "2x wait and explicit pause"
+  ],
+  "verified_scenario_project_pairs": 21,
+  "rate_timing_additional_cases": 1,
+  "execution_batches": [
+    "First full18-case run:16passed,2timing repetitions skipped",
+    "Expanded21-case run:18passed,3wait assertions failed against a repaint-only canvas attribute",
+    "Wait recheck using live backend prefix:3passed",
+    "Final long-label/layout/metadata-latency recheck:6passed"
+  ],
+  "timing": "playback-rate.json",
+  "limits": [
+    "Synthetic640x360, no recognition accuracy or real-model FPS claim",
+    "Timing repeated only on desktop",
+    "No long real-model comparison or human validation"
+  ],
+  "notes": [
+    "Intentional test withdrawal can log progressive_processing_failed/ApiError after cleanup.",
+    "Transient relay reset in an earlier pass retained; no final functional assertion depended on an unconfirmed response."
+  ]
+}

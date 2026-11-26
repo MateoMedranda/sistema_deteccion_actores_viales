@@ -1,0 +1,11 @@
+{
+  "stats": {
+    "startTime": "2026-11-26T02:15:21.988Z",
+    "duration": 151866.54499999998,
+    "expected": 18,
+    "skipped": 0,
+    "unexpected": 3,
+    "flaky": 0
+  },
+  "note": "Remaining wait assertion checked a canvas attribute updated only on a repaint; final check reads the live backend prefix."
+}

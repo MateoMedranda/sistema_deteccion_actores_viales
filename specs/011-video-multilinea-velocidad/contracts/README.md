@@ -65,3 +65,11 @@ El cliente comprueba que contexto/revisión/IDs y snapshot.at_us coincidan con l
 
 
 Si se reduce una configuración de capacidad respecto a una colección ya guardada, conservarla y permitir edición de metadatos/eliminación; rechazar nuevas altas netas mientras exceda el nuevo límite. admitted_count incluye tombstones y permite explicar el motivo del rechazo. Los cambios operativos no borran líneas por sí mismos.
+
+## Implementación011
+
+Las cuatro operaciones cerradas están en `backend/app/api/routes/video_count_lines.py`, publicadas a través de la misma allowlist y sesión del gateway. GET de colección y counts no crean ni reducen estados. PUT usa CAS del conjunto completo y reconoce un reintento idéntico; omitir una línea la elimina. Importación es explícita por POST y el cliente la solicita una vez al encontrar una colección vacía con candidato ofrecido.
+
+Los DTO Pydantic `count_lines.py` y el parser `countLinesContracts.ts` conservan el contrato010 separado. Fechas con zona, enteros seguros, UUID y objetos cerrados; nombres normalizados NFC,60grafemas/1024codepoints/2048bytes y colores RGB únicos. `regex` valida grafemas en backend, `Intl.Segmenter` da feedback cuando existe; la decisión final de unicidad es del servidor.
+
+El cliente reutiliza cantidades solo en su intervalo exclusivo confirmado y consulta un agregado cada400ms, con100ms mínimo entre inicios y una solicitud en vuelo.409recupera el descriptor;404de capacidad no retira el video.401/403/410 mantienen la autoridad de sesión y vencimiento. Los cuerpos de control están limitados a64KiB y respuestas del relay a2MiB, sin caché.

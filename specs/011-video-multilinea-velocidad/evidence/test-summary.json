@@ -1,0 +1,26 @@
+{
+  "backend": {
+    "full_suite_passed": 556,
+    "full_suite_seconds": 94.48,
+    "incremental_timezone_contract_suite_passed": 30,
+    "new_tests_after_full_suite": 1
+  },
+  "frontend": {
+    "full_suite_passed": 191,
+    "files": 72,
+    "incremental_independent_draft_tests_passed": 2,
+    "new_tests_after_full_suite": 1
+  },
+  "build": "TypeScript/Vite passed;523kB minified chunk warning retained",
+  "browser": "browser-summary.json",
+  "baseline": "publication-baseline.json",
+  "performance": "count-lines-overhead.json",
+  "warnings": [
+    "anyio BlockingPortal deprecated",
+    "Vite chunk above500kB"
+  ],
+  "omissions": [
+    "T071/SC-009: five participants unavailable",
+    "Earlier long real-model comparisons remain deferred"
+  ]
+}

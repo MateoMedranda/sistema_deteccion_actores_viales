@@ -1,0 +1,33 @@
+{
+  "layout_configuration_recheck": {
+    "startTime": "2026-11-26T02:21:39.819Z",
+    "duration": 35961.10999999999,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "metadata_latency": [
+    {
+      "project": "desktop",
+      "confirmed_metadata_ms": 140
+    },
+    {
+      "project": "mobile",
+      "confirmed_metadata_ms": 119
+    },
+    {
+      "project": "tablet",
+      "confirmed_metadata_ms": 118
+    }
+  ],
+  "threshold_ms": 1000,
+  "viewports": [
+    360,
+    768,
+    1440
+  ],
+  "long_name_graphemes": 60,
+  "screenshots": "screenshots/",
+  "fullscreen_scene_mobile_min_width_px": 280
+}

@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "scope": "four closed routes;owner/generation/revision/body/query/CSRF/no-store/lifecycle;shared gateway regressions",
+  "source_tests": "backend/tests and frontend/tests/e2e",
+  "human_validation": false,
+  "real_models": false
+}
