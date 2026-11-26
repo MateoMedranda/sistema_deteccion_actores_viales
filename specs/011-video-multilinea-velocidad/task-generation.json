@@ -35,5 +35,11 @@
   "points_removed": 0,
   "heuristic_classifications_remaining": 0,
   "all_points_rows_reviewed": 75,
-  "points_weight_version": "1.0"
+  "points_weight_version": "1.0",
+  "authorized_remediation": {
+    "date": "2026-11-25",
+    "I1": "interval and request context wording aligned",
+    "U1": "foundation storage tests separated from US1 descriptor and quotas",
+    "task_ids_or_dependencies_changed": false
+  }
 }

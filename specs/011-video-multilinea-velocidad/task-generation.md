@@ -77,3 +77,12 @@ La validación humana T071produce informe manual y se clasifica como documentaci
 ## Resultado
 
 Formato, cobertura26 FR/10 SC, grafo, paths, citas y PTS comprobados. Resumen de validación en task-generation.json. Las tareas siguen pendientes y no hay cambios de backend/app ni frontend/src en esta etapa. Listo para speckit-analyze; no es una auditoría de implementación.
+
+
+## Corrección autorizada I1/U1 —2026-11-25
+
+I1: se armonizan data-model§8/§10 y contracts/README para separar el at_us solicitado de la validez posterior durante reproducción ordinaria. El total ready es exacto en [snapshot.at_us,line.valid_until_us); seek/revisión/generación invalidan respuestas de contexto anterior. No se exige un snapshot por cuadro.
+
+U1: T011 se acota a persistencia estructural, reapertura y purge de fixtures sin servicio/rutas. T014 exige solo lo disponible al terminar fundamentos. Descriptor funcional vacío se verifica en T015 y las cuotas/tombstones/admitted_count en T016, satisfechas al implementar US1. No se añaden IDs ni se cambian las dependencias; se revisa y recalcula PTS con el script oficial.
+
+El registro de corrección y la comprobación documental se conservan en [remediation.md](remediation.md). No se implementa código ni se consideran aprobadas pruebas funcionales/humanas por esta enmienda.

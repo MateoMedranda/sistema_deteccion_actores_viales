@@ -1,0 +1,19 @@
+{
+  "tasks": 75,
+  "dependencies": 144,
+  "parallel_tasks": 23,
+  "mapped_FR": 26,
+  "mapped_SC": 10,
+  "PTS": 365,
+  "heuristic_rows": 0,
+  "schema_definitions": 11,
+  "positive_examples": 9,
+  "negative_shape_examples": 12,
+  "semantic_cases_pending_product_validation": 10,
+  "I1": "corrected",
+  "U1": "corrected",
+  "critical_issues": 0,
+  "high_issues": 0,
+  "remaining_known_findings": 0,
+  "product_tests_run": false
+}

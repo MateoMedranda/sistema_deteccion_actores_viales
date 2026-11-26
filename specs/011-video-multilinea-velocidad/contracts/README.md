@@ -21,7 +21,7 @@ La colección contiene protocol=video-count-lines-v1, policy_version=finite-cent
 
 Revisión de configuración independiente del progreso. Cada valor: ID de línea, revisión geométrica, status pending/ready/unavailable, result_scope building/partial/final, covered_until_us, valid_until_us exclusivo, total entero o null y código seguro. Si ready, el número es exacto en [at_us,valid_until_us), donde el extremo es el mínimo de siguiente evento estrictamente posterior, cobertura y prefijo. Pending/unavailable tiene total=null y extremo=at_us; no permite reutilizar cantidad. Cantidad0 solo con ready. Final se refiere a cobertura completa de esa línea, no solo al estado terminal del video. El total de cada línea es histórico hasta at_us; no sumar tarjetas como inventario de vehículos físicos.
 
-Si at_us es el extremo exclusivo disponible, devolver409; con prefijo vacío at_us0 produce pending/null. No usar FPS nominales para elegir posición; el frontend solicita start_us del cuadro pintado. Un dato listo del instante anterior no se presenta como cantidad del nuevo cuadro mientras llega su respuesta.
+Si at_us es el extremo exclusivo disponible, devolver409; con prefijo vacío at_us0 produce pending/null. No usar FPS nominales para elegir posición; el frontend solicita start_us del cuadro pintado. Durante avance ordinario se permite mostrar una cantidad obtenida para un cuadro anterior únicamente si conserva el mismo contexto y el cuadro actual pertenece a [snapshot.at_us,line.valid_until_us): sigue siendo exacta dentro de ese intervalo. Fuera de él, mostrar actualizando y solicitar un snapshot nuevo, sin presentar una cantidad atrasada como actual. Un seek nuevo invalida respuestas en vuelo de la navegación anterior.
 
 ## Validación y capacidad
 
@@ -61,7 +61,7 @@ El contrato010 de capabilities/directed-count y su enum direccional no se modifi
 
 Una PUT aplicada incrementa revisión una vez. Repetición inmediata exacta de la última mutación con expected_revision anterior+hash reconocido retorna descriptor actual sin repetir trabajo. Cualquier revisión más antigua/divergente produce409 y recuperación. Una PUT no-op con revisión vigente no incrementa. POST import-legacy ya aplicado retorna el descriptor sin reimportar, incluso si se borró después la línea. Las verificaciones parent/TTL preceden toda conciliación.
 
-El cliente no acepta una respuesta que no coincida con contexto/revisión/IDs/tiempo solicitados. Las mutations se serializan por colección; múltiples pestañas se arbitran por CAS del servidor. La forma de editar nunca depende del número de Track ID ni de un color como identificador.
+El cliente comprueba que contexto/revisión/IDs y snapshot.at_us coincidan con lo enviado en la petición. La reutilización posterior durante avance ordinario depende del intervalo exclusivo de cada línea, no de exigir una respuesta por cuadro. La secuencia de navegación evita aceptar respuestas en vuelo de un seek anterior. Las mutations se serializan por colección; múltiples pestañas se arbitran por CAS del servidor. La forma de editar nunca depende del número de Track ID ni de un color como identificador.
 
 
 Si se reduce una configuración de capacidad respecto a una colección ya guardada, conservarla y permitir edición de metadatos/eliminación; rechazar nuevas altas netas mientras exceda el nuevo límite. admitted_count incluye tombstones y permite explicar el motivo del rechazo. Los cambios operativos no borran líneas por sí mismos.
