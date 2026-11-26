@@ -105,6 +105,10 @@
     ],
     "T085": [
       "countLineDrafts: caja, espacios, NFC/NFD y defaults no ocupados por confirmadas o borradores"
+    ],
+    "T086": [
+      "test_count_lines_reduction.py:11casos, modos ordinario/corte forzado y cobertura acotada",
+      "Grupo pertinente100/100; dos fallos originales reproducidos con reloj controlado antes de corregir"
     ]
   },
   "source_sha256": {
@@ -116,10 +120,89 @@
     "frontend/src/features/video-analysis/ProgressiveVideoPlayer.tsx": "10c540679f35505ea3dc306ac6a6e73394efabaca8ec3dd3cea03b8e2241fd67"
   },
   "task_status": {
-    "completed": 84,
-    "total": 85,
+    "completed": 85,
+    "total": 86,
     "pending": [
       "T071"
     ]
+  },
+  "t086_validation": {
+    "date": "2026-11-26",
+    "task": "T086",
+    "test_commit": "4c9aa9a",
+    "scope": "solo pruebas y documentos; producto sin cambios",
+    "cause": "Las pruebas originales suponían que dos cuadros se reducían en una llamada; el presupuesto cooperativo permite confirmar solo el primero.",
+    "baseline": {
+      "converge_group_passed": 93,
+      "converge_group_failed": 1,
+      "isolated_rerun_passed": 5,
+      "meaning": "La repetición aislada no resolvía la fragilidad.",
+      "controlled_clock_original_tests_failed": 2,
+      "controlled_cases": [
+        "test_failure_of_pending_line_preserves_completed_line",
+        "test_one_failed_line_does_not_poison_another_pending_line"
+      ]
+    },
+    "fix": {
+      "max_turns": 20,
+      "completion": "IDs, revisión de colección, estado, revisión geométrica y cobertura observados en snapshots; no sleeps",
+      "modes": [
+        "ordinary",
+        "forced-yield"
+      ],
+      "clock": "binding time local del módulo reducer; perf_counter avanza 6 ms por lectura solo en pruebas, sin alterar el módulo time global",
+      "production_budget_ms": 5,
+      "production_budget_changed": false
+    },
+    "assertions": [
+      "A debe estar lista y cubrir200000us antes de añadir B",
+      "Un fallo de B conserva exactamente el CountValue previo de A",
+      "Tras un turno forzado: solo A unavailable; B pending, cubierta100000us, total=null y sin error",
+      "En el primer cuadro ya cubierto, cero es válido; no se inventa cero para el instante pendiente",
+      "Tras completar turnos: B ready, cubierta200000us, total1, sin error y un solo evento incluso tras turnos adicionales",
+      "Cambio de geometría, eliminación y retirada del padre conservan las aserciones originales en ambos modos"
+    ],
+    "file_run": {
+      "command": ".venv/Scripts/python.exe -B -m pytest backend/tests/integration/test_count_lines_reduction.py -o addopts= -q --tb=short",
+      "passed": 11,
+      "failed": 0,
+      "seconds": 0.92
+    },
+    "group_run": {
+      "command": ".venv/Scripts/python.exe -B -m pytest backend/tests/unit/test_count_line_geometry.py backend/tests/unit/test_count_line_labels.py backend/tests/unit/test_count_lines_config.py backend/tests/integration/test_count_line_mutations.py backend/tests/integration/test_count_line_metadata.py backend/tests/integration/test_count_line_legacy_import.py backend/tests/integration/test_count_lines_reducer.py backend/tests/integration/test_count_lines_reduction.py backend/tests/integration/test_count_lines_lifecycle.py backend/tests/integration/test_count_lines_storage.py backend/tests/contract/test_count_line_import.py backend/tests/contract/test_count_line_collection.py backend/tests/contract/test_count_lines_security.py backend/tests/contract/test_count_lines_models.py backend/tests/contract/test_count_lines_gateway.py -o addopts= -q --tb=short",
+      "passed": 100,
+      "failed": 0,
+      "seconds": 4.68,
+      "includes_both_modes": true,
+      "files": [
+        "backend/tests/unit/test_count_line_geometry.py",
+        "backend/tests/unit/test_count_line_labels.py",
+        "backend/tests/unit/test_count_lines_config.py",
+        "backend/tests/integration/test_count_line_mutations.py",
+        "backend/tests/integration/test_count_line_metadata.py",
+        "backend/tests/integration/test_count_line_legacy_import.py",
+        "backend/tests/integration/test_count_lines_reducer.py",
+        "backend/tests/integration/test_count_lines_reduction.py",
+        "backend/tests/integration/test_count_lines_lifecycle.py",
+        "backend/tests/integration/test_count_lines_storage.py",
+        "backend/tests/contract/test_count_line_import.py",
+        "backend/tests/contract/test_count_line_collection.py",
+        "backend/tests/contract/test_count_lines_security.py",
+        "backend/tests/contract/test_count_lines_models.py",
+        "backend/tests/contract/test_count_lines_gateway.py"
+      ]
+    },
+    "warnings": [
+      "deprecación existente del alias anyio"
+    ],
+    "not_rerun": [
+      "suite backend completa",
+      "frontend",
+      "build",
+      "E2E",
+      "comparación larga con modelos reales",
+      "validación humana"
+    ],
+    "test_sha256": "84c5bcfd5f5ea902fba13a0b05d811ce5cc3ce8704fd1d69d0740f8048dac131"
   }
 }

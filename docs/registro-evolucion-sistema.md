@@ -168,3 +168,10 @@ La validación de velocidad pasa de comprobaciones de texto a ejercitar el repro
 T071/SC-009 sigue pendiente de cinco participantes y no es un defecto de implementación. No se usaron medios privados ni se ejecutó comparación larga; no se acreditan FPS de inferencia ni hardware edge. Evidencia y trazabilidad en specs/011-video-multilinea-velocidad/validation.md, audit.md y evidence/convergence-corrections.json. Se conserva feature/011-video-multilinea-velocidad y se excluyen los45CSVprevios de los commits propios.
 
 Commits de producto:45df949 (aislamiento del reducer) y9273112 (editor, recuperación y pruebas). La comprobación adicional de configuración cerró3/3a los tres tamaños. Fuente de resultados actuales: evidence/convergence-corrections.json; los reportes previos no se sustituyen.
+
+
+### Corrección T086 —regresiones deterministas del reducer —2026-11-26
+
+Se elimina de las pruebas el supuesto de que el worker reduce dos cuadros en una llamada. Se preparan y esperan estados por cobertura/revisión durante un máximo20turnos. Las regresiones de T079 corren con reloj ordinario y corte forzado; un caso adicional verifica B pendiente con total=null tras un cuadro, posterior total1sin duplicados y solo A fallida. Se mantienen los casos de geometría, eliminación y retirada del padre.
+
+Reproducción previa:dos pruebas originales fallaron con reloj controlado; después archivo11/11y grupo pertinente100/100aprobados. El reloj es local a pruebas; no hay sleeps ni cambios en código, modelos o presupuesto de producción5ms. No se repitieron suites generales ni comparación larga. Commit de pruebas4c9aa9a; evidencia y límites en specs/011-video-multilinea-velocidad/validation.md y evidence/convergence-corrections.json (t086_validation). Estado85/86, T071pendiente de participantes.

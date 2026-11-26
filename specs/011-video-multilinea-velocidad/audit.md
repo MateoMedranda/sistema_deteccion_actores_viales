@@ -78,3 +78,10 @@ La tabla anterior conserva la trazabilidad inicial; los casos omitidos de la rev
 | T085 | FR-005: nombre inicial único normalizado | countLineDrafts: caja, espacios, NFC/NFD y reservas confirmadas |
 
 Commits de producto de esta corrección: `45df949` (backend/T079) y `9273112` (frontend y regresiones T076–T078/T080–T085). Después del ajuste final de nombres/colores se repitió configuración de diez líneas:3/3aprobadas en1440/768/360px. Los21escenarios y estas3revalidaciones se registran por separado; no se suman como24casos distintos.
+
+
+## Actualización T086 —2026-11-26
+
+T086 cierra la brecha de verificación de T079/Phase10: las regresiones respetan la reducción cooperativa de5ms en lugar de exigir fin de trabajo en una llamada. Dos pruebas originales fallaron con corte controlado; tras la corrección pasan11casos (ordinario/corte forzado y transición explícita pending→ready) y el grupo pertinente100/100. Se preservan aserciones de aislamiento, cobertura, revisión, unicidad y CAS durante edición/borrado/retirada. Sin cambios de producto.
+
+Trazabilidad:FR-014/FR-026,SC-001,T028/T032/T079/T086. Commit de pruebas:`4c9aa9a`; evidencia:`evidence/convergence-corrections.json` → `t086_validation`. Estado actual85/86; T071 sigue sin marcar y requiere cinco participantes. Los resultados anteriores y el fallo de convergencia se conservan; las suites generales/humanas/largas no se dan por repetidas o cerradas.

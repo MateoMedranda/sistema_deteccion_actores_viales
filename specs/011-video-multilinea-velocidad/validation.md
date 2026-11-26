@@ -1,6 +1,6 @@
 # Validación técnica011 —2026-11-25
 
-Estado actual tras correcciones del 2026-11-26:84/85 tareas marcadas; T076–T085 corregidas. Los resultados del 2026-11-25 que siguen se conservan como antecedente. Pendiente externo: T071/SC-009, prueba de uso con cinco personas. Ver `human-validation.md`.
+Estado actual tras correcciones del 2026-11-26:85/86 tareas marcadas; T076–T086 corregidas. Los resultados del 2026-11-25 que siguen se conservan como antecedente. Pendiente externo: T071/SC-009, prueba de uso con cinco personas. Ver `human-validation.md`.
 
 - Backend: suite completa556pruebas aprobadas; después se añadió un caso de fecha con zona y pasó el grupo contractual30/30.
 - Frontend: suite completa191pruebas/72archivos aprobados; después pasó el grupo2/2 de cancelación aislada con un caso adicional.
@@ -40,3 +40,16 @@ El descriptor se recupera con espera creciente hasta8segundos entre intentos, si
 El reducer ya no invalida todas las líneas cuando falla una. Aísla la línea fallida, conserva estados/eventos previos y permite avanzar a las demás; toda publicación de fallo comprueba generación, geometría, cursor y vigencia del padre. No se resucitan eliminadas ni se aplica un error al segmento que sustituyó al capturado.
 
 Commits de producto de esta corrección: `45df949` (backend/T079) y `9273112` (frontend y regresiones T076–T078/T080–T085). Después del ajuste final de nombres/colores se repitió configuración de diez líneas:3/3aprobadas en1440/768/360px. Los21escenarios y estas3revalidaciones se registran por separado; no se suman como24casos distintos.
+
+
+## Corrección T086 —pruebas de turnos cooperativos —2026-11-26
+
+T086 completada; estado85/86, único pendiente T071/SC-009. Commit de pruebas:`4c9aa9a`. No se modificaron archivos de producto, configuración, presupuestos ni modelos. Las seis huellas de producto de la evidencia anterior siguen coincidiendo.
+
+La convergencia observó93/94 en el grupo backend y5/5al repetir el archivo aislado: esa repetición no corregía el supuesto temporal. Antes de editar las pruebas se reprodujeron determinísticamente dos fallos originales mediante un reloj local que fuerza la cesión tras el primer cuadro: la preparación de A no había terminado al añadir B y el conteo de B podía seguir pendiente tras una llamada.
+
+La preparación y conclusión ahora avanzan como máximo20turnos, verificando IDs, revisión, estado y revisión geométrica del snapshot, con aserciones explícitas de cobertura y cantidad. Las cinco regresiones anteriores corren con reloj ordinario y corte forzado (10casos); se añadió un caso específico que comprueba pending/null después del primer cuadro, cero válido en el cuadro ya cubierto, después ready/1 y ausencia de duplicados. Conserva cambios geométricos, eliminación y retirada del padre. El reloj sustituye solo el binding del módulo reducer; no altera el reloj global, pytest ni logging y no usa esperas reales.
+
+Resultados:archivo11/11aprobadas en0,92s; grupo pertinente100/100en4,68s, incluida configuración ordinaria y corte controlado. Permanece únicamente el aviso previo de deprecación de anyio. No se aumentó el presupuesto real de5ms, no se retiraron aserciones y no se usaron reejecuciones para ocultar el defecto.
+
+No se repitieron la suite backend completa, frontend, build ni E2E en esta corrección exclusiva de pruebas. Sus resultados anteriores siguen como antecedentes, no como nuevas ejecuciones. No hubo validación con personas ni comparación larga. Evidencia detallada y huella de la prueba corregida en `evidence/convergence-corrections.json`, sección `t086_validation`.
